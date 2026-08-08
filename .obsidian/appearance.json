@@ -1,0 +1,8 @@
+{
+  "theme": "obsidian",
+  "enabledCssSnippets": [
+    "custom-theme.css"
+  ],
+  "cssTheme": "",
+  "nativeMenus": false
+}
