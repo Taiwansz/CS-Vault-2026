@@ -3,5 +3,9 @@
   "obsidian-kanban",
   "obsidian-linter",
   "obsidian-style-settings",
-  "obsidian-tasks-plugin"
+  "obsidian-tasks-plugin",
+  "templater-obsidian",
+  "quickadd",
+  "obsidian-homepage",
+  "recent-files-obsidian"
 ]
