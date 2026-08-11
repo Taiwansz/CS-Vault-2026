@@ -7,5 +7,7 @@
   "templater-obsidian",
   "quickadd",
   "obsidian-homepage",
-  "recent-files-obsidian"
+  "recent-files-obsidian",
+  "obsidian-hover-editor",
+  "obsidian-excalidraw-plugin"
 ]
