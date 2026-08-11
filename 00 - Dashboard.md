@@ -4,61 +4,100 @@ semestre: 2026.2
 turma: N13208A
 ---
 
-# 🎓 Painel Acadêmico — Faculdade 2026.2
+# 🎓 Painel Acadêmico & Central de Comando — 2026.2
 
-> [!info] 🏛️ Centro Universitário Max Planck
-> **Curso:** Bacharelado em Ciência da Computação  
-> **Turma:** N13208A | **Semestre:** 2026.2  
-> 🎯 **Foco Principal:** TCC II (Compressão de Prompts) & Projeto Prático de Jogos
-
----
-
-> [!card] 🚀 Navegação Rápida do Cofre
-> - 🎓 **[[01 - Disciplinas/Trabalho de Conclusão de Curso II/Trabalho de Conclusão de Curso II|Central de TCC II]]** *(Tema: Compressão de Prompts em LLMs)*
-> - 🎮 **[[01 - Disciplinas/Projeto Prático Integrado - Desenvolvimento de Jogos Digitais/Projeto Prático Integrado - Desenvolvimento de Jogos Digitais|Projeto Prático Integrado]]** *(Game Design Document & Kanban)*
-> - 📊 **[[03 - Calendário/Controle de Frequência|Faltômetro & Controle de Presença]]** *(Monitoramento de 75%)*
-> - 📅 **[[03 - Calendário/Calendário do Semestre|Calendário Acadêmico Oficial]]** *(Datas do WebTCC & Provas)*
-> - 🕒 **[[03 - Calendário/Quadro de Horários|Quadro de Horários Semanal]]** *(Professores e Salas)*
-> - 📝 **[[02 - Avaliações/Avaliações 2026.2|Painel Geral de Avaliações]]** *(Provas, Entregas e Notas)*
+> [!info] 🏛️ Centro Universitário Max Planck (UniMAX / UniEduK)
+> **Bacharelado em Ciência da Computação** | **Turma:** N13208A | **Semestre:** 2026.2  
+> 🎯 **Focos Principais:** TCC II (Compressão de Prompts em LLMs) & Projeto Prático de Jogos (PPI)
 
 ---
 
-## 📚 Disciplinas do Semestre
+## ⚡ Navegação Rápida (Bento Cards)
 
-| Disciplina                                                                                                                                       | Código                                | Professor    | Horário                  |                 |     |
-| ------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------- | ------------ | ------------------------ | --------------- | --- |
-| [[01 - Disciplinas/Compiladores/Compiladores]]                                                                                                   | [[Compiladores]]                      | `1110020049` | Luiz Claudio Chiavini    | Seg 19:00–21:40 |     |
-| [[01 - Disciplinas/Tópicos Especiais II/Tópicos Especiais II]]                                                                                   | [[Tópicos Especiais II]]              | `1110020054` | Luiz Claudio Chiavini    | Ter 19:00–21:40 |     |
-| [[01 - Disciplinas/Trabalho de Conclusão de Curso II/Trabalho de Conclusão de Curso II]]                                                         | [[Trabalho de Conclusão de Curso II]] | `1110020055` | Paulo Sergio Granato     | Qua 10:00–11:00 |     |
-| [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Estudos Avançados em Ciências da Computação]]                                     | [[Estudos Avançados em C.C.]]         | `53030218`   | Paulo Sergio Granato     | Qua 19:00–21:40 |     |
-| [[01 - Disciplinas/Projeto Prático Integrado - Desenvolvimento de Jogos Digitais/Projeto Prático Integrado - Desenvolvimento de Jogos Digitais]] | [[Projeto Prático Integrado (PPI)]]   | `1110020052` | Guilherme de Paula Bueno | Qui 19:00–20:40 |     |
-| [[01 - Disciplinas/Técnicas Avançadas de Jogos Digitais/Técnicas Avançadas de Jogos Digitais]]                                                   | [[Técnicas Avançadas de Jogos]]       | `1110020053` | Guilherme de Paula Bueno | Qui 20:50–22:30 |     |
-| [[01 - Disciplinas/Interação Humano Computador e Sistemas Multimídia/Interação Humano Computador e Sistemas Multimídia]]                         | [[Interação Humano Computador]]       | `1110020051` | Guilherme de Paula Bueno | Sex 19:00–21:40 |     |
+<div class="bento-grid">
+
+<div class="bento-card">
+<h3>🎓 Central do TCC II</h3>
+<p>Tema: <i>Compressão de Prompts, Tokens e Sustentabilidade da IA</i>.<br>
+<a href="01 - Disciplinas/Trabalho de Conclusão de Curso II/Trabalho de Conclusão de Curso II.md">Acessar Hub do TCC II ➔</a></p>
+</div>
+
+<div class="bento-card">
+<h3>🎮 Projeto Prático de Jogos</h3>
+<p>Documento de Game Design (GDD), Kanban e prototipagem em Unity/Godot.<br>
+<a href="01 - Disciplinas/Projeto Prático Integrado - Desenvolvimento de Jogos Digitais/Projeto Prático Integrado - Desenvolvimento de Jogos Digitais.md">Acessar PPI Jogos ➔</a></p>
+</div>
+
+<div class="bento-card">
+<h3>📊 Controle de Frequência</h3>
+<p>Monitoramento de presença e faltômetro do semestre.<br>
+<a href="03 - Calendário/Controle de Frequência.md">Abrir Faltômetro ➔</a></p>
+</div>
+
+<div class="bento-card">
+<h3>🗺️ Guia do Cofre (Vault Guide)</h3>
+<p>Convenções de pastas, modelos, metadados e atalhos.<br>
+<a href="00 - Guia do Cofre (Vault Guide).md">Ver Guia do Cofre ➔</a></p>
+</div>
+
+</div>
 
 ---
 
-> [!important] 🚨 Próximos Marcos Críticos (TCC II)
-> - **01/09 a 19/09:** 1º Registro Obrigatório de Orientação no WebTCC
-> - **03/11 a 09/11:** **Entrega do Trabalho para Banca Virtual (PDF sem nomes)**
-> - **23/11 a 27/11:** **Simpósio de TCCs (SIMTCC)**
+## 🚨 Prazos e Marcos Críticos do TCC II (WebTCC 2026.2)
+
+| Período / Data | Marco / Entrega | Responsável | Status |
+|---|---|---|---|
+| **01/09 a 19/09** | 1º Registro Obrigatório de Orientação | Alunos / Orientador | ⏳ Pendente |
+| **01/10 a 19/10** | 2º Registro Obrigatório de Orientação | Alunos / Orientador | ⏳ Pendente |
+| **03/11 a 09/11** | 🚨 **Inserção do Trabalho para Banca Virtual (PDF sem nome)** | **Alunos** | 🚨 **Crítico** |
+| **23/11 a 27/11** | 🎓 **Simpósio de TCCs (SIMTCC)** | Alunos / Banca | 🎓 **Apresentação** |
+| **24/11 a 27/11** | 🚨 **Inserção do Trabalho Final (PDF com nome)** | **Alunos** | 🚨 **Entrega Final** |
 
 ---
 
-## 📌 Prioridades da Semana
+## 📚 Disciplinas e Grade Horária do Semestre
 
-- [ ] Avançar na revisão do Capítulo 2 do TCC II
-- [ ] Definir o GDD e protótipo inicial do jogo no PPI
-- [ ] Verificar os prazos do 1º acompanhamento no WebTCC
+```dataview
+TABLE 
+  codigo AS "Código",
+  professor AS "Professor",
+  horario AS "Horário",
+  status AS "Status"
+FROM "01 - Disciplinas"
+WHERE tipo = "disciplina"
+SORT horario ASC
+```
 
 ---
 
-## ⚡ Captura Rápida
+## 📝 Aulas e Atividades Recentes
 
-> [!tip] Bloco de Rascunho
-> Use este espaço para anotar ideias rápidas antes de organizá-las nas pastas das disciplinas.
+```dataview
+TABLE 
+  disciplina AS "Disciplina",
+  data AS "Data",
+  status AS "Status"
+FROM "01 - Disciplinas"
+WHERE tipo = "aula" OR tipo = "atividade"
+SORT data DESC
+LIMIT 10
+```
 
-### Para Fazer Hoje
-- [ ] 
+---
 
-### Anotações Rápidas
--
+## 📅 Próximas Avaliações & Provas
+
+```dataview
+TABLE 
+  disciplina AS "Disciplina",
+  Avaliação AS "Avaliação",
+  Data AS "Data da Prova",
+  Status AS "Status"
+FROM "02 - Avaliações"
+```
+
+---
+
+> [!tip] 💡 Bloco de Anotações Rápidas
+> Digite aqui ideias ou rascunhos antes de organizá-los nas pastas definitivas.
