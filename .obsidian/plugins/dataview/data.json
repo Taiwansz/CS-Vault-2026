@@ -1,0 +1,14 @@
+{
+  "renderNullAs": "-",
+  "taskCompletionTracking": true,
+  "taskCompletionText": "completion",
+  "enableDataviewJs": true,
+  "enableInlineDataview": true,
+  "enableInlineDataviewJs": true,
+  "enableTableAutoGroup": true,
+  "tableGroupHeaderColumnName": "Group",
+  "tablePrimaryHeaderColumnName": "File",
+  "defaultDateFormat": "yyyy-MM-dd",
+  "defaultDateTimeFormat": "yyyy-MM-dd HH:mm",
+  "maxQuotes": 100
+}
