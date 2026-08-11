@@ -9,10 +9,11 @@ status: concluido
 # 📦 Atividade 02 — Projeto 2: Controle de Estoque e Classes Abstratas em Java
 
 > [!info] 📌 Informações da Atividade
-> - **Disciplina:** Tópicos Especiais II
+> - **Disciplina Hub:** [[01 - Disciplinas/Tópicos Especiais II/Tópicos Especiais II|Tópicos Especiais II]]
 > - **Professor:** Luiz Claudio Chiavini Oliveira Junior
 > - **Data:** 11/08/2026
 > - **Foco Temático:** Classes Abstratas, Herança, Encapsulamento, Construtores com Regra de Negócio e Polimorfismo em Java.
+> - **Atividade Anterior:** [[01 - Disciplinas/Tópicos Especiais II/Aulas/Atividade 01 - Conta Bancaria em Java|Atividade 01 - Conta Bancária em Java]]
 
 ---
 
@@ -26,7 +27,7 @@ O objetivo principal é exercitar o uso de **Classes Abstratas**, garantindo o c
 ## 🧠 Guia Explicativo Detalhado das Classes e Conceitos
 
 ### 1. O Princípio das Classes Abstratas (`abstract class`)
-- **O que é uma Classe Abstrata?** Uma classe declarada com a palavra-chave `abstract` serve como um **molho ou modelo genérico** para outras classes. Ela **não pode ser instanciada diretamente** com a palavra-chave `new` (ou seja, você não pode fazer `new Funcionario()`).
+- **O que é uma Classe Abstrata?** Uma classe declarada com a palavra-chave `abstract` serve como um **modelo genérico** para outras classes. Ela **não pode ser instanciada diretamente** com a palavra-chave `new` (ou seja, você não pode fazer `new Funcionario()`).
 - **Por que utilizar?** No contexto do sistema, todo funcionário no galpão possui um cargo específico (ou é da *Produção*, ou é *Gestor*). Declarar `Funcionario` como classe abstrata impede que um funcionário "genérico" sem função definida seja criado por engano no sistema.
 - **Métodos Abstratos (`public abstract void trabalhar();`):** São assinaturas de métodos declarados na superclasse **sem corpo** (sem chaves `{}`). Isso **obriga obrigatoriamente** cada subclasse concreta (`FuncProducao` e `Gestor`) a fornecer sua própria implementação.
 
@@ -288,11 +289,14 @@ public class Main {
 
 ---
 
-## 🔗 Links Internos no Cofre
+## 🔗 Conexões e Nódulos no Cofre (Graph View)
 
-- 📄 [[01 - Disciplinas/Tópicos Especiais II/Materiais/Atividade_Aula_2_ControleEstoque/Produto.java|Produto.java]]
-- 📄 [[01 - Disciplinas/Tópicos Especiais II/Materiais/Atividade_Aula_2_ControleEstoque/Funcionario.java|Funcionario.java]]
-- 📄 [[01 - Disciplinas/Tópicos Especiais II/Materiais/Atividade_Aula_2_ControleEstoque/FuncProducao.java|FuncProducao.java]]
-- 📄 [[01 - Disciplinas/Tópicos Especiais II/Materiais/Atividade_Aula_2_ControleEstoque/Gestor.java|Gestor.java]]
-- 📄 [[01 - Disciplinas/Tópicos Especiais II/Materiais/Atividade_Aula_2_ControleEstoque/Main.java|Main.java]]
-- 📄 [[01 - Disciplinas/Tópicos Especiais II/Aulas/2026-08-04 - Aula Inaugural - POO e Diagramas|Aula 1 — POO e Diagramas]]
+- 📖 Hub Central da Disciplina: [[01 - Disciplinas/Tópicos Especiais II/Tópicos Especiais II|Tópicos Especiais II]]
+- 📄 Atividade Anterior: [[01 - Disciplinas/Tópicos Especiais II/Aulas/Atividade 01 - Conta Bancaria em Java|Atividade 01 - Conta Bancária em Java]]
+- 📄 Aula Inicial: [[01 - Disciplinas/Tópicos Especiais II/Aulas/2026-08-04 - Aula Inaugural - POO e Diagramas|Aula Inaugural - POO e Diagramas]]
+- 💻 Arquivos de Código Conectados:
+  - [[01 - Disciplinas/Tópicos Especiais II/Materiais/Atividade_Aula_2_ControleEstoque/Produto.java|Produto.java]]
+  - [[01 - Disciplinas/Tópicos Especiais II/Materiais/Atividade_Aula_2_ControleEstoque/Funcionario.java|Funcionario.java]]
+  - [[01 - Disciplinas/Tópicos Especiais II/Materiais/Atividade_Aula_2_ControleEstoque/FuncProducao.java|FuncProducao.java]]
+  - [[01 - Disciplinas/Tópicos Especiais II/Materiais/Atividade_Aula_2_ControleEstoque/Gestor.java|Gestor.java]]
+  - [[01 - Disciplinas/Tópicos Especiais II/Materiais/Atividade_Aula_2_ControleEstoque/Main.java|Main.java]]
