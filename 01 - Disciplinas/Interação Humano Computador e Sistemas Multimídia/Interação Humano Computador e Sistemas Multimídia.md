@@ -18,28 +18,24 @@ horario: "Sexta-feira / 19:00–21:40"
 
 ---
 
-## 📊 Acompanhamento de Notas
-
-| Etapa | Nota | Peso | Data | Status / Obs. |
-|---|---:|---:|---|---|
-| Nota 01 |  |  |  | ⏳ Pendente |
-| Nota 02 |  |  |  | ⏳ Pendente |
-| Substitutiva |  |  |  | ⏳ Pendente |
-| Média Final |  |  |  | ⏳ Pendente |
+## 📅 Calendário de Provas
+- **18/09/2026:** Prova 1 (P1)
+- **06/11/2026:** Prova 2 (P2)
+- **11/12/2026:** Prova Substitutiva
 
 ---
 
-## 🚀 Trabalhos e Atividades Entregues
-
-- [x] **Atividade de Análise de Interfaces (Boa vs. Problemática)**  
-  - 📄 PDF Final: [[01 - Disciplinas/Interação Humano Computador e Sistemas Multimídia/Materiais/Atividade — Analisando Boas e Más Interfaces.pdf|Atividade — Analisando Boas e Más Interfaces.pdf]]
-  - 📄 Nota no Cofre: [[01 - Disciplinas/Interação Humano Computador e Sistemas Multimídia/Aulas/2026-08-07 - Atividade IHC - Analise de Interfaces (UniEduK vs Apple)|Ver Análise Completa]]
+## 🚀 Atividades Entregues
+- [x] **Atividade 01 (07/08/2026) — Análise Comparativa de Interfaces (Apple vs UniEduK/TOTVS)**  
+  - 📄 [[01 - Disciplinas/Interação Humano Computador e Sistemas Multimídia/Aulas/2026-08-07 - Atividade IHC - Analise de Interfaces (UniEduK vs Apple)|Ver Nota Detalhada]]
+  - 📄 [[01 - Disciplinas/Interação Humano Computador e Sistemas Multimídia/Materiais/Atividade — Analisando Boas e Más Interfaces.pdf|Abrir PDF da Entrega]]
 
 ---
 
-## 📂 Conteúdo e Aulas
+## 📝 Aulas Registradas
 
-### Links Rápidos
-- 📁 [[01 - Disciplinas/Interação Humano Computador e Sistemas Multimídia/Aulas/07.08|Aula 07.08 - Apresentação da Disciplina]]
-- 📁 [[01 - Disciplinas/Interação Humano Computador e Sistemas Multimídia/Materiais/Classroom|Orientações do Classroom]]
-- 📁 [[01 - Disciplinas/Interação Humano Computador e Sistemas Multimídia/Materiais/Conteúdo PIR|Conteúdo PIR]]
+```dataview
+TABLE data AS "Data", status AS "Status"
+FROM "01 - Disciplinas/Interação Humano Computador e Sistemas Multimídia/Aulas"
+SORT data DESC
+```
