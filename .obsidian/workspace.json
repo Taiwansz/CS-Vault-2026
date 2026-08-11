@@ -4,24 +4,31 @@
     "type": "split",
     "children": [
       {
-        "id": "8fb662e07de91537",
+        "id": "049088a56899aefe",
         "type": "tabs",
         "children": [
           {
-            "id": "64e66f99ddc0e436",
+            "id": "0dc5fe571528eddb",
             "type": "leaf",
             "state": {
-              "type": "canvas",
+              "type": "markdown",
               "state": {
-                "file": "Sem título.canvas",
-                "viewState": {
-                  "x": 0,
-                  "y": 0,
-                  "zoom": 0
+                "file": "01 - Disciplinas/Compiladores/Compiladores.md",
+                "mode": "source",
+                "source": false,
+                "backlinks": true,
+                "backlinkOpts": {
+                  "collapseAll": false,
+                  "extraContext": false,
+                  "sortOrder": "alphabetical",
+                  "showSearch": false,
+                  "searchQuery": "",
+                  "backlinkCollapsed": false,
+                  "unlinkedCollapsed": true
                 }
               },
-              "icon": "lucide-layout-dashboard",
-              "title": "Sem título"
+              "icon": "lucide-file",
+              "title": "Compiladores"
             }
           }
         ]
@@ -38,7 +45,20 @@
         "type": "tabs",
         "children": [
           {
-            "id": "0031a32792d5a6cc",
+            "id": "e1e0d26cb1c4289f",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-bookmark",
+              "title": "Marcadores"
+            }
+          },
+          {
+            "id": "10fbfd6efd262eb7",
             "type": "leaf",
             "state": {
               "type": "file-explorer",
@@ -53,7 +73,7 @@
             }
           },
           {
-            "id": "9687bf6a68303fb3",
+            "id": "66fce6ccf9b9f80e",
             "type": "leaf",
             "state": {
               "type": "search",
@@ -68,21 +88,9 @@
               "icon": "lucide-search",
               "title": "Procurar"
             }
-          },
-          {
-            "id": "e1e0d26cb1c4289f",
-            "type": "leaf",
-            "state": {
-              "type": "bookmarks",
-              "state": {
-                "showSearch": false,
-                "searchQuery": ""
-              },
-              "icon": "lucide-bookmark",
-              "title": "Marcadores"
-            }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "horizontal",
@@ -125,8 +133,8 @@
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
-              "icon": "links-going-out",
-              "title": "Links de saída"
+              "icon": "lucide-ghost",
+              "title": "outgoing-link"
             }
           },
           {
@@ -183,52 +191,58 @@
   "left-ribbon": {
     "hiddenItems": {
       "switcher:Abrir a troca rápida": false,
+      "workspaces:Gerenciar leiautes da área de trabalho": false,
       "graph:Abrir visualização em gráfico": false,
       "canvas:Criar novo canvas": false,
-      "daily-notes:Abrir a nota de hoje": false,
       "templates:Inserir modelo": false,
       "command-palette:Abrir paleta de comandos": false,
-      "bases:Criar nova base": false
+      "bases:Criar nova base": false,
+      "obsidian-kanban:Create new board": false
     }
   },
-  "active": "0031a32792d5a6cc",
+  "active": "0dc5fe571528eddb",
   "lastOpenFiles": [
-    "01 - Disciplinas/Interação Humano Computador e Sistemas Multimídia/Materiais/Atividade — Analisando Boas e Más Interfaces.docx",
-    "01 - Disciplinas/Interação Humano Computador e Sistemas Multimídia/Materiais/Atividade — Analisando Boas e Más Interfaces.pdf",
-    "Sem título 1.base",
-    "Sem título.canvas",
-    "Sem título.base",
-    "99 - Templates/Template - Trabalho.md",
-    "01 - Disciplinas/Interação Humano Computador e Sistemas Multimídia/Materiais/Analise_IHC_Interfaces_Matheus_Guilherme_Felipe.docx",
-    "00 - Dashboard.md",
+    "01 - Disciplinas/Compiladores/Materiais/Compiladores.pdf",
+    "01 - Disciplinas/Compiladores/Aulas/2026-08-03 - Aula Inaugural - Introdução e Ementa.md",
+    "01 - Disciplinas/Compiladores/Compiladores.md",
+    "01 - Disciplinas/Índice Geral de Aulas.md",
     "LEIA-ME - Como usar.md",
+    "00 - Guia do Cofre (Vault Guide).md",
+    "00 - Dashboard.md",
+    "assets/banner.jpg",
+    "assets/student2.jpg",
+    "assets/student1.jpg",
+    "03 - Calendário/Calendário do Semestre.md",
+    "03 - Calendário/Controle de Frequência.md",
+    "03 - Calendário/Quadro de Horários.md",
+    "02 - Avaliações/Painel Geral de Avaliações.md",
+    "01 - Disciplinas/Projeto Prático Integrado - Desenvolvimento de Jogos Digitais/Kanban - PPI Jogos.md",
+    "01 - Disciplinas/Tópicos Especiais II/Aulas/Atividade 02 - Controle de Estoque e Classes Abstratas.md",
+    "01 - Disciplinas/Tópicos Especiais II/Tópicos Especiais II.md",
+    "01 - Disciplinas/Tópicos Especiais II/Materiais/Atividade_Aula_2_ControleEstoque/Gestor.java",
+    "01 - Disciplinas/Tópicos Especiais II/Materiais/Atividade_Aula_2_ControleEstoque/Produto.java",
+    "01 - Disciplinas/Tópicos Especiais II/Materiais/Atividade_Aula_2_ControleEstoque/Main.java",
+    "01 - Disciplinas/Tópicos Especiais II/Materiais/Atividade_Aula_2_ControleEstoque/FuncProducao.java",
+    "01 - Disciplinas/Tópicos Especiais II/Materiais/Atividade_Aula_2_ControleEstoque/Funcionario.java",
+    "01 - Disciplinas/Tópicos Especiais II/Materiais/Atividade_Aula_2_ControleEstoque",
+    "Sem título 2.canvas",
+    "Sem título 1.canvas",
+    "group_workspace_preview.html",
+    "assets",
+    "Sem título 3.base",
+    "Sem título 2.base",
+    "Sem título.canvas",
+    "99 - Templates/Template - Trabalho.md",
     "01 - Disciplinas/Interação Humano Computador e Sistemas Multimídia/Aulas/2026-08-07 - Atividade IHC - Analise de Interfaces (UniEduK vs Apple).md",
-    "01 - Disciplinas/Interação Humano Computador e Sistemas Multimídia/Materiais/Analise_IHC_Interfaces_Matheus_Sousa.docx",
     "2026-08-07.md",
     "01 - Disciplinas/Projeto Prático Integrado - Desenvolvimento de Jogos Digitais/Projeto Prático Integrado - Desenvolvimento de Jogos Digitais.md",
     "01 - Disciplinas/Tópicos Especiais II/Aulas/Atividade 01 - Conta Bancaria em Java.md",
-    "01 - Disciplinas/Compiladores/Compiladores.md",
     "01 - Disciplinas/Tópicos Especiais II/Materiais/Atividade_Aula_1_ContaBancaria/README.md",
-    "01 - Disciplinas/Tópicos Especiais II/Materiais/Atividade_Aula_1_ContaBancaria/Main.java",
-    "01 - Disciplinas/Tópicos Especiais II/Materiais/Atividade_Aula_1_ContaBancaria/ContaBancaria.java",
-    "01 - Disciplinas/Tópicos Especiais II/Materiais/Atividade_Aula_1_ContaBancaria",
     "02 - Avaliações/Avaliações 2026.2.md",
-    "01 - Disciplinas/Tópicos Especiais II/Materiais/Apostila de POO com Java.pdf",
     "01 - Disciplinas/Tópicos Especiais II/Aulas/2026-08-04 - Aula Inaugural - POO e Diagramas.md",
-    "01 - Disciplinas/Compiladores/Aulas/2026-08-03 - Aula Inaugural - Introdução e Ementa.md",
-    "01 - Disciplinas/Compiladores/Materiais/Compiladores.pdf",
     "01 - Disciplinas/Trabalho de Conclusão de Curso II/Trabalho de Conclusão de Curso II.md",
     "01 - Disciplinas/Estudos Avançados em Ciências da Computação/Aulas/2026-08-05 - Aula Inaugural e Aula 1.md",
     "01 - Disciplinas/Trabalho de Conclusão de Curso II/Referências/Fichamento - Exemplo.md",
-    "01 - Disciplinas/Trabalho de Conclusão de Curso II/Orientação/Ata - Reunião Exemplo.md",
-    "01 - Disciplinas/Estudos Avançados em Ciências da Computação/Estudos Avançados em Ciências da Computação.md",
-    "99 - Templates/Template - GDD (Game Design Document).md",
-    "99 - Templates/Template - Fichamento Bibliográfico.md",
-    "99 - Templates/Template - Avaliação.md",
-    "99 - Templates/Template - Aula.md",
-    "99 - Templates/Template - Ata de Reunião com Orientador.md",
-    "04 - Materiais Gerais/README.md",
-    "03 - Calendário/Calendário do Semestre.md",
-    "03 - Calendário/Quadro de Horários.md"
+    "01 - Disciplinas/Trabalho de Conclusão de Curso II/Orientação/Ata - Reunião Exemplo.md"
   ]
 }
