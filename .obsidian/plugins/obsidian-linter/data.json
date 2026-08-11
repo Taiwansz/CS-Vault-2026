@@ -1,0 +1,19 @@
+{
+  "ruleConfigs": {
+    "heading-blank-lines": {
+      "enabled": true,
+      "bottom": true,
+      "empty-line-after-yaml": true
+    },
+    "space-after-list-markers": {
+      "enabled": true
+    },
+    "yaml-title": {
+      "enabled": false
+    }
+  },
+  "lintOnSave": true,
+  "displayChanged": true,
+  "suppressMessageWhenNoChange": true,
+  "linterLocale": "system-default"
+}
