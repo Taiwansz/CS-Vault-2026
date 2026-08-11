@@ -1,167 +1,167 @@
-/* =============================================================
-   CATPPUCCIN MOCHA + ACCENTED CARDS + FOLDER ICONS + TAG PILLS
-   ============================================================= */
+/* ==========================================================================
+   MINIMALIST EDITORIAL DESIGN SYSTEM — OBSIDIAN CS VAULT 2026.2
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 
 :root {
-  --bg-base: #1e1e2e;
-  --bg-surface: #252538;
-  --bg-card: rgba(30, 30, 46, 0.7);
-  --accent-pink: #f5c2e7;
-  --accent-mauve: #cba6f7;
-  --accent-red: #f38ba8;
-  --accent-peach: #fab387;
-  --accent-yellow: #f9e2af;
-  --accent-green: #a6e3a1;
-  --accent-teal: #94e2d5;
-  --accent-sky: #89dceb;
-  --accent-blue: #89b4fa;
-  --accent-lavender: #b4befe;
+  --font-interface: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-monospace: 'JetBrains Mono', monospace;
+  
+  --accent-primary: #6366f1;
+  --accent-primary-hover: #4f46e5;
+  --accent-soft: rgba(99, 102, 241, 0.12);
+  
+  --bg-card: rgba(255, 255, 255, 0.03);
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.16);
+  
+  --status-success: #10b981;
+  --status-warning: #f59e0b;
+  --status-danger: #ef4444;
+  --status-info: #3b82f6;
 }
 
-/* 1. Header Styling with Glow & Gradient */
-.markdown-rendered h1 {
-  font-size: 2.1em !important;
-  font-weight: 800 !important;
-  background: linear-gradient(135deg, #cba6f7 0%, #89b4fa 50%, #94e2d5 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  border-bottom: 2px solid rgba(203, 166, 247, 0.3) !important;
-  padding-bottom: 8px !important;
-  margin-top: 1.2em !important;
+body {
+  font-family: var(--font-interface);
+  letter-spacing: -0.01em;
 }
 
-.markdown-rendered h2 {
-  font-size: 1.5em !important;
-  font-weight: 700 !important;
-  color: #89b4fa !important;
-  border-bottom: 1px solid rgba(137, 180, 250, 0.2) !important;
-  padding-bottom: 4px !important;
+/* --- BENTO GRID SYSTEM --- */
+.bento-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+  margin: 20px 0;
 }
 
-.markdown-rendered h3 {
-  font-size: 1.2em !important;
-  font-weight: 600 !important;
-  color: #94e2d5 !important;
+.bento-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  padding: 18px 22px;
+  transition: all 0.2s ease-in-out;
+  backdrop-filter: blur(8px);
 }
 
-/* 2. Custom Callout Cards */
-.callout {
-  border-radius: 14px !important;
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
-  backdrop-filter: blur(12px) !important;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25) !important;
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
-  margin: 1.2em 0 !important;
-  padding: 14px 18px !important;
+.bento-card:hover {
+  border-color: var(--accent-primary);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
 }
 
-.callout:hover {
-  transform: translateY(-3px) scale(1.005);
-  box-shadow: 0 12px 32px rgba(203, 166, 247, 0.25) !important;
+.bento-card h3 {
+  margin-top: 0;
+  margin-bottom: 8px;
+  font-size: 1.1em;
+  font-weight: 600;
+  color: var(--accent-primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
-.callout[data-callout="info"] {
-  background: rgba(137, 180, 250, 0.08) !important;
-  border-left: 5px solid #89b4fa !important;
+.bento-card p {
+  margin: 0;
+  font-size: 0.9em;
+  opacity: 0.8;
+  line-height: 1.5;
 }
 
-.callout[data-callout="tip"] {
-  background: rgba(166, 227, 161, 0.08) !important;
-  border-left: 5px solid #a6e3a1 !important;
+/* --- BADGES & STATUS PILLS --- */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: 9999px;
+  font-size: 0.78em;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
 }
 
-.callout[data-callout="warning"], .callout[data-callout="important"] {
-  background: rgba(249, 226, 175, 0.08) !important;
-  border-left: 5px solid #f9e2af !important;
+.badge-success {
+  background: rgba(16, 185, 129, 0.15);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.3);
 }
 
-.callout[data-callout="danger"] {
-  background: rgba(243, 139, 168, 0.08) !important;
-  border-left: 5px solid #f38ba8 !important;
+.badge-warning {
+  background: rgba(245, 158, 11, 0.15);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.3);
 }
 
-.callout[data-callout="card"] {
-  background: rgba(203, 166, 247, 0.06) !important;
-  border-left: 5px solid #cba6f7 !important;
+.badge-danger {
+  background: rgba(239, 68, 68, 0.15);
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.3);
 }
 
-/* 3. Modern Glassmorphism Tables */
+.badge-info {
+  background: rgba(59, 130, 246, 0.15);
+  color: #60a5fa;
+  border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+/* --- REFINED TABLES & DATAVIEW --- */
 .markdown-rendered table {
-  width: 100% !important;
-  border-collapse: separate !important;
-  border-spacing: 0 !important;
-  border-radius: 12px !important;
-  overflow: hidden !important;
-  border: 1px solid rgba(203, 166, 247, 0.2) !important;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2) !important;
-  margin: 1.5em 0 !important;
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--border-subtle);
+  margin: 16px 0;
 }
 
 .markdown-rendered th {
-  background: rgba(203, 166, 247, 0.18) !important;
-  color: #cba6f7 !important;
-  font-weight: 700 !important;
-  text-transform: uppercase !important;
-  font-size: 0.82em !important;
-  letter-spacing: 0.06em !important;
-  padding: 12px 16px !important;
-  border-bottom: 2px solid rgba(203, 166, 247, 0.3) !important;
+  background: rgba(255, 255, 255, 0.04);
+  font-weight: 600;
+  font-size: 0.85em;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border-subtle);
 }
 
 .markdown-rendered td {
-  padding: 11px 16px !important;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
-  font-size: 0.95em !important;
+  padding: 10px 14px;
+  font-size: 0.92em;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
 }
 
-.markdown-rendered tr:nth-child(even) td {
-  background: rgba(255, 255, 255, 0.02) !important;
+.markdown-rendered tr:last-child td {
+  border-bottom: none;
 }
 
 .markdown-rendered tr:hover td {
-  background: rgba(203, 166, 247, 0.1) !important;
+  background: rgba(255, 255, 255, 0.02);
 }
 
-/* 4. Tag Pills */
-.tag {
-  background: linear-gradient(135deg, rgba(203, 166, 247, 0.2), rgba(137, 180, 250, 0.2)) !important;
-  color: #cba6f7 !important;
-  border: 1px solid rgba(203, 166, 247, 0.4) !important;
-  border-radius: 9999px !important;
-  padding: 3px 12px !important;
-  font-size: 0.82em !important;
-  font-weight: 600 !important;
-  transition: all 0.2s ease !important;
+/* --- REFINED CALLOUTS --- */
+.callout {
+  border-radius: 10px;
+  border-width: 1px;
+  box-shadow: none;
 }
 
-.tag:hover {
-  background: rgba(203, 166, 247, 0.35) !important;
-  transform: scale(1.05);
+.callout[data-callout="important"], 
+.callout[data-callout="warning"] {
+  border-color: rgba(245, 158, 11, 0.4);
+  background: rgba(245, 158, 11, 0.06);
 }
 
-/* 5. Dataview Grid Cards (.cards) */
-.cards table.dataview {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 16px;
-  background: transparent !important;
-  border: none !important;
+.callout[data-callout="success"] {
+  border-color: rgba(16, 185, 129, 0.4);
+  background: rgba(16, 185, 129, 0.06);
 }
 
-.cards table.dataview tbody {
-  display: contents;
-}
-
-.cards table.dataview tr {
-  display: flex;
-  flex-direction: column;
-  background: rgba(37, 37, 56, 0.8) !important;
-  border: 1px solid rgba(203, 166, 247, 0.2) !important;
-  border-radius: 12px !important;
-  padding: 16px !important;
-  transition: transform 0.2s ease !important;
-}
-
-.cards table.dataview tr:hover {
-  transform: translateY(-4px) !important;
+/* --- CODE BLOCKS --- */
+code {
+  font-family: var(--font-monospace);
+  font-size: 0.88em;
+  border-radius: 4px;
+  padding: 2px 6px;
+  background: rgba(255, 255, 255, 0.06);
 }
