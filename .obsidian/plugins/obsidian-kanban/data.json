@@ -1,0 +1,6 @@
+{
+  "show-relative-date": true,
+  "date-format": "YYYY-MM-DD",
+  "link-date-to-daily-note": false,
+  "hide-tags-in-cards": false
+}
