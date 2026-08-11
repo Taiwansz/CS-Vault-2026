@@ -1,8 +1,8 @@
 /* ==========================================================================
-   MINIMALIST EDITORIAL DESIGN SYSTEM — OBSIDIAN CS VAULT 2026.2
+   MASTER EDITORIAL & VISUAL SYSTEM — OBSIDIAN CS VAULT 2026.2
    ========================================================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap');
 
 :root {
   --font-interface: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -10,11 +10,11 @@
   
   --accent-primary: #6366f1;
   --accent-primary-hover: #4f46e5;
-  --accent-soft: rgba(99, 102, 241, 0.12);
+  --accent-soft: rgba(99, 102, 241, 0.14);
   
-  --bg-card: rgba(255, 255, 255, 0.03);
+  --bg-card: rgba(255, 255, 255, 0.035);
   --border-subtle: rgba(255, 255, 255, 0.08);
-  --border-strong: rgba(255, 255, 255, 0.16);
+  --border-strong: rgba(255, 255, 255, 0.18);
   
   --status-success: #10b981;
   --status-warning: #f59e0b;
@@ -25,6 +25,7 @@
 body {
   font-family: var(--font-interface);
   letter-spacing: -0.01em;
+  -webkit-font-smoothing: antialiased;
 }
 
 /* --- BENTO GRID SYSTEM --- */
@@ -32,28 +33,28 @@ body {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 16px;
-  margin: 20px 0;
+  margin: 22px 0;
 }
 
 .bento-card {
   background: var(--bg-card);
   border: 1px solid var(--border-subtle);
-  border-radius: 12px;
-  padding: 18px 22px;
-  transition: all 0.2s ease-in-out;
-  backdrop-filter: blur(8px);
+  border-radius: 14px;
+  padding: 20px 24px;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  backdrop-filter: blur(12px);
 }
 
 .bento-card:hover {
   border-color: var(--accent-primary);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 30px rgba(99, 102, 241, 0.15);
 }
 
 .bento-card h3 {
   margin-top: 0;
   margin-bottom: 8px;
-  font-size: 1.1em;
+  font-size: 1.12em;
   font-weight: 600;
   color: var(--accent-primary);
   display: flex;
@@ -64,8 +65,8 @@ body {
 .bento-card p {
   margin: 0;
   font-size: 0.9em;
-  opacity: 0.8;
-  line-height: 1.5;
+  opacity: 0.82;
+  line-height: 1.55;
 }
 
 /* --- BADGES & STATUS PILLS --- */
@@ -104,29 +105,29 @@ body {
   border: 1px solid rgba(59, 130, 246, 0.3);
 }
 
-/* --- REFINED TABLES & DATAVIEW --- */
+/* --- REFINED DATAVIEW TABLES --- */
 .markdown-rendered table {
   width: 100%;
   border-collapse: separate;
   border-spacing: 0;
-  border-radius: 8px;
+  border-radius: 10px;
   overflow: hidden;
   border: 1px solid var(--border-subtle);
-  margin: 16px 0;
+  margin: 18px 0;
 }
 
 .markdown-rendered th {
-  background: rgba(255, 255, 255, 0.04);
+  background: rgba(255, 255, 255, 0.05);
   font-weight: 600;
-  font-size: 0.85em;
+  font-size: 0.84em;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  padding: 10px 14px;
+  padding: 11px 16px;
   border-bottom: 1px solid var(--border-subtle);
 }
 
 .markdown-rendered td {
-  padding: 10px 14px;
+  padding: 11px 16px;
   font-size: 0.92em;
   border-bottom: 1px solid rgba(255, 255, 255, 0.03);
 }
@@ -136,25 +137,22 @@ body {
 }
 
 .markdown-rendered tr:hover td {
-  background: rgba(255, 255, 255, 0.02);
+  background: rgba(255, 255, 255, 0.025);
 }
 
-/* --- REFINED CALLOUTS --- */
-.callout {
-  border-radius: 10px;
-  border-width: 1px;
-  box-shadow: none;
+/* --- HOVER EDITOR FLOATING WINDOWS --- */
+.popover.hover-editor {
+  border-radius: 14px !important;
+  border: 1px solid var(--border-strong) !important;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4) !important;
+  backdrop-filter: blur(16px) !important;
 }
 
-.callout[data-callout="important"], 
-.callout[data-callout="warning"] {
-  border-color: rgba(245, 158, 11, 0.4);
-  background: rgba(245, 158, 11, 0.06);
-}
-
-.callout[data-callout="success"] {
-  border-color: rgba(16, 185, 129, 0.4);
-  background: rgba(16, 185, 129, 0.06);
+/* --- EXCALIDRAW & EMBEDS --- */
+.excalidraw-embed {
+  border-radius: 12px;
+  border: 1px solid var(--border-subtle);
+  overflow: hidden;
 }
 
 /* --- CODE BLOCKS --- */
