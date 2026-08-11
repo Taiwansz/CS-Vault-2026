@@ -1,0 +1,8 @@
+{
+  "page": "00 - Dashboard.md",
+  "autoCreate": true,
+  "useOnRibbon": true,
+  "openOnStartup": "main-workspace",
+  "manualOpening": "replace-all",
+  "pin": false
+}
