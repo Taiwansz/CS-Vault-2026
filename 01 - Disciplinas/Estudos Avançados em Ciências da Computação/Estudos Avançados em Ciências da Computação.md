@@ -12,48 +12,33 @@ horario: "Quarta-feira / 19:00–21:40"
 
 > [!info] 📌 Informações da Disciplina
 > - **Código:** `53030218` | **Turma:** N13208A
-> - **Professor(a):** Paulo Sergio Granato
+> - **Professor:** Paulo Sergio Granato
 > - **Horário:** Quarta-feira / 19:00–21:40
 > - **Status:** <span class="badge badge-success">🟢 Cursando</span>
+> - **Foco:** Redes Corporativas, Switching, Roteamento OSPF, HSRP e Cisco Packet Tracer.
 
 ---
 
 ## 📊 Acompanhamento de Notas
 
-| Etapa | Nota | Peso | Data | Status / Obs. |
+| Etapa | Nota | Peso | Data | Status |
 |---|---:|---:|---|---|
-| Nota 01 |  |  |  | ⏳ Pendente |
-| Nota 02 |  |  |  | ⏳ Pendente |
+| Avaliação N1 (Packet Tracer + Teoria) |  |  |  | ⏳ Pendente |
+| Avaliação N2 |  |  |  | ⏳ Pendente |
 | Substitutiva |  |  |  | ⏳ Pendente |
-| Média Final |  |  |  | ⏳ Pendente |
 
 ---
 
-## 📝 Próximas Tarefas e Prazos
+## 📝 Aulas Registradas
 
-- [ ] 
-
----
-
-## 📂 Conteúdo e Aulas
-
-> [!tip] Como Registrar Aulas
-> Crie as notas de aula dentro da pasta `Aulas` desta disciplina usando o template **Template - Aula**.
-
-### Links Rápidos
-- 📁 [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Aulas|Pasta de Aulas]]
-- 📁 [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Materiais|Pasta de Materiais]]
-- 📁 [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Notas|Notas & Desempenho]]
-- 📁 [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Provas|Provas & Exercícios]]
+```dataview
+TABLE data AS "Data", status AS "Status"
+FROM "01 - Disciplinas/Estudos Avançados em Ciências da Computação/Aulas"
+SORT data DESC
+```
 
 ---
 
-## 💡 Dúvidas / Tópicos para Revisar
-
-- [ ] 
-
----
-
-## 📑 Resumo da Disciplina
-
--
+## 📁 Materiais da Disciplina
+- 📄 [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Materiais/Aula Inaugural e Aula 1 - Eletiva 8.pdf|Apresentação Aula Inaugural (PDF)]]
+- 🎥 [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Materiais/Aula_Inaugural__Eletiva_8.mp4|Vídeo da Aula Inaugural (MP4)]]
