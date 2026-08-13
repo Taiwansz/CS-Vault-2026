@@ -3,5 +3,6 @@
   "enabledCssSnippets": [
     "custom-theme.css"
   ],
-  "cssTheme": ""
+  "cssTheme": "",
+  "theme": "obsidian"
 }
