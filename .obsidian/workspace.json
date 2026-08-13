@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "01 - Disciplinas/Compiladores/Compiladores.md",
+                "file": "01 - Disciplinas/Estudos Avançados em Ciências da Computação/Aulas/2026-08-12 - Aula 2 - Switching Avançado.md",
                 "mode": "source",
                 "source": false,
                 "backlinks": true,
@@ -28,7 +28,7 @@
                 }
               },
               "icon": "lucide-file",
-              "title": "Compiladores"
+              "title": "2026-08-12 - Aula 2 - Switching Avançado"
             }
           }
         ]
@@ -197,14 +197,24 @@
       "templates:Inserir modelo": false,
       "command-palette:Abrir paleta de comandos": false,
       "bases:Criar nova base": false,
-      "obsidian-kanban:Create new board": false
+      "obsidian-kanban:Create new board": false,
+      "templater-obsidian:Templater": false,
+      "obsidian-excalidraw-plugin:New drawing": false
     }
   },
-  "active": "0dc5fe571528eddb",
+  "active": "10fbfd6efd262eb7",
   "lastOpenFiles": [
+    "01 - Disciplinas/Estudos Avançados em Ciências da Computação/Materiais/Aula_2_Switching_Avancado_Original_Professor.pkt",
+    "01 - Disciplinas/Estudos Avançados em Ciências da Computação/Materiais/Aula_2_Switching_Avancado_Configurada.pkt",
+    "01 - Disciplinas/Estudos Avançados em Ciências da Computação/Materiais/Packet_Tracer_Configs/README_Como_Importar_No_Packet_Tracer.md",
+    "01 - Disciplinas/Estudos Avançados em Ciências da Computação/Materiais/Packet_Tracer_Configs/SW-Acesso-2.txt",
+    "01 - Disciplinas/Estudos Avançados em Ciências da Computação/Materiais/Packet_Tracer_Configs/SW-Acesso-1.txt",
+    "01 - Disciplinas/Estudos Avançados em Ciências da Computação/Materiais/Packet_Tracer_Configs/SW-Core-2.txt",
+    "01 - Disciplinas/Estudos Avançados em Ciências da Computação/Materiais/Packet_Tracer_Configs/SW-Core-1.txt",
+    "01 - Disciplinas/Estudos Avançados em Ciências da Computação/Materiais/Packet_Tracer_Configs",
+    "01 - Disciplinas/Compiladores/Compiladores.md",
     "01 - Disciplinas/Compiladores/Materiais/Compiladores.pdf",
     "01 - Disciplinas/Compiladores/Aulas/2026-08-03 - Aula Inaugural - Introdução e Ementa.md",
-    "01 - Disciplinas/Compiladores/Compiladores.md",
     "01 - Disciplinas/Índice Geral de Aulas.md",
     "LEIA-ME - Como usar.md",
     "00 - Guia do Cofre (Vault Guide).md",
@@ -222,15 +232,8 @@
     "01 - Disciplinas/Tópicos Especiais II/Materiais/Atividade_Aula_2_ControleEstoque/Gestor.java",
     "01 - Disciplinas/Tópicos Especiais II/Materiais/Atividade_Aula_2_ControleEstoque/Produto.java",
     "01 - Disciplinas/Tópicos Especiais II/Materiais/Atividade_Aula_2_ControleEstoque/Main.java",
-    "01 - Disciplinas/Tópicos Especiais II/Materiais/Atividade_Aula_2_ControleEstoque/FuncProducao.java",
-    "01 - Disciplinas/Tópicos Especiais II/Materiais/Atividade_Aula_2_ControleEstoque/Funcionario.java",
-    "01 - Disciplinas/Tópicos Especiais II/Materiais/Atividade_Aula_2_ControleEstoque",
     "Sem título 2.canvas",
     "Sem título 1.canvas",
-    "group_workspace_preview.html",
-    "assets",
-    "Sem título 3.base",
-    "Sem título 2.base",
     "Sem título.canvas",
     "99 - Templates/Template - Trabalho.md",
     "01 - Disciplinas/Interação Humano Computador e Sistemas Multimídia/Aulas/2026-08-07 - Atividade IHC - Analise de Interfaces (UniEduK vs Apple).md",
@@ -242,7 +245,6 @@
     "01 - Disciplinas/Tópicos Especiais II/Aulas/2026-08-04 - Aula Inaugural - POO e Diagramas.md",
     "01 - Disciplinas/Trabalho de Conclusão de Curso II/Trabalho de Conclusão de Curso II.md",
     "01 - Disciplinas/Estudos Avançados em Ciências da Computação/Aulas/2026-08-05 - Aula Inaugural e Aula 1.md",
-    "01 - Disciplinas/Trabalho de Conclusão de Curso II/Referências/Fichamento - Exemplo.md",
-    "01 - Disciplinas/Trabalho de Conclusão de Curso II/Orientação/Ata - Reunião Exemplo.md"
+    "01 - Disciplinas/Trabalho de Conclusão de Curso II/Referências/Fichamento - Exemplo.md"
   ]
 }
