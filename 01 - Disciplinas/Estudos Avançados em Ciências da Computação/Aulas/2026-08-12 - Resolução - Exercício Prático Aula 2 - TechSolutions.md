@@ -36,6 +36,7 @@ tags:
 > - 📄 **Respostas Finais do Aluno (PDF):** [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Materiais/RESPOSTAS_EXERCICIO_AULA_2 (Matheus Santos).pdf|RESPOSTAS_EXERCICIO_AULA_2 (Matheus Santos).pdf]]
 > - 📝 **Arquivo Editável (DOCX):** [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Materiais/RESPOSTAS_EXERCICIO_AULA_2.docx|RESPOSTAS_EXERCICIO_AULA_2.docx]]
 > - 🔌 **Topologia no Cisco Packet Tracer (.PKT):** [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Materiais/TECHSOLUTIONS_AULA_2_CONCLUIDO.pkt|TECHSOLUTIONS_AULA_2_CONCLUIDO.pkt]]
+> - 🎨 **Diagrama no Excalidraw:** [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Topologia_TechSolutions_Switching.excalidraw|Topologia_TechSolutions_Switching.excalidraw]]
 > - 🤖 **Guia de Automação com IA:** [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Arquivos Auxiliares - Automação IA Packet Tracer/README|Guia e Skill MCP Packet Tracer]]
 
 ---
@@ -74,10 +75,14 @@ A rede da **TechSolutions** foi implementada com 4 switches Cisco Catalyst 3560-
 ## 2. Respostas às Questões do Laboratório
 
 ### 13. Testes com PING
-- **Teste A (`PC-ADM-01` $ightarrow$ `PC-ADM-02` / `192.168.10.12`):** Funciona (0% perda). Mesma VLAN 10 comunicando em Camada 2 através do trunk e EtherChannel.
-- **Teste B (`PC-FIN-01` $ightarrow$ `PC-FIN-02` / `192.168.20.12`):** Funciona (0% perda). Mesma VLAN 20.
-- **Teste C (`PC-TI-01` $ightarrow$ `PC-TI-02` / `192.168.30.12`):** Funciona (0% perda). Mesma VLAN 30.
-- **Teste D (`PC-ADM-01` $ightarrow$ `PC-FIN-01` / `192.168.20.11`):** 100% perda (esperado). Hosts em sub-redes e domínios de broadcast distintos sem roteamento inter-VLAN configurado.
+- **Teste A (`PC-ADM-01` $
+ightarrow$ `PC-ADM-02` / `192.168.10.12`):** Funciona (0% perda). Mesma VLAN 10 comunicando em Camada 2 através do trunk e EtherChannel.
+- **Teste B (`PC-FIN-01` $
+ightarrow$ `PC-FIN-02` / `192.168.20.12`):** Funciona (0% perda). Mesma VLAN 20.
+- **Teste C (`PC-TI-01` $
+ightarrow$ `PC-TI-02` / `192.168.30.12`):** Funciona (0% perda). Mesma VLAN 30.
+- **Teste D (`PC-ADM-01` $
+ightarrow$ `PC-FIN-01` / `192.168.20.11`):** 100% perda (esperado). Hosts em sub-redes e domínios de broadcast distintos sem roteamento inter-VLAN configurado.
 
 ### 14. Teste de Alta Disponibilidade (Desconexão de 1 Cabo no EtherChannel)
 - **a) A comunicação foi interrompida permanentemente?** Não, o tráfego continuou pelo link remanescente.

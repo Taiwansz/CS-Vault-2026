@@ -3,7 +3,7 @@
   "search": "",
   "showTags": false,
   "showAttachments": true,
-  "hideUnresolved": false,
+  "hideUnresolved": true,
   "showOrphans": true,
   "collapse-color-groups": false,
   "colorGroups": [
@@ -11,35 +11,35 @@
       "query": "file:Dashboard OR file:\"Guia do Cofre\"",
       "color": {
         "a": 1,
-        "rgb": 15787074
+        "rgb": 16753920
       }
     },
     {
       "query": "path:\"01 - Disciplinas\" -path:Aulas -path:Materiais -path:Notas -path:Provas -path:Orientação -path:Referências -path:Arquivos",
       "color": {
         "a": 1,
-        "rgb": 29362
+        "rgb": 3447003
       }
     },
     {
       "query": "path:Aulas",
       "color": {
         "a": 1,
-        "rgb": 5682409
+        "rgb": 3066993
       }
     },
     {
       "query": "path:Materiais OR path:Arquivos",
       "color": {
         "a": 1,
-        "rgb": 15113984
+        "rgb": 10181046
       }
     },
     {
       "query": "path:\"02 - Avaliações\" OR path:Provas",
       "color": {
         "a": 1,
-        "rgb": 13983232
+        "rgb": 15158332
       }
     }
   ],
@@ -47,12 +47,12 @@
   "showArrow": true,
   "textFadeMultiplier": 0,
   "nodeSizeMultiplier": 1.45,
-  "lineSizeMultiplier": 1.48156097560976,
+  "lineSizeMultiplier": 1.1,
   "collapse-forces": false,
-  "centerStrength": 0.650341463414634,
+  "centerStrength": 0.581658536585366,
   "repelStrength": 14,
   "linkStrength": 1,
-  "linkDistance": 212,
-  "scale": 0.33069522562651793,
+  "linkDistance": 180,
+  "scale": 0.23587679004578724,
   "close": false
 }

@@ -28,18 +28,28 @@ status: em-dia
 ## 🗓️ Registro Semanal de Presença (Agosto/2026)
 
 ### Semana 1 (03/08 a 07/08/2026) — Abertura do Semestre
-- [x] **03/08 (Seg)** — Compiladores (Aula Inaugural e Ementa) $ightarrow$ **Presente**
-- [x] **04/08 (Ter)** — Tópicos Especiais II (POO e Diagramas) $ightarrow$ **Presente**
-- [x] **05/08 (Qua)** — Estudos Avançados em CC (Aula Inaugural / Eletiva 8) $ightarrow$ **Presente**
-- [x] **06/08 (Qui)** — Técnicas Avançadas de Jogos Digitais $ightarrow$ **Presente**
-- [x] **07/08 (Sex)** — Interação Humano Computador (Atividade 1) $ightarrow$ **Presente**
+- [x] **03/08 (Seg)** — Compiladores (Aula Inaugural e Ementa) $
+ightarrow$ **Presente**
+- [x] **04/08 (Ter)** — Tópicos Especiais II (POO e Diagramas) $
+ightarrow$ **Presente**
+- [x] **05/08 (Qua)** — Estudos Avançados em CC (Aula Inaugural / Eletiva 8) $
+ightarrow$ **Presente**
+- [x] **06/08 (Qui)** — Técnicas Avançadas de Jogos Digitais $
+ightarrow$ **Presente**
+- [x] **07/08 (Sex)** — Interação Humano Computador (Atividade 1) $
+ightarrow$ **Presente**
 
 ### Semana 2 (10/08 a 14/08/2026) — Aulas Práticas & Laboratórios
-- [x] **10/08 (Seg)** — Compiladores $ightarrow$ **Presente**
-- [x] **11/08 (Ter)** — Tópicos Especiais II (Atividade 2 - Classes Abstratas) $ightarrow$ **Presente**
-- [x] **12/08 (Qua)** — Estudos Avançados em CC (Aula 2 - Switching Avançado) $ightarrow$ **Presente**
-- [x] **13/08 (Qui)** — Técnicas Avançadas de Jogos Digitais $ightarrow$ **Presente**
-- [x] **14/08 (Sex)** — Interação Humano Computador $ightarrow$ **Presente**
+- [x] **10/08 (Seg)** — Compiladores $
+ightarrow$ **Presente**
+- [x] **11/08 (Ter)** — Tópicos Especiais II (Atividade 2 - Classes Abstratas) $
+ightarrow$ **Presente**
+- [x] **12/08 (Qua)** — Estudos Avançados em CC (Aula 2 - Switching Avançado) $
+ightarrow$ **Presente**
+- [x] **13/08 (Qui)** — Técnicas Avançadas de Jogos Digitais $
+ightarrow$ **Presente**
+- [x] **14/08 (Sex)** — Interação Humano Computador $
+ightarrow$ **Presente**
 
 ---
 
