@@ -12,7 +12,7 @@ tags:
 
 # 💻 Terminal Interativo: Cisco IOS (Catalyst 3560)
 
-> [!info] 🕹️ Console de Simulação Cisco IOS
+> [!info] 🕹️ Console de Simulação Cisco IOS (Executado Nativamente via DataviewJS)
 > - **Disciplina:** [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Estudos Avançados em Ciências da Computação|Estudos Avançados em Ciências da Computação]]
 > - **Laboratório:** [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Aulas/2026-08-12 - Resolução - Exercício Prático Aula 2 - TechSolutions|Resolução Exercício Aula 2 (TechSolutions)]]
 > - **Guia de Comandos:** [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Aulas/Guia Rápido - Comandos Cisco IOS Switching e LACP|Guia Rápido de Comandos Cisco IOS]]
@@ -20,9 +20,309 @@ tags:
 
 ---
 
-## 🖥️ Console Interativo
+```dataviewjs
+const container = dv.el("div", "", { cls: "cisco-term-wrapper" });
 
-<iframe src="data:text/html;charset=utf-8;base64,PCFET0NUWVBFIGh0bWw+CjxodG1sIGxhbmc9InB0LUJSIj4KPGhlYWQ+CiAgPG1ldGEgY2hhcnNldD0iVVRGLTgiPgogIDx0aXRsZT5DaXNjbyBJT1MgQ2F0YWx5c3QgMzU2MCBJbnRlcmFjdGl2ZSBUZXJtaW5hbDwvdGl0bGU+CiAgPHN0eWxlPgogICAgKiB7CiAgICAgIGJveC1zaXppbmc6IGJvcmRlci1ib3g7CiAgICAgIG1hcmdpbjogMDsKICAgICAgcGFkZGluZzogMDsKICAgIH0KICAgIGJvZHkgewogICAgICBiYWNrZ3JvdW5kLWNvbG9yOiAjMGIwZjE5OwogICAgICBjb2xvcjogI2UyZThmMDsKICAgICAgZm9udC1mYW1pbHk6ICdDb25zb2xhcycsICdNb25hY28nLCAnQ291cmllciBOZXcnLCBtb25vc3BhY2U7CiAgICAgIHBhZGRpbmc6IDEycHg7CiAgICAgIGhlaWdodDogMTAwdmg7CiAgICAgIGRpc3BsYXk6IGZsZXg7CiAgICAgIGZsZXgtZGlyZWN0aW9uOiBjb2x1bW47CiAgICB9CiAgICAudGVybWluYWwtY29udGFpbmVyIHsKICAgICAgYmFja2dyb3VuZDogIzBkMTExNzsKICAgICAgYm9yZGVyOiAxcHggc29saWQgIzMwMzYzZDsKICAgICAgYm9yZGVyLXJhZGl1czogOHB4OwogICAgICBkaXNwbGF5OiBmbGV4OwogICAgICBmbGV4LWRpcmVjdGlvbjogY29sdW1uOwogICAgICBmbGV4OiAxOwogICAgICBvdmVyZmxvdzogaGlkZGVuOwogICAgICBib3gtc2hhZG93OiAwIDhweCAyNHB4IHJnYmEoMCwwLDAsMC42KTsKICAgIH0KICAgIC50ZXJtaW5hbC1oZWFkZXIgewogICAgICBiYWNrZ3JvdW5kOiAjMTYxYjIyOwogICAgICBib3JkZXItYm90dG9tOiAxcHggc29saWQgIzMwMzYzZDsKICAgICAgcGFkZGluZzogMTBweCAxNHB4OwogICAgICBkaXNwbGF5OiBmbGV4OwogICAgICBqdXN0aWZ5LWNvbnRlbnQ6IHNwYWNlLWJldHdlZW47CiAgICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7CiAgICAgIGZsZXgtd3JhcDogd3JhcDsKICAgICAgZ2FwOiA4cHg7CiAgICB9CiAgICAudGVybWluYWwtdGl0bGUgewogICAgICBkaXNwbGF5OiBmbGV4OwogICAgICBhbGlnbi1pdGVtczogY2VudGVyOwogICAgICBnYXA6IDhweDsKICAgICAgZm9udC1zaXplOiAxM3B4OwogICAgICBmb250LXdlaWdodDogNjAwOwogICAgICBjb2xvcjogIzU2QjRFOTsKICAgIH0KICAgIC5zdGF0dXMtZG90IHsKICAgICAgd2lkdGg6IDEwcHg7CiAgICAgIGhlaWdodDogMTBweDsKICAgICAgYmFja2dyb3VuZC1jb2xvcjogIzAwZTY3NjsKICAgICAgYm9yZGVyLXJhZGl1czogNTAlOwogICAgICBib3gtc2hhZG93OiAwIDAgOHB4ICMwMGU2NzY7CiAgICB9CiAgICAuY29udHJvbHMgewogICAgICBkaXNwbGF5OiBmbGV4OwogICAgICBhbGlnbi1pdGVtczogY2VudGVyOwogICAgICBnYXA6IDhweDsKICAgIH0KICAgIHNlbGVjdCwgYnV0dG9uIHsKICAgICAgYmFja2dyb3VuZDogIzIxMjYyZDsKICAgICAgY29sb3I6ICNlMmU4ZjA7CiAgICAgIGJvcmRlcjogMXB4IHNvbGlkICMzMDM2M2Q7CiAgICAgIGJvcmRlci1yYWRpdXM6IDRweDsKICAgICAgcGFkZGluZzogNHB4IDEwcHg7CiAgICAgIGZvbnQtZmFtaWx5OiBpbmhlcml0OwogICAgICBmb250LXNpemU6IDEycHg7CiAgICAgIGN1cnNvcjogcG9pbnRlcjsKICAgICAgb3V0bGluZTogbm9uZTsKICAgICAgdHJhbnNpdGlvbjogYWxsIDAuMnMgZWFzZTsKICAgIH0KICAgIHNlbGVjdDpob3ZlciwgYnV0dG9uOmhvdmVyIHsKICAgICAgYmFja2dyb3VuZDogIzMwMzYzZDsKICAgICAgYm9yZGVyLWNvbG9yOiAjNTZCNEU5OwogICAgfQogICAgLnF1aWNrLWNoaXBzIHsKICAgICAgYmFja2dyb3VuZDogIzExMTgyNzsKICAgICAgYm9yZGVyLWJvdHRvbTogMXB4IHNvbGlkICMxZjI5Mzc7CiAgICAgIHBhZGRpbmc6IDhweCAxMnB4OwogICAgICBkaXNwbGF5OiBmbGV4OwogICAgICBnYXA6IDZweDsKICAgICAgZmxleC13cmFwOiB3cmFwOwogICAgICBhbGlnbi1pdGVtczogY2VudGVyOwogICAgfQogICAgLmNoaXBzLWxhYmVsIHsKICAgICAgZm9udC1zaXplOiAxMXB4OwogICAgICBjb2xvcjogIzk0YTNiODsKICAgICAgbWFyZ2luLXJpZ2h0OiA0cHg7CiAgICB9CiAgICAuY2hpcCB7CiAgICAgIGJhY2tncm91bmQ6ICMxZTI5M2I7CiAgICAgIGNvbG9yOiAjMzhiZGY4OwogICAgICBib3JkZXI6IDFweCBzb2xpZCAjMzM0MTU1OwogICAgICBib3JkZXItcmFkaXVzOiAxMnB4OwogICAgICBwYWRkaW5nOiAycHggMTBweDsKICAgICAgZm9udC1zaXplOiAxMXB4OwogICAgICBjdXJzb3I6IHBvaW50ZXI7CiAgICAgIHRyYW5zaXRpb246IGFsbCAwLjE1cyBlYXNlOwogICAgfQogICAgLmNoaXA6aG92ZXIgewogICAgICBiYWNrZ3JvdW5kOiAjMDI4NGM3OwogICAgICBjb2xvcjogI2ZmZmZmZjsKICAgICAgYm9yZGVyLWNvbG9yOiAjMzhiZGY4OwogICAgICB0cmFuc2Zvcm06IHRyYW5zbGF0ZVkoLTFweCk7CiAgICB9CiAgICAudGVybWluYWwtYm9keSB7CiAgICAgIGZsZXg6IDE7CiAgICAgIHBhZGRpbmc6IDE0cHg7CiAgICAgIG92ZXJmbG93LXk6IGF1dG87CiAgICAgIGZvbnQtc2l6ZTogMTNweDsKICAgICAgbGluZS1oZWlnaHQ6IDEuNDU7CiAgICAgIHdoaXRlLXNwYWNlOiBwcmUtd3JhcDsKICAgIH0KICAgIC5vdXRwdXQtbGluZSB7CiAgICAgIG1hcmdpbi1ib3R0b206IDZweDsKICAgIH0KICAgIC5wcm9tcHQtbGluZSB7CiAgICAgIGRpc3BsYXk6IGZsZXg7CiAgICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7CiAgICAgIHBhZGRpbmc6IDEwcHggMTRweDsKICAgICAgYmFja2dyb3VuZDogIzE2MWIyMjsKICAgICAgYm9yZGVyLXRvcDogMXB4IHNvbGlkICMzMDM2M2Q7CiAgICB9CiAgICAucHJvbXB0LWxhYmVsIHsKICAgICAgY29sb3I6ICMzOGJkZjg7CiAgICAgIGZvbnQtd2VpZ2h0OiBib2xkOwogICAgICBtYXJnaW4tcmlnaHQ6IDhweDsKICAgICAgdXNlci1zZWxlY3Q6IG5vbmU7CiAgICB9CiAgICAudGVybWluYWwtaW5wdXQgewogICAgICBmbGV4OiAxOwogICAgICBiYWNrZ3JvdW5kOiB0cmFuc3BhcmVudDsKICAgICAgYm9yZGVyOiBub25lOwogICAgICBvdXRsaW5lOiBub25lOwogICAgICBjb2xvcjogI2Y4ZmFmYzsKICAgICAgZm9udC1mYW1pbHk6IGluaGVyaXQ7CiAgICAgIGZvbnQtc2l6ZTogMTRweDsKICAgICAgZm9udC13ZWlnaHQ6IDUwMDsKICAgIH0KICAgIC5zdWNjZXNzLXRleHQgeyBjb2xvcjogIzRhZGU4MDsgZm9udC13ZWlnaHQ6IGJvbGQ7IH0KICAgIC5mYWlsLXRleHQgeyBjb2xvcjogI2Y4NzE3MTsgZm9udC13ZWlnaHQ6IGJvbGQ7IH0KICAgIC5oaWdobGlnaHQtdGV4dCB7IGNvbG9yOiAjZmJiZjI0OyB9CiAgPC9zdHlsZT4KPC9oZWFkPgo8Ym9keT4KCiAgPGRpdiBjbGFzcz0idGVybWluYWwtY29udGFpbmVyIj4KICAgIDwhLS0gSGVhZGVyIC0tPgogICAgPGRpdiBjbGFzcz0idGVybWluYWwtaGVhZGVyIj4KICAgICAgPGRpdiBjbGFzcz0idGVybWluYWwtdGl0bGUiPgogICAgICAgIDxkaXYgY2xhc3M9InN0YXR1cy1kb3QiPjwvZGl2PgogICAgICAgIDxzcGFuPkNJU0NPIENBVEFMWVNUIDM1NjAgSU9TIFNJTVVMQVRPUjwvc3Bhbj4KICAgICAgICA8c3BhbiBzdHlsZT0iY29sb3I6ICM2NDc0OGI7IGZvbnQtd2VpZ2h0OiBub3JtYWw7IGZvbnQtc2l6ZTogMTFweDsiPihMYWIgVGVjaFNvbHV0aW9ucyk8L3NwYW4+CiAgICAgIDwvZGl2PgogICAgICA8ZGl2IGNsYXNzPSJjb250cm9scyI+CiAgICAgICAgPGxhYmVsIHN0eWxlPSJmb250LXNpemU6IDEycHg7IGNvbG9yOiAjOTRhM2I4OyI+U3dpdGNoOjwvbGFiZWw+CiAgICAgICAgPHNlbGVjdCBpZD0iZGV2aWNlU2VsZWN0b3IiIG9uY2hhbmdlPSJzZXREZXZpY2UodGhpcy52YWx1ZSkiPgogICAgICAgICAgPG9wdGlvbiB2YWx1ZT0iU1ctQ09SRS0xIj5TVy1DT1JFLTEgKExBQ1AgQWN0aXZlKTwvb3B0aW9uPgogICAgICAgICAgPG9wdGlvbiB2YWx1ZT0iU1ctQ09SRS0yIj5TVy1DT1JFLTIgKExBQ1AgUGFzc2l2ZSk8L29wdGlvbj4KICAgICAgICAgIDxvcHRpb24gdmFsdWU9IlNXLUFDQ0VTUy0xIj5TVy1BQ0NFU1MtMSAoQWNlc3NvIFNldG9yIDEpPC9vcHRpb24+CiAgICAgICAgICA8b3B0aW9uIHZhbHVlPSJTVy1BQ0NFU1MtMiI+U1ctQUNDRVNTLTIgKEFjZXNzbyBTZXRvciAyKTwvb3B0aW9uPgogICAgICAgIDwvc2VsZWN0PgogICAgICAgIDxidXR0b24gb25jbGljaz0iY2xlYXJDb25zb2xlKCkiPkxpbXBhcjwvYnV0dG9uPgogICAgICA8L2Rpdj4KICAgIDwvZGl2PgoKICAgIDwhLS0gUXVpY2sgQWN0aW9uIENoaXBzIC0tPgogICAgPGRpdiBjbGFzcz0icXVpY2stY2hpcHMiPgogICAgICA8c3BhbiBjbGFzcz0iY2hpcHMtbGFiZWwiPkNvbWFuZG9zIFLDoXBpZG9zOjwvc3Bhbj4KICAgICAgPHNwYW4gY2xhc3M9ImNoaXAiIG9uY2xpY2s9InJ1blF1aWNrKCdzaG93IHZsYW4gYnJpZWYnKSI+c2hvdyB2bGFuIGJyaWVmPC9zcGFuPgogICAgICA8c3BhbiBjbGFzcz0iY2hpcCIgb25jbGljaz0icnVuUXVpY2soJ3Nob3cgZXRoZXJjaGFubmVsIHN1bW1hcnknKSI+c2hvdyBldGhlcmNoYW5uZWwgc3VtbWFyeTwvc3Bhbj4KICAgICAgPHNwYW4gY2xhc3M9ImNoaXAiIG9uY2xpY2s9InJ1blF1aWNrKCdzaG93IGludGVyZmFjZXMgdHJ1bmsnKSI+c2hvdyBpbnRlcmZhY2VzIHRydW5rPC9zcGFuPgogICAgICA8c3BhbiBjbGFzcz0iY2hpcCIgb25jbGljaz0icnVuUXVpY2soJ3Nob3cgbGFjcCBuZWlnaGJvcicpIj5zaG93IGxhY3AgbmVpZ2hib3I8L3NwYW4+CiAgICAgIDxzcGFuIGNsYXNzPSJjaGlwIiBvbmNsaWNrPSJydW5RdWljaygncGluZyAxOTIuMTY4LjEwLjEyJykiPnBpbmcgMTkyLjE2OC4xMC4xMiAoVkxBTiAxMCk8L3NwYW4+CiAgICAgIDxzcGFuIGNsYXNzPSJjaGlwIiBvbmNsaWNrPSJydW5RdWljaygncGluZyAxOTIuMTY4LjIwLjExJykiPnBpbmcgMTkyLjE2OC4yMC4xMSAoVkxBTiAyMCk8L3NwYW4+CiAgICAgIDxzcGFuIGNsYXNzPSJjaGlwIiBvbmNsaWNrPSJydW5RdWljaygnaGVscCcpIj5oZWxwPC9zcGFuPgogICAgPC9kaXY+CgogICAgPCEtLSBCb2R5IE91dHB1dCAtLT4KICAgIDxkaXYgY2xhc3M9InRlcm1pbmFsLWJvZHkiIGlkPSJjb25zb2xlT3V0cHV0Ij4KPHNwYW4gc3R5bGU9ImNvbG9yOiAjMzhiZGY4OyBmb250LXdlaWdodDogYm9sZDsiPkNpc2NvIElPUyBTb2Z0d2FyZSwgQzM1NjAgU29mdHdhcmUgKEMzNTYwLUFEVklQU0VSVklDRVNLOS1NKSwgVmVyc2lvbiAxMi4yKDM3KVNFMS48L3NwYW4+ClN3aXRjaCBkZSBDYW1hZGEgMi8zIGRhIFRlY2hTb2x1dGlvbnMgaW5pY2lhbGl6YWRvIGNvbSBzdWNlc3NvLgoKQ2xpcXVlIG5vcyBib3TDtWVzIGRlIDxzcGFuIGNsYXNzPSJoaWdobGlnaHQtdGV4dCI+Q29tYW5kb3MgUsOhcGlkb3M8L3NwYW4+IGFjaW1hIG91IGRpZ2l0ZSBjb21hbmRvcyBubyBwcm9tcHQgYWJhaXhvOgrigKIgRGlnaXRlIDxzcGFuIGNsYXNzPSJoaWdobGlnaHQtdGV4dCI+aGVscDwvc3Bhbj4gb3UgPHNwYW4gY2xhc3M9ImhpZ2hsaWdodC10ZXh0Ij4/PC9zcGFuPiBwYXJhIHZlciB0b2RvcyBvcyBjb21hbmRvcyBkaXNwb27DrXZlaXMuCuKAoiBEaWdpdGUgPHNwYW4gY2xhc3M9ImhpZ2hsaWdodC10ZXh0Ij5zaG93IHZsYW4gYnJpZWY8L3NwYW4+IHBhcmEgdmVyIGFzIFZMQU5zIGNvbmZpZ3VyYWRhcy4K4oCiIERpZ2l0ZSA8c3BhbiBjbGFzcz0iaGlnaGxpZ2h0LXRleHQiPnNob3cgZXRoZXJjaGFubmVsIHN1bW1hcnk8L3NwYW4+IHBhcmEgdmVyIG8gc3RhdHVzIGRvIExBQ1AgUG9ydC1DaGFubmVsIDEuCuKAoiBEaWdpdGUgPHNwYW4gY2xhc3M9ImhpZ2hsaWdodC10ZXh0Ij5waW5nIDE5Mi4xNjguMTAuMTI8L3NwYW4+IHBhcmEgdGVzdGFyIGNvbmVjdGl2aWRhZGUgTDIuCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQo8L2Rpdj4KCiAgICA8IS0tIElucHV0IFByb21wdCAtLT4KICAgIDxkaXYgY2xhc3M9InByb21wdC1saW5lIj4KICAgICAgPHNwYW4gY2xhc3M9InByb21wdC1sYWJlbCIgaWQ9InByb21wdExhYmVsIj5TVy1DT1JFLTEjPC9zcGFuPgogICAgICA8aW5wdXQgdHlwZT0idGV4dCIgaWQ9ImNvbW1hbmRJbnB1dCIgY2xhc3M9InRlcm1pbmFsLWlucHV0IiBwbGFjZWhvbGRlcj0iRGlnaXRlIHVtIGNvbWFuZG8gQ2lzY28gSU9TLi4uIiBhdXRvZm9jdXMgYXV0b2NvbXBsZXRlPSJvZmYiIHNwZWxsY2hlY2s9ImZhbHNlIiAvPgogICAgPC9kaXY+CiAgPC9kaXY+CgogIDxzY3JpcHQ+CiAgICBsZXQgY3VycmVudERldmljZSA9ICJTVy1DT1JFLTEiOwogICAgbGV0IGhpc3RvcnkgPSBbXTsKICAgIGxldCBoaXN0b3J5SW5kZXggPSAtMTsKCiAgICBjb25zdCBkYiA9IHsKICAgICAgIlNXLUNPUkUtMSI6IHsKICAgICAgICAic2hvdyB2bGFuIGJyaWVmIjogYFZMQU4gTmFtZSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgU3RhdHVzICAgIFBvcnRzCi0tLS0gLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0gLS0tLS0tLS0tIC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KMSAgICBkZWZhdWx0ICAgICAgICAgICAgICAgICAgICAgICAgICBhY3RpdmUgICAgRmEwLzIsIEZhMC8zLCBGYTAvNCwgRmEwLzUuLi4KMTAgICBBRE1JTklTVFJBVElWTyAgICAgICAgICAgICAgICAgICBhY3RpdmUgICAgCjIwICAgRklOQU5DRUlSTyAgICAgICAgICAgICAgICAgICAgICAgYWN0aXZlICAgIAozMCAgIFRJICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGFjdGl2ZSAgICAKNDAgICBWT1ogICAgICAgICAgICAgICAgICAgICAgICAgICAgICBhY3RpdmUgICAgCjk5ICAgTkFUSVZBICAgICAgICAgICAgICAgICAgICAgICAgICAgYWN0aXZlICAgIAoxMDAyIGZkZGktZGVmYXVsdCAgICAgICAgICAgICAgICAgICAgIGFjdC91bnN1cCAKMTAwMyB0b2tlbi1yaW5nLWRlZmF1bHQgICAgICAgICAgICAgICBhY3QvdW5zdXBgLAoKICAgICAgICAic2hvdyBldGhlcmNoYW5uZWwgc3VtbWFyeSI6IGBGbGFnczogIEQgLSBkb3duICAgICAgICBQIC0gaW4gcG9ydC1jaGFubmVsCiAgICAgICAgSSAtIHN0YW5kLWFsb25lIHMgLSBzdXNwZW5kZWQKICAgICAgICBIIC0gSG90LXN0YW5kYnkgKExBQ1Agb25seSkKICAgICAgICBSIC0gTGF5ZXIzICAgICAgUyAtIExheWVyMgogICAgICAgIFUgLSBpbiB1c2UgICAgICBmIC0gZmFpbGVkIHRvIGFsbG9jYXRlIGFnZ3JlZ2F0b3IKCkdyb3VwICBQb3J0LWNoYW5uZWwgIFByb3RvY29sICAgIFBvcnRzCi0tLS0tLSstLS0tLS0tLS0tLS0tKy0tLS0tLS0tLS0tKy0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCjEgICAgICBQbzEoU1UpICAgICAgICAgTEFDUCAgICAgIEdpMC8xKFApICAgIEdpMC8yKFApYCwKCiAgICAgICAgInNob3cgaW50ZXJmYWNlcyB0cnVuayI6IGBQb3J0ICAgICAgICBNb2RlICAgICAgICAgRW5jYXBzdWxhdGlvbiAgU3RhdHVzICAgICAgICBOYXRpdmUgdmxhbgpGYTAvMSAgICAgICBvbiAgICAgICAgICAgODAyLjFxICAgICAgICAgdHJ1bmtpbmcgICAgICA5OQpQbzEgICAgICAgICBvbiAgICAgICAgICAgODAyLjFxICAgICAgICAgdHJ1bmtpbmcgICAgICA5OQoKUG9ydCAgICAgICAgVmxhbnMgYWxsb3dlZCBvbiB0cnVuawpGYTAvMSAgICAgICAxMCwyMCwzMCw0MCw5OQpQbzEgICAgICAgICAxMCwyMCwzMCw0MCw5OQoKUG9ydCAgICAgICAgVmxhbnMgYWxsb3dlZCBhbmQgYWN0aXZlIGluIG1hbmFnZW1lbnQgZG9tYWluCkZhMC8xICAgICAgIDEwLDIwLDMwLDQwLDk5ClBvMSAgICAgICAgIDEwLDIwLDMwLDQwLDk5YCwKCiAgICAgICAgInNob3cgbGFjcCBuZWlnaGJvciI6IGBDaGFubmVsIGdyb3VwIDEgbmVpZ2hib3JzCgpQYXJ0bmVyJ3MgaW5mb3JtYXRpb246CgogICAgICAgICAgICAgICAgICBMQUNQIHBvcnQgICAgICAgICAgICAgICAgICAgICAgICBBZG1pbiAgT3BlciAgIFBvcnQgICAgUG9ydApQb3J0ICAgICAgRmxhZ3MgICBQcmlvcml0eSAgRGV2IElEICAgICAgICAgIEFnZSAgICBLZXkgICAgS2V5ICAgIE51bWJlciAgU3RhdGUKR2kwLzEgICAgIFNQICAgICAgMzI3NjggICAgIDAwMDEuNjQ5Mi4yQTAxICAxNHMgICAgMHgxICAgIDB4MSAgICAweDEgICAgIDB4M0MKR2kwLzIgICAgIFNQICAgICAgMzI3NjggICAgIDAwMDEuNjQ5Mi4yQTAxICAxNHMgICAgMHgxICAgIDB4MSAgICAweDIgICAgIDB4M0NgLAoKICAgICAgICAic2hvdyBpcCBpbnRlcmZhY2UgYnJpZWYiOiBgSW50ZXJmYWNlICAgICAgICAgICAgICBJUC1BZGRyZXNzICAgICAgT0s/IE1ldGhvZCBTdGF0dXMgICAgICAgICAgICAgICAgUHJvdG9jb2wKUG9ydC1jaGFubmVsIDEgICAgICAgICB1bmFzc2lnbmVkICAgICAgWUVTIG1hbnVhbCB1cCAgICAgICAgICAgICAgICAgICAgdXAKRmFzdEV0aGVybmV0MC8xICAgICAgICB1bmFzc2lnbmVkICAgICAgWUVTIG1hbnVhbCB1cCAgICAgICAgICAgICAgICAgICAgdXAKR2lnYWJpdEV0aGVybmV0MC8xICAgICB1bmFzc2lnbmVkICAgICAgWUVTIG1hbnVhbCB1cCAgICAgICAgICAgICAgICAgICAgdXAKR2lnYWJpdEV0aGVybmV0MC8yICAgICB1bmFzc2lnbmVkICAgICAgWUVTIG1hbnVhbCB1cCAgICAgICAgICAgICAgICAgICAgdXAKVmxhbjEgICAgICAgICAgICAgICAgICB1bmFzc2lnbmVkICAgICAgWUVTIG1hbnVhbCBhZG1pbmlzdHJhdGl2ZWx5IGRvd24gZG93bmAsCgogICAgICAgICJzaG93IG1hYyBhZGRyZXNzLXRhYmxlIjogYCAgICAgICAgICBNYWMgQWRkcmVzcyBUYWJsZQotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tClZsYW4gICAgTWFjIEFkZHJlc3MgICAgICAgVHlwZSAgICAgICAgUG9ydHMKLS0tLSAgICAtLS0tLS0tLS0tLSAgICAgICAtLS0tLS0tLSAgICAtLS0tLQogIDEwICAgIDAwMDEuNDIzYS4xMTAxICAgIERZTkFNSUMgICAgIEZhMC8xCiAgMTAgICAgMDAwMS40MjNhLjExMDIgICAgRFlOQU1JQyAgICAgUG8xCiAgMjAgICAgMDAwMS40MjNhLjIyMDEgICAgRFlOQU1JQyAgICAgRmEwLzEKICAzMCAgICAwMDAxLjQyM2EuMzMwMSAgICBEWU5BTUlDICAgICBGYTAvMWAKICAgICAgfSwKCiAgICAgICJTVy1DT1JFLTIiOiB7CiAgICAgICAgInNob3cgdmxhbiBicmllZiI6IGBWTEFOIE5hbWUgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFN0YXR1cyAgICBQb3J0cwotLS0tIC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tIC0tLS0tLS0tLSAtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCjEgICAgZGVmYXVsdCAgICAgICAgICAgICAgICAgICAgICAgICAgYWN0aXZlICAgIEZhMC8yLCBGYTAvMywgRmEwLzQuLi4KMTAgICBBRE1JTklTVFJBVElWTyAgICAgICAgICAgICAgICAgICBhY3RpdmUgICAgCjIwICAgRklOQU5DRUlSTyAgICAgICAgICAgICAgICAgICAgICAgYWN0aXZlICAgIAozMCAgIFRJICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGFjdGl2ZSAgICAKNDAgICBWT1ogICAgICAgICAgICAgICAgICAgICAgICAgICAgICBhY3RpdmUgICAgCjk5ICAgTkFUSVZBICAgICAgICAgICAgICAgICAgICAgICAgICAgYWN0aXZlYCwKCiAgICAgICAgInNob3cgZXRoZXJjaGFubmVsIHN1bW1hcnkiOiBgRmxhZ3M6ICBEIC0gZG93biAgICAgICAgUCAtIGluIHBvcnQtY2hhbm5lbAogICAgICAgIFMgLSBMYXllcjIgICAgICBVIC0gaW4gdXNlCgpHcm91cCAgUG9ydC1jaGFubmVsICBQcm90b2NvbCAgICBQb3J0cwotLS0tLS0rLS0tLS0tLS0tLS0tLSstLS0tLS0tLS0tLSstLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQoxICAgICAgUG8xKFNVKSAgICAgICAgIExBQ1AgICAgICBHaTAvMShQKSAgICBHaTAvMihQKWAsCgogICAgICAgICJzaG93IGludGVyZmFjZXMgdHJ1bmsiOiBgUG9ydCAgICAgICAgTW9kZSAgICAgICAgIEVuY2Fwc3VsYXRpb24gIFN0YXR1cyAgICAgICAgTmF0aXZlIHZsYW4KRmEwLzEgICAgICAgb24gICAgICAgICAgIDgwMi4xcSAgICAgICAgIHRydW5raW5nICAgICAgOTkKUG8xICAgICAgICAgb24gICAgICAgICAgIDgwMi4xcSAgICAgICAgIHRydW5raW5nICAgICAgOTkKClBvcnQgICAgICAgIFZsYW5zIGFsbG93ZWQgb24gdHJ1bmsKRmEwLzEgICAgICAgMTAsMjAsMzAsNDAsOTkKUG8xICAgICAgICAgMTAsMjAsMzAsNDAsOTlgCiAgICAgIH0sCgogICAgICAiU1ctQUNDRVNTLTEiOiB7CiAgICAgICAgInNob3cgdmxhbiBicmllZiI6IGBWTEFOIE5hbWUgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFN0YXR1cyAgICBQb3J0cwotLS0tIC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tIC0tLS0tLS0tLSAtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCjEgICAgZGVmYXVsdCAgICAgICAgICAgICAgICAgICAgICAgICAgYWN0aXZlICAgIEZhMC8xLCBGYTAvNiwgRmEwLzcuLi4KMTAgICBBRE1JTklTVFJBVElWTyAgICAgICAgICAgICAgICAgICBhY3RpdmUgICAgRmEwLzIsIEZhMC81CjIwICAgRklOQU5DRUlSTyAgICAgICAgICAgICAgICAgICAgICAgYWN0aXZlICAgIEZhMC8zCjMwICAgVEkgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgYWN0aXZlICAgIEZhMC80CjQwICAgVk9aICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgYWN0aXZlICAgIEZhMC81ICh2b2ljZSkKOTkgICBOQVRJVkEgICAgICAgICAgICAgICAgICAgICAgICAgICBhY3RpdmVgLAoKICAgICAgICAic2hvdyBpbnRlcmZhY2VzIHRydW5rIjogYFBvcnQgICAgICAgIE1vZGUgICAgICAgICBFbmNhcHN1bGF0aW9uICBTdGF0dXMgICAgICAgIE5hdGl2ZSB2bGFuCkdpMC8xICAgICAgIG9uICAgICAgICAgICA4MDIuMXEgICAgICAgICB0cnVua2luZyAgICAgIDk5CgpQb3J0ICAgICAgICBWbGFucyBhbGxvd2VkIG9uIHRydW5rCkdpMC8xICAgICAgIDEwLDIwLDMwLDQwLDk5YCwKCiAgICAgICAgInNob3cgaW50ZXJmYWNlcyBmYXN0ZXRoZXJuZXQgMC81IHN3aXRjaHBvcnQiOiBgTmFtZTogRmEwLzUKU3dpdGNocG9ydDogRW5hYmxlZApBZG1pbmlzdHJhdGl2ZSBNb2RlOiBzdGF0aWMgYWNjZXNzCk9wZXJhdGlvbmFsIE1vZGU6IHN0YXRpYyBhY2Nlc3MKQWNjZXNzIE1vZGUgVkxBTjogMTAgKEFETUlOSVNUUkFUSVZPKQpWb2ljZSBWTEFOOiA0MCAoVk9aKQpPcGVyYXRpb25hbCBWb2ljZSBWTEFOOiA0MGAKICAgICAgfSwKCiAgICAgICJTVy1BQ0NFU1MtMiI6IHsKICAgICAgICAic2hvdyB2bGFuIGJyaWVmIjogYFZMQU4gTmFtZSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgU3RhdHVzICAgIFBvcnRzCi0tLS0gLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0gLS0tLS0tLS0tIC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KMSAgICBkZWZhdWx0ICAgICAgICAgICAgICAgICAgICAgICAgICBhY3RpdmUgICAgRmEwLzEsIEZhMC82LCBGYTAvNy4uLgoxMCAgIEFETUlOSVNUUkFUSVZPICAgICAgICAgICAgICAgICAgIGFjdGl2ZSAgICBGYTAvMiwgRmEwLzUKMjAgICBGSU5BTkNFSVJPICAgICAgICAgICAgICAgICAgICAgICBhY3RpdmUgICAgRmEwLzMKMzAgICBUSSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBhY3RpdmUgICAgRmEwLzQKNDAgICBWT1ogICAgICAgICAgICAgICAgICAgICAgICAgICAgICBhY3RpdmUgICAgRmEwLzUgKHZvaWNlKQo5OSAgIE5BVElWQSAgICAgICAgICAgICAgICAgICAgICAgICAgIGFjdGl2ZWAsCgogICAgICAgICJzaG93IGludGVyZmFjZXMgdHJ1bmsiOiBgUG9ydCAgICAgICAgTW9kZSAgICAgICAgIEVuY2Fwc3VsYXRpb24gIFN0YXR1cyAgICAgICAgTmF0aXZlIHZsYW4KR2kwLzEgICAgICAgb24gICAgICAgICAgIDgwMi4xcSAgICAgICAgIHRydW5raW5nICAgICAgOTkKClBvcnQgICAgICAgIFZsYW5zIGFsbG93ZWQgb24gdHJ1bmsKR2kwLzEgICAgICAgMTAsMjAsMzAsNDAsOTlgCiAgICAgIH0KICAgIH07CgogICAgY29uc3QgaW5wdXQgPSBkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgiY29tbWFuZElucHV0Iik7CiAgICBjb25zdCBvdXRwdXQgPSBkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgiY29uc29sZU91dHB1dCIpOwogICAgY29uc3QgcHJvbXB0TGFiZWwgPSBkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgicHJvbXB0TGFiZWwiKTsKICAgIGNvbnN0IGRldlNlbGVjdG9yID0gZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoImRldmljZVNlbGVjdG9yIik7CgogICAgZnVuY3Rpb24gc2V0RGV2aWNlKGRldikgewogICAgICBjdXJyZW50RGV2aWNlID0gZGV2OwogICAgICBwcm9tcHRMYWJlbC5pbm5lclRleHQgPSBkZXYgKyAiIyI7CiAgICAgIGRldlNlbGVjdG9yLnZhbHVlID0gZGV2OwogICAgICBwcmludExpbmUoIlxcbltDb250ZXh0byBhbHRlcmFkbyBwYXJhICIgKyBkZXYgKyAiXSIpOwogICAgfQoKICAgIGZ1bmN0aW9uIGNsZWFyQ29uc29sZSgpIHsKICAgICAgb3V0cHV0LmlubmVySFRNTCA9ICIiOwogICAgfQoKICAgIGZ1bmN0aW9uIHByaW50TGluZSh0ZXh0KSB7CiAgICAgIG91dHB1dC5pbm5lckhUTUwgKz0gdGV4dCArICJcXG4iOwogICAgICBvdXRwdXQuc2Nyb2xsVG9wID0gb3V0cHV0LnNjcm9sbEhlaWdodDsKICAgIH0KCiAgICBmdW5jdGlvbiBydW5RdWljayhjbWQpIHsKICAgICAgaW5wdXQudmFsdWUgPSBjbWQ7CiAgICAgIHByb2Nlc3NDb21tYW5kKGNtZCk7CiAgICAgIGlucHV0LnZhbHVlID0gIiI7CiAgICB9CgogICAgZnVuY3Rpb24gcHJvY2Vzc0NvbW1hbmQocmF3Q21kKSB7CiAgICAgIGNvbnN0IGNtZCA9IHJhd0NtZC50cmltKCkudG9Mb3dlckNhc2UoKTsKICAgICAgaWYgKCFjbWQpIHJldHVybjsKCiAgICAgIGhpc3RvcnkucHVzaChyYXdDbWQudHJpbSgpKTsKICAgICAgaGlzdG9yeUluZGV4ID0gaGlzdG9yeS5sZW5ndGg7CgogICAgICBwcmludExpbmUoIjxzcGFuIHN0eWxlPSdjb2xvcjojMzhiZGY4OyBmb250LXdlaWdodDpib2xkOyc+IiArIGN1cnJlbnREZXZpY2UgKyAiIzwvc3Bhbj4gIiArIHJhd0NtZC50cmltKCkpOwoKICAgICAgaWYgKGNtZCA9PT0gImhlbHAiIHx8IGNtZCA9PT0gIj8iKSB7CiAgICAgICAgcHJpbnRMaW5lKGBDb21hbmRvcyBkaXNwb27DrXZlaXM6CiAg4oCiIHNob3cgdmxhbiBicmllZiAoZXhpYmUgYSB0YWJlbGEgZGUgVkxBTnMpCiAg4oCiIHNob3cgZXRoZXJjaGFubmVsIHN1bW1hcnkgKHN0YXR1cyBkbyBidW5kbGUgTEFDUCkKICDigKIgc2hvdyBpbnRlcmZhY2VzIHRydW5rICh0cm9uY29zIDgwMi4xUSBlIG5hdGl2ZSB2bGFuKQogIOKAoiBzaG93IGxhY3AgbmVpZ2hib3IgKHZpemluaG8gTEFDUCkKICDigKIgc2hvdyBpcCBpbnRlcmZhY2UgYnJpZWYgKHJlc3VtbyBkYXMgcG9ydGFzIElQKQogIOKAoiBzaG93IG1hYyBhZGRyZXNzLXRhYmxlICh0YWJlbGEgTUFDIGRpbsOibWljYSkKICDigKIgc2hvdyBydW5uaW5nLWNvbmZpZyAvIHNob3cgcnVuCiAg4oCiIHBpbmcgMTkyLjE2OC4xMC4xMiAodGVzdGUgbmEgbWVzbWEgVkxBTiAxMCkKICDigKIgcGluZyAxOTIuMTY4LjIwLjExICh0ZXN0ZSBpbnRlci1WTEFOKQogIOKAoiBjbGVhciAobGltcGFyIGNvbnNvbGUpCiAg4oCiIGVuYWJsZSAvIGNvbmZpZ3VyZSB0ZXJtaW5hbGApOwogICAgICAgIHJldHVybjsKICAgICAgfQoKICAgICAgaWYgKGNtZCA9PT0gImNsZWFyIikgewogICAgICAgIGNsZWFyQ29uc29sZSgpOwogICAgICAgIHJldHVybjsKICAgICAgfQoKICAgICAgaWYgKGNtZCA9PT0gImVuYWJsZSIgfHwgY21kID09PSAiZW4iKSB7CiAgICAgICAgcHJpbnRMaW5lKGN1cnJlbnREZXZpY2UgKyAiIyAoTW9kbyBwcml2aWxlZ2lhZG8gYXRpdm8pIik7CiAgICAgICAgcmV0dXJuOwogICAgICB9CgogICAgICBpZiAoY21kID09PSAiY29uZiB0IiB8fCBjbWQgPT09ICJjb25maWd1cmUgdGVybWluYWwiKSB7CiAgICAgICAgcHJpbnRMaW5lKCJFbnRlciBjb25maWd1cmF0aW9uIGNvbW1hbmRzLCBvbmUgcGVyIGxpbmUuIEVuZCB3aXRoIENOVEwvWi5cXG4iICsgY3VycmVudERldmljZSArICIoY29uZmlnKSMgZXhpdFxcbiIgKyBjdXJyZW50RGV2aWNlICsgIiMiKTsKICAgICAgICByZXR1cm47CiAgICAgIH0KCiAgICAgIGlmIChjbWQuc3RhcnRzV2l0aCgicGluZyIpKSB7CiAgICAgICAgY29uc3QgdGFyZ2V0ID0gY21kLnNwbGl0KCIgIilbMV0gfHwgIiI7CiAgICAgICAgaWYgKHRhcmdldCA9PT0gIjE5Mi4xNjguMTAuMTIiIHx8IHRhcmdldCA9PT0gIjE5Mi4xNjguMjAuMTIiIHx8IHRhcmdldCA9PT0gIjE5Mi4xNjguMzAuMTIiKSB7CiAgICAgICAgICBwcmludExpbmUoYFR5cGUgZXNjYXBlIHNlcXVlbmNlIHRvIGFib3J0LgpTZW5kaW5nIDUsIDEwMC1ieXRlIElDTVAgRWNob3MgdG8gYCArIHRhcmdldCArIGAsIHRpbWVvdXQgaXMgMiBzZWNvbmRzOgohISEhIQo8c3BhbiBjbGFzcz0ic3VjY2Vzcy10ZXh0Ij5TdWNjZXNzIHJhdGUgaXMgMTAwIHBlcmNlbnQgKDUvNSksIHJvdW5kLXRyaXAgbWluL2F2Zy9tYXggPSAxLzIvNCBtczwvc3Bhbj5gKTsKICAgICAgICB9IGVsc2UgaWYgKHRhcmdldCA9PT0gIjE5Mi4xNjguMjAuMTEiIHx8IHRhcmdldCA9PT0gIjE5Mi4xNjguMzAuMTEiIHx8IHRhcmdldCA9PT0gIjE5Mi4xNjguMTAuMTEiKSB7CiAgICAgICAgICBwcmludExpbmUoYFR5cGUgZXNjYXBlIHNlcXVlbmNlIHRvIGFib3J0LgpTZW5kaW5nIDUsIDEwMC1ieXRlIElDTVAgRWNob3MgdG8gYCArIHRhcmdldCArIGAsIHRpbWVvdXQgaXMgMiBzZWNvbmRzOgouLi4uLgo8c3BhbiBjbGFzcz0iZmFpbC10ZXh0Ij5TdWNjZXNzIHJhdGUgaXMgMCBwZXJjZW50ICgwLzUpIFtEZXN0aW5vIGVtIFZMQU4gZGlzdGludGEgLSBSb3RlYW1lbnRvIEludGVyLVZMQU4gZGVzYWJpbGl0YWRvXTwvc3Bhbj5gKTsKICAgICAgICB9IGVsc2UgewogICAgICAgICAgcHJpbnRMaW5lKGBTZW5kaW5nIDUsIDEwMC1ieXRlIElDTVAgRWNob3MgdG8gYCArIHRhcmdldCArIGAuLi4KLi4uLi4KPHNwYW4gY2xhc3M9ImZhaWwtdGV4dCI+U3VjY2VzcyByYXRlIGlzIDAgcGVyY2VudCAoMC81KTwvc3Bhbj5gKTsKICAgICAgICB9CiAgICAgICAgcmV0dXJuOwogICAgICB9CgogICAgICBjb25zdCBkZXZEYiA9IGRiW2N1cnJlbnREZXZpY2VdIHx8IHt9OwogICAgICBpZiAoZGV2RGJbY21kXSkgewogICAgICAgIHByaW50TGluZShkZXZEYltjbWRdKTsKICAgICAgfSBlbHNlIGlmIChjbWQgPT09ICJzaG93IHJ1biIgfHwgY21kID09PSAic2hvdyBydW5uaW5nLWNvbmZpZyIpIHsKICAgICAgICBwcmludExpbmUoYEJ1aWxkaW5nIGNvbmZpZ3VyYXRpb24uLi4KIQpob3N0bmFtZSBgICsgY3VycmVudERldmljZSArIGAKIQp2bGFuIDEwCiBuYW1lIEFETUlOSVNUUkFUSVZPCnZsYW4gMjAKIG5hbWUgRklOQU5DRUlSTwp2bGFuIDMwCiBuYW1lIFRJCnZsYW4gNDAKIG5hbWUgVk9aCnZsYW4gOTkKIG5hbWUgTkFUSVZBCiEKaW50ZXJmYWNlIFBvcnQtY2hhbm5lbDEKIHN3aXRjaHBvcnQgdHJ1bmsgZW5jYXBzdWxhdGlvbiBkb3QxcQogc3dpdGNocG9ydCBtb2RlIHRydW5rCiBzd2l0Y2hwb3J0IHRydW5rIG5hdGl2ZSB2bGFuIDk5CiBzd2l0Y2hwb3J0IHRydW5rIGFsbG93ZWQgdmxhbiAxMCwyMCwzMCw0MCw5OQohCmVuZGApOwogICAgICB9IGVsc2UgewogICAgICAgIHByaW50TGluZSgiJSBJbnZhbGlkIGlucHV0IGRldGVjdGVkIGF0ICdeJyBtYXJrZXIuXFxuKERpZ2l0ZSAnaGVscCcgcGFyYSB2ZXIgb3MgY29tYW5kb3MgaW1wbGVtZW50YWRvcykiKTsKICAgICAgfQogICAgfQoKICAgIGlucHV0LmFkZEV2ZW50TGlzdGVuZXIoImtleWRvd24iLCBmdW5jdGlvbihlKSB7CiAgICAgIGlmIChlLmtleSA9PT0gIkVudGVyIikgewogICAgICAgIHByb2Nlc3NDb21tYW5kKGlucHV0LnZhbHVlKTsKICAgICAgICBpbnB1dC52YWx1ZSA9ICIiOwogICAgICB9IGVsc2UgaWYgKGUua2V5ID09PSAiQXJyb3dVcCIpIHsKICAgICAgICBpZiAoaGlzdG9yeUluZGV4ID4gMCkgewogICAgICAgICAgaGlzdG9yeUluZGV4LS07CiAgICAgICAgICBpbnB1dC52YWx1ZSA9IGhpc3RvcnlbaGlzdG9yeUluZGV4XTsKICAgICAgICB9CiAgICAgIH0gZWxzZSBpZiAoZS5rZXkgPT09ICJBcnJvd0Rvd24iKSB7CiAgICAgICAgaWYgKGhpc3RvcnlJbmRleCA8IGhpc3RvcnkubGVuZ3RoIC0gMSkgewogICAgICAgICAgaGlzdG9yeUluZGV4Kys7CiAgICAgICAgICBpbnB1dC52YWx1ZSA9IGhpc3RvcnlbaGlzdG9yeUluZGV4XTsKICAgICAgICB9IGVsc2UgewogICAgICAgICAgaGlzdG9yeUluZGV4ID0gaGlzdG9yeS5sZW5ndGg7CiAgICAgICAgICBpbnB1dC52YWx1ZSA9ICIiOwogICAgICAgIH0KICAgICAgfQogICAgfSk7CiAgPC9zY3JpcHQ+CjwvYm9keT4KPC9odG1sPgo=" width="100%" height="600px" style="border: 2px solid #30363d; border-radius: 8px; background-color: #0d1117;" frameborder="0"></iframe>
+container.innerHTML = `
+<div style="background: #0d1117; border: 2px solid #30363d; border-radius: 8px; font-family: 'Consolas', 'Courier New', monospace; color: #c9d1d9; box-shadow: 0 4px 16px rgba(0,0,0,0.6); overflow: hidden; margin-bottom: 16px;">
+
+  <!-- Header -->
+  <div style="background: #161b22; border-bottom: 1px solid #30363d; padding: 10px 14px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+    <div style="display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: bold; color: #56B4E9;">
+      <span style="width: 10px; height: 10px; background: #00e676; border-radius: 50%; display: inline-block; box-shadow: 0 0 8px #00e676;"></span>
+      <span>CISCO CATALYST 3560 CONSOLE (TechSolutions)</span>
+    </div>
+    <div style="display: flex; align-items: center; gap: 8px;">
+      <label style="color: #8b949e; font-size: 12px;">Switch:</label>
+      <select id="dvTermDevSel" style="background: #21262d; color: #56B4E9; border: 1px solid #30363d; border-radius: 4px; padding: 3px 8px; font-family: inherit; font-size: 12px; cursor: pointer;">
+        <option value="SW-CORE-1">SW-CORE-1 (LACP Active)</option>
+        <option value="SW-CORE-2">SW-CORE-2 (LACP Passive)</option>
+        <option value="SW-ACCESS-1">SW-ACCESS-1 (Acesso Setor 1)</option>
+        <option value="SW-ACCESS-2">SW-ACCESS-2 (Acesso Setor 2)</option>
+      </select>
+      <button id="dvTermClearBtn" style="background: #21262d; color: #c9d1d9; border: 1px solid #30363d; border-radius: 4px; padding: 3px 10px; font-family: inherit; font-size: 12px; cursor: pointer;">Limpar</button>
+    </div>
+  </div>
+
+  <!-- Quick Action Chips -->
+  <div style="background: #111827; border-bottom: 1px solid #1f2937; padding: 8px 12px; display: flex; gap: 6px; flex-wrap: wrap; align-items: center;">
+    <span style="font-size: 11px; color: #94a3b8; margin-right: 4px;">Comandos Rápidos:</span>
+    <button class="dv-chip" data-cmd="show vlan brief" style="background: #1e293b; color: #38bdf8; border: 1px solid #334155; border-radius: 12px; padding: 3px 10px; font-size: 11px; cursor: pointer;">show vlan brief</button>
+    <button class="dv-chip" data-cmd="show etherchannel summary" style="background: #1e293b; color: #38bdf8; border: 1px solid #334155; border-radius: 12px; padding: 3px 10px; font-size: 11px; cursor: pointer;">show etherchannel summary</button>
+    <button class="dv-chip" data-cmd="show interfaces trunk" style="background: #1e293b; color: #38bdf8; border: 1px solid #334155; border-radius: 12px; padding: 3px 10px; font-size: 11px; cursor: pointer;">show interfaces trunk</button>
+    <button class="dv-chip" data-cmd="show lacp neighbor" style="background: #1e293b; color: #38bdf8; border: 1px solid #334155; border-radius: 12px; padding: 3px 10px; font-size: 11px; cursor: pointer;">show lacp neighbor</button>
+    <button class="dv-chip" data-cmd="ping 192.168.10.12" style="background: #1e293b; color: #4ade80; border: 1px solid #334155; border-radius: 12px; padding: 3px 10px; font-size: 11px; cursor: pointer;">ping 192.168.10.12</button>
+    <button class="dv-chip" data-cmd="ping 192.168.20.11" style="background: #1e293b; color: #f87171; border: 1px solid #334155; border-radius: 12px; padding: 3px 10px; font-size: 11px; cursor: pointer;">ping 192.168.20.11</button>
+    <button class="dv-chip" data-cmd="help" style="background: #1e293b; color: #fbbf24; border: 1px solid #334155; border-radius: 12px; padding: 3px 10px; font-size: 11px; cursor: pointer;">help</button>
+  </div>
+
+  <!-- Screen Output -->
+  <div id="dvTermScreen" style="background: #090d13; height: 350px; overflow-y: auto; padding: 14px; font-size: 13px; line-height: 1.45; white-space: pre-wrap; color: #e6edf3;">
+<span style="color: #38bdf8; font-weight: bold;">Cisco IOS Software, C3560 Software (C3560-ADVIPSERVICESK9-M), Version 12.2(37)SE1.</span>
+Console do Switch Inicializado.
+
+Clique nos botões de <span style="color: #fbbf24;">Comandos Rápidos</span> acima ou digite no prompt abaixo:
+• <span style="color: #fbbf24;">show vlan brief</span> &rarr; Tabela de VLANs
+• <span style="color: #fbbf24;">show etherchannel summary</span> &rarr; Status LACP Port-Channel 1
+• <span style="color: #fbbf24;">ping 192.168.10.12</span> &rarr; Teste na mesma VLAN
+• <span style="color: #fbbf24;">ping 192.168.20.11</span> &rarr; Teste inter-VLAN
+---------------------------------------------------------------------------------
+</div>
+
+  <!-- Prompt Line -->
+  <div style="display: flex; align-items: center; padding: 10px 14px; background: #161b22; border-top: 1px solid #30363d;">
+    <span id="dvTermPrompt" style="color: #38bdf8; font-weight: bold; margin-right: 8px; user-select: none;">SW-CORE-1#</span>
+    <input type="text" id="dvTermInput" style="flex: 1; background: transparent; border: none; outline: none; color: #f8fafc; font-family: 'Consolas', monospace; font-size: 14px;" placeholder="Digite um comando Cisco IOS..." autocomplete="off" spellcheck="false" />
+  </div>
+</div>
+`;
+
+// Logic for the interactive terminal
+let currentDev = "SW-CORE-1";
+let hist = [];
+let hIdx = -1;
+
+const database = {
+  "SW-CORE-1": {
+    "show vlan brief": `VLAN Name                             Status    Ports
+---- -------------------------------- --------- -------------------------------
+1    default                          active    Fa0/2, Fa0/3, Fa0/4, Fa0/5...
+10   ADMINISTRATIVO                   active    
+20   FINANCEIRO                       active    
+30   TI                               active    
+40   VOZ                              active    
+99   NATIVA                           active    
+1002 fddi-default                     act/unsup 
+1003 token-ring-default               act/unsup`,
+
+    "show etherchannel summary": `Flags:  D - down        P - in port-channel
+        I - stand-alone s - suspended
+        H - Hot-standby (LACP only)
+        R - Layer3      S - Layer2
+        U - in use      f - failed to allocate aggregator
+
+Group  Port-channel  Protocol    Ports
+------+-------------+-----------+-----------------------------------------------
+1      Po1(SU)         LACP      Gi0/1(P)    Gi0/2(P)`,
+
+    "show interfaces trunk": `Port        Mode         Encapsulation  Status        Native vlan
+Fa0/1       on           802.1q         trunking      99
+Po1         on           802.1q         trunking      99
+
+Port        Vlans allowed on trunk
+Fa0/1       10,20,30,40,99
+Po1         10,20,30,40,99
+
+Port        Vlans allowed and active in management domain
+Fa0/1       10,20,30,40,99
+Po1         10,20,30,40,99`,
+
+    "show lacp neighbor": `Channel group 1 neighbors
+
+Partner's information:
+
+                  LACP port                        Admin  Oper   Port    Port
+Port      Flags   Priority  Dev ID          Age    Key    Key    Number  State
+Gi0/1     SP      32768     0001.6492.2A01  14s    0x1    0x1    0x1     0x3C
+Gi0/2     SP      32768     0001.6492.2A01  14s    0x1    0x1    0x2     0x3C`,
+
+    "show ip interface brief": `Interface              IP-Address      OK? Method Status                Protocol
+Port-channel 1         unassigned      YES manual up                    up
+FastEthernet0/1        unassigned      YES manual up                    up
+GigabitEthernet0/1     unassigned      YES manual up                    up
+GigabitEthernet0/2     unassigned      YES manual up                    up
+Vlan1                  unassigned      YES manual administratively down down`,
+
+    "show mac address-table": `          Mac Address Table
+-------------------------------------------
+Vlan    Mac Address       Type        Ports
+----    -----------       --------    -----
+  10    0001.423a.1101    DYNAMIC     Fa0/1
+  10    0001.423a.1102    DYNAMIC     Po1
+  20    0001.423a.2201    DYNAMIC     Fa0/1
+  30    0001.423a.3301    DYNAMIC     Fa0/1`
+  },
+
+  "SW-CORE-2": {
+    "show vlan brief": `VLAN Name                             Status    Ports
+---- -------------------------------- --------- -------------------------------
+1    default                          active    Fa0/2, Fa0/3, Fa0/4...
+10   ADMINISTRATIVO                   active    
+20   FINANCEIRO                       active    
+30   TI                               active    
+40   VOZ                              active    
+99   NATIVA                           active`,
+
+    "show etherchannel summary": `Flags:  D - down        P - in port-channel
+        S - Layer2      U - in use
+
+Group  Port-channel  Protocol    Ports
+------+-------------+-----------+-----------------------------------------------
+1      Po1(SU)         LACP      Gi0/1(P)    Gi0/2(P)`,
+
+    "show interfaces trunk": `Port        Mode         Encapsulation  Status        Native vlan
+Fa0/1       on           802.1q         trunking      99
+Po1         on           802.1q         trunking      99
+
+Port        Vlans allowed on trunk
+Fa0/1       10,20,30,40,99
+Po1         10,20,30,40,99`
+  },
+
+  "SW-ACCESS-1": {
+    "show vlan brief": `VLAN Name                             Status    Ports
+---- -------------------------------- --------- -------------------------------
+1    default                          active    Fa0/1, Fa0/6, Fa0/7...
+10   ADMINISTRATIVO                   active    Fa0/2, Fa0/5
+20   FINANCEIRO                       active    Fa0/3
+30   TI                               active    Fa0/4
+40   VOZ                              active    Fa0/5 (voice)
+99   NATIVA                           active`,
+
+    "show interfaces trunk": `Port        Mode         Encapsulation  Status        Native vlan
+Gi0/1       on           802.1q         trunking      99
+
+Port        Vlans allowed on trunk
+Gi0/1       10,20,30,40,99`
+  },
+
+  "SW-ACCESS-2": {
+    "show vlan brief": `VLAN Name                             Status    Ports
+---- -------------------------------- --------- -------------------------------
+1    default                          active    Fa0/1, Fa0/6, Fa0/7...
+10   ADMINISTRATIVO                   active    Fa0/2, Fa0/5
+20   FINANCEIRO                       active    Fa0/3
+30   TI                               active    Fa0/4
+40   VOZ                              active    Fa0/5 (voice)
+99   NATIVA                           active`,
+
+    "show interfaces trunk": `Port        Mode         Encapsulation  Status        Native vlan
+Gi0/1       on           802.1q         trunking      99
+
+Port        Vlans allowed on trunk
+Gi0/1       10,20,30,40,99`
+  }
+};
+
+const scr = container.querySelector("#dvTermScreen");
+const inp = container.querySelector("#dvTermInput");
+const pmt = container.querySelector("#dvTermPrompt");
+const sel = container.querySelector("#dvTermDevSel");
+const clr = container.querySelector("#dvTermClearBtn");
+const chips = container.querySelectorAll(".dv-chip");
+
+function appendLine(t) {
+  scr.innerHTML += t + "\n";
+  scr.scrollTop = scr.scrollHeight;
+}
+
+function execCmd(raw) {
+  const c = raw.trim().toLowerCase();
+  if (!c) return;
+
+  hist.push(raw.trim());
+  hIdx = hist.length;
+
+  appendLine("<span style='color:#38bdf8; font-weight:bold;'>" + currentDev + "#</span> " + raw.trim());
+
+  if (c === "help" || c === "?") {
+    appendLine(`Comandos disponíveis:
+  • show vlan brief
+  • show etherchannel summary
+  • show interfaces trunk
+  • show lacp neighbor
+  • show ip interface brief
+  • show mac address-table
+  • show run / show running-config
+  • ping 192.168.10.12 (VLAN 10)
+  • ping 192.168.20.11 (VLAN 20)
+  • clear
+  • enable / configure terminal`);
+    return;
+  }
+
+  if (c === "clear") {
+    scr.innerHTML = "";
+    return;
+  }
+
+  if (c === "enable" || c === "en") {
+    appendLine(currentDev + "# (Modo EXEC Privilegiado)");
+    return;
+  }
+
+  if (c === "conf t" || c === "configure terminal") {
+    appendLine("Enter configuration commands, one per line. End with CNTL/Z.\n" + currentDev + "(config)# exit\n" + currentDev + "#");
+    return;
+  }
+
+  if (c.startsWith("ping")) {
+    const tgt = c.split(" ")[1] || "";
+    if (tgt === "192.168.10.12" || tgt === "192.168.20.12" || tgt === "192.168.30.12") {
+      appendLine(`Type escape sequence to abort.
+Sending 5, 100-byte ICMP Echos to ` + tgt + `, timeout is 2 seconds:
+!!!!!
+<span style="color:#4ade80; font-weight:bold;">Success rate is 100 percent (5/5), round-trip min/avg/max = 1/2/4 ms</span>`);
+    } else if (tgt === "192.168.20.11" || tgt === "192.168.30.11" || tgt === "192.168.10.11") {
+      appendLine(`Type escape sequence to abort.
+Sending 5, 100-byte ICMP Echos to ` + tgt + `, timeout is 2 seconds:
+.....
+<span style="color:#f87171; font-weight:bold;">Success rate is 0 percent (0/5) [Destino em VLAN distinta - Roteamento Inter-VLAN desabilitado]</span>`);
+    } else {
+      appendLine(`Sending 5, 100-byte ICMP Echos to ` + tgt + `...\n.....\n<span style="color:#f87171; font-weight:bold;">Success rate is 0 percent (0/5)</span>`);
+    }
+    return;
+  }
+
+  const devDb = database[currentDev] || {};
+  if (devDb[c]) {
+    appendLine(devDb[c]);
+  } else if (c === "show run" || c === "show running-config") {
+    appendLine(`Building configuration...\n!\nhostname ` + currentDev + `\nvlan 10,20,30,40,99\ninterface Port-channel1\n switchport mode trunk\n switchport trunk native vlan 99\nend`);
+  } else {
+    appendLine("% Invalid input detected at '^' marker.\n(Digite 'help' para ver os comandos implementados)");
+  }
+}
+
+sel.addEventListener("change", (e) => {
+  currentDev = e.target.value;
+  pmt.innerText = currentDev + "#";
+  appendLine("\n[Contexto alterado para " + currentDev + "]");
+});
+
+clr.addEventListener("click", () => {
+  scr.innerHTML = "";
+});
+
+chips.forEach(chip => {
+  chip.addEventListener("click", () => {
+    const cmd = chip.getAttribute("data-cmd");
+    inp.value = cmd;
+    execCmd(cmd);
+    inp.value = "";
+  });
+});
+
+inp.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    execCmd(inp.value);
+    inp.value = "";
+  } else if (e.key === "ArrowUp") {
+    if (hIdx > 0) {
+      hIdx--;
+      inp.value = hist[hIdx];
+    }
+  } else if (e.key === "ArrowDown") {
+    if (hIdx < hist.length - 1) {
+      hIdx++;
+      inp.value = hist[hIdx];
+    } else {
+      hIdx = hist.length;
+      inp.value = "";
+    }
+  }
+});
+```
 
 ---
 
