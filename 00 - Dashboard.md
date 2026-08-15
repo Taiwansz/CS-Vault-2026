@@ -56,7 +56,15 @@ turma: N13208A
 
 ---
 
-## 📚 Disciplinas e Grade Horária do Semestre
+## 📚 Disciplinas e Centrais do Semestre
+
+- 💻 [[01 - Disciplinas/Compiladores/Compiladores|Compiladores (Segunda-feira)]]
+- ☕ [[01 - Disciplinas/Tópicos Especiais II/Tópicos Especiais II|Tópicos Especiais II - Java POO (Terça-feira)]]
+- 🌐 [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Estudos Avançados em Ciências da Computação|Estudos Avançados em CC - Redes Corporativas (Quarta-feira)]]
+- 🎓 [[01 - Disciplinas/Trabalho de Conclusão de Curso II/Trabalho de Conclusão de Curso II|Trabalho de Conclusão de Curso II (Quarta-feira)]]
+- 🎮 [[01 - Disciplinas/Técnicas Avançadas de Jogos Digitais/Técnicas Avançadas de Jogos Digitais|Técnicas Avançadas de Jogos Digitais (Quinta-feira)]]
+- 📱 [[01 - Disciplinas/Interação Humano Computador e Sistemas Multimídia/Interação Humano Computador e Sistemas Multimídia|Interação Humano Computador e Sistemas Multimídia (Sexta-feira)]]
+- 🕹️ [[01 - Disciplinas/Projeto Prático Integrado - Desenvolvimento de Jogos Digitais/Projeto Prático Integrado - Desenvolvimento de Jogos Digitais|Projeto Prático Integrado - Jogos Digitais]]
 
 ```dataview
 TABLE 

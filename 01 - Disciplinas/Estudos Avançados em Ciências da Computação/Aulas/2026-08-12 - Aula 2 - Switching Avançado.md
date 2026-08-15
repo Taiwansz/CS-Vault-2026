@@ -19,8 +19,10 @@ status: assistida
 ## 📁 Materiais da Aula
 - 📄 [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Materiais/Aula 2 - Switching Avançado.pdf|Apresentação em PDF (Aula 2 - Switching Avançado)]]
 - 🎥 [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Materiais/Aula_2__Switching_Avançado.mp4|Vídeo da Aula Teórica & Prática (MP4)]]
-- 🔌 [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Materiais/Aula_2_Switching_Avancado_Configurada.pkt|Laboratório Cisco Packet Tracer Pre-Configurado (PKT Valido)]]
-- 🔌 [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Materiais/Aula_2_Switching_Avancado_Original_Professor.pkt|Laboratório Cisco Packet Tracer Original do Professor (.PKT)]]
+- 📝 [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Aulas/2026-08-12 - Resolução - Exercício Prático Aula 2 - TechSolutions|Resolução Completa do Exercício Prático (TechSolutions)]]
+- 🔌 [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Materiais/TECHSOLUTIONS_AULA_2_CONCLUIDO.pkt|Laboratório Concluído Cisco Packet Tracer (PKT)]]
+- 🤖 [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Arquivos Auxiliares - Automação IA Packet Tracer/README|Guia e Skill: Automação do Packet Tracer com IA]]
+
 
 ---
 
