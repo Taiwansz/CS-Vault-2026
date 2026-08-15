@@ -11,38 +11,15 @@
             "id": "cb511577f6f958d5",
             "type": "leaf",
             "state": {
-              "type": "graph",
-              "state": {},
-              "icon": "lucide-git-fork",
-              "title": "Visualização em gráfico"
-            }
-          },
-          {
-            "id": "1ba04dc271b5b982",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
+              "type": "excalidraw",
               "state": {
-                "file": "03 - Calendário/Calendário do Semestre.md",
-                "mode": "source",
-                "source": false,
-                "backlinks": true,
-                "backlinkOpts": {
-                  "collapseAll": false,
-                  "extraContext": false,
-                  "sortOrder": "alphabetical",
-                  "showSearch": false,
-                  "searchQuery": "",
-                  "backlinkCollapsed": false,
-                  "unlinkedCollapsed": true
-                }
+                "file": "Excalidraw/Drawing 2026-08-14 23.25.10.excalidraw.md"
               },
-              "icon": "lucide-file",
-              "title": "Calendário do Semestre"
+              "icon": "excalidraw-icon",
+              "title": "Drawing 2026-08-14 23.25.10.excalidraw"
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "vertical"
@@ -213,10 +190,19 @@
       "obsidian-excalidraw-plugin:New drawing": false
     }
   },
-  "active": "1ba04dc271b5b982",
+  "active": "cb511577f6f958d5",
   "lastOpenFiles": [
-    "00 - Dashboard.md",
+    "Excalidraw/Topologia_TechSolutions_Switching.excalidraw.md",
+    "01 - Disciplinas/Estudos Avançados em Ciências da Computação/Topologia_TechSolutions_Switching.excalidraw.md",
+    "01 - Disciplinas/Interação Humano Computador e Sistemas Multimídia/Aulas/07.08.md",
     "01 - Disciplinas/Estudos Avançados em Ciências da Computação/Topologia e Conceitos - Switching Avançado.canvas",
+    "01 - Disciplinas/Índice Geral de Aulas.md",
+    "02 - Avaliações/Avaliações 2026.2.md",
+    "02 - Avaliações/Painel Geral de Avaliações.md",
+    "03 - Calendário/Quadro de Horários.md",
+    "03 - Calendário/Controle de Frequência.md",
+    "03 - Calendário/Calendário do Semestre.md",
+    "00 - Dashboard.md",
     "00 - Guia do Cofre (Vault Guide).md",
     "99 - Templates/Template - Laboratório de Redes e Packet Tracer.md",
     "01 - Disciplinas/Estudos Avançados em Ciências da Computação/Aulas/Guia Rápido - Comandos Cisco IOS Switching e LACP.md",
@@ -239,23 +225,15 @@
     "01 - Disciplinas/Estudos Avançados em Ciências da Computação/Materiais/Packet_Tracer_Configs/SW-Core-1.txt",
     "01 - Disciplinas/Compiladores/Compiladores.md",
     "01 - Disciplinas/Compiladores/Aulas/2026-08-03 - Aula Inaugural - Introdução e Ementa.md",
-    "01 - Disciplinas/Índice Geral de Aulas.md",
     "LEIA-ME - Como usar.md",
     "assets/banner.jpg",
     "assets/student2.jpg",
     "assets/student1.jpg",
-    "03 - Calendário/Calendário do Semestre.md",
-    "03 - Calendário/Controle de Frequência.md",
-    "03 - Calendário/Quadro de Horários.md",
-    "02 - Avaliações/Painel Geral de Avaliações.md",
     "01 - Disciplinas/Projeto Prático Integrado - Desenvolvimento de Jogos Digitais/Kanban - PPI Jogos.md",
     "01 - Disciplinas/Tópicos Especiais II/Aulas/Atividade 02 - Controle de Estoque e Classes Abstratas.md",
     "01 - Disciplinas/Tópicos Especiais II/Tópicos Especiais II.md",
     "Sem título 2.canvas",
     "Sem título 1.canvas",
-    "Sem título.canvas",
-    "99 - Templates/Template - Trabalho.md",
-    "01 - Disciplinas/Interação Humano Computador e Sistemas Multimídia/Aulas/2026-08-07 - Atividade IHC - Analise de Interfaces (UniEduK vs Apple).md",
-    "2026-08-07.md"
+    "Sem título.canvas"
   ]
 }

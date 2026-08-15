@@ -1,131 +1,19 @@
 {
-  "nodes": [
-    {
-      "id": "header_node",
-      "x": -250,
-      "y": -350,
-      "width": 700,
-      "height": 140,
-      "type": "text",
-      "text": "## \ud83c\udf10 Topologia TechSolutions \u2014 Switching Avan\u00e7ado\n**Aluno:** Matheus Sousa dos Santos | **RA:** 52319400\n**Arquitetura:** 2 Switches Core (LACP EtherChannel) + 2 Switches Acesso + 6 PCs + 2 IP Phones",
-      "color": "3"
-    },
-    {
-      "id": "sw_core_1",
-      "x": -250,
-      "y": -140,
-      "width": 300,
-      "height": 180,
-      "type": "text",
-      "text": "### \ud83c\udfe2 SW-CORE-1 (Cisco 3560)\n- **Port-Channel 1:** `mode active`\n- **Interfaces:** Gig0/1 + Gig0/2\n- **Modo:** 802.1Q Trunk\n- **Native VLAN:** 99 | **Allowed:** 10,20,30,40,99\n- **Downlink:** Fa0/1 $\\rightarrow$ SW-ACCESS-1",
-      "color": "4"
-    },
-    {
-      "id": "sw_core_2",
-      "x": 150,
-      "y": -140,
-      "width": 300,
-      "height": 180,
-      "type": "text",
-      "text": "### \ud83c\udfe2 SW-CORE-2 (Cisco 3560)\n- **Port-Channel 1:** `mode passive`\n- **Interfaces:** Gig0/1 + Gig0/2\n- **Modo:** 802.1Q Trunk\n- **Native VLAN:** 99 | **Allowed:** 10,20,30,40,99\n- **Downlink:** Fa0/1 $\\rightarrow$ SW-ACCESS-2",
-      "color": "4"
-    },
-    {
-      "id": "sw_acc_1",
-      "x": -250,
-      "y": 140,
-      "width": 300,
-      "height": 180,
-      "type": "text",
-      "text": "### \ud83c\udfec SW-ACCESS-1 (Cisco 3560)\n- **Uplink:** Gig0/1 (Trunk Nativa 99)\n- **Fa0/2:** Access VLAN 10 (PC-ADM-01)\n- **Fa0/3:** Access VLAN 20 (PC-FIN-01)\n- **Fa0/4:** Access VLAN 30 (PC-TI-01)\n- **Fa0/5:** Access 10 + Voice VLAN 40",
-      "color": "5"
-    },
-    {
-      "id": "sw_acc_2",
-      "x": 150,
-      "y": 140,
-      "width": 300,
-      "height": 180,
-      "type": "text",
-      "text": "### \ud83c\udfec SW-ACCESS-2 (Cisco 3560)\n- **Uplink:** Gig0/1 (Trunk Nativa 99)\n- **Fa0/2:** Access VLAN 10 (PC-ADM-02)\n- **Fa0/3:** Access VLAN 20 (PC-FIN-02)\n- **Fa0/4:** Access VLAN 30 (PC-TI-02)\n- **Fa0/5:** Access 10 + Voice VLAN 40",
-      "color": "5"
-    },
-    {
-      "id": "hosts_1",
-      "x": -250,
-      "y": 380,
-      "width": 300,
-      "height": 200,
-      "type": "text",
-      "text": "### \ud83d\udcbb Hosts do Setor 1\n- `PC-ADM-01`: 192.168.10.11 /24 (Fa0/2)\n- `PC-FIN-01`: 192.168.20.11 /24 (Fa0/3)\n- `PC-TI-01`: 192.168.30.11 /24 (Fa0/4)\n- `IP-PHONE-01`: Voice VLAN 40 (Fa0/5)\n- Gateway Padr\u00e3o: 192.168.X.1",
-      "color": "6"
-    },
-    {
-      "id": "hosts_2",
-      "x": 150,
-      "y": 380,
-      "width": 300,
-      "height": 200,
-      "type": "text",
-      "text": "### \ud83d\udcbb Hosts do Setor 2\n- `PC-ADM-02`: 192.168.10.12 /24 (Fa0/2)\n- `PC-FIN-02`: 192.168.20.12 /24 (Fa0/3)\n- `PC-TI-02`: 192.168.30.12 /24 (Fa0/4)\n- `IP-PHONE-02`: Voice VLAN 40 (Fa0/5)\n- Gateway Padr\u00e3o: 192.168.X.1",
-      "color": "6"
-    },
-    {
-      "id": "file_ref",
-      "x": 520,
-      "y": -140,
-      "width": 340,
-      "height": 300,
-      "type": "text",
-      "text": "### \ud83d\udcda Documentos & Guias\n- \ud83d\udcdd [[01 - Disciplinas/Estudos Avan\u00e7ados em Ci\u00eancias da Computa\u00e7\u00e3o/Aulas/2026-08-12 - Resolu\u00e7\u00e3o - Exerc\u00edcio Pr\u00e1tico Aula 2 - TechSolutions|Resolu\u00e7\u00e3o Completa da Aula 2]]\n- \u26a1 [[01 - Disciplinas/Estudos Avan\u00e7ados em Ci\u00eancias da Computa\u00e7\u00e3o/Aulas/Guia R\u00e1pido - Comandos Cisco IOS Switching e LACP|Guia R\u00e1pido de Comandos Cisco IOS]]\n- \ud83e\udd16 [[01 - Disciplinas/Estudos Avan\u00e7ados em Ci\u00eancias da Computa\u00e7\u00e3o/Arquivos Auxiliares - Automa\u00e7\u00e3o IA Packet Tracer/README|Guia de Automa\u00e7\u00e3o com IA]]\n- \ud83d\udd0c [[01 - Disciplinas/Estudos Avan\u00e7ados em Ci\u00eancias da Computa\u00e7\u00e3o/Materiais/TECHSOLUTIONS_AULA_2_CONCLUIDO.pkt|Laborat\u00f3rio PKT Conclu\u00eddo]]",
-      "color": "1"
-    }
-  ],
-  "edges": [
-    {
-      "id": "edge_etherchannel",
-      "fromNode": "sw_core_1",
-      "fromSide": "right",
-      "toNode": "sw_core_2",
-      "toSide": "left",
-      "label": "Port-Channel 1 (LACP)\nGig0/1 + Gig0/2 | 2 Gbps",
-      "color": "4"
-    },
-    {
-      "id": "edge_core1_acc1",
-      "fromNode": "sw_core_1",
-      "fromSide": "bottom",
-      "toNode": "sw_acc_1",
-      "toSide": "top",
-      "label": "Trunk 802.1Q (Fa0/1 <-> Gig0/1)",
-      "color": "5"
-    },
-    {
-      "id": "edge_core2_acc2",
-      "fromNode": "sw_core_2",
-      "fromSide": "bottom",
-      "toNode": "sw_acc_2",
-      "toSide": "top",
-      "label": "Trunk 802.1Q (Fa0/1 <-> Gig0/1)",
-      "color": "5"
-    },
-    {
-      "id": "edge_acc1_hosts",
-      "fromNode": "sw_acc_1",
-      "fromSide": "bottom",
-      "toNode": "hosts_1",
-      "toSide": "top",
-      "label": "Access Ports (VLAN 10, 20, 30, Voice 40)",
-      "color": "6"
-    },
-    {
-      "id": "edge_acc2_hosts",
-      "fromNode": "sw_acc_2",
-      "fromSide": "bottom",
-      "toNode": "hosts_2",
-      "toSide": "top",
-      "label": "Access Ports (VLAN 10, 20, 30, Voice 40)",
-      "color": "6"
-    }
-  ]
+	"nodes":[
+		{"id":"header_node","x":-250,"y":-350,"width":700,"height":140,"type":"text","text":"## 🌐 Topologia TechSolutions — Switching Avançado\n**Aluno:** Matheus Sousa dos Santos | **RA:** 52319400\n**Arquitetura:** 2 Switches Core (LACP EtherChannel) + 2 Switches Acesso + 6 PCs + 2 IP Phones","color":"3"},
+		{"id":"sw_core_1","x":-250,"y":-140,"width":300,"height":180,"type":"text","text":"### 🏢 SW-CORE-1 (Cisco 3560)\n- **Port-Channel 1:** `mode active`\n- **Interfaces:** Gig0/1 + Gig0/2\n- **Modo:** 802.1Q Trunk\n- **Native VLAN:** 99 | **Allowed:** 10,20,30,40,99\n- **Downlink:** Fa0/1 $\\rightarrow$ SW-ACCESS-1","color":"4"},
+		{"id":"sw_core_2","x":150,"y":-140,"width":300,"height":180,"type":"text","text":"### 🏢 SW-CORE-2 (Cisco 3560)\n- **Port-Channel 1:** `mode passive`\n- **Interfaces:** Gig0/1 + Gig0/2\n- **Modo:** 802.1Q Trunk\n- **Native VLAN:** 99 | **Allowed:** 10,20,30,40,99\n- **Downlink:** Fa0/1 $\\rightarrow$ SW-ACCESS-2","color":"4"},
+		{"id":"sw_acc_1","x":-250,"y":140,"width":300,"height":180,"type":"text","text":"### 🏬 SW-ACCESS-1 (Cisco 3560)\n- **Uplink:** Gig0/1 (Trunk Nativa 99)\n- **Fa0/2:** Access VLAN 10 (PC-ADM-01)\n- **Fa0/3:** Access VLAN 20 (PC-FIN-01)\n- **Fa0/4:** Access VLAN 30 (PC-TI-01)\n- **Fa0/5:** Access 10 + Voice VLAN 40","color":"5"},
+		{"id":"sw_acc_2","x":150,"y":140,"width":300,"height":180,"type":"text","text":"### 🏬 SW-ACCESS-2 (Cisco 3560)\n- **Uplink:** Gig0/1 (Trunk Nativa 99)\n- **Fa0/2:** Access VLAN 10 (PC-ADM-02)\n- **Fa0/3:** Access VLAN 20 (PC-FIN-02)\n- **Fa0/4:** Access VLAN 30 (PC-TI-02)\n- **Fa0/5:** Access 10 + Voice VLAN 40","color":"5"},
+		{"id":"hosts_1","x":-250,"y":380,"width":300,"height":200,"type":"text","text":"### 💻 Hosts do Setor 1\n- `PC-ADM-01`: 192.168.10.11 /24 (Fa0/2)\n- `PC-FIN-01`: 192.168.20.11 /24 (Fa0/3)\n- `PC-TI-01`: 192.168.30.11 /24 (Fa0/4)\n- `IP-PHONE-01`: Voice VLAN 40 (Fa0/5)\n- Gateway Padrão: 192.168.X.1","color":"6"},
+		{"id":"hosts_2","x":150,"y":380,"width":300,"height":200,"type":"text","text":"### 💻 Hosts do Setor 2\n- `PC-ADM-02`: 192.168.10.12 /24 (Fa0/2)\n- `PC-FIN-02`: 192.168.20.12 /24 (Fa0/3)\n- `PC-TI-02`: 192.168.30.12 /24 (Fa0/4)\n- `IP-PHONE-02`: Voice VLAN 40 (Fa0/5)\n- Gateway Padrão: 192.168.X.1","color":"6"},
+		{"id":"file_ref","x":520,"y":-140,"width":340,"height":300,"type":"text","text":"### 📚 Documentos & Guias\n- 📝 [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Aulas/2026-08-12 - Resolução - Exercício Prático Aula 2 - TechSolutions|Resolução Completa da Aula 2]]\n- ⚡ [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Aulas/Guia Rápido - Comandos Cisco IOS Switching e LACP|Guia Rápido de Comandos Cisco IOS]]\n- 🤖 [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Arquivos Auxiliares - Automação IA Packet Tracer/README|Guia de Automação com IA]]\n- 🔌 [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Materiais/TECHSOLUTIONS_AULA_2_CONCLUIDO.pkt|Laboratório PKT Concluído]]","color":"1"}
+	],
+	"edges":[
+		{"id":"edge_etherchannel","fromNode":"sw_core_1","fromSide":"right","toNode":"sw_core_2","toSide":"left","label":"Port-Channel 1 (LACP)\nGig0/1 + Gig0/2 | 2 Gbps","color":"4"},
+		{"id":"edge_core1_acc1","fromNode":"sw_core_1","fromSide":"bottom","toNode":"sw_acc_1","toSide":"top","label":"Trunk 802.1Q (Fa0/1 <-> Gig0/1)","color":"5"},
+		{"id":"edge_core2_acc2","fromNode":"sw_core_2","fromSide":"bottom","toNode":"sw_acc_2","toSide":"top","label":"Trunk 802.1Q (Fa0/1 <-> Gig0/1)","color":"5"},
+		{"id":"edge_acc1_hosts","fromNode":"sw_acc_1","fromSide":"bottom","toNode":"hosts_1","toSide":"top","label":"Access Ports (VLAN 10, 20, 30, Voice 40)","color":"6"},
+		{"id":"edge_acc2_hosts","fromNode":"sw_acc_2","fromSide":"bottom","toNode":"hosts_2","toSide":"top","label":"Access Ports (VLAN 10, 20, 30, Voice 40)","color":"6"}
+	]
 }

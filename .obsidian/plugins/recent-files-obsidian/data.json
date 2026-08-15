@@ -1,6 +1,34 @@
 {
   "recentFiles": [
     {
+      "basename": "Drawing 2026-08-14 23.25.10.excalidraw",
+      "path": "Excalidraw/Drawing 2026-08-14 23.25.10.excalidraw.md"
+    },
+    {
+      "basename": "07.08",
+      "path": "01 - Disciplinas/Interação Humano Computador e Sistemas Multimídia/Aulas/07.08.md"
+    },
+    {
+      "basename": "Topologia e Conceitos - Switching Avançado",
+      "path": "01 - Disciplinas/Estudos Avançados em Ciências da Computação/Topologia e Conceitos - Switching Avançado.canvas"
+    },
+    {
+      "basename": "Índice Geral de Aulas",
+      "path": "01 - Disciplinas/Índice Geral de Aulas.md"
+    },
+    {
+      "basename": "Avaliações 2026.2",
+      "path": "02 - Avaliações/Avaliações 2026.2.md"
+    },
+    {
+      "basename": "Painel Geral de Avaliações",
+      "path": "02 - Avaliações/Painel Geral de Avaliações.md"
+    },
+    {
+      "basename": "Quadro de Horários",
+      "path": "03 - Calendário/Quadro de Horários.md"
+    },
+    {
       "basename": "Controle de Frequência",
       "path": "03 - Calendário/Controle de Frequência.md"
     },
@@ -15,10 +43,6 @@
     {
       "basename": "00 - Guia do Cofre (Vault Guide)",
       "path": "00 - Guia do Cofre (Vault Guide).md"
-    },
-    {
-      "basename": "Drawing 2026-08-14 23.25.10.excalidraw",
-      "path": "Excalidraw/Drawing 2026-08-14 23.25.10.excalidraw.md"
     },
     {
       "basename": "README",
