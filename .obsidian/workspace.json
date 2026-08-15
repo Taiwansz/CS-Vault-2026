@@ -21,10 +21,24 @@
             "id": "1ba04dc271b5b982",
             "type": "leaf",
             "state": {
-              "type": "graph",
-              "state": {},
-              "icon": "lucide-git-fork",
-              "title": "Visualização em gráfico"
+              "type": "markdown",
+              "state": {
+                "file": "03 - Calendário/Calendário do Semestre.md",
+                "mode": "source",
+                "source": false,
+                "backlinks": true,
+                "backlinkOpts": {
+                  "collapseAll": false,
+                  "extraContext": false,
+                  "sortOrder": "alphabetical",
+                  "showSearch": false,
+                  "searchQuery": "",
+                  "backlinkCollapsed": false,
+                  "unlinkedCollapsed": true
+                }
+              },
+              "icon": "lucide-file",
+              "title": "Calendário do Semestre"
             }
           }
         ],
@@ -201,6 +215,9 @@
   },
   "active": "1ba04dc271b5b982",
   "lastOpenFiles": [
+    "00 - Dashboard.md",
+    "01 - Disciplinas/Estudos Avançados em Ciências da Computação/Topologia e Conceitos - Switching Avançado.canvas",
+    "00 - Guia do Cofre (Vault Guide).md",
     "99 - Templates/Template - Laboratório de Redes e Packet Tracer.md",
     "01 - Disciplinas/Estudos Avançados em Ciências da Computação/Aulas/Guia Rápido - Comandos Cisco IOS Switching e LACP.md",
     "Excalidraw/Drawing 2026-08-14 23.25.10.excalidraw.md",
@@ -224,8 +241,6 @@
     "01 - Disciplinas/Compiladores/Aulas/2026-08-03 - Aula Inaugural - Introdução e Ementa.md",
     "01 - Disciplinas/Índice Geral de Aulas.md",
     "LEIA-ME - Como usar.md",
-    "00 - Guia do Cofre (Vault Guide).md",
-    "00 - Dashboard.md",
     "assets/banner.jpg",
     "assets/student2.jpg",
     "assets/student1.jpg",
@@ -241,7 +256,6 @@
     "Sem título.canvas",
     "99 - Templates/Template - Trabalho.md",
     "01 - Disciplinas/Interação Humano Computador e Sistemas Multimídia/Aulas/2026-08-07 - Atividade IHC - Analise de Interfaces (UniEduK vs Apple).md",
-    "2026-08-07.md",
-    "01 - Disciplinas/Projeto Prático Integrado - Desenvolvimento de Jogos Digitais/Projeto Prático Integrado - Desenvolvimento de Jogos Digitais.md"
+    "2026-08-07.md"
   ]
 }
