@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "01 - Disciplinas/Estudos Avançados em Ciências da Computação/Aulas/Árvore de Decisão - Troubleshooting de Redes L2 e L3.md",
+                "file": "01 - Disciplinas/Estudos Avançados em Ciências da Computação/Aulas/Terminal Interativo - Cisco IOS Catalyst 3560.md",
                 "mode": "source",
                 "source": false,
                 "backlinks": true,
@@ -28,7 +28,7 @@
                 }
               },
               "icon": "lucide-file",
-              "title": "Árvore de Decisão - Troubleshooting de Redes L2 e L3"
+              "title": "Terminal Interativo - Cisco IOS Catalyst 3560"
             }
           }
         ]
@@ -204,12 +204,12 @@
   },
   "active": "cb511577f6f958d5",
   "lastOpenFiles": [
-    "01 - Disciplinas/Estudos Avançados em Ciências da Computação/Materiais/Terminal_Cisco_IOS.html",
-    "01 - Disciplinas/Estudos Avançados em Ciências da Computação/Aulas/Terminal Interativo - Cisco IOS Catalyst 3560.md",
     "01 - Disciplinas/Estudos Avançados em Ciências da Computação/Aulas/Guia Rápido - Comandos Cisco IOS Switching e LACP.md",
+    "01 - Disciplinas/Estudos Avançados em Ciências da Computação/Aulas/Terminal Interativo - Cisco IOS Catalyst 3560.md",
+    "01 - Disciplinas/Estudos Avançados em Ciências da Computação/Aulas/Árvore de Decisão - Troubleshooting de Redes L2 e L3.md",
+    "01 - Disciplinas/Estudos Avançados em Ciências da Computação/Materiais/Terminal_Cisco_IOS.html",
     "Excalidraw/Topologia_TechSolutions_Switching.excalidraw.md",
     "01 - Disciplinas/Estudos Avançados em Ciências da Computação/Topologia_TechSolutions_Switching.excalidraw.md",
-    "01 - Disciplinas/Estudos Avançados em Ciências da Computação/Aulas/Árvore de Decisão - Troubleshooting de Redes L2 e L3.md",
     "Excalidraw/Drawing 2026-08-14 23.25.10.excalidraw.md",
     "01 - Disciplinas/Interação Humano Computador e Sistemas Multimídia/Aulas/07.08.md",
     "01 - Disciplinas/Estudos Avançados em Ciências da Computação/Topologia e Conceitos - Switching Avançado.canvas",
@@ -237,7 +237,6 @@
     "01 - Disciplinas/Estudos Avançados em Ciências da Computação/Materiais/Packet_Tracer_Configs/SW-Acesso-2.txt",
     "01 - Disciplinas/Estudos Avançados em Ciências da Computação/Materiais/Packet_Tracer_Configs/SW-Acesso-1.txt",
     "01 - Disciplinas/Estudos Avançados em Ciências da Computação/Materiais/Packet_Tracer_Configs/SW-Core-2.txt",
-    "01 - Disciplinas/Estudos Avançados em Ciências da Computação/Materiais/Packet_Tracer_Configs/SW-Core-1.txt",
     "01 - Disciplinas/Compiladores/Compiladores.md",
     "01 - Disciplinas/Compiladores/Aulas/2026-08-03 - Aula Inaugural - Introdução e Ementa.md",
     "LEIA-ME - Como usar.md",
