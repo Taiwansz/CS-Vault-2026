@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Simulador Interativo do Modelo OSI</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: #0b0f19;
+      color: #e2e8f0;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      padding: 14px;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .app-container {
+      display: flex;
+      flex: 1;
+      gap: 14px;
+      overflow: hidden;
+    }
+    .left-panel {
+      flex: 1.1;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      overflow-y: auto;
+      padding-right: 6px;
+    }
+    .right-panel {
+      flex: 1.4;
+      background: #0d1117;
+      border: 1px solid #30363d;
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.5);
+    }
+    .panel-header {
+      background: #161b22;
+      border-bottom: 1px solid #30363d;
+      padding: 10px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .panel-title {
+      color: #58a6ff;
+      font-weight: 700;
+      font-size: 13px;
+    }
+    /* Layer Cards */
+    .layer-card {
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 6px;
+      padding: 10px 12px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: all 0.2s ease;
+      user-select: none;
+    }
+    .layer-card:hover {
+      border-color: #58a6ff;
+      transform: translateX(3px);
+    }
+    .layer-card.active {
+      border-color: #58a6ff;
+      background: #1f293d;
+      box-shadow: 0 0 10px rgba(88, 166, 255, 0.25);
+    }
+    .layer-num {
+      font-weight: 800;
+      font-size: 15px;
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 10px;
+    }
+    .layer-info {
+      flex: 1;
+    }
+    .layer-name {
+      font-weight: 700;
+      font-size: 13px;
+      color: #f0f6fc;
+    }
+    .layer-pdu {
+      font-size: 11px;
+      color: #8b949e;
+    }
+    /* Okabe-Ito Colorblind-Safe Layer Badges */
+    .l7 { background: #d55e00; color: #fff; } /* Vermilion */
+    .l6 { background: #e69f00; color: #fff; } /* Orange */
+    .l5 { background: #f0e442; color: #000; } /* Yellow */
+    .l4 { background: #009e73; color: #fff; } /* Teal */
+    .l3 { background: #56b4e9; color: #000; } /* Sky Blue */
+    .l2 { background: #0072b2; color: #fff; } /* Deep Blue */
+    .l1 { background: #8b949e; color: #fff; } /* Slate */
+
+    /* Right Panel Tabs & Details */
+    .tab-bar {
+      background: #161b22;
+      border-bottom: 1px solid #30363d;
+      display: flex;
+    }
+    .tab-btn {
+      flex: 1;
+      padding: 8px 12px;
+      background: transparent;
+      border: none;
+      border-bottom: 2px solid transparent;
+      color: #8b949e;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .tab-btn.active {
+      color: #58a6ff;
+      border-bottom-color: #58a6ff;
+      background: #0d1117;
+    }
+    .tab-content {
+      flex: 1;
+      padding: 14px;
+      overflow-y: auto;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 600;
+      background: #21262d;
+      color: #79c0ff;
+      border: 1px solid #30363d;
+      margin: 2px 3px 2px 0;
+    }
+    .section-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: #58a6ff;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin: 12px 0 6px 0;
+      border-bottom: 1px solid #21262d;
+      padding-bottom: 3px;
+    }
+    /* Encapsulation Animation Box */
+    .encap-box {
+      background: #090d13;
+      border: 1px solid #30363d;
+      border-radius: 6px;
+      padding: 12px;
+      margin-top: 10px;
+    }
+    .frame-wrapper {
+      display: flex;
+      border: 2px solid #58a6ff;
+      border-radius: 6px;
+      overflow: hidden;
+      margin: 12px 0;
+      font-family: 'Consolas', monospace;
+      font-size: 11px;
+      text-align: center;
+    }
+    .frame-hdr {
+      padding: 10px 6px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      border-right: 1px solid #30363d;
+      font-weight: bold;
+    }
+    .btn-action {
+      background: #238636;
+      color: #fff;
+      border: 1px solid #2ea043;
+      border-radius: 4px;
+      padding: 6px 12px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-action:hover { background: #2ea043; }
+    .trouble-btn {
+      background: #21262d;
+      color: #f85149;
+      border: 1px solid #da3633;
+      border-radius: 4px;
+      padding: 4px 8px;
+      font-size: 11px;
+      cursor: pointer;
+      margin: 3px;
+    }
+    .trouble-btn:hover { background: #b62324; color: #fff; }
+  </style>
+</head>
+<body>
+
+  <div class="panel-header" style="border-radius: 8px 8px 0 0; margin-bottom: 8px; border: 1px solid #30363d;">
+    <div class="panel-title">🌐 SIMULADOR INTERATIVO: MODELO OSI & ENCAPSULAMENTO PDU</div>
+    <div style="font-size: 12px; color: #8b949e;">Clique em uma camada ou use o simulador de pacotes</div>
+  </div>
+
+  <div class="app-container">
+    <!-- Left: 7 Layers List -->
+    <div class="left-panel">
+      <div class="layer-card" onclick="selectLayer(7)">
+        <div style="display: flex; align-items: center;">
+          <div class="layer-num l7">7</div>
+          <div class="layer-info">
+            <div class="layer-name">Aplicação (Application)</div>
+            <div class="layer-pdu">PDU: Dados | Interação direta com softwares</div>
+          </div>
+        </div>
+        <span class="badge">HTTP, DNS, SSH, DHCP</span>
+      </div>
+
+      <div class="layer-card" onclick="selectLayer(6)">
+        <div style="display: flex; align-items: center;">
+          <div class="layer-num l6">6</div>
+          <div class="layer-info">
+            <div class="layer-name">Apresentação (Presentation)</div>
+            <div class="layer-pdu">PDU: Dados | Formatação, Criptografia e Compressão</div>
+          </div>
+        </div>
+        <span class="badge">TLS/SSL, JSON, JPEG</span>
+      </div>
+
+      <div class="layer-card" onclick="selectLayer(5)">
+        <div style="display: flex; align-items: center;">
+          <div class="layer-num l5">5</div>
+          <div class="layer-info">
+            <div class="layer-name" style="color:#000;">Sessão (Session)</div>
+            <div class="layer-pdu" style="color:#333;">PDU: Dados | Estabelecimento e Controle de Diálogo</div>
+          </div>
+        </div>
+        <span class="badge">RPC, NetBIOS, Sockets</span>
+      </div>
+
+      <div class="layer-card" onclick="selectLayer(4)">
+        <div style="display: flex; align-items: center;">
+          <div class="layer-num l4">4</div>
+          <div class="layer-info">
+            <div class="layer-name">Transporte (Transport)</div>
+            <div class="layer-pdu">PDU: Segmento | Comunicação Fim-a-Fim e Portas</div>
+          </div>
+        </div>
+        <span class="badge">TCP, UDP (Portas L4)</span>
+      </div>
+
+      <div class="layer-card" onclick="selectLayer(3)">
+        <div style="display: flex; align-items: center;">
+          <div class="layer-num l3">3</div>
+          <div class="layer-info">
+            <div class="layer-name" style="color:#000;">Rede (Network)</div>
+            <div class="layer-pdu" style="color:#333;">PDU: Pacote | Endereçamento Lógico & Roteamento</div>
+          </div>
+        </div>
+        <span class="badge">IPv4, IPv6, ICMP, OSPF</span>
+      </div>
+
+      <div class="layer-card active" onclick="selectLayer(2)">
+        <div style="display: flex; align-items: center;">
+          <div class="layer-num l2">2</div>
+          <div class="layer-info">
+            <div class="layer-name">Enlace de Dados (Data Link)</div>
+            <div class="layer-pdu">PDU: Quadro (Frame) | MAC, VLANs, Trunks & LACP</div>
+          </div>
+        </div>
+        <span class="badge">Ethernet, 802.1Q, LACP</span>
+      </div>
+
+      <div class="layer-card" onclick="selectLayer(1)">
+        <div style="display: flex; align-items: center;">
+          <div class="layer-num l1">1</div>
+          <div class="layer-info">
+            <div class="layer-name">Física (Physical)</div>
+            <div class="layer-pdu">PDU: Bits | Sinais elétricos, ópticos e cabos</div>
+          </div>
+        </div>
+        <span class="badge">RJ45, Fibra, 1000BASE-T</span>
+      </div>
+    </div>
+
+    <!-- Right: Inspector & Packet Simulator -->
+    <div class="right-panel">
+      <div class="tab-bar">
+        <button class="tab-btn active" id="tabBtnDetails" onclick="setTab('details')">🔍 Detalhes da Camada</button>
+        <button class="tab-btn" id="tabBtnEncap" onclick="setTab('encap')">📦 Simulador de Encapsulamento</button>
+        <button class="tab-btn" id="tabBtnTrouble" onclick="setTab('trouble')">🚨 Troubleshooting OSI</button>
+      </div>
+
+      <div class="tab-content" id="tabContent">
+        <!-- Injected dynamically by JS -->
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const osiData = {
+      7: {
+        name: "Camada 7 — Aplicação (Application)",
+        pdu: "Dados (Data)",
+        desc: "Interface direta com as aplicações do usuário. Fornece protocolos e serviços para navegação web, envio de e-mails, resolução de nomes e transferência de arquivos.",
+        devices: ["Host (PC / Servidor)", "Proxy de Aplicação", "Firewall NGFW (Layer 7 WAF)"],
+        protocols: ["HTTP/HTTPS (Porta 80/443)", "DNS (Porta 53)", "SSH (Porta 22)", "DHCP (Porta 67/68)", "Telnet", "SNMP"],
+        security: "Ataques de injeção SQL, XSS, DoS de aplicação e exploração de API. Protegido por WAF e autenticação multifator (MFA).",
+        ciscoContext: "Configuração de serviços de rede como servidores DHCP locais ou agentes de gerenciamento SNMP nos switches."
+      },
+      6: {
+        name: "Camada 6 — Apresentação (Presentation)",
+        pdu: "Dados (Data)",
+        desc: "Responsável pela tradução de formatos de dados, compressão e criptografia/descriptografia, garantindo que sistemas heterogêneos consigam interpretar a mensagem.",
+        devices: ["Host / SO", "Aceleradores Criptográficos (TLS Offloading)"],
+        protocols: ["TLS/SSL", "JSON", "XML", "JPEG", "MPEG", "ASCII", "Unicode / UTF-8"],
+        security: "Vulnerabilidades em bibliotecas de criptografia e serialização de dados.",
+        ciscoContext: "Geração de chaves RSA para SSH (`crypto key generate rsa modulus 1024`) para cifrar sessões de terminal."
+      },
+      5: {
+        name: "Camada 5 — Sessão (Session)",
+        pdu: "Dados (Data)",
+        desc: "Gerencia, sincroniza e encerra as conexões lógicas (sessões) e checkpoints de diálogo entre duas aplicações cliente-servidor.",
+        devices: ["Host / Sistema Operacional"],
+        protocols: ["RPC (Remote Procedure Call)", "NetBIOS", "PPTP", "Sockets POSIX"],
+        security: "Ataques de Session Hijacking (Sequestro de Sessão) e Man-in-the-Middle.",
+        ciscoContext: "Manutenção de sessões de gerenciamento VTY (linhas 0 a 4) abertas durante o comando `configure terminal`."
+      },
+      4: {
+        name: "Camada 4 — Transporte (Transport)",
+        pdu: "Segmento (TCP) / Datagrama (UDP)",
+        desc: "Responsável pela comunicação de ponta a ponta, controle de fluxo, multiplexação por portas lógicas (0 a 65535) e garantia de entrega com confirmação (ACK).",
+        devices: ["Firewalls L4 (Stateful)", "Balanceadores de Carga L4"],
+        protocols: ["TCP (Orientado a conexão / 3-way handshake)", "UDP (Sem conexão / Baixa latência para Voz VoIP)"],
+        security: "Ataques de TCP SYN Flood e Port Scanning. Mitigado por Rate Limiting e Firewalls Stateful.",
+        ciscoContext: "QoS para pacotes de voz UDP (RTP) na Voice VLAN para evitar jitter e perda de pacotes."
+      },
+      3: {
+        name: "Camada 3 — Rede (Network)",
+        pdu: "Pacote (Packet)",
+        desc: "Responsável pelo endereçamento lógico (IPv4 / IPv6) e roteamento de pacotes através de múltiplas sub-redes e sistemas autônomos.",
+        devices: ["Roteadores (Routers)", "Switches de Camada 3 (Multilayer Switch)", "Firewalls"],
+        protocols: ["IPv4", "IPv6", "ICMP (Ping)", "OSPF", "EIGRP", "BGP", "ARP"],
+        security: "Ataques de IP Spoofing, ICMP Smurf e roteamento malicioso. Mitigado por ACLs e IP Source Guard.",
+        ciscoContext: "Roteamento Inter-VLAN via SVIs (`interface Vlan10`, `ip routing`) e Default Gateways dos hosts (192.168.X.1)."
+      },
+      2: {
+        name: "Camada 2 — Enlace de Dados (Data Link)",
+        pdu: "Quadro (Frame)",
+        desc: "Comutação de quadros na rede local baseada em endereços físicos MAC de 48 bits. Segmenta domínios de broadcast com VLANs e agrega enlaces com EtherChannel.",
+        devices: ["Switches L2 (Cisco Catalyst)", "Placas de Rede (NIC)", "Bridges"],
+        protocols: ["Ethernet (IEEE 802.3)", "IEEE 802.1Q (VLAN Tagging)", "LACP (IEEE 802.3ad)", "STP (802.1D)", "CDP", "LLDP"],
+        security: "VLAN Hopping, MAC Flooding, STP Manipulation, DHCP Spoofing. Protegido por Port-Security e VLAN Nativa isolada.",
+        ciscoContext: "O foco central da **Aula 2 (TechSolutions)**: Port-Channel 1 unindo Gig0/1 + Gig0/2 em LACP, Trunks 802.1Q e Voice VLAN."
+      },
+      1: {
+        name: "Camada 1 — Física (Physical)",
+        pdu: "Bits (0s e 1s)",
+        desc: "Transmissão e recepção do fluxo bruto de bits através do meio físico, especificando pinagens, conectores, voltagens e frequências.",
+        devices: ["Cabos Par Trançado (Cat5e, Cat6)", "Cabos de Fibra Óptica", "Transceivers SFP", "Hubs"],
+        protocols: ["100BASE-TX", "1000BASE-T (Gigabit Ethernet)", "10GBASE-SR", "PoE (IEEE 802.3af/at)"],
+        security: "Grampos físicos (tapping) e corte de cabos. Mitigado por redundância física no EtherChannel.",
+        ciscoContext: "Portas PoE alimentando os Telefones IP Cisco 7960 e links Gigabit operando a 1 Gbps full-duplex."
+      }
+    };
+
+    let selectedLayer = 2;
+    let currentTab = "details";
+
+    function selectLayer(l) {
+      selectedLayer = l;
+      document.querySelectorAll(".layer-card").forEach((card, idx) => {
+        card.classList.toggle("active", (7 - idx) === l);
+      });
+      renderTab();
+    }
+
+    function setTab(tab) {
+      currentTab = tab;
+      document.getElementById("tabBtnDetails").classList.toggle("active", tab === "details");
+      document.getElementById("tabBtnEncap").classList.toggle("active", tab === "encap");
+      document.getElementById("tabBtnTrouble").classList.toggle("active", tab === "trouble");
+      renderTab();
+    }
+
+    function renderTab() {
+      const container = document.getElementById("tabContent");
+      if (currentTab === "details") {
+        const d = osiData[selectedLayer];
+        container.innerHTML = `
+          <div style="font-size: 16px; font-weight: bold; color: #58a6ff; margin-bottom: 4px;">${d.name}</div>
+          <div style="color: #e69f00; font-weight: 600; margin-bottom: 8px;">PDU da Camada: <span style="color:#fff;">${d.pdu}</span></div>
+          <p style="color: #c9d1d9; margin-bottom: 12px;">${d.desc}</p>
+
+          <div class="section-title">🔌 Equipamentos & Dispositivos</div>
+          <div>${d.devices.map(dev => `<span class="badge" style="border-color:#58a6ff;">${dev}</span>`).join("")}</div>
+
+          <div class="section-title">📜 Protocolos & Tecnologias</div>
+          <div>${d.protocols.map(p => `<span class="badge">${p}</span>`).join("")}</div>
+
+          <div class="section-title">🔒 Postura de Segurança & Ameaças</div>
+          <div style="color: #f0883e;">${d.security}</div>
+
+          <div class="section-title">🏢 Conexão com o Laboratório TechSolutions</div>
+          <div style="color: #7ee787; background:#161b22; border-left:3px solid #2ea043; padding:8px 10px; border-radius:0 4px 4px 0;">
+            ${d.ciscoContext}
+          </div>
+        `;
+      } else if (currentTab === "encap") {
+        container.innerHTML = `
+          <div style="font-size: 15px; font-weight: bold; color: #58a6ff; margin-bottom: 6px;">📦 Simulador de Encapsulamento (Fluxo PDU)</div>
+          <p style="color: #8b949e; margin-bottom: 10px;">Veja como os dados do usuário são empacotados com cabeçalhos de cada camada até virarem bits no cabo:</p>
+
+          <div style="display:flex; gap:8px; margin-bottom:12px;">
+            <button class="btn-action" onclick="simulatePacket('ping')">Simular Pacote ICMP (Ping)</button>
+            <button class="btn-action" style="background:#0284c7; border-color:#38bdf8;" onclick="simulatePacket('voip')">Simular Quadro de Voz (Voice VLAN)</button>
+          </div>
+
+          <div id="encapVisualArea">
+            <div style="color:#94a3b8; font-style:italic;">Clique em um dos botões acima para gerar a estrutura do quadro!</div>
+          </div>
+        `;
+      } else if (currentTab === "trouble") {
+        container.innerHTML = `
+          <div style="font-size: 15px; font-weight: bold; color: #f85149; margin-bottom: 6px;">🚨 Troubleshooting Baseado em Camadas OSI</div>
+          <p style="color: #8b949e; margin-bottom: 12px;">Selecione um sintoma de falha para diagnosticar a camada responsável:</p>
+
+          <div>
+            <button class="trouble-btn" onclick="showTrouble(1)">🔌 Falha 1: Cabo de rede desconectado / Porta em Shutdown</button>
+            <button class="trouble-btn" onclick="showTrouble(2)">🏷️ Falha 2: Porta no EtherChannel com flag (s) Suspended</button>
+            <button class="trouble-btn" onclick="showTrouble(3)">🌐 Falha 3: PC-ADM-01 não pinga PC-FIN-01 (Inter-VLAN)</button>
+            <button class="trouble-btn" onclick="showTrouble(4)">🛑 Falha 4: Erro de Native VLAN Mismatch no Trunk</button>
+          </div>
+
+          <div id="troubleResult" style="margin-top:14px;"></div>
+        `;
+      }
+    }
+
+    function simulatePacket(type) {
+      const area = document.getElementById("encapVisualArea");
+      if (type === "ping") {
+        area.innerHTML = `
+          <div class="encap-box">
+            <div style="font-weight:bold; color:#7ee787; margin-bottom:6px;">Quadro Ethernet 802.1Q (Ping entre VLAN 10):</div>
+            <div class="frame-wrapper">
+              <div class="frame-hdr" style="background:#0072b2; color:#fff; flex:1.2;">
+                <div>L2 Header</div>
+                <div style="font-size:9px;">MAC Dst / Src</div>
+              </div>
+              <div class="frame-hdr" style="background:#f0e442; color:#000; flex:1;">
+                <div>Tag 802.1Q</div>
+                <div style="font-size:9px;">VLAN ID: 10</div>
+              </div>
+              <div class="frame-hdr" style="background:#56b4e9; color:#000; flex:1.5;">
+                <div>L3 IP Header</div>
+                <div style="font-size:9px;">192.168.10.11 &rarr; .12</div>
+              </div>
+              <div class="frame-hdr" style="background:#009e73; color:#fff; flex:1.2;">
+                <div>ICMP Echo</div>
+                <div style="font-size:9px;">Type 8 (Request)</div>
+              </div>
+              <div class="frame-hdr" style="background:#8b949e; color:#fff; flex:0.8;">
+                <div>FCS</div>
+                <div style="font-size:9px;">CRC-32</div>
+              </div>
+            </div>
+            <div style="font-size:12px; color:#c9d1d9;">
+              • <strong>Caminho:</strong> PC-ADM-01 &rarr; SW-ACCESS-1 &rarr; SW-CORE-1 &rarr; [Port-Channel 1 LACP] &rarr; SW-CORE-2 &rarr; SW-ACCESS-2 &rarr; PC-ADM-02.
+            </div>
+          </div>
+        `;
+      } else {
+        area.innerHTML = `
+          <div class="encap-box">
+            <div style="font-weight:bold; color:#38bdf8; margin-bottom:6px;">Quadro de Telefonia IP (Voice VLAN com Prioridade QoS):</div>
+            <div class="frame-wrapper">
+              <div class="frame-hdr" style="background:#0072b2; color:#fff; flex:1.1;">
+                <div>L2 Ethernet</div>
+                <div style="font-size:9px;">MAC IP-Phone</div>
+              </div>
+              <div class="frame-hdr" style="background:#d55e00; color:#fff; flex:1.1;">
+                <div>802.1Q + CoS</div>
+                <div style="font-size:9px;">VLAN 40 (CoS 5)</div>
+              </div>
+              <div class="frame-hdr" style="background:#56b4e9; color:#000; flex:1.3;">
+                <div>IP (DSCP EF)</div>
+                <div style="font-size:9px;">Expedited Forwarding</div>
+              </div>
+              <div class="frame-hdr" style="background:#009e73; color:#fff; flex:1;">
+                <div>UDP / RTP</div>
+                <div style="font-size:9px;">Áudio Voz</div>
+              </div>
+              <div class="frame-hdr" style="background:#e69f00; color:#fff; flex:1.5;">
+                <div>Payload G.711</div>
+                <div style="font-size:9px;">Voz Digitalizada</div>
+              </div>
+            </div>
+            <div style="font-size:12px; color:#c9d1d9;">
+              • <strong>Marcação QoS:</strong> A tag 802.1Q carrega os 3 bits de prioridade (CoS 5), garantindo que os switches coloquem os pacotes de áudio na fila prioritária de transmissão (*Strict Priority Queue*).
+            </div>
+          </div>
+        `;
+      }
+    }
+
+    function showTrouble(id) {
+      const res = document.getElementById("troubleResult");
+      if (id === 1) {
+        res.innerHTML = `
+          <div style="background:#161b22; border-left:4px solid #8b949e; padding:10px; border-radius:4px;">
+            <div style="color:#8b949e; font-weight:bold;">Camada Afetada: CAMADA 1 (FÍSICA)</div>
+            <p style="color:#c9d1d9; font-size:12px; margin-top:4px;">
+              • <strong>Sintoma:</strong> Interface no estado <code>administratively down</code> ou sem link elétrico.<br/>
+              • <strong>Diagnóstico:</strong> <code>show interfaces status</code> mostra porta desconectada.<br/>
+              • <strong>Comando de Correção:</strong> <code>interface FastEthernet0/1</code> &rarr; <code>no shutdown</code>.
+            </p>
+          </div>
+        `;
+      } else if (id === 2) {
+        res.innerHTML = `
+          <div style="background:#161b22; border-left:4px solid #0072b2; padding:10px; border-radius:4px;">
+            <div style="color:#56b4e9; font-weight:bold;">Camada Afetada: CAMADA 2 (ENLACE DE DADOS / LACP)</div>
+            <p style="color:#c9d1d9; font-size:12px; margin-top:4px;">
+              • <strong>Sintoma:</strong> O bundle EtherChannel suspende a porta para evitar loops e vazamento.<br/>
+              • <strong>Causa:</strong> Inconsistência de velocidade, duplex ou VLAN nativa nas portas físicas do canal.<br/>
+              • <strong>Comando de Diagnóstico:</strong> <code>show etherchannel summary</code>.
+            </p>
+          </div>
+        `;
+      } else if (id === 3) {
+        res.innerHTML = `
+          <div style="background:#161b22; border-left:4px solid #56b4e9; padding:10px; border-radius:4px;">
+            <div style="color:#56b4e9; font-weight:bold;">Camada Afetada: CAMADA 3 (REDE / ROTEAMENTO)</div>
+            <p style="color:#c9d1d9; font-size:12px; margin-top:4px;">
+              • <strong>Sintoma:</strong> Hosts em VLANs distintas não se comunicam (Request timed out).<br/>
+              • <strong>Causa:</strong> Falta de roteamento inter-VLAN. Switches L2 isolam o broadcast e não roteiam pacotes IP.<br/>
+              • <strong>Comando de Correção:</strong> Habilitar <code>ip routing</code> e configurar SVIs com IP em switch L3.
+            </p>
+          </div>
+        `;
+      } else if (id === 4) {
+        res.innerHTML = `
+          <div style="background:#161b22; border-left:4px solid #d55e00; padding:10px; border-radius:4px;">
+            <div style="color:#f0883e; font-weight:bold;">Camada Afetada: CAMADA 2 (TRUNKING 802.1Q)</div>
+            <p style="color:#c9d1d9; font-size:12px; margin-top:4px;">
+              • <strong>Sintoma:</strong> Mensagens de CDP alertando <code>Native VLAN mismatch discovered</code>.<br/>
+              • <strong>Causa:</strong> Um lado configurado com VLAN 99 e o outro com VLAN 1.<br/>
+              • <strong>Comando de Correção:</strong> <code>switchport trunk native vlan 99</code> em ambos os lados.
+            </p>
+          </div>
+        `;
+      }
+    }
+
+    // Initial render
+    renderTab();
+  </script>
+</body>
+</html>

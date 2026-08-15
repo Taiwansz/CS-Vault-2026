@@ -40,6 +40,7 @@ SORT data DESC
 ---
 
 ## ⚡ Guias de Estudo e Materiais
+- 🌐 [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Aulas/Simulador Interativo - Modelo OSI e Encapsulamento|Simulador Interativo: Modelo OSI, Encapsulamento & Troubleshooting]]
 - 💻 [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Aulas/Terminal Interativo - Cisco IOS Catalyst 3560|Terminal Interativo Cisco IOS (Console de Simulação)]]
 - 🧭 [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Aulas/Árvore de Decisão - Troubleshooting de Redes L2 e L3|Árvore de Decisão: Troubleshooting de Redes L2 e L3]]
 - 🗺️ [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Topologia e Conceitos - Switching Avançado.canvas|Mapa Visual Interativo da Topologia (Canvas)]]
