@@ -9,1098 +9,166 @@ tags:
 ---
 ==⚠  Switch to EXCALIDRAW VIEW in the MORE OPTIONS menu of this document. ⚠==
 
+# Excalidraw Data
+
+## Text Elements
+TECHSOLUTIONS — ARQUITETURA SWITCHING AVANÇADO (LACP + TRUNKS + VLANS)
+Aluno: Matheus Sousa dos Santos | RA: 52319400 | Cisco Packet Tracer ^1d754190
+
+CAMADA CORE (LACP ETHERCHANNEL BUNDLE — 2 Gbps) ^957e5cc3
+
+SW-CORE-1 (Cisco 3560)
+• Port-channel 1 (Active)
+• Membros: Gig0/1, Gig0/2
+• Trunk Nativa 99 | Allowed 10,20,30,40,99 ^dc2145f2
+
+SW-CORE-2 (Cisco 3560)
+• Port-channel 1 (Passive)
+• Membros: Gig0/1, Gig0/2
+• Trunk Nativa 99 | Allowed 10,20,30,40,99 ^36e2bac7
+
+Port-Channel 1 (LACP)
+Gig0/1 + Gig0/2 (2 Gbps)
+Trunk dot1q / Native 99 ^ee39b421
+
+CAMADA DE ACESSO (DISTRIBUIÇÃO DE PORTAS E VOICE VLAN) ^8f89cf3f
+
+SW-ACCESS-1 (Cisco 3560)
+• Uplink: Gig0/1 (Trunk Nativa 99)
+• Fa0/2: VLAN 10 | Fa0/3: VLAN 20
+• Fa0/4: VLAN 30 | Fa0/5: Voice 40 ^f4fe1e69
+
+SW-ACCESS-2 (Cisco 3560)
+• Uplink: Gig0/1 (Trunk Nativa 99)
+• Fa0/2: VLAN 10 | Fa0/3: VLAN 20
+• Fa0/4: VLAN 30 | Fa0/5: Voice 40 ^e991790e
+
+Trunk Fa0/1 <-> Gig0/1 ^f96343e1
+
+Trunk Fa0/1 <-> Gig0/1 ^69fa5416
+
+SETOR 1 (SW-ACCESS-1) ^ba90a39d
+
+• PC-ADM-01: 192.168.10.11 /24 (Fa0/2 - VLAN 10)
+• PC-FIN-01: 192.168.20.11 /24 (Fa0/3 - VLAN 20)
+• PC-TI-01:  192.168.30.11 /24 (Fa0/4 - VLAN 30)
+• IP-PHONE-01: Fa0/5 (Voice VLAN 40 + Dados 10)
+• Gateway: 192.168.X.1 ^b17b8a2d
+
+SETOR 2 (SW-ACCESS-2) ^744cad4e
+
+• PC-ADM-02: 192.168.10.12 /24 (Fa0/2 - VLAN 10)
+• PC-FIN-02: 192.168.20.12 /24 (Fa0/3 - VLAN 20)
+• PC-TI-02:  192.168.30.12 /24 (Fa0/4 - VLAN 30)
+• IP-PHONE-02: Fa0/5 (Voice VLAN 40 + Dados 10)
+• Gateway: 192.168.X.1 ^195fddcb
+
+VALIDAÇÃO DOS TESTES DE PING (RESULTADOS REAIS DO CISCO PACKET TRACER):
+• Teste A (VLAN 10): PC-ADM-01 -> PC-ADM-02 (0% perda) ✅ SUCESSO (Comutação L2 via Port-Channel)
+• Teste B (VLAN 20): PC-FIN-01 -> PC-FIN-02 (0% perda) ✅ SUCESSO | Teste C (VLAN 30): PC-TI-01 -> PC-TI-02 (0% perda) ✅ SUCESSO
+• Teste D (Inter-VLAN): PC-ADM-01 -> PC-FIN-01 (100% perda) ❌ BLOQUEIO ESPERADO (VLANs isoladas sem roteador L3) ^01008ef5
+
+%%
 ## Drawing
-```json
-{
-  "type": "excalidraw",
-  "version": 2,
-  "source": "https://excalidraw.com",
-  "elements": [
-    {
-      "id": "9501324c",
-      "type": "rectangle",
-      "x": 80,
-      "y": 20,
-      "width": 840,
-      "height": 70,
-      "angle": 0,
-      "strokeColor": "#f59f00",
-      "backgroundColor": "#fff9db",
-      "fillStyle": "solid",
-      "strokeWidth": 2,
-      "strokeStyle": "solid",
-      "roughness": 1,
-      "opacity": 100,
-      "groupIds": [],
-      "frameId": null,
-      "roundness": {
-        "type": 3
-      },
-      "seed": 1000,
-      "version": 1,
-      "versionNonce": 1,
-      "isDeleted": false,
-      "boundElements": null,
-      "updated": 1,
-      "link": null,
-      "locked": false
-    },
-    {
-      "id": "1d754190",
-      "type": "text",
-      "x": 100,
-      "y": 32,
-      "width": 630.0,
-      "height": 40.5,
-      "angle": 0,
-      "strokeColor": "#d9480f",
-      "backgroundColor": "transparent",
-      "fillStyle": "solid",
-      "strokeWidth": 1,
-      "strokeStyle": "solid",
-      "roughness": 1,
-      "opacity": 100,
-      "groupIds": [],
-      "frameId": null,
-      "roundness": null,
-      "seed": 2001,
-      "version": 1,
-      "versionNonce": 1,
-      "isDeleted": false,
-      "boundElements": null,
-      "updated": 1,
-      "link": null,
-      "locked": false,
-      "text": "TECHSOLUTIONS \u2014 ARQUITETURA SWITCHING AVAN\u00c7ADO (LACP + TRUNKS + VLANS)\nAluno: Matheus Sousa dos Santos | RA: 52319400 | Cisco Packet Tracer",
-      "fontSize": 15,
-      "fontFamily": 1,
-      "textAlign": "left",
-      "verticalAlign": "top",
-      "containerId": null,
-      "originalText": "TECHSOLUTIONS \u2014 ARQUITETURA SWITCHING AVAN\u00c7ADO (LACP + TRUNKS + VLANS)\nAluno: Matheus Sousa dos Santos | RA: 52319400 | Cisco Packet Tracer",
-      "lineHeight": 1.25
-    },
-    {
-      "id": "70500166",
-      "type": "rectangle",
-      "x": 80,
-      "y": 110,
-      "width": 840,
-      "height": 160,
-      "angle": 0,
-      "strokeColor": "#1971c2",
-      "backgroundColor": "#e7f5ff",
-      "fillStyle": "solid",
-      "strokeWidth": 2,
-      "strokeStyle": "solid",
-      "roughness": 1,
-      "opacity": 100,
-      "groupIds": [],
-      "frameId": null,
-      "roundness": {
-        "type": 3
-      },
-      "seed": 1002,
-      "version": 1,
-      "versionNonce": 1,
-      "isDeleted": false,
-      "boundElements": null,
-      "updated": 1,
-      "link": null,
-      "locked": false
-    },
-    {
-      "id": "957e5cc3",
-      "type": "text",
-      "x": 100,
-      "y": 118,
-      "width": 366.59999999999997,
-      "height": 17.55,
-      "angle": 0,
-      "strokeColor": "#1864ab",
-      "backgroundColor": "transparent",
-      "fillStyle": "solid",
-      "strokeWidth": 1,
-      "strokeStyle": "solid",
-      "roughness": 1,
-      "opacity": 100,
-      "groupIds": [],
-      "frameId": null,
-      "roundness": null,
-      "seed": 2003,
-      "version": 1,
-      "versionNonce": 1,
-      "isDeleted": false,
-      "boundElements": null,
-      "updated": 1,
-      "link": null,
-      "locked": false,
-      "text": "CAMADA CORE (LACP ETHERCHANNEL BUNDLE \u2014 2 Gbps)",
-      "fontSize": 13,
-      "fontFamily": 1,
-      "textAlign": "left",
-      "verticalAlign": "top",
-      "containerId": null,
-      "originalText": "CAMADA CORE (LACP ETHERCHANNEL BUNDLE \u2014 2 Gbps)",
-      "lineHeight": 1.25
-    },
-    {
-      "id": "dba3fcd1",
-      "type": "rectangle",
-      "x": 120,
-      "y": 145,
-      "width": 260,
-      "height": 105,
-      "angle": 0,
-      "strokeColor": "#0072b2",
-      "backgroundColor": "#ffffff",
-      "fillStyle": "solid",
-      "strokeWidth": 2,
-      "strokeStyle": "solid",
-      "roughness": 1,
-      "opacity": 100,
-      "groupIds": [],
-      "frameId": null,
-      "roundness": {
-        "type": 3
-      },
-      "seed": 1004,
-      "version": 1,
-      "versionNonce": 1,
-      "isDeleted": false,
-      "boundElements": null,
-      "updated": 1,
-      "link": null,
-      "locked": false
-    },
-    {
-      "id": "dc2145f2",
-      "type": "text",
-      "x": 130,
-      "y": 155,
-      "width": 302.4,
-      "height": 64.80000000000001,
-      "angle": 0,
-      "strokeColor": "#0072b2",
-      "backgroundColor": "transparent",
-      "fillStyle": "solid",
-      "strokeWidth": 1,
-      "strokeStyle": "solid",
-      "roughness": 1,
-      "opacity": 100,
-      "groupIds": [],
-      "frameId": null,
-      "roundness": null,
-      "seed": 2005,
-      "version": 1,
-      "versionNonce": 1,
-      "isDeleted": false,
-      "boundElements": null,
-      "updated": 1,
-      "link": null,
-      "locked": false,
-      "text": "SW-CORE-1 (Cisco 3560)\n\u2022 Port-channel 1 (Active)\n\u2022 Membros: Gig0/1, Gig0/2\n\u2022 Trunk Nativa 99 | Allowed 10,20,30,40,99",
-      "fontSize": 12,
-      "fontFamily": 1,
-      "textAlign": "left",
-      "verticalAlign": "top",
-      "containerId": null,
-      "originalText": "SW-CORE-1 (Cisco 3560)\n\u2022 Port-channel 1 (Active)\n\u2022 Membros: Gig0/1, Gig0/2\n\u2022 Trunk Nativa 99 | Allowed 10,20,30,40,99",
-      "lineHeight": 1.25
-    },
-    {
-      "id": "63e555dc",
-      "type": "rectangle",
-      "x": 620,
-      "y": 145,
-      "width": 260,
-      "height": 105,
-      "angle": 0,
-      "strokeColor": "#0072b2",
-      "backgroundColor": "#ffffff",
-      "fillStyle": "solid",
-      "strokeWidth": 2,
-      "strokeStyle": "solid",
-      "roughness": 1,
-      "opacity": 100,
-      "groupIds": [],
-      "frameId": null,
-      "roundness": {
-        "type": 3
-      },
-      "seed": 1006,
-      "version": 1,
-      "versionNonce": 1,
-      "isDeleted": false,
-      "boundElements": null,
-      "updated": 1,
-      "link": null,
-      "locked": false
-    },
-    {
-      "id": "36e2bac7",
-      "type": "text",
-      "x": 630,
-      "y": 155,
-      "width": 302.4,
-      "height": 64.80000000000001,
-      "angle": 0,
-      "strokeColor": "#0072b2",
-      "backgroundColor": "transparent",
-      "fillStyle": "solid",
-      "strokeWidth": 1,
-      "strokeStyle": "solid",
-      "roughness": 1,
-      "opacity": 100,
-      "groupIds": [],
-      "frameId": null,
-      "roundness": null,
-      "seed": 2007,
-      "version": 1,
-      "versionNonce": 1,
-      "isDeleted": false,
-      "boundElements": null,
-      "updated": 1,
-      "link": null,
-      "locked": false,
-      "text": "SW-CORE-2 (Cisco 3560)\n\u2022 Port-channel 1 (Passive)\n\u2022 Membros: Gig0/1, Gig0/2\n\u2022 Trunk Nativa 99 | Allowed 10,20,30,40,99",
-      "fontSize": 12,
-      "fontFamily": 1,
-      "textAlign": "left",
-      "verticalAlign": "top",
-      "containerId": null,
-      "originalText": "SW-CORE-2 (Cisco 3560)\n\u2022 Port-channel 1 (Passive)\n\u2022 Membros: Gig0/1, Gig0/2\n\u2022 Trunk Nativa 99 | Allowed 10,20,30,40,99",
-      "lineHeight": 1.25
-    },
-    {
-      "id": "036ea43c",
-      "type": "arrow",
-      "x": 380,
-      "y": 185,
-      "width": 240,
-      "height": 0,
-      "angle": 0,
-      "strokeColor": "#d55e00",
-      "backgroundColor": "transparent",
-      "fillStyle": "solid",
-      "strokeWidth": 3,
-      "strokeStyle": "solid",
-      "roughness": 1,
-      "opacity": 100,
-      "groupIds": [],
-      "frameId": null,
-      "roundness": {
-        "type": 2
-      },
-      "seed": 3008,
-      "version": 1,
-      "versionNonce": 1,
-      "isDeleted": false,
-      "boundElements": null,
-      "updated": 1,
-      "link": null,
-      "locked": false,
-      "points": [
-        [
-          0,
-          0
-        ],
-        [
-          240,
-          0
-        ]
-      ],
-      "lastCommittedPoint": null,
-      "startBinding": null,
-      "endBinding": null,
-      "startArrowhead": null,
-      "endArrowhead": "arrow"
-    },
-    {
-      "id": "4a06e792",
-      "type": "arrow",
-      "x": 620,
-      "y": 205,
-      "width": 240,
-      "height": 0,
-      "angle": 0,
-      "strokeColor": "#d55e00",
-      "backgroundColor": "transparent",
-      "fillStyle": "solid",
-      "strokeWidth": 3,
-      "strokeStyle": "solid",
-      "roughness": 1,
-      "opacity": 100,
-      "groupIds": [],
-      "frameId": null,
-      "roundness": {
-        "type": 2
-      },
-      "seed": 3009,
-      "version": 1,
-      "versionNonce": 1,
-      "isDeleted": false,
-      "boundElements": null,
-      "updated": 1,
-      "link": null,
-      "locked": false,
-      "points": [
-        [
-          0,
-          0
-        ],
-        [
-          -240,
-          0
-        ]
-      ],
-      "lastCommittedPoint": null,
-      "startBinding": null,
-      "endBinding": null,
-      "startArrowhead": null,
-      "endArrowhead": "arrow"
-    },
-    {
-      "id": "ee39b421",
-      "type": "text",
-      "x": 410,
-      "y": 165,
-      "width": 158.39999999999998,
-      "height": 44.550000000000004,
-      "angle": 0,
-      "strokeColor": "#d55e00",
-      "backgroundColor": "transparent",
-      "fillStyle": "solid",
-      "strokeWidth": 1,
-      "strokeStyle": "solid",
-      "roughness": 1,
-      "opacity": 100,
-      "groupIds": [],
-      "frameId": null,
-      "roundness": null,
-      "seed": 2010,
-      "version": 1,
-      "versionNonce": 1,
-      "isDeleted": false,
-      "boundElements": null,
-      "updated": 1,
-      "link": null,
-      "locked": false,
-      "text": "Port-Channel 1 (LACP)\nGig0/1 + Gig0/2 (2 Gbps)\nTrunk dot1q / Native 99",
-      "fontSize": 11,
-      "fontFamily": 1,
-      "textAlign": "center",
-      "verticalAlign": "top",
-      "containerId": null,
-      "originalText": "Port-Channel 1 (LACP)\nGig0/1 + Gig0/2 (2 Gbps)\nTrunk dot1q / Native 99",
-      "lineHeight": 1.25
-    },
-    {
-      "id": "e101e4cc",
-      "type": "rectangle",
-      "x": 80,
-      "y": 310,
-      "width": 840,
-      "height": 160,
-      "angle": 0,
-      "strokeColor": "#0ca678",
-      "backgroundColor": "#e6fcf5",
-      "fillStyle": "solid",
-      "strokeWidth": 2,
-      "strokeStyle": "solid",
-      "roughness": 1,
-      "opacity": 100,
-      "groupIds": [],
-      "frameId": null,
-      "roundness": {
-        "type": 3
-      },
-      "seed": 1011,
-      "version": 1,
-      "versionNonce": 1,
-      "isDeleted": false,
-      "boundElements": null,
-      "updated": 1,
-      "link": null,
-      "locked": false
-    },
-    {
-      "id": "8f89cf3f",
-      "type": "text",
-      "x": 100,
-      "y": 318,
-      "width": 421.2,
-      "height": 17.55,
-      "angle": 0,
-      "strokeColor": "#087f5b",
-      "backgroundColor": "transparent",
-      "fillStyle": "solid",
-      "strokeWidth": 1,
-      "strokeStyle": "solid",
-      "roughness": 1,
-      "opacity": 100,
-      "groupIds": [],
-      "frameId": null,
-      "roundness": null,
-      "seed": 2012,
-      "version": 1,
-      "versionNonce": 1,
-      "isDeleted": false,
-      "boundElements": null,
-      "updated": 1,
-      "link": null,
-      "locked": false,
-      "text": "CAMADA DE ACESSO (DISTRIBUI\u00c7\u00c3O DE PORTAS E VOICE VLAN)",
-      "fontSize": 13,
-      "fontFamily": 1,
-      "textAlign": "left",
-      "verticalAlign": "top",
-      "containerId": null,
-      "originalText": "CAMADA DE ACESSO (DISTRIBUI\u00c7\u00c3O DE PORTAS E VOICE VLAN)",
-      "lineHeight": 1.25
-    },
-    {
-      "id": "04e84d4c",
-      "type": "rectangle",
-      "x": 120,
-      "y": 345,
-      "width": 260,
-      "height": 105,
-      "angle": 0,
-      "strokeColor": "#0ca678",
-      "backgroundColor": "#ffffff",
-      "fillStyle": "solid",
-      "strokeWidth": 2,
-      "strokeStyle": "solid",
-      "roughness": 1,
-      "opacity": 100,
-      "groupIds": [],
-      "frameId": null,
-      "roundness": {
-        "type": 3
-      },
-      "seed": 1013,
-      "version": 1,
-      "versionNonce": 1,
-      "isDeleted": false,
-      "boundElements": null,
-      "updated": 1,
-      "link": null,
-      "locked": false
-    },
-    {
-      "id": "f4fe1e69",
-      "type": "text",
-      "x": 130,
-      "y": 355,
-      "width": 244.79999999999998,
-      "height": 64.80000000000001,
-      "angle": 0,
-      "strokeColor": "#087f5b",
-      "backgroundColor": "transparent",
-      "fillStyle": "solid",
-      "strokeWidth": 1,
-      "strokeStyle": "solid",
-      "roughness": 1,
-      "opacity": 100,
-      "groupIds": [],
-      "frameId": null,
-      "roundness": null,
-      "seed": 2014,
-      "version": 1,
-      "versionNonce": 1,
-      "isDeleted": false,
-      "boundElements": null,
-      "updated": 1,
-      "link": null,
-      "locked": false,
-      "text": "SW-ACCESS-1 (Cisco 3560)\n\u2022 Uplink: Gig0/1 (Trunk Nativa 99)\n\u2022 Fa0/2: VLAN 10 | Fa0/3: VLAN 20\n\u2022 Fa0/4: VLAN 30 | Fa0/5: Voice 40",
-      "fontSize": 12,
-      "fontFamily": 1,
-      "textAlign": "left",
-      "verticalAlign": "top",
-      "containerId": null,
-      "originalText": "SW-ACCESS-1 (Cisco 3560)\n\u2022 Uplink: Gig0/1 (Trunk Nativa 99)\n\u2022 Fa0/2: VLAN 10 | Fa0/3: VLAN 20\n\u2022 Fa0/4: VLAN 30 | Fa0/5: Voice 40",
-      "lineHeight": 1.25
-    },
-    {
-      "id": "6c5d178d",
-      "type": "rectangle",
-      "x": 620,
-      "y": 345,
-      "width": 260,
-      "height": 105,
-      "angle": 0,
-      "strokeColor": "#0ca678",
-      "backgroundColor": "#ffffff",
-      "fillStyle": "solid",
-      "strokeWidth": 2,
-      "strokeStyle": "solid",
-      "roughness": 1,
-      "opacity": 100,
-      "groupIds": [],
-      "frameId": null,
-      "roundness": {
-        "type": 3
-      },
-      "seed": 1015,
-      "version": 1,
-      "versionNonce": 1,
-      "isDeleted": false,
-      "boundElements": null,
-      "updated": 1,
-      "link": null,
-      "locked": false
-    },
-    {
-      "id": "e991790e",
-      "type": "text",
-      "x": 630,
-      "y": 355,
-      "width": 244.79999999999998,
-      "height": 64.80000000000001,
-      "angle": 0,
-      "strokeColor": "#087f5b",
-      "backgroundColor": "transparent",
-      "fillStyle": "solid",
-      "strokeWidth": 1,
-      "strokeStyle": "solid",
-      "roughness": 1,
-      "opacity": 100,
-      "groupIds": [],
-      "frameId": null,
-      "roundness": null,
-      "seed": 2016,
-      "version": 1,
-      "versionNonce": 1,
-      "isDeleted": false,
-      "boundElements": null,
-      "updated": 1,
-      "link": null,
-      "locked": false,
-      "text": "SW-ACCESS-2 (Cisco 3560)\n\u2022 Uplink: Gig0/1 (Trunk Nativa 99)\n\u2022 Fa0/2: VLAN 10 | Fa0/3: VLAN 20\n\u2022 Fa0/4: VLAN 30 | Fa0/5: Voice 40",
-      "fontSize": 12,
-      "fontFamily": 1,
-      "textAlign": "left",
-      "verticalAlign": "top",
-      "containerId": null,
-      "originalText": "SW-ACCESS-2 (Cisco 3560)\n\u2022 Uplink: Gig0/1 (Trunk Nativa 99)\n\u2022 Fa0/2: VLAN 10 | Fa0/3: VLAN 20\n\u2022 Fa0/4: VLAN 30 | Fa0/5: Voice 40",
-      "lineHeight": 1.25
-    },
-    {
-      "id": "28325952",
-      "type": "arrow",
-      "x": 250,
-      "y": 250,
-      "width": 0,
-      "height": 95,
-      "angle": 0,
-      "strokeColor": "#0072b2",
-      "backgroundColor": "transparent",
-      "fillStyle": "solid",
-      "strokeWidth": 2,
-      "strokeStyle": "dashed",
-      "roughness": 1,
-      "opacity": 100,
-      "groupIds": [],
-      "frameId": null,
-      "roundness": {
-        "type": 2
-      },
-      "seed": 3017,
-      "version": 1,
-      "versionNonce": 1,
-      "isDeleted": false,
-      "boundElements": null,
-      "updated": 1,
-      "link": null,
-      "locked": false,
-      "points": [
-        [
-          0,
-          0
-        ],
-        [
-          0,
-          95
-        ]
-      ],
-      "lastCommittedPoint": null,
-      "startBinding": null,
-      "endBinding": null,
-      "startArrowhead": null,
-      "endArrowhead": "arrow"
-    },
-    {
-      "id": "f96343e1",
-      "type": "text",
-      "x": 255,
-      "y": 280,
-      "width": 132.0,
-      "height": 13.5,
-      "angle": 0,
-      "strokeColor": "#0072b2",
-      "backgroundColor": "transparent",
-      "fillStyle": "solid",
-      "strokeWidth": 1,
-      "strokeStyle": "solid",
-      "roughness": 1,
-      "opacity": 100,
-      "groupIds": [],
-      "frameId": null,
-      "roundness": null,
-      "seed": 2018,
-      "version": 1,
-      "versionNonce": 1,
-      "isDeleted": false,
-      "boundElements": null,
-      "updated": 1,
-      "link": null,
-      "locked": false,
-      "text": "Trunk Fa0/1 <-> Gig0/1",
-      "fontSize": 10,
-      "fontFamily": 1,
-      "textAlign": "left",
-      "verticalAlign": "top",
-      "containerId": null,
-      "originalText": "Trunk Fa0/1 <-> Gig0/1",
-      "lineHeight": 1.25
-    },
-    {
-      "id": "5af6e276",
-      "type": "arrow",
-      "x": 750,
-      "y": 250,
-      "width": 0,
-      "height": 95,
-      "angle": 0,
-      "strokeColor": "#0072b2",
-      "backgroundColor": "transparent",
-      "fillStyle": "solid",
-      "strokeWidth": 2,
-      "strokeStyle": "dashed",
-      "roughness": 1,
-      "opacity": 100,
-      "groupIds": [],
-      "frameId": null,
-      "roundness": {
-        "type": 2
-      },
-      "seed": 3019,
-      "version": 1,
-      "versionNonce": 1,
-      "isDeleted": false,
-      "boundElements": null,
-      "updated": 1,
-      "link": null,
-      "locked": false,
-      "points": [
-        [
-          0,
-          0
-        ],
-        [
-          0,
-          95
-        ]
-      ],
-      "lastCommittedPoint": null,
-      "startBinding": null,
-      "endBinding": null,
-      "startArrowhead": null,
-      "endArrowhead": "arrow"
-    },
-    {
-      "id": "69fa5416",
-      "type": "text",
-      "x": 755,
-      "y": 280,
-      "width": 132.0,
-      "height": 13.5,
-      "angle": 0,
-      "strokeColor": "#0072b2",
-      "backgroundColor": "transparent",
-      "fillStyle": "solid",
-      "strokeWidth": 1,
-      "strokeStyle": "solid",
-      "roughness": 1,
-      "opacity": 100,
-      "groupIds": [],
-      "frameId": null,
-      "roundness": null,
-      "seed": 2020,
-      "version": 1,
-      "versionNonce": 1,
-      "isDeleted": false,
-      "boundElements": null,
-      "updated": 1,
-      "link": null,
-      "locked": false,
-      "text": "Trunk Fa0/1 <-> Gig0/1",
-      "fontSize": 10,
-      "fontFamily": 1,
-      "textAlign": "left",
-      "verticalAlign": "top",
-      "containerId": null,
-      "originalText": "Trunk Fa0/1 <-> Gig0/1",
-      "lineHeight": 1.25
-    },
-    {
-      "id": "2f4712db",
-      "type": "rectangle",
-      "x": 80,
-      "y": 500,
-      "width": 360,
-      "height": 200,
-      "angle": 0,
-      "strokeColor": "#e69f00",
-      "backgroundColor": "#fff4e6",
-      "fillStyle": "solid",
-      "strokeWidth": 2,
-      "strokeStyle": "solid",
-      "roughness": 1,
-      "opacity": 100,
-      "groupIds": [],
-      "frameId": null,
-      "roundness": {
-        "type": 3
-      },
-      "seed": 1021,
-      "version": 1,
-      "versionNonce": 1,
-      "isDeleted": false,
-      "boundElements": null,
-      "updated": 1,
-      "link": null,
-      "locked": false
-    },
-    {
-      "id": "ba90a39d",
-      "type": "text",
-      "x": 95,
-      "y": 510,
-      "width": 151.2,
-      "height": 16.200000000000003,
-      "angle": 0,
-      "strokeColor": "#d9480f",
-      "backgroundColor": "transparent",
-      "fillStyle": "solid",
-      "strokeWidth": 1,
-      "strokeStyle": "solid",
-      "roughness": 1,
-      "opacity": 100,
-      "groupIds": [],
-      "frameId": null,
-      "roundness": null,
-      "seed": 2022,
-      "version": 1,
-      "versionNonce": 1,
-      "isDeleted": false,
-      "boundElements": null,
-      "updated": 1,
-      "link": null,
-      "locked": false,
-      "text": "SETOR 1 (SW-ACCESS-1)",
-      "fontSize": 12,
-      "fontFamily": 1,
-      "textAlign": "left",
-      "verticalAlign": "top",
-      "containerId": null,
-      "originalText": "SETOR 1 (SW-ACCESS-1)",
-      "lineHeight": 1.25
-    },
-    {
-      "id": "b17b8a2d",
-      "type": "text",
-      "x": 95,
-      "y": 535,
-      "width": 316.79999999999995,
-      "height": 74.25,
-      "angle": 0,
-      "strokeColor": "#333333",
-      "backgroundColor": "transparent",
-      "fillStyle": "solid",
-      "strokeWidth": 1,
-      "strokeStyle": "solid",
-      "roughness": 1,
-      "opacity": 100,
-      "groupIds": [],
-      "frameId": null,
-      "roundness": null,
-      "seed": 2023,
-      "version": 1,
-      "versionNonce": 1,
-      "isDeleted": false,
-      "boundElements": null,
-      "updated": 1,
-      "link": null,
-      "locked": false,
-      "text": "\u2022 PC-ADM-01: 192.168.10.11 /24 (Fa0/2 - VLAN 10)\n\u2022 PC-FIN-01: 192.168.20.11 /24 (Fa0/3 - VLAN 20)\n\u2022 PC-TI-01:  192.168.30.11 /24 (Fa0/4 - VLAN 30)\n\u2022 IP-PHONE-01: Fa0/5 (Voice VLAN 40 + Dados 10)\n\u2022 Gateway: 192.168.X.1",
-      "fontSize": 11,
-      "fontFamily": 1,
-      "textAlign": "left",
-      "verticalAlign": "top",
-      "containerId": null,
-      "originalText": "\u2022 PC-ADM-01: 192.168.10.11 /24 (Fa0/2 - VLAN 10)\n\u2022 PC-FIN-01: 192.168.20.11 /24 (Fa0/3 - VLAN 20)\n\u2022 PC-TI-01:  192.168.30.11 /24 (Fa0/4 - VLAN 30)\n\u2022 IP-PHONE-01: Fa0/5 (Voice VLAN 40 + Dados 10)\n\u2022 Gateway: 192.168.X.1",
-      "lineHeight": 1.25
-    },
-    {
-      "id": "baa9aad2",
-      "type": "rectangle",
-      "x": 560,
-      "y": 500,
-      "width": 360,
-      "height": 200,
-      "angle": 0,
-      "strokeColor": "#e69f00",
-      "backgroundColor": "#fff4e6",
-      "fillStyle": "solid",
-      "strokeWidth": 2,
-      "strokeStyle": "solid",
-      "roughness": 1,
-      "opacity": 100,
-      "groupIds": [],
-      "frameId": null,
-      "roundness": {
-        "type": 3
-      },
-      "seed": 1024,
-      "version": 1,
-      "versionNonce": 1,
-      "isDeleted": false,
-      "boundElements": null,
-      "updated": 1,
-      "link": null,
-      "locked": false
-    },
-    {
-      "id": "744cad4e",
-      "type": "text",
-      "x": 575,
-      "y": 510,
-      "width": 151.2,
-      "height": 16.200000000000003,
-      "angle": 0,
-      "strokeColor": "#d9480f",
-      "backgroundColor": "transparent",
-      "fillStyle": "solid",
-      "strokeWidth": 1,
-      "strokeStyle": "solid",
-      "roughness": 1,
-      "opacity": 100,
-      "groupIds": [],
-      "frameId": null,
-      "roundness": null,
-      "seed": 2025,
-      "version": 1,
-      "versionNonce": 1,
-      "isDeleted": false,
-      "boundElements": null,
-      "updated": 1,
-      "link": null,
-      "locked": false,
-      "text": "SETOR 2 (SW-ACCESS-2)",
-      "fontSize": 12,
-      "fontFamily": 1,
-      "textAlign": "left",
-      "verticalAlign": "top",
-      "containerId": null,
-      "originalText": "SETOR 2 (SW-ACCESS-2)",
-      "lineHeight": 1.25
-    },
-    {
-      "id": "195fddcb",
-      "type": "text",
-      "x": 575,
-      "y": 535,
-      "width": 316.79999999999995,
-      "height": 74.25,
-      "angle": 0,
-      "strokeColor": "#333333",
-      "backgroundColor": "transparent",
-      "fillStyle": "solid",
-      "strokeWidth": 1,
-      "strokeStyle": "solid",
-      "roughness": 1,
-      "opacity": 100,
-      "groupIds": [],
-      "frameId": null,
-      "roundness": null,
-      "seed": 2026,
-      "version": 1,
-      "versionNonce": 1,
-      "isDeleted": false,
-      "boundElements": null,
-      "updated": 1,
-      "link": null,
-      "locked": false,
-      "text": "\u2022 PC-ADM-02: 192.168.10.12 /24 (Fa0/2 - VLAN 10)\n\u2022 PC-FIN-02: 192.168.20.12 /24 (Fa0/3 - VLAN 20)\n\u2022 PC-TI-02:  192.168.30.12 /24 (Fa0/4 - VLAN 30)\n\u2022 IP-PHONE-02: Fa0/5 (Voice VLAN 40 + Dados 10)\n\u2022 Gateway: 192.168.X.1",
-      "fontSize": 11,
-      "fontFamily": 1,
-      "textAlign": "left",
-      "verticalAlign": "top",
-      "containerId": null,
-      "originalText": "\u2022 PC-ADM-02: 192.168.10.12 /24 (Fa0/2 - VLAN 10)\n\u2022 PC-FIN-02: 192.168.20.12 /24 (Fa0/3 - VLAN 20)\n\u2022 PC-TI-02:  192.168.30.12 /24 (Fa0/4 - VLAN 30)\n\u2022 IP-PHONE-02: Fa0/5 (Voice VLAN 40 + Dados 10)\n\u2022 Gateway: 192.168.X.1",
-      "lineHeight": 1.25
-    },
-    {
-      "id": "271aa9bb",
-      "type": "arrow",
-      "x": 230,
-      "y": 450,
-      "width": 0,
-      "height": 50,
-      "angle": 0,
-      "strokeColor": "#e69f00",
-      "backgroundColor": "transparent",
-      "fillStyle": "solid",
-      "strokeWidth": 2,
-      "strokeStyle": "solid",
-      "roughness": 1,
-      "opacity": 100,
-      "groupIds": [],
-      "frameId": null,
-      "roundness": {
-        "type": 2
-      },
-      "seed": 3027,
-      "version": 1,
-      "versionNonce": 1,
-      "isDeleted": false,
-      "boundElements": null,
-      "updated": 1,
-      "link": null,
-      "locked": false,
-      "points": [
-        [
-          0,
-          0
-        ],
-        [
-          0,
-          50
-        ]
-      ],
-      "lastCommittedPoint": null,
-      "startBinding": null,
-      "endBinding": null,
-      "startArrowhead": null,
-      "endArrowhead": "arrow"
-    },
-    {
-      "id": "03d3e7d2",
-      "type": "arrow",
-      "x": 770,
-      "y": 450,
-      "width": 0,
-      "height": 50,
-      "angle": 0,
-      "strokeColor": "#e69f00",
-      "backgroundColor": "transparent",
-      "fillStyle": "solid",
-      "strokeWidth": 2,
-      "strokeStyle": "solid",
-      "roughness": 1,
-      "opacity": 100,
-      "groupIds": [],
-      "frameId": null,
-      "roundness": {
-        "type": 2
-      },
-      "seed": 3028,
-      "version": 1,
-      "versionNonce": 1,
-      "isDeleted": false,
-      "boundElements": null,
-      "updated": 1,
-      "link": null,
-      "locked": false,
-      "points": [
-        [
-          0,
-          0
-        ],
-        [
-          0,
-          50
-        ]
-      ],
-      "lastCommittedPoint": null,
-      "startBinding": null,
-      "endBinding": null,
-      "startArrowhead": null,
-      "endArrowhead": "arrow"
-    },
-    {
-      "id": "be35dca8",
-      "type": "rectangle",
-      "x": 80,
-      "y": 720,
-      "width": 840,
-      "height": 110,
-      "angle": 0,
-      "strokeColor": "#495057",
-      "backgroundColor": "#f8f9fa",
-      "fillStyle": "solid",
-      "strokeWidth": 2,
-      "strokeStyle": "solid",
-      "roughness": 1,
-      "opacity": 100,
-      "groupIds": [],
-      "frameId": null,
-      "roundness": {
-        "type": 3
-      },
-      "seed": 1029,
-      "version": 1,
-      "versionNonce": 1,
-      "isDeleted": false,
-      "boundElements": null,
-      "updated": 1,
-      "link": null,
-      "locked": false
-    },
-    {
-      "id": "01008ef5",
-      "type": "text",
-      "x": 100,
-      "y": 730,
-      "width": 838.1999999999999,
-      "height": 59.400000000000006,
-      "angle": 0,
-      "strokeColor": "#212529",
-      "backgroundColor": "transparent",
-      "fillStyle": "solid",
-      "strokeWidth": 1,
-      "strokeStyle": "solid",
-      "roughness": 1,
-      "opacity": 100,
-      "groupIds": [],
-      "frameId": null,
-      "roundness": null,
-      "seed": 2030,
-      "version": 1,
-      "versionNonce": 1,
-      "isDeleted": false,
-      "boundElements": null,
-      "updated": 1,
-      "link": null,
-      "locked": false,
-      "text": "VALIDA\u00c7\u00c3O DOS TESTES DE PING (RESULTADOS REAIS DO CISCO PACKET TRACER):\n\u2022 Teste A (VLAN 10): PC-ADM-01 -> PC-ADM-02 (0% perda) \u2705 SUCESSO (Comuta\u00e7\u00e3o L2 via Port-Channel)\n\u2022 Teste B (VLAN 20): PC-FIN-01 -> PC-FIN-02 (0% perda) \u2705 SUCESSO | Teste C (VLAN 30): PC-TI-01 -> PC-TI-02 (0% perda) \u2705 SUCESSO\n\u2022 Teste D (Inter-VLAN): PC-ADM-01 -> PC-FIN-01 (100% perda) \u274c BLOQUEIO ESPERADO (VLANs isoladas sem roteador L3)",
-      "fontSize": 11,
-      "fontFamily": 1,
-      "textAlign": "left",
-      "verticalAlign": "top",
-      "containerId": null,
-      "originalText": "VALIDA\u00c7\u00c3O DOS TESTES DE PING (RESULTADOS REAIS DO CISCO PACKET TRACER):\n\u2022 Teste A (VLAN 10): PC-ADM-01 -> PC-ADM-02 (0% perda) \u2705 SUCESSO (Comuta\u00e7\u00e3o L2 via Port-Channel)\n\u2022 Teste B (VLAN 20): PC-FIN-01 -> PC-FIN-02 (0% perda) \u2705 SUCESSO | Teste C (VLAN 30): PC-TI-01 -> PC-TI-02 (0% perda) \u2705 SUCESSO\n\u2022 Teste D (Inter-VLAN): PC-ADM-01 -> PC-FIN-01 (100% perda) \u274c BLOQUEIO ESPERADO (VLANs isoladas sem roteador L3)",
-      "lineHeight": 1.25
-    }
-  ],
-  "appState": {
-    "gridSize": null,
-    "viewBackgroundColor": "#ffffff"
-  },
-  "files": {}
-}
+```compressed-json
+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
 ```
 %%

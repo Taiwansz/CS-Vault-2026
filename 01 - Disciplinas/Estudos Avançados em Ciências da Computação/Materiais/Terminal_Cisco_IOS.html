@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Cisco IOS Catalyst 3560 Interactive Terminal</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      background-color: #0b0f19;
+      color: #e2e8f0;
+      font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+      padding: 12px;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .terminal-container {
+      background: #0d1117;
+      border: 1px solid #30363d;
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      overflow: hidden;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.6);
+    }
+    .terminal-header {
+      background: #161b22;
+      border-bottom: 1px solid #30363d;
+      padding: 10px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .terminal-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #56B4E9;
+    }
+    .status-dot {
+      width: 10px;
+      height: 10px;
+      background-color: #00e676;
+      border-radius: 50%;
+      box-shadow: 0 0 8px #00e676;
+    }
+    .controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    select, button {
+      background: #21262d;
+      color: #e2e8f0;
+      border: 1px solid #30363d;
+      border-radius: 4px;
+      padding: 4px 10px;
+      font-family: inherit;
+      font-size: 12px;
+      cursor: pointer;
+      outline: none;
+      transition: all 0.2s ease;
+    }
+    select:hover, button:hover {
+      background: #30363d;
+      border-color: #56B4E9;
+    }
+    .quick-chips {
+      background: #111827;
+      border-bottom: 1px solid #1f2937;
+      padding: 8px 12px;
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .chips-label {
+      font-size: 11px;
+      color: #94a3b8;
+      margin-right: 4px;
+    }
+    .chip {
+      background: #1e293b;
+      color: #38bdf8;
+      border: 1px solid #334155;
+      border-radius: 12px;
+      padding: 2px 10px;
+      font-size: 11px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .chip:hover {
+      background: #0284c7;
+      color: #ffffff;
+      border-color: #38bdf8;
+      transform: translateY(-1px);
+    }
+    .terminal-body {
+      flex: 1;
+      padding: 14px;
+      overflow-y: auto;
+      font-size: 13px;
+      line-height: 1.45;
+      white-space: pre-wrap;
+    }
+    .output-line {
+      margin-bottom: 6px;
+    }
+    .prompt-line {
+      display: flex;
+      align-items: center;
+      padding: 10px 14px;
+      background: #161b22;
+      border-top: 1px solid #30363d;
+    }
+    .prompt-label {
+      color: #38bdf8;
+      font-weight: bold;
+      margin-right: 8px;
+      user-select: none;
+    }
+    .terminal-input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      outline: none;
+      color: #f8fafc;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    .success-text { color: #4ade80; font-weight: bold; }
+    .fail-text { color: #f87171; font-weight: bold; }
+    .highlight-text { color: #fbbf24; }
+  </style>
+</head>
+<body>
+
+  <div class="terminal-container">
+    <!-- Header -->
+    <div class="terminal-header">
+      <div class="terminal-title">
+        <div class="status-dot"></div>
+        <span>CISCO CATALYST 3560 IOS SIMULATOR</span>
+        <span style="color: #64748b; font-weight: normal; font-size: 11px;">(Lab TechSolutions)</span>
+      </div>
+      <div class="controls">
+        <label style="font-size: 12px; color: #94a3b8;">Switch:</label>
+        <select id="deviceSelector" onchange="setDevice(this.value)">
+          <option value="SW-CORE-1">SW-CORE-1 (LACP Active)</option>
+          <option value="SW-CORE-2">SW-CORE-2 (LACP Passive)</option>
+          <option value="SW-ACCESS-1">SW-ACCESS-1 (Acesso Setor 1)</option>
+          <option value="SW-ACCESS-2">SW-ACCESS-2 (Acesso Setor 2)</option>
+        </select>
+        <button onclick="clearConsole()">Limpar</button>
+      </div>
+    </div>
+
+    <!-- Quick Action Chips -->
+    <div class="quick-chips">
+      <span class="chips-label">Comandos Rápidos:</span>
+      <span class="chip" onclick="runQuick('show vlan brief')">show vlan brief</span>
+      <span class="chip" onclick="runQuick('show etherchannel summary')">show etherchannel summary</span>
+      <span class="chip" onclick="runQuick('show interfaces trunk')">show interfaces trunk</span>
+      <span class="chip" onclick="runQuick('show lacp neighbor')">show lacp neighbor</span>
+      <span class="chip" onclick="runQuick('ping 192.168.10.12')">ping 192.168.10.12 (VLAN 10)</span>
+      <span class="chip" onclick="runQuick('ping 192.168.20.11')">ping 192.168.20.11 (VLAN 20)</span>
+      <span class="chip" onclick="runQuick('help')">help</span>
+    </div>
+
+    <!-- Body Output -->
+    <div class="terminal-body" id="consoleOutput">
+<span style="color: #38bdf8; font-weight: bold;">Cisco IOS Software, C3560 Software (C3560-ADVIPSERVICESK9-M), Version 12.2(37)SE1.</span>
+Switch de Camada 2/3 da TechSolutions inicializado com sucesso.
+
+Clique nos botões de <span class="highlight-text">Comandos Rápidos</span> acima ou digite comandos no prompt abaixo:
+• Digite <span class="highlight-text">help</span> ou <span class="highlight-text">?</span> para ver todos os comandos disponíveis.
+• Digite <span class="highlight-text">show vlan brief</span> para ver as VLANs configuradas.
+• Digite <span class="highlight-text">show etherchannel summary</span> para ver o status do LACP Port-Channel 1.
+• Digite <span class="highlight-text">ping 192.168.10.12</span> para testar conectividade L2.
+---------------------------------------------------------------------------------
+</div>
+
+    <!-- Input Prompt -->
+    <div class="prompt-line">
+      <span class="prompt-label" id="promptLabel">SW-CORE-1#</span>
+      <input type="text" id="commandInput" class="terminal-input" placeholder="Digite um comando Cisco IOS..." autofocus autocomplete="off" spellcheck="false" />
+    </div>
+  </div>
+
+  <script>
+    let currentDevice = "SW-CORE-1";
+    let history = [];
+    let historyIndex = -1;
+
+    const db = {
+      "SW-CORE-1": {
+        "show vlan brief": `VLAN Name                             Status    Ports
+---- -------------------------------- --------- -------------------------------
+1    default                          active    Fa0/2, Fa0/3, Fa0/4, Fa0/5...
+10   ADMINISTRATIVO                   active    
+20   FINANCEIRO                       active    
+30   TI                               active    
+40   VOZ                              active    
+99   NATIVA                           active    
+1002 fddi-default                     act/unsup 
+1003 token-ring-default               act/unsup`,
+
+        "show etherchannel summary": `Flags:  D - down        P - in port-channel
+        I - stand-alone s - suspended
+        H - Hot-standby (LACP only)
+        R - Layer3      S - Layer2
+        U - in use      f - failed to allocate aggregator
+
+Group  Port-channel  Protocol    Ports
+------+-------------+-----------+-----------------------------------------------
+1      Po1(SU)         LACP      Gi0/1(P)    Gi0/2(P)`,
+
+        "show interfaces trunk": `Port        Mode         Encapsulation  Status        Native vlan
+Fa0/1       on           802.1q         trunking      99
+Po1         on           802.1q         trunking      99
+
+Port        Vlans allowed on trunk
+Fa0/1       10,20,30,40,99
+Po1         10,20,30,40,99
+
+Port        Vlans allowed and active in management domain
+Fa0/1       10,20,30,40,99
+Po1         10,20,30,40,99`,
+
+        "show lacp neighbor": `Channel group 1 neighbors
+
+Partner's information:
+
+                  LACP port                        Admin  Oper   Port    Port
+Port      Flags   Priority  Dev ID          Age    Key    Key    Number  State
+Gi0/1     SP      32768     0001.6492.2A01  14s    0x1    0x1    0x1     0x3C
+Gi0/2     SP      32768     0001.6492.2A01  14s    0x1    0x1    0x2     0x3C`,
+
+        "show ip interface brief": `Interface              IP-Address      OK? Method Status                Protocol
+Port-channel 1         unassigned      YES manual up                    up
+FastEthernet0/1        unassigned      YES manual up                    up
+GigabitEthernet0/1     unassigned      YES manual up                    up
+GigabitEthernet0/2     unassigned      YES manual up                    up
+Vlan1                  unassigned      YES manual administratively down down`,
+
+        "show mac address-table": `          Mac Address Table
+-------------------------------------------
+Vlan    Mac Address       Type        Ports
+----    -----------       --------    -----
+  10    0001.423a.1101    DYNAMIC     Fa0/1
+  10    0001.423a.1102    DYNAMIC     Po1
+  20    0001.423a.2201    DYNAMIC     Fa0/1
+  30    0001.423a.3301    DYNAMIC     Fa0/1`
+      },
+
+      "SW-CORE-2": {
+        "show vlan brief": `VLAN Name                             Status    Ports
+---- -------------------------------- --------- -------------------------------
+1    default                          active    Fa0/2, Fa0/3, Fa0/4...
+10   ADMINISTRATIVO                   active    
+20   FINANCEIRO                       active    
+30   TI                               active    
+40   VOZ                              active    
+99   NATIVA                           active`,
+
+        "show etherchannel summary": `Flags:  D - down        P - in port-channel
+        S - Layer2      U - in use
+
+Group  Port-channel  Protocol    Ports
+------+-------------+-----------+-----------------------------------------------
+1      Po1(SU)         LACP      Gi0/1(P)    Gi0/2(P)`,
+
+        "show interfaces trunk": `Port        Mode         Encapsulation  Status        Native vlan
+Fa0/1       on           802.1q         trunking      99
+Po1         on           802.1q         trunking      99
+
+Port        Vlans allowed on trunk
+Fa0/1       10,20,30,40,99
+Po1         10,20,30,40,99`
+      },
+
+      "SW-ACCESS-1": {
+        "show vlan brief": `VLAN Name                             Status    Ports
+---- -------------------------------- --------- -------------------------------
+1    default                          active    Fa0/1, Fa0/6, Fa0/7...
+10   ADMINISTRATIVO                   active    Fa0/2, Fa0/5
+20   FINANCEIRO                       active    Fa0/3
+30   TI                               active    Fa0/4
+40   VOZ                              active    Fa0/5 (voice)
+99   NATIVA                           active`,
+
+        "show interfaces trunk": `Port        Mode         Encapsulation  Status        Native vlan
+Gi0/1       on           802.1q         trunking      99
+
+Port        Vlans allowed on trunk
+Gi0/1       10,20,30,40,99`,
+
+        "show interfaces fastethernet 0/5 switchport": `Name: Fa0/5
+Switchport: Enabled
+Administrative Mode: static access
+Operational Mode: static access
+Access Mode VLAN: 10 (ADMINISTRATIVO)
+Voice VLAN: 40 (VOZ)
+Operational Voice VLAN: 40`
+      },
+
+      "SW-ACCESS-2": {
+        "show vlan brief": `VLAN Name                             Status    Ports
+---- -------------------------------- --------- -------------------------------
+1    default                          active    Fa0/1, Fa0/6, Fa0/7...
+10   ADMINISTRATIVO                   active    Fa0/2, Fa0/5
+20   FINANCEIRO                       active    Fa0/3
+30   TI                               active    Fa0/4
+40   VOZ                              active    Fa0/5 (voice)
+99   NATIVA                           active`,
+
+        "show interfaces trunk": `Port        Mode         Encapsulation  Status        Native vlan
+Gi0/1       on           802.1q         trunking      99
+
+Port        Vlans allowed on trunk
+Gi0/1       10,20,30,40,99`
+      }
+    };
+
+    const input = document.getElementById("commandInput");
+    const output = document.getElementById("consoleOutput");
+    const promptLabel = document.getElementById("promptLabel");
+    const devSelector = document.getElementById("deviceSelector");
+
+    function setDevice(dev) {
+      currentDevice = dev;
+      promptLabel.innerText = dev + "#";
+      devSelector.value = dev;
+      printLine("\\n[Contexto alterado para " + dev + "]");
+    }
+
+    function clearConsole() {
+      output.innerHTML = "";
+    }
+
+    function printLine(text) {
+      output.innerHTML += text + "\\n";
+      output.scrollTop = output.scrollHeight;
+    }
+
+    function runQuick(cmd) {
+      input.value = cmd;
+      processCommand(cmd);
+      input.value = "";
+    }
+
+    function processCommand(rawCmd) {
+      const cmd = rawCmd.trim().toLowerCase();
+      if (!cmd) return;
+
+      history.push(rawCmd.trim());
+      historyIndex = history.length;
+
+      printLine("<span style='color:#38bdf8; font-weight:bold;'>" + currentDevice + "#</span> " + rawCmd.trim());
+
+      if (cmd === "help" || cmd === "?") {
+        printLine(`Comandos disponíveis:
+  • show vlan brief (exibe a tabela de VLANs)
+  • show etherchannel summary (status do bundle LACP)
+  • show interfaces trunk (troncos 802.1Q e native vlan)
+  • show lacp neighbor (vizinho LACP)
+  • show ip interface brief (resumo das portas IP)
+  • show mac address-table (tabela MAC dinâmica)
+  • show running-config / show run
+  • ping 192.168.10.12 (teste na mesma VLAN 10)
+  • ping 192.168.20.11 (teste inter-VLAN)
+  • clear (limpar console)
+  • enable / configure terminal`);
+        return;
+      }
+
+      if (cmd === "clear") {
+        clearConsole();
+        return;
+      }
+
+      if (cmd === "enable" || cmd === "en") {
+        printLine(currentDevice + "# (Modo privilegiado ativo)");
+        return;
+      }
+
+      if (cmd === "conf t" || cmd === "configure terminal") {
+        printLine("Enter configuration commands, one per line. End with CNTL/Z.\\n" + currentDevice + "(config)# exit\\n" + currentDevice + "#");
+        return;
+      }
+
+      if (cmd.startsWith("ping")) {
+        const target = cmd.split(" ")[1] || "";
+        if (target === "192.168.10.12" || target === "192.168.20.12" || target === "192.168.30.12") {
+          printLine(`Type escape sequence to abort.
+Sending 5, 100-byte ICMP Echos to ` + target + `, timeout is 2 seconds:
+!!!!!
+<span class="success-text">Success rate is 100 percent (5/5), round-trip min/avg/max = 1/2/4 ms</span>`);
+        } else if (target === "192.168.20.11" || target === "192.168.30.11" || target === "192.168.10.11") {
+          printLine(`Type escape sequence to abort.
+Sending 5, 100-byte ICMP Echos to ` + target + `, timeout is 2 seconds:
+.....
+<span class="fail-text">Success rate is 0 percent (0/5) [Destino em VLAN distinta - Roteamento Inter-VLAN desabilitado]</span>`);
+        } else {
+          printLine(`Sending 5, 100-byte ICMP Echos to ` + target + `...
+.....
+<span class="fail-text">Success rate is 0 percent (0/5)</span>`);
+        }
+        return;
+      }
+
+      const devDb = db[currentDevice] || {};
+      if (devDb[cmd]) {
+        printLine(devDb[cmd]);
+      } else if (cmd === "show run" || cmd === "show running-config") {
+        printLine(`Building configuration...
+!
+hostname ` + currentDevice + `
+!
+vlan 10
+ name ADMINISTRATIVO
+vlan 20
+ name FINANCEIRO
+vlan 30
+ name TI
+vlan 40
+ name VOZ
+vlan 99
+ name NATIVA
+!
+interface Port-channel1
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ switchport trunk native vlan 99
+ switchport trunk allowed vlan 10,20,30,40,99
+!
+end`);
+      } else {
+        printLine("% Invalid input detected at '^' marker.\\n(Digite 'help' para ver os comandos implementados)");
+      }
+    }
+
+    input.addEventListener("keydown", function(e) {
+      if (e.key === "Enter") {
+        processCommand(input.value);
+        input.value = "";
+      } else if (e.key === "ArrowUp") {
+        if (historyIndex > 0) {
+          historyIndex--;
+          input.value = history[historyIndex];
+        }
+      } else if (e.key === "ArrowDown") {
+        if (historyIndex < history.length - 1) {
+          historyIndex++;
+          input.value = history[historyIndex];
+        } else {
+          historyIndex = history.length;
+          input.value = "";
+        }
+      }
+    });
+  </script>
+</body>
+</html>
