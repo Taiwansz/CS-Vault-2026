@@ -28,5 +28,13 @@
 
 ---
 
+## 📖 Tópicos Especiais II
+
+- **21/09 a 25/09/2026** — Atividade Integrativa
+- **28/09 e 29/09/2026** — Provas
+
+---
+
 ## 📌 Outras Datas Importantes
-- [ ]
+- [x] **21/09 a 25/09/2026** — Semana / Atividade Integrativa
+- [x] **28/09 e 29/09/2026** — Período de Avaliações / Provas
