@@ -6,7 +6,7 @@ professor: "Luiz Claudio Chiavini Oliveira Junior"
 assunto: "Questões de Análise de Algoritmos, Engenharia de Software, Banco de Dados, Sistemas Operacionais e Teoria da Computação"
 ---
 
-# 📝 Formulário de Estudos para o ENADE — Simulado 01
+# 📝 Formulário de Estudos para o ENADE — Simulado 02 (Ciência da Computação)
 
 > [!info] 📌 Informações do Formulário
 > - **Finalidade:** Preparatório para a Prova do ENADE (Ciência da Computação)
