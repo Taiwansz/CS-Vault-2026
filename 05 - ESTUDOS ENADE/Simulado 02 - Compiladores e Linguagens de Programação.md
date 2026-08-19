@@ -1,7 +1,8 @@
 ---
 tipo: simulado
 categoria: "Estudos ENADE"
-data: 2026-08-18
+data: 2026-08-17
+professor: "Luiz Claudio Chiavini Oliveira Junior"
 assunto: "Compiladores, Análise Léxica, Sintática, Semântica, Tabela de Símbolos e Representação Intermediária"
 ---
 
@@ -9,7 +10,8 @@ assunto: "Compiladores, Análise Léxica, Sintática, Semântica, Tabela de Sím
 
 > [!info] 📌 Informações do Formulário
 > - **Finalidade:** Preparatório para a Prova do ENADE (Ciência da Computação)
-> - **Data de Realização:** 18/08/2026
+> - **Professor:** Prof. Luiz Claudio Chiavini Oliveira Junior
+> - **Data de Passagem em Aula:** 17/08/2026 (Segunda-feira)
 > - **Total de Questões:** 10
 > - **Área Coberta:** Compiladores, Linguagens de Programação, Autômatos, AST, Tabela de Símbolos e Arquitetura Front-end / Back-end.
 
