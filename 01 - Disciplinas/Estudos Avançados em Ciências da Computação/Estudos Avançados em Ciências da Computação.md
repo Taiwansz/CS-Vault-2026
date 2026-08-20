@@ -47,4 +47,6 @@ SORT data DESC
 - 🗺️ [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Topologia e Conceitos - Switching Avançado.canvas|Mapa Visual Interativo da Topologia (Canvas)]]
 - 🎨 [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Topologia_TechSolutions_Switching.excalidraw|Diagrama Arquitetural da Rede (Excalidraw)]]
 - 📖 [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Aulas/Guia Rápido - Comandos Cisco IOS Switching e LACP|Guia Rápido de Comandos Cisco IOS (Cheat-Sheet de Switching & LACP)]]
+- 🌳 [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Aulas/2026-08-19 - Aula 3 - Spanning Tree Protocol (STP, RSTP) e OSPF|Aula 3 — Spanning Tree Protocol (STP, RSTP) & Roteamento Dinâmico OSPF]]
+- 📝 [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Aulas/2026-08-19 - Resolução - Exercício Prático Aula 3 - STP RSTP e OSPF|Resolução do Exercício Prático - Aula 3 (STP/RSTP + OSPF)]]
 
