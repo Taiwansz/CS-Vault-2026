@@ -57,5 +57,6 @@ horario: "Terça-feira / 19:00–21:40"
 - 📁 [[01 - Disciplinas/Tópicos Especiais II/Aulas/Atividade 01 - Conta Bancaria em Java|Atividade 01 - Conta Bancária em Java]]
 - 📁 [[01 - Disciplinas/Tópicos Especiais II/Aulas/Atividade 02 - Controle de Estoque e Classes Abstratas|Atividade 02 - Controle de Estoque de Galpão]]
 - 📁 [[01 - Disciplinas/Tópicos Especiais II/Aulas/Atividade 03 - Simulador de Batalha em Javaland|Atividade 03 - Simulador de Batalha em Javaland]]
+- 📁 [[01 - Disciplinas/Tópicos Especiais II/Aulas/2026-08-25 - Sistema de Lista de Tarefas em Java|Aula 25/08 - Sistema de Lista de Tarefas em Java]]
 - 📁 [[01 - Disciplinas/Tópicos Especiais II/Materiais/Apostila de POO com Java.pdf|Apostila de POO com Java (PDF)]]
 - 📁 [[01 - Disciplinas/Tópicos Especiais II/Materiais/diagrama.html|Diagrama de Classes Interativo (HTML)]]
