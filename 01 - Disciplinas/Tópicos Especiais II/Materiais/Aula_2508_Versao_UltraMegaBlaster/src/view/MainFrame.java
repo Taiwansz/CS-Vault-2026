@@ -11,7 +11,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableRowSorter;
+import javax.swing.table.JTableHeader;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -23,414 +23,481 @@ import java.util.List;
 public class MainFrame extends JFrame {
     private final GerenciadorTarefasService service;
     
+    // UI Constants
+    private static final Color BG_COLOR = new Color(248, 250, 252);
+    private static final Color SIDEBAR_COLOR = new Color(15, 23, 42);
+    private static final Color CARD_COLOR = Color.WHITE;
+    private static final Color TEXT_PRIMARY = new Color(30, 41, 59);
+    private static final Color TEXT_SECONDARY = new Color(100, 116, 139);
+    private static final Color ACCENT_COLOR = new Color(37, 99, 235);
+    private static final Color BORDER_COLOR = new Color(226, 232, 240);
+    private static final Font FONT_REGULAR = new Font("Segoe UI", Font.PLAIN, 14);
+    private static final Font FONT_BOLD = new Font("Segoe UI", Font.BOLD, 14);
+    private static final Font FONT_H1 = new Font("Segoe UI", Font.BOLD, 22);
+    
     private JTable tableTarefas;
     private DefaultTableModel tableModel;
+    private JTextField txtSearch;
     private JTextField txtQuickAdd;
     private JComboBox<Categoria> cbQuickCategory;
     private JComboBox<Prioridade> cbQuickPriority;
     
-    private JTextField txtSearch;
-    private JComboBox<String> cbFilterStatus;
-    private JComboBox<String> cbFilterCategory;
-
     private JLabel lblTotal;
     private JLabel lblConcluidas;
     private JLabel lblPendentes;
-    private JLabel lblAltaPrioridade;
-    private JProgressBar progressBar;
-    private JButton btnUndo;
+    private CustomProgressBar progressBar;
 
     public MainFrame(GerenciadorTarefasService service) {
         this.service = service;
-        setTitle("🚀 Gestor de Tarefas ULTRA MEGA BLASTER - Pro Edition");
-        setSize(1100, 700);
-        setMinimumSize(new Dimension(900, 550));
+        setTitle("Gestor de Tarefas Profissional");
+        setSize(1200, 800);
+        setMinimumSize(new Dimension(1000, 600));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
+        
+        // Remove default focus borders
+        UIManager.put("Button.focus", new Color(0, 0, 0, 0));
+        UIManager.put("ComboBox.focus", new Color(0, 0, 0, 0));
+        UIManager.put("TextField.focus", new Color(0, 0, 0, 0));
 
-        initTheme();
         initUI();
-        carregarTabela();
-    }
-
-    private void initTheme() {
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (Exception ignored) {}
+        carregarTabela(null);
     }
 
     private void initUI() {
-        JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
-        mainPanel.setBorder(new EmptyBorder(15, 15, 15, 15));
-        mainPanel.setBackground(new Color(245, 247, 250));
+        JPanel mainContainer = new JPanel(new BorderLayout());
+        mainContainer.setBackground(BG_COLOR);
 
-        // --- TOP PANEL (Title + Quick Add) ---
-        JPanel topPanel = new JPanel(new BorderLayout(10, 10));
-        topPanel.setOpaque(false);
+        // Sidebar
+        mainContainer.add(createSidebar(), BorderLayout.WEST);
 
-        // Header Title Panel
-        JPanel titlePanel = new JPanel(new BorderLayout());
-        titlePanel.setBackground(new Color(41, 128, 185));
-        titlePanel.setBorder(new EmptyBorder(12, 15, 12, 15));
+        // Main Content Area
+        JPanel contentPanel = new JPanel(new BorderLayout(0, 20));
+        contentPanel.setBackground(BG_COLOR);
+        contentPanel.setBorder(new EmptyBorder(30, 40, 30, 40));
+
+        contentPanel.add(createHeaderPanel(), BorderLayout.NORTH);
+        contentPanel.add(createTablePanel(), BorderLayout.CENTER);
+
+        mainContainer.add(contentPanel, BorderLayout.CENTER);
+
+        setContentPane(mainContainer);
+    }
+
+    private JPanel createSidebar() {
+        JPanel sidebar = new JPanel(new BorderLayout());
+        sidebar.setBackground(SIDEBAR_COLOR);
+        sidebar.setPreferredSize(new Dimension(280, 0));
+        sidebar.setBorder(new EmptyBorder(30, 20, 30, 20));
+
+        // Brand
+        JLabel lblBrand = new JLabel("TaskMaster");
+        lblBrand.setFont(new Font("Segoe UI", Font.BOLD, 24));
+        lblBrand.setForeground(Color.WHITE);
         
-        JLabel lblTitle = new JLabel("⚡ GESTOR DE TAREFAS ULTRA MEGA BLASTER");
-        lblTitle.setFont(new Font("Segoe UI", Font.BOLD, 18));
-        lblTitle.setForeground(Color.WHITE);
-
-        JLabel lblSubtitle = new JLabel("Sistema Completo de Produtividade em Java 21");
+        JLabel lblSubtitle = new JLabel("Sistema de Produtividade");
         lblSubtitle.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-        lblSubtitle.setForeground(new Color(220, 235, 252));
-
-        titlePanel.add(lblTitle, BorderLayout.NORTH);
-        titlePanel.add(lblSubtitle, BorderLayout.SOUTH);
-
-        // Quick Add Bar
-        JPanel quickAddPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
-        quickAddPanel.setBackground(Color.WHITE);
-        quickAddPanel.setBorder(BorderFactory.createTitledBorder("➕ Adicionar Nova Tarefa Rápidamente"));
-
-        txtQuickAdd = new JTextField(25);
-        txtQuickAdd.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+        lblSubtitle.setForeground(new Color(148, 163, 184));
         
-        cbQuickCategory = new JComboBox<>(Categoria.values());
-        cbQuickPriority = new JComboBox<>(Prioridade.values());
+        JPanel brandPanel = new JPanel(new BorderLayout());
+        brandPanel.setOpaque(false);
+        brandPanel.add(lblBrand, BorderLayout.NORTH);
+        brandPanel.add(lblSubtitle, BorderLayout.SOUTH);
+        brandPanel.setBorder(new EmptyBorder(0, 0, 40, 0));
 
-        JButton btnQuickAdd = new JButton("Adicionar");
-        btnQuickAdd.setFont(new Font("Segoe UI", Font.BOLD, 12));
-        btnQuickAdd.setBackground(new Color(46, 204, 113));
-        btnQuickAdd.setForeground(Color.BLACK);
-        btnQuickAdd.setFocusPainted(false);
-        btnQuickAdd.addActionListener(e -> acaoQuickAdd());
+        // Stats Section
+        JPanel statsPanel = new JPanel(new GridLayout(4, 1, 0, 15));
+        statsPanel.setOpaque(false);
+        
+        lblTotal = createSidebarStatLabel("Total de Tarefas: 0");
+        lblPendentes = createSidebarStatLabel("Pendentes: 0");
+        lblConcluidas = createSidebarStatLabel("Concluídas: 0");
+        
+        progressBar = new CustomProgressBar();
+        
+        statsPanel.add(lblTotal);
+        statsPanel.add(lblPendentes);
+        statsPanel.add(lblConcluidas);
+        statsPanel.add(progressBar);
 
-        quickAddPanel.add(new JLabel("Descrição:"));
-        quickAddPanel.add(txtQuickAdd);
-        quickAddPanel.add(new JLabel("Categoria:"));
-        quickAddPanel.add(cbQuickCategory);
-        quickAddPanel.add(new JLabel("Prioridade:"));
-        quickAddPanel.add(cbQuickPriority);
-        quickAddPanel.add(btnQuickAdd);
+        // Actions Section
+        JPanel actionsPanel = new JPanel(new GridLayout(4, 1, 0, 10));
+        actionsPanel.setOpaque(false);
+        
+        actionsPanel.add(createSidebarButton("Exportar Relatório", this::acaoExportar));
+        actionsPanel.add(createSidebarButton("Limpar Concluídas", this::acaoLimparConcluidas));
+        actionsPanel.add(createSidebarButton("Desfazer Remoção", this::acaoDesfazer));
 
-        topPanel.add(titlePanel, BorderLayout.NORTH);
-        topPanel.add(quickAddPanel, BorderLayout.SOUTH);
+        JPanel topContainer = new JPanel(new BorderLayout());
+        topContainer.setOpaque(false);
+        topContainer.add(brandPanel, BorderLayout.NORTH);
+        topContainer.add(statsPanel, BorderLayout.CENTER);
 
-        // --- CENTER PANEL (Search/Filters + Table + Stats Bar) ---
-        JPanel centerPanel = new JPanel(new BorderLayout(10, 10));
-        centerPanel.setOpaque(false);
+        sidebar.add(topContainer, BorderLayout.NORTH);
+        sidebar.add(actionsPanel, BorderLayout.SOUTH);
 
-        // Filter Bar (Exercício 3 Anabolizado)
-        JPanel filterBar = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 8));
-        filterBar.setBackground(Color.WHITE);
-        filterBar.setBorder(BorderFactory.createTitledBorder("🔍 Pesquisa em Tempo Real e Filtros Avançados"));
+        return sidebar;
+    }
 
-        txtSearch = new JTextField(15);
+    private JLabel createSidebarStatLabel(String text) {
+        JLabel lbl = new JLabel(text);
+        lbl.setFont(FONT_REGULAR);
+        lbl.setForeground(new Color(226, 232, 240));
+        return lbl;
+    }
+
+    private JButton createSidebarButton(String text, Runnable action) {
+        JButton btn = new JButton(text);
+        btn.setFont(FONT_REGULAR);
+        btn.setForeground(Color.WHITE);
+        btn.setBackground(new Color(30, 41, 59));
+        btn.setBorder(new EmptyBorder(10, 15, 10, 15));
+        btn.setFocusPainted(false);
+        btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        btn.setHorizontalAlignment(SwingConstants.LEFT);
+        
+        btn.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent e) { btn.setBackground(new Color(51, 65, 85)); }
+            public void mouseExited(MouseEvent e) { btn.setBackground(new Color(30, 41, 59)); }
+        });
+        btn.addActionListener(e -> action.run());
+        return btn;
+    }
+
+    private JPanel createHeaderPanel() {
+        JPanel headerPanel = new JPanel(new BorderLayout(20, 0));
+        headerPanel.setOpaque(false);
+
+        // Title
+        JLabel lblTitle = new JLabel("Visão Geral");
+        lblTitle.setFont(FONT_H1);
+        lblTitle.setForeground(TEXT_PRIMARY);
+
+        // Search Bar
+        RoundedPanel searchContainer = new RoundedPanel(20, CARD_COLOR);
+        searchContainer.setLayout(new BorderLayout());
+        searchContainer.setBorder(new EmptyBorder(5, 15, 5, 15));
+        searchContainer.setPreferredSize(new Dimension(300, 40));
+
+        txtSearch = new JTextField(20);
+        txtSearch.setBorder(null);
+        txtSearch.setFont(FONT_REGULAR);
+        txtSearch.setForeground(TEXT_PRIMARY);
+        txtSearch.setBackground(CARD_COLOR);
+        TextPrompt tpSearch = new TextPrompt("Pesquisar tarefas...", txtSearch);
+        tpSearch.setForeground(TEXT_SECONDARY);
+
         txtSearch.getDocument().addDocumentListener(new DocumentListener() {
-            public void insertUpdate(DocumentEvent e) { carregarTabela(); }
-            public void removeUpdate(DocumentEvent e) { carregarTabela(); }
-            public void changedUpdate(DocumentEvent e) { carregarTabela(); }
+            public void insertUpdate(DocumentEvent e) { carregarTabela(txtSearch.getText()); }
+            public void removeUpdate(DocumentEvent e) { carregarTabela(txtSearch.getText()); }
+            public void changedUpdate(DocumentEvent e) { carregarTabela(txtSearch.getText()); }
         });
 
-        cbFilterStatus = new JComboBox<>(new String[]{"Todas", "Pendentes", "Concluídas"});
-        cbFilterStatus.addActionListener(e -> carregarTabela());
+        searchContainer.add(txtSearch, BorderLayout.CENTER);
 
-        String[] catOptions = new String[Categoria.values().length + 1];
-        catOptions[0] = "Todas as Categorias";
-        for (int i = 0; i < Categoria.values().length; i++) {
-            catOptions[i + 1] = Categoria.values()[i].getDescricaoFormatada();
-        }
-        cbFilterCategory = new JComboBox<>(catOptions);
-        cbFilterCategory.addActionListener(e -> carregarTabela());
+        JPanel rightHeader = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
+        rightHeader.setOpaque(false);
+        rightHeader.add(searchContainer);
 
-        JButton btnClearFilter = new JButton("Limpar Filtros");
-        btnClearFilter.addActionListener(e -> {
-            txtSearch.setText("");
-            cbFilterStatus.setSelectedIndex(0);
-            cbFilterCategory.setSelectedIndex(0);
-            carregarTabela();
-        });
+        headerPanel.add(lblTitle, BorderLayout.WEST);
+        headerPanel.add(rightHeader, BorderLayout.EAST);
 
-        filterBar.add(new JLabel("Buscar (Exercício 3):"));
-        filterBar.add(txtSearch);
-        filterBar.add(new JLabel("Status:"));
-        filterBar.add(cbFilterStatus);
-        filterBar.add(new JLabel("Categoria:"));
-        filterBar.add(cbFilterCategory);
-        filterBar.add(btnClearFilter);
+        return headerPanel;
+    }
 
-        // Table
-        String[] columns = {"✓ Status", "ID", "Descrição", "Categoria", "Prioridade", "Criada Em"};
+    private JPanel createTablePanel() {
+        RoundedPanel cardPanel = new RoundedPanel(16, CARD_COLOR);
+        cardPanel.setLayout(new BorderLayout(0, 15));
+        cardPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
+
+        // Quick Add Section
+        JPanel quickAddPanel = new JPanel(new BorderLayout(10, 0));
+        quickAddPanel.setOpaque(false);
+
+        txtQuickAdd = new JTextField();
+        txtQuickAdd.setFont(FONT_REGULAR);
+        txtQuickAdd.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createLineBorder(BORDER_COLOR, 1, true),
+            new EmptyBorder(10, 15, 10, 15)
+        ));
+        TextPrompt tpAdd = new TextPrompt("O que precisa ser feito?", txtQuickAdd);
+        tpAdd.setForeground(TEXT_SECONDARY);
+
+        JPanel quickAddOptions = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
+        quickAddOptions.setOpaque(false);
+
+        cbQuickCategory = new JComboBox<>(Categoria.values());
+        cbQuickCategory.setFont(FONT_REGULAR);
+        cbQuickCategory.setBackground(CARD_COLOR);
+        
+        cbQuickPriority = new JComboBox<>(Prioridade.values());
+        cbQuickPriority.setFont(FONT_REGULAR);
+        cbQuickPriority.setBackground(CARD_COLOR);
+
+        JButton btnAdd = new JButton("Adicionar");
+        btnAdd.setFont(FONT_BOLD);
+        btnAdd.setForeground(Color.WHITE);
+        btnAdd.setBackground(ACCENT_COLOR);
+        btnAdd.setBorder(new EmptyBorder(10, 25, 10, 25));
+        btnAdd.setFocusPainted(false);
+        btnAdd.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        btnAdd.addActionListener(e -> acaoQuickAdd());
+
+        quickAddOptions.add(cbQuickCategory);
+        quickAddOptions.add(cbQuickPriority);
+        quickAddOptions.add(btnAdd);
+
+        quickAddPanel.add(txtQuickAdd, BorderLayout.CENTER);
+        quickAddPanel.add(quickAddOptions, BorderLayout.EAST);
+
+        // Table Setup
+        String[] columns = {"ID", "Tarefa", "Categoria", "Prioridade", "Status", "Ação"};
         tableModel = new DefaultTableModel(columns, 0) {
             @Override
-            public Class<?> getColumnClass(int columnIndex) {
-                if (columnIndex == 0) return Boolean.class;
-                return String.class;
-            }
-
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return column == 0; // Apenas checkbox é clicável diretamente
-            }
+            public boolean isCellEditable(int row, int column) { return false; }
         };
 
         tableTarefas = new JTable(tableModel);
-        tableTarefas.setRowHeight(28);
-        tableTarefas.setFont(new Font("Segoe UI", Font.PLAIN, 13));
-        tableTarefas.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 13));
-        tableTarefas.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        tableTarefas.setRowHeight(50);
+        tableTarefas.setFont(FONT_REGULAR);
+        tableTarefas.setForeground(TEXT_PRIMARY);
+        tableTarefas.setSelectionBackground(new Color(241, 245, 249));
+        tableTarefas.setSelectionForeground(TEXT_PRIMARY);
+        tableTarefas.setShowVerticalLines(false);
+        tableTarefas.setGridColor(BORDER_COLOR);
+        tableTarefas.setIntercellSpacing(new Dimension(0, 0));
+        tableTarefas.setBorder(null);
 
-        // Cell Renderer para formatação visual
-        tableTarefas.setDefaultRenderer(String.class, new DefaultTableCellRenderer() {
-            @Override
-            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-                Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-                Boolean isDone = (Boolean) table.getModel().getValueAt(row, 0);
-                if (isDone != null && isDone) {
-                    c.setForeground(Color.GRAY);
-                    setFont(getFont().deriveFont(Font.ITALIC));
-                } else {
-                    c.setForeground(Color.BLACK);
-                    setFont(getFont().deriveFont(Font.PLAIN));
-                }
-                return c;
-            }
-        });
+        // Header Styling
+        JTableHeader header = tableTarefas.getTableHeader();
+        header.setFont(new Font("Segoe UI", Font.BOLD, 13));
+        header.setBackground(CARD_COLOR);
+        header.setForeground(TEXT_SECONDARY);
+        header.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, BORDER_COLOR));
+        ((DefaultTableCellRenderer)header.getDefaultRenderer()).setHorizontalAlignment(JLabel.LEFT);
+        header.setPreferredSize(new Dimension(header.getWidth(), 40));
 
-        // Alternar status ao clicar na checkbox
-        tableModel.addTableModelListener(e -> {
-            if (e.getColumn() == 0 && e.getFirstRow() >= 0) {
-                int row = e.getFirstRow();
-                String id = (String) tableModel.getValueAt(row, 1);
-                Boolean newValue = (Boolean) tableModel.getValueAt(row, 0);
-                
-                List<Tarefa> atual = service.getTodas();
-                atual.stream().filter(t -> t.getId().equals(id)).findFirst().ifPresent(t -> {
-                    if (t.isConcluido() != newValue) {
+        // Column Widths
+        tableTarefas.getColumnModel().getColumn(0).setPreferredWidth(60);
+        tableTarefas.getColumnModel().getColumn(0).setMaxWidth(80);
+        tableTarefas.getColumnModel().getColumn(1).setPreferredWidth(300);
+        tableTarefas.getColumnModel().getColumn(2).setPreferredWidth(100);
+        tableTarefas.getColumnModel().getColumn(3).setPreferredWidth(100);
+        tableTarefas.getColumnModel().getColumn(4).setPreferredWidth(100);
+        tableTarefas.getColumnModel().getColumn(5).setPreferredWidth(120);
+
+        // Custom Renderers
+        tableTarefas.setDefaultRenderer(Object.class, new CustomCellRenderer());
+
+        JScrollPane scrollPane = new JScrollPane(tableTarefas);
+        scrollPane.setBorder(null);
+        scrollPane.getViewport().setBackground(CARD_COLOR);
+
+        // Inline Actions Handle via MouseListener since buttons in cells in basic Swing are complex
+        tableTarefas.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                int row = tableTarefas.rowAtPoint(e.getPoint());
+                int col = tableTarefas.columnAtPoint(e.getPoint());
+                if (row >= 0) {
+                    String id = (String) tableModel.getValueAt(row, 0);
+                    if (col == 4) { // Status column clicked
                         service.alternarStatus(id);
-                        atualizarEstatisticas();
+                        carregarTabela(txtSearch.getText());
+                    } else if (col == 5) { // Action column clicked
+                        acaoRemoverId(id);
                     }
-                });
+                }
             }
         });
 
-        JScrollPane scrollTable = new JScrollPane(tableTarefas);
+        cardPanel.add(quickAddPanel, BorderLayout.NORTH);
+        cardPanel.add(scrollPane, BorderLayout.CENTER);
 
-        // Stats Dashboard Panel (Exercício 2 Anabolizado)
-        JPanel statsPanel = new JPanel(new BorderLayout(10, 5));
-        statsPanel.setBackground(Color.WHITE);
-        statsPanel.setBorder(BorderFactory.createTitledBorder("📊 Painel de Estatísticas e Progresso (Exercício 2)"));
-
-        JPanel labelsStats = new JPanel(new FlowLayout(FlowLayout.LEFT, 20, 5));
-        labelsStats.setOpaque(false);
-
-        lblTotal = new JLabel("Total: 0");
-        lblTotal.setFont(new Font("Segoe UI", Font.BOLD, 13));
-        
-        lblConcluidas = new JLabel("Concluídas: 0");
-        lblConcluidas.setFont(new Font("Segoe UI", Font.BOLD, 13));
-        lblConcluidas.setForeground(new Color(39, 174, 96));
-
-        lblPendentes = new JLabel("Pendentes: 0");
-        lblPendentes.setFont(new Font("Segoe UI", Font.BOLD, 13));
-        lblPendentes.setForeground(new Color(230, 126, 34));
-
-        lblAltaPrioridade = new JLabel("Alta Prioridade: 0");
-        lblAltaPrioridade.setFont(new Font("Segoe UI", Font.BOLD, 13));
-        lblAltaPrioridade.setForeground(new Color(192, 57, 43));
-
-        labelsStats.add(lblTotal);
-        labelsStats.add(lblConcluidas);
-        labelsStats.add(lblPendentes);
-        labelsStats.add(lblAltaPrioridade);
-
-        progressBar = new JProgressBar(0, 100);
-        progressBar.setStringPainted(true);
-        progressBar.setFont(new Font("Segoe UI", Font.BOLD, 12));
-        progressBar.setForeground(new Color(46, 204, 113));
-        progressBar.setPreferredSize(new Dimension(200, 22));
-
-        statsPanel.add(labelsStats, BorderLayout.CENTER);
-        statsPanel.add(progressBar, BorderLayout.EAST);
-
-        centerPanel.add(filterBar, BorderLayout.NORTH);
-        centerPanel.add(scrollTable, BorderLayout.CENTER);
-        centerPanel.add(statsPanel, BorderLayout.SOUTH);
-
-        // --- RIGHT ACTION BUTTONS PANEL ---
-        JPanel actionPanel = new JPanel(new GridLayout(7, 1, 5, 8));
-        actionPanel.setOpaque(false);
-        actionPanel.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
-
-        JButton btnToggleStatus = new JButton("✅ Alternar Status");
-        btnToggleStatus.addActionListener(e -> acaoAlternarStatus());
-
-        JButton btnDelete = new JButton("🗑️ Remover (Ex 1)");
-        btnDelete.setBackground(new Color(231, 76, 60));
-        btnDelete.setForeground(Color.BLACK);
-        btnDelete.addActionListener(e -> acaoRemover());
-
-        JButton btnClearDone = new JButton("🧹 Limpar Concluídas");
-        btnClearDone.addActionListener(e -> acaoLimparConcluidas());
-
-        btnUndo = new JButton("↩️ Desfazer Removida");
-        btnUndo.addActionListener(e -> acaoDesfazer());
-
-        JButton btnFullStats = new JButton("📈 Relatório Completo");
-        btnFullStats.addActionListener(e -> acaoRelatorioCompleto());
-
-        JButton btnExport = new JButton("💾 Exportar Markdown");
-        btnExport.addActionListener(e -> acaoExportar());
-
-        JButton btnRefresh = new JButton("🔄 Recarregar");
-        btnRefresh.addActionListener(e -> carregarTabela());
-
-        actionPanel.add(btnToggleStatus);
-        actionPanel.add(btnDelete);
-        actionPanel.add(btnClearDone);
-        actionPanel.add(btnUndo);
-        actionPanel.add(btnFullStats);
-        actionPanel.add(btnExport);
-        actionPanel.add(btnRefresh);
-
-        // Layout Assembly
-        mainPanel.add(topPanel, BorderLayout.NORTH);
-        mainPanel.add(centerPanel, BorderLayout.CENTER);
-        mainPanel.add(actionPanel, BorderLayout.EAST);
-
-        add(mainPanel);
+        return cardPanel;
     }
 
-    private void acaoQuickAdd() {
-        String desc = txtQuickAdd.getText().trim();
-        if (desc.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Por favor, digite a descrição da tarefa!", "Campo Vazio", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-        Categoria cat = (Categoria) cbQuickCategory.getSelectedItem();
-        Prioridade prio = (Prioridade) cbQuickPriority.getSelectedItem();
-
-        service.adicionar(desc, cat, prio, "");
-        txtQuickAdd.setText("");
-        carregarTabela();
-    }
-
-    private void acaoAlternarStatus() {
-        int selectedRow = tableTarefas.getSelectedRow();
-        if (selectedRow < 0) {
-            JOptionPane.showMessageDialog(this, "Selecione uma tarefa na tabela primeiro!", "Aviso", JOptionPane.INFORMATION_MESSAGE);
-            return;
-        }
-        String id = (String) tableModel.getValueAt(selectedRow, 1);
-        service.alternarStatus(id);
-        carregarTabela();
-    }
-
-    private void acaoRemover() {
-        int selectedRow = tableTarefas.getSelectedRow();
-        if (selectedRow < 0) {
-            JOptionPane.showMessageDialog(this, "Selecione a tarefa que deseja remover da tabela!", "Aviso (Exercício 1)", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-        String desc = (String) tableModel.getValueAt(selectedRow, 2);
-        String id = (String) tableModel.getValueAt(selectedRow, 1);
-
-        int confirm = JOptionPane.showConfirmDialog(this,
-                "Tem certeza que deseja apagar a tarefa:\n\"" + desc + "\"?",
-                "Confirmar Remoção (Exercício 1)", JOptionPane.YES_NO_OPTION);
-
-        if (confirm == JOptionPane.YES_OPTION) {
-            service.removerPorId(id);
-            carregarTabela();
-            JOptionPane.showMessageDialog(this, "Tarefa removida! Você pode clicar em 'Desfazer Removida' para restaurá-la.", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
-        }
-    }
-
-    private void acaoLimparConcluidas() {
-        int count = service.limparConcluidas();
-        if (count == 0) {
-            JOptionPane.showMessageDialog(this, "Nenhuma tarefa concluída para limpar.", "Informação", JOptionPane.INFORMATION_MESSAGE);
-        } else {
-            carregarTabela();
-            JOptionPane.showMessageDialog(this, count + " tarefa(s) concluída(s) foram movidas para a lixeira!", "Limpeza Concluída", JOptionPane.INFORMATION_MESSAGE);
-        }
-    }
-
-    private void acaoDesfazer() {
-        if (service.desfazerUltimaRemocao()) {
-            carregarTabela();
-            JOptionPane.showMessageDialog(this, "Última tarefa removida foi restaurada!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
-        } else {
-            JOptionPane.showMessageDialog(this, "Não há tarefas na lixeira para desfazer.", "Aviso", JOptionPane.INFORMATION_MESSAGE);
-        }
-    }
-
-    private void acaoRelatorioCompleto() {
-        GerenciadorTarefasService.Estatisticas stats = service.getEstatisticas();
-        String mensagem = String.format("""
-                📊 PAINEL DETALHADO DE ESTATÍSTICAS (EXERCÍCIO 2)
-                --------------------------------------------------
-                • Total de Tarefas Registradas: %d
-                • Tarefas Concluídas: %d
-                • Tarefas Pendentes: %d
-                • Tarefas de Alta Prioridade Pendentes: %d
-                • Taxa de Conclusão / Produtividade: %.1f%%
-                
-                O progresso geral é recalculado automaticamente em tempo real!
-                """, stats.total(), stats.concluidas(), stats.pendentes(), stats.altaPrioridadePendentes(), stats.porcentagemConclusao());
-
-        JOptionPane.showMessageDialog(this, mensagem, "Estatísticas Avançadas", JOptionPane.INFORMATION_MESSAGE);
-    }
-
-    private void acaoExportar() {
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setDialogTitle("Salvar Relatório em Markdown");
-        fileChooser.setSelectedFile(new File("relatorio_tarefas.md"));
-
-        int userSelection = fileChooser.showSaveDialog(this);
-        if (userSelection == JFileChooser.APPROVE_OPTION) {
-            File fileToSave = fileChooser.getSelectedFile();
-            try (PrintWriter out = new PrintWriter(new FileWriter(fileToSave))) {
-                out.print(service.exportarRelatorioMarkdown());
-                JOptionPane.showMessageDialog(this, "Relatório exportado com sucesso para:\n" + fileToSave.getAbsolutePath(), "Sucesso", JOptionPane.INFORMATION_MESSAGE);
-            } catch (Exception ex) {
-                JOptionPane.showMessageDialog(this, "Erro ao exportar arquivo: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
-            }
-        }
-    }
-
-    private void carregarTabela() {
+    private void carregarTabela(String termoBusca) {
         tableModel.setRowCount(0);
-
-        String termoBusca = txtSearch.getText().trim();
-        String statusSel = (String) cbFilterStatus.getSelectedItem();
-        int catIndex = cbFilterCategory.getSelectedIndex();
-        Categoria catSel = catIndex > 0 ? Categoria.values()[catIndex - 1] : null;
-
-        List<Tarefa> filtradas = service.filtrar(termoBusca, catSel, statusSel);
+        List<Tarefa> filtradas = service.pesquisar(termoBusca);
 
         for (Tarefa t : filtradas) {
             tableModel.addRow(new Object[]{
-                    t.isConcluido(),
                     t.getId(),
-                    t.getDescricao(),
+                    t, // Pass full object for custom rendering of description based on status
                     t.getCategoria().getDescricaoFormatada(),
-                    t.getPrioridade().getDescricaoFormatada(),
-                    t.getDataCriacaoFormatada()
+                    t.getPrioridade(), // Pass enum for custom rendering
+                    t.isConcluido() ? "Concluída" : "Pendente",
+                    "Remover"
             });
         }
-
         atualizarEstatisticas();
     }
 
     private void atualizarEstatisticas() {
         GerenciadorTarefasService.Estatisticas stats = service.getEstatisticas();
-        lblTotal.setText("Total: " + stats.total());
-        lblConcluidas.setText("Concluídas: " + stats.concluidas());
+        lblTotal.setText("Total de Tarefas: " + stats.total());
         lblPendentes.setText("Pendentes: " + stats.pendentes());
-        lblAltaPrioridade.setText("Alta Prioridade: " + stats.altaPrioridadePendentes());
+        lblConcluidas.setText("Concluídas: " + stats.concluidas());
+        progressBar.setProgress((int) stats.porcentagemConclusao());
+    }
 
-        int perc = (int) Math.round(stats.porcentagemConclusao());
-        progressBar.setValue(perc);
-        progressBar.setString(perc + "% Concluído");
+    private void acaoQuickAdd() {
+        String desc = txtQuickAdd.getText().trim();
+        if (desc.isEmpty()) return;
+        
+        Categoria cat = (Categoria) cbQuickCategory.getSelectedItem();
+        Prioridade prio = (Prioridade) cbQuickPriority.getSelectedItem();
+        
+        service.adicionar(desc, cat, prio, "");
+        txtQuickAdd.setText("");
+        carregarTabela(txtSearch.getText());
+    }
 
-        btnUndo.setEnabled(service.temItemParaDesfazer());
+    private void acaoRemoverId(String id) {
+        if (service.removerPorId(id)) {
+            carregarTabela(txtSearch.getText());
+        }
+    }
+
+    private void acaoLimparConcluidas() {
+        service.limparConcluidas();
+        carregarTabela(txtSearch.getText());
+    }
+
+    private void acaoDesfazer() {
+        if (service.desfazerUltimaRemocao()) {
+            carregarTabela(txtSearch.getText());
+        }
+    }
+
+    private void acaoExportar() {
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Salvar Relatório");
+        fileChooser.setSelectedFile(new File("relatorio_tarefas.md"));
+
+        if (fileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
+            try (PrintWriter out = new PrintWriter(new FileWriter(fileChooser.getSelectedFile()))) {
+                out.print(service.exportarRelatorioMarkdown());
+                JOptionPane.showMessageDialog(this, "Relatório exportado com sucesso.");
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "Erro ao exportar arquivo.", "Erro", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+
+    // --- CUSTOM UI COMPONENTS ---
+
+    class RoundedPanel extends JPanel {
+        private final int radius;
+        public RoundedPanel(int radius, Color bg) {
+            this.radius = radius;
+            setBackground(bg);
+            setOpaque(false);
+        }
+        @Override
+        protected void paintComponent(Graphics g) {
+            Graphics2D g2 = (Graphics2D) g.create();
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            g2.setColor(getBackground());
+            g2.fillRoundRect(0, 0, getWidth() - 1, getHeight() - 1, radius, radius);
+            g2.setColor(BORDER_COLOR);
+            g2.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, radius, radius);
+            g2.dispose();
+            super.paintComponent(g);
+        }
+    }
+
+    class CustomProgressBar extends JPanel {
+        private int progress = 0;
+        public CustomProgressBar() {
+            setOpaque(false);
+            setPreferredSize(new Dimension(200, 10));
+        }
+        public void setProgress(int progress) {
+            this.progress = progress;
+            repaint();
+        }
+        @Override
+        protected void paintComponent(Graphics g) {
+            Graphics2D g2 = (Graphics2D) g.create();
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            
+            // Background track
+            g2.setColor(new Color(30, 41, 59));
+            g2.fillRoundRect(0, 0, getWidth(), getHeight(), 10, 10);
+            
+            // Progress fill
+            if (progress > 0) {
+                int width = (int) (getWidth() * (progress / 100.0));
+                g2.setColor(ACCENT_COLOR);
+                g2.fillRoundRect(0, 0, width, getHeight(), 10, 10);
+            }
+            g2.dispose();
+        }
+    }
+
+    class CustomCellRenderer extends DefaultTableCellRenderer {
+        private final JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
+        private final JLabel label = new JLabel();
+
+        public CustomCellRenderer() {
+            panel.setOpaque(true);
+            panel.add(label);
+            label.setFont(FONT_REGULAR);
+        }
+
+        @Override
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+            panel.setBackground(isSelected ? table.getSelectionBackground() : CARD_COLOR);
+            label.setForeground(isSelected ? table.getSelectionForeground() : TEXT_PRIMARY);
+            
+            if (value instanceof Tarefa) {
+                Tarefa t = (Tarefa) value;
+                label.setText(t.getDescricao());
+                if (t.isConcluido()) {
+                    label.setForeground(TEXT_SECONDARY);
+                    label.setText("<html><strike>" + t.getDescricao() + "</strike></html>");
+                }
+            } else if (value instanceof Prioridade) {
+                Prioridade p = (Prioridade) value;
+                label.setText(p.getDescricaoFormatada());
+                if (p == Prioridade.ALTA) label.setForeground(new Color(220, 38, 38));
+                else if (p == Prioridade.MEDIA) label.setForeground(new Color(202, 138, 4));
+                else label.setForeground(new Color(22, 163, 74));
+            } else if (column == 4) { // Status
+                String status = (String) value;
+                label.setText(status);
+                label.setFont(FONT_BOLD);
+                label.setForeground(status.equals("Concluída") ? new Color(22, 163, 74) : new Color(234, 88, 12));
+                panel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+            } else if (column == 5) { // Ação
+                label.setText("Remover");
+                label.setFont(FONT_BOLD);
+                label.setForeground(new Color(220, 38, 38));
+                panel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+            } else {
+                label.setText(value != null ? value.toString() : "");
+            }
+            
+            return panel;
+        }
+    }
+
+    // Helper class for placeholder text in JTextField
+    class TextPrompt extends JLabel implements DocumentListener {
+        private JTextField component;
+        public TextPrompt(String text, JTextField component) {
+            this.component = component;
+            setText(text);
+            setFont(component.getFont());
+            setBorder(new EmptyBorder(component.getInsets()));
+            component.setLayout(new BorderLayout());
+            component.add(this);
+            component.getDocument().addDocumentListener(this);
+        }
+        public void insertUpdate(DocumentEvent e) { checkForPrompt(); }
+        public void removeUpdate(DocumentEvent e) { checkForPrompt(); }
+        public void changedUpdate(DocumentEvent e) { }
+        private void checkForPrompt() { setVisible(component.getText().isEmpty()); }
     }
 }
