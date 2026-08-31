@@ -15,7 +15,7 @@ titulo-tcc: "COMPRESSÃO DE PROMPTS, TOKENS E SUSTENTABILIDADE DA IA: Engenharia
 
 ## Informações Gerais
 - **Código:** `1110020055` | **Turma:** N13208A
-- **Orientador:** Paulo Sergio Granato
+- **Orientador:** Luiz Claudio Chiavini Oliveira Junior (Luyz)
 - **Dia / Horário:** Quarta-feira / 10:00–11:00
 - **Documentos em PDF:**
   - 📄 [[01 - Disciplinas/Trabalho de Conclusão de Curso II/Materiais/TCC_Parte_1_Entregue.pdf|TCC I Entregue no 1º Semestre (PDF)]]
@@ -78,6 +78,6 @@ titulo-tcc: "COMPRESSÃO DE PROMPTS, TOKENS E SUSTENTABILIDADE DA IA: Engenharia
 
 ## 📝 Anotações & Tarefas Imediatas TCC II
 
-- [ ] Validar a entrega do TCC I (Compressão de Prompts) com o orientador Paulo Granato.
+- [ ] Validar a entrega do TCC I (Compressão de Prompts) com o orientador Luiz Claudio (Luyz).
 - [ ] Preparar a versão preliminar para o prazo de **03 a 09 de Novembro** (Banca Virtual).
 - [ ] Acompanhar os registros de orientação nos meses de Setembro, Outubro e Novembro na plataforma WebTCC.
