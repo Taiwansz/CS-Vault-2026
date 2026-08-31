@@ -2,7 +2,7 @@
 tipo: ata-reuniao
 disciplina: Trabalho de Conclusão de Curso II
 data: 2026-08-07
-orientador: Paulo Sergio Granato
+orientador: Luiz Claudio Chiavini Oliveira Junior
 ---
 
 # Ata de Reunião — Alignments Iniciais do TCC II
