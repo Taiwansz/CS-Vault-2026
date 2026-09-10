@@ -1,6 +1,102 @@
 {
   "recentFiles": [
     {
+      "basename": "Calendario_TCC_2026_2",
+      "path": "01 - Disciplinas/Trabalho de Conclusão de Curso II/Materiais/Calendario_TCC_2026_2.pdf"
+    },
+    {
+      "basename": "TCC_Parte_1_Entregue",
+      "path": "01 - Disciplinas/Trabalho de Conclusão de Curso II/Materiais/TCC_Parte_1_Entregue.pdf"
+    },
+    {
+      "basename": "2026-09-09 - Resolução - Exercício Prático Aula 5 - HSRP e Alta Disponibilidade",
+      "path": "01 - Disciplinas/Estudos Avançados em Ciências da Computação/Aulas/2026-09-09 - Resolução - Exercício Prático Aula 5 - HSRP e Alta Disponibilidade.md"
+    },
+    {
+      "basename": "2026-09-09 - Resolução - Exercício Prático Aula 5 - HSRP e Alta Disponibilidade",
+      "path": "01 - Disciplinas/Estudos Avançados em Ciências da Computação/Aulas/2026-09-09 - Resolução - Exercício Prático Aula 5 - HSRP e Alta Disponibilidade.pdf"
+    },
+    {
+      "basename": "README",
+      "path": "01 - Disciplinas/Estudos Avançados em Ciências da Computação/Arquivos Auxiliares - Automação IA Packet Tracer/README.md"
+    },
+    {
+      "basename": "SKILL",
+      "path": "01 - Disciplinas/Estudos Avançados em Ciências da Computação/Arquivos Auxiliares - Automação IA Packet Tracer/SKILL.md"
+    },
+    {
+      "basename": "00 - Dashboard",
+      "path": "00 - Dashboard.md"
+    },
+    {
+      "basename": "Topologia_TechSolutions_Switching.excalidraw",
+      "path": "Excalidraw/Topologia_TechSolutions_Switching.excalidraw.md"
+    },
+    {
+      "basename": "Drawing 2026-08-14 23.25.10.excalidraw",
+      "path": "Excalidraw/Drawing 2026-08-14 23.25.10.excalidraw.md"
+    },
+    {
+      "basename": "Simulado 01 - Compiladores e Linguagens de Programação",
+      "path": "05 - ESTUDOS ENADE/Simulado 01 - Compiladores e Linguagens de Programação.md"
+    },
+    {
+      "basename": "Simulado 02 - Questões ENADE de Ciência da Computação",
+      "path": "05 - ESTUDOS ENADE/Simulado 02 - Questões ENADE de Ciência da Computação.md"
+    },
+    {
+      "basename": "Quadro de Horários",
+      "path": "03 - Calendário/Quadro de Horários.md"
+    },
+    {
+      "basename": "Controle de Frequência",
+      "path": "03 - Calendário/Controle de Frequência.md"
+    },
+    {
+      "basename": "Calendário do Semestre",
+      "path": "03 - Calendário/Calendário do Semestre.md"
+    },
+    {
+      "basename": "Painel Geral de Avaliações",
+      "path": "02 - Avaliações/Painel Geral de Avaliações.md"
+    },
+    {
+      "basename": "Avaliações 2026.2",
+      "path": "02 - Avaliações/Avaliações 2026.2.md"
+    },
+    {
+      "basename": "Índice Geral de Aulas",
+      "path": "01 - Disciplinas/Índice Geral de Aulas.md"
+    },
+    {
+      "basename": "Trabalho de Conclusão de Curso II",
+      "path": "01 - Disciplinas/Trabalho de Conclusão de Curso II/Trabalho de Conclusão de Curso II.md"
+    },
+    {
+      "basename": "Fichamento - Exemplo",
+      "path": "01 - Disciplinas/Trabalho de Conclusão de Curso II/Referências/Fichamento - Exemplo.md"
+    },
+    {
+      "basename": "Ata - Reunião Exemplo",
+      "path": "01 - Disciplinas/Trabalho de Conclusão de Curso II/Orientação/Ata - Reunião Exemplo.md"
+    },
+    {
+      "basename": "2026-09-09 - Guia Passo a Passo - Captura de Evidências e Prints do HSRP",
+      "path": "01 - Disciplinas/Estudos Avançados em Ciências da Computação/Aulas/2026-09-09 - Guia Passo a Passo - Captura de Evidências e Prints do HSRP.md"
+    },
+    {
+      "basename": "2026-09-09 - Aula 5 - Redundância de Gateway e Alta Disponibilidade com HSRP",
+      "path": "01 - Disciplinas/Estudos Avançados em Ciências da Computação/Aulas/2026-09-09 - Aula 5 - Redundância de Gateway e Alta Disponibilidade com HSRP.md"
+    },
+    {
+      "basename": "Aula 3 - STP-Avancado-Eliminando-Loops",
+      "path": "01 - Disciplinas/Estudos Avançados em Ciências da Computação/Materiais/Aula 3 - STP-Avancado-Eliminando-Loops.pdf"
+    },
+    {
+      "basename": "2026-08-19 - Aula 3 - Spanning Tree Protocol (STP, RSTP) e OSPF",
+      "path": "01 - Disciplinas/Estudos Avançados em Ciências da Computação/Aulas/2026-08-19 - Aula 3 - Spanning Tree Protocol (STP, RSTP) e OSPF.md"
+    },
+    {
       "basename": "Terminal Interativo - Cisco IOS Catalyst 3560",
       "path": "01 - Disciplinas/Estudos Avançados em Ciências da Computação/Aulas/Terminal Interativo - Cisco IOS Catalyst 3560.md"
     },
@@ -22,15 +118,7 @@
     },
     {
       "basename": "Topologia_TechSolutions_Switching.excalidraw",
-      "path": "Excalidraw/Topologia_TechSolutions_Switching.excalidraw.md"
-    },
-    {
-      "basename": "Topologia_TechSolutions_Switching.excalidraw",
       "path": "01 - Disciplinas/Estudos Avançados em Ciências da Computação/Topologia_TechSolutions_Switching.excalidraw.md"
-    },
-    {
-      "basename": "Drawing 2026-08-14 23.25.10.excalidraw",
-      "path": "Excalidraw/Drawing 2026-08-14 23.25.10.excalidraw.md"
     },
     {
       "basename": "07.08",
@@ -41,48 +129,12 @@
       "path": "01 - Disciplinas/Estudos Avançados em Ciências da Computação/Topologia e Conceitos - Switching Avançado.canvas"
     },
     {
-      "basename": "Índice Geral de Aulas",
-      "path": "01 - Disciplinas/Índice Geral de Aulas.md"
-    },
-    {
-      "basename": "Avaliações 2026.2",
-      "path": "02 - Avaliações/Avaliações 2026.2.md"
-    },
-    {
-      "basename": "Painel Geral de Avaliações",
-      "path": "02 - Avaliações/Painel Geral de Avaliações.md"
-    },
-    {
-      "basename": "Quadro de Horários",
-      "path": "03 - Calendário/Quadro de Horários.md"
-    },
-    {
-      "basename": "Controle de Frequência",
-      "path": "03 - Calendário/Controle de Frequência.md"
-    },
-    {
-      "basename": "Calendário do Semestre",
-      "path": "03 - Calendário/Calendário do Semestre.md"
-    },
-    {
-      "basename": "00 - Dashboard",
-      "path": "00 - Dashboard.md"
-    },
-    {
       "basename": "00 - Guia do Cofre (Vault Guide)",
       "path": "00 - Guia do Cofre (Vault Guide).md"
     },
     {
       "basename": "README",
       "path": "01 - Disciplinas/Tópicos Especiais II/Materiais/Atividade_Aula_1_ContaBancaria/README.md"
-    },
-    {
-      "basename": "README",
-      "path": "01 - Disciplinas/Estudos Avançados em Ciências da Computação/Arquivos Auxiliares - Automação IA Packet Tracer/README.md"
-    },
-    {
-      "basename": "SKILL",
-      "path": "01 - Disciplinas/Estudos Avançados em Ciências da Computação/Arquivos Auxiliares - Automação IA Packet Tracer/SKILL.md"
     },
     {
       "basename": "Estudos Avançados em Ciências da Computação",

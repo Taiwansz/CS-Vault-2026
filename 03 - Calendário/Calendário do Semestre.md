@@ -20,6 +20,13 @@
 
 ---
 
+## 🌐 Estudos Avançados em Ciências da Computação
+
+- **30/09/2026** — Avaliação N1 (Packet Tracer + Teoria)
+- **25/11/2026** — Avaliação N2
+
+---
+
 ## 📝 Interação Humano Computador e Sistemas Multimídia
 
 - **18/09/2026** — Prova 1

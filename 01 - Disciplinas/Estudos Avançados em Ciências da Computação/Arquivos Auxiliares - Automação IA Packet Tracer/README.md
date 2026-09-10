@@ -31,14 +31,17 @@ tags:
 ### Passo 1: Carregar o Script Module no Packet Tracer
 1. Abra o **Cisco Packet Tracer** (versão 8.x ou 9.x).
 2. No menu superior, clique em:
-   👉 **`Extensions`** $ightarrow$ **`Scripting`** $ightarrow$ **`Configure PT Script Modules...`**
+   👉 **`Extensions`** $
+ightarrow$ **`Scripting`** $
+ightarrow$ **`Configure PT Script Modules...`**
 3. Na janela que abrir, clique no botão **`Add...`**.
 4. Selecione o arquivo **`V5.2.pts`** localizado nesta pasta.
 5. Clique em **Abrir** e confirme com **OK**.
 
 ### Passo 2: Abrir a Interface da Extensão (MCP BUILDER)
 1. No menu superior do Packet Tracer, clique em:
-   👉 **`Extensions`** $ightarrow$ **`MCP BUILDER`**
+   👉 **`Extensions`** $
+ightarrow$ **`MCP BUILDER`**
 2. Uma janela intitulada **PT-MCP Control Center** será aberta.
 3. **Não precisa colar nada no editor da janela!** A extensão funciona de forma autônoma como uma ponte (*Bridge*) ouvindo requisições na porta local ou via sistema de arquivos.
 
