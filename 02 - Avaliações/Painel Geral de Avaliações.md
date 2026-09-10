@@ -12,6 +12,10 @@ data: 2026-08-11
 
 ## 🗓️ Calendário de Provas Declaradas
 
+### Estudos Avançados em Ciências da Computação
+- **30/09/2026:** Avaliação N1 (Packet Tracer + Teoria)
+- **25/11/2026:** Avaliação N2
+
 ### Interação Humano Computador e Sistemas Multimídia
 - **18/09/2026:** Prova 1 (P1)
 - **06/11/2026:** Prova 2 (P2)

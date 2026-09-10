@@ -87,7 +87,7 @@ TABLE
   data AS "Data",
   status AS "Status"
 FROM "01 - Disciplinas"
-WHERE tipo = "aula" OR tipo = "atividade"
+WHERE tipo = "aula" OR tipo = "atividade" OR tipo = "trabalho"
 SORT data DESC
 LIMIT 10
 ```
