@@ -35,10 +35,11 @@
 
 ---
 
-## 📖 Tópicos Especiais II
+## ☕ Tópicos Especiais II (Java POO)
 
 - **21/09 a 25/09/2026** — Atividade Integrativa
-- **28/09 e 29/09/2026** — Provas
+- **22/09/2026** — Prova 1 (P1) — POO em Java (Prof. Luiz Claudio Chiavini)
+- **28/09 e 29/09/2026** — Provas Institucionais
 
 ---
 

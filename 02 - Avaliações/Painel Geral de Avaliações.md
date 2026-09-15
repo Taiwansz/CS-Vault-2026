@@ -21,6 +21,9 @@ data: 2026-08-11
 - **06/11/2026:** Prova 2 (P2)
 - **11/12/2026:** Prova Substitutiva
 
+### Tópicos Especiais II (Java POO)
+- **22/09/2026:** Prova 1 (P1) — Programação Orientada a Objetos em Java (Prof. Luiz Claudio Chiavini)
+
 ### Trabalho de Conclusão de Curso II (WebTCC)
 - **03/11 a 09/11/2026:** Entrega da Banca Virtual (PDF sem nome)
 - **23/11 a 27/11/2026:** Simpósio de TCCs (SIMTCC)

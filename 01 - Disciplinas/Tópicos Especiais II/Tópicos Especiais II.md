@@ -22,7 +22,7 @@ horario: "Terça-feira / 19:00–21:40"
 
 | Etapa | Nota | Peso | Data | Status / Obs. |
 |---|---:|---:|---|---|
-| Nota 01 |  |  |  | ⏳ Pendente |
+| Nota 01 |  |  | 22/09/2026 | ⏳ Pendente (Prova 1 - Java POO) |
 | Nota 02 |  |  |  | ⏳ Pendente |
 | Substitutiva |  |  |  | ⏳ Pendente |
 | Média Final |  |  |  | ⏳ Pendente |
