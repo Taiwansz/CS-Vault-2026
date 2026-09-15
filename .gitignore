@@ -2,3 +2,7 @@
 thumbs.db
 *.tmp
 *.log
+*.class
+bin/
+out/
+.idea/

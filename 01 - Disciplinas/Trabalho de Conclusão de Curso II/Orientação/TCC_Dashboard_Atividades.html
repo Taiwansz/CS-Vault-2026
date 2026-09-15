@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TCC Task Board | Neo-Brutalism</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=IBM+Plex+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Space Grotesk"', 'sans-serif'],
+                        mono: ['"IBM Plex Mono"', 'monospace'],
+                    },
+                    boxShadow: {
+                        'brutal': '8px 8px 0px 0px rgba(0,0,0,1)',
+                        'brutal-sm': '4px 4px 0px 0px rgba(0,0,0,1)',
+                        'brutal-hover': '2px 2px 0px 0px rgba(0,0,0,1)',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body {
+            background-color: #f4f4f0;
+            background-image: radial-gradient(#000 1px, transparent 1px);
+            background-size: 20px 20px;
+            color: #000;
+        }
+
+        .brutal-card {
+            border: 3px solid #000;
+            box-shadow: 8px 8px 0px 0px rgba(0,0,0,1);
+            transition: all 0.2s ease-in-out;
+        }
+        
+        .brutal-card:hover {
+            transform: translate(4px, 4px);
+            box-shadow: 4px 4px 0px 0px rgba(0,0,0,1);
+        }
+
+        .task-item {
+            border-bottom: 2px solid #000;
+            padding: 1rem 0;
+        }
+        
+        .task-item:last-child {
+            border-bottom: none;
+        }
+
+        input[type="checkbox"] {
+            appearance: none;
+            background-color: #fff;
+            margin: 0;
+            font: inherit;
+            color: currentColor;
+            width: 1.5rem;
+            height: 1.5rem;
+            border: 2px solid black;
+            display: grid;
+            place-content: center;
+            cursor: pointer;
+            box-shadow: 2px 2px 0px 0px rgba(0,0,0,1);
+            transition: all 0.1s ease;
+            flex-shrink: 0;
+        }
+
+        input[type="checkbox"]::before {
+            content: "";
+            width: 0.8rem;
+            height: 0.8rem;
+            transform: scale(0);
+            transition: 120ms transform ease-in-out;
+            background-color: #000;
+        }
+
+        input[type="checkbox"]:checked::before {
+            transform: scale(1);
+        }
+        
+        input[type="checkbox"]:checked {
+            box-shadow: 0px 0px 0px 0px rgba(0,0,0,1);
+            transform: translate(2px, 2px);
+        }
+        
+        /* Quando marcado, risca apenas o título da tarefa e deixa a explicação mais apagada */
+        input[type="checkbox"]:checked ~ .task-content .task-title {
+            text-decoration: line-through;
+            opacity: 0.5;
+        }
+        input[type="checkbox"]:checked ~ .task-content .task-details {
+            opacity: 0.4;
+        }
+        
+        .tag {
+            border: 2px solid #000;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 0.2rem 0.5rem;
+            font-size: 0.75rem;
+            box-shadow: 2px 2px 0px 0px #000;
+        }
+        
+        .mission-box {
+            border: 2px solid #000;
+            box-shadow: 4px 4px 0px 0px rgba(0,0,0,1);
+        }
+    </style>
+</head>
+<body class="p-4 md:p-10 font-sans selection:bg-pink-400 selection:text-black">
+
+    <header class="max-w-7xl mx-auto mb-12">
+        <div class="brutal-card bg-[#ff90e8] p-6 md:p-8 inline-block w-full">
+            <div class="flex flex-col xl:flex-row justify-between items-start xl:items-center gap-4 border-b-4 border-black pb-6 mb-6">
+                <div>
+                    <span class="tag bg-white mb-4 inline-block">Projeto TCC 2026.2</span>
+                    <h1 class="text-4xl md:text-5xl font-black uppercase tracking-tight leading-none mb-2">BATTLE IA <br><span class="text-white" style="text-shadow: 2px 2px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;">DASHBOARD TÁTICO</span></h1>
+                    <p class="font-mono font-bold max-w-xl">Mapeamento detalhado de execução: O que fazer, como fazer e qual o entregável final de cada membro da equipe.</p>
+                </div>
+                <div class="bg-white border-4 border-black p-4 font-mono text-sm max-w-sm shadow-brutal-sm w-full xl:w-auto">
+                    <strong>TEMA:</strong> Compressão de Prompts, Tokens e Sustentabilidade da IA.<br>
+                    <strong>FOCO:</strong> Cap 10 - Análise Experimental.
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 font-mono text-sm">
+                <div class="bg-white border-2 border-black p-3 flex justify-between">
+                    <span>1º ACOMPANHAMENTO</span><span class="font-bold text-red-500">19/SET</span>
+                </div>
+                <div class="bg-white border-2 border-black p-3 flex justify-between">
+                    <span>BANCA VIRTUAL</span><span class="font-bold text-red-500">03-09/NOV</span>
+                </div>
+                <div class="bg-white border-2 border-black p-3 flex justify-between">
+                    <span>SIMTCC (APRESENTAÇÃO)</span><span class="font-bold text-red-500">23-27/NOV</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- QUADRO DE TAREFAS -->
+    <main class="max-w-7xl mx-auto grid grid-cols-1 xl:grid-cols-2 gap-8">
+        
+        <!-- JUAN PEDRO -->
+        <article class="brutal-card bg-[#ffc900] flex flex-col">
+            <div class="border-b-4 border-black p-4 bg-white flex justify-between items-center">
+                <h2 class="text-2xl font-black uppercase tracking-tighter">Juan Pedro</h2>
+                <span class="font-mono text-xs font-bold bg-black text-white px-2 py-1">RA: 52319411</span>
+            </div>
+            
+            <div class="p-5 border-b-4 border-black flex gap-2">
+                <span class="tag bg-white">RESEARCH</span>
+                <span class="tag bg-white">WRITER</span>
+            </div>
+            
+            <div class="p-6 flex-grow bg-white font-mono text-sm">
+                <div class="mission-box p-4 bg-[#fff3b0] mb-6">
+                    <strong class="text-base uppercase underline">A Missão:</strong><br>
+                    Ler papers, fundamentar a base acadêmica e justificar o motivo deste trabalho existir, fechando a conclusão do projeto.
+                </div>
+                
+                <div class="task-item">
+                    <label class="flex gap-3 items-start cursor-pointer w-full">
+                        <input type="checkbox" class="mt-1">
+                        <div class="task-content">
+                            <span class="task-title font-bold text-base block mb-2 text-lg">Escrever a Problematização e Argumentação (Cap. 1 e 10)</span>
+                            <div class="task-details space-y-2 mt-2 pl-2 border-l-2 border-black text-xs text-gray-800">
+                                <p><strong>Na Prática:</strong> Pesquisar e citar artigos sobre o alto custo das APIs e limites da Janela de Contexto. Usar a abordagem Green AI (sustentabilidade) para provar que otimizar prompt importa.</p>
+                                <p><strong>Entregável:</strong> Textos finalizados para a Introdução e base argumentativa sólida para a escolha dos modelos testados.</p>
+                            </div>
+                        </div>
+                    </label>
+                </div>
+                
+                <div class="task-item">
+                    <label class="flex gap-3 items-start cursor-pointer w-full">
+                        <input type="checkbox" class="mt-1">
+                        <div class="task-content">
+                            <span class="task-title font-bold text-base block mb-2 text-lg">Redigir Capítulo 11 (Conclusão e Trabalhos Futuros)</span>
+                            <div class="task-details space-y-2 mt-2 pl-2 border-l-2 border-black text-xs text-gray-800">
+                                <p><strong>Na Prática:</strong> Após o fim dos testes, você deve escrever a conclusão baseando-se nos dados reais do Matheus e do Felipe.</p>
+                                <p><strong>Entregável:</strong> O Cap. 11 escrito e finalizado, amarrando tudo o que foi provado empiricamente no Battle IA.</p>
+                            </div>
+                        </div>
+                    </label>
+                </div>
+            </div>
+        </article>
+
+        <!-- MATHEUS -->
+        <article class="brutal-card bg-[#00e5ff] flex flex-col">
+            <div class="border-b-4 border-black p-4 bg-white flex justify-between items-center">
+                <h2 class="text-2xl font-black uppercase tracking-tighter">Matheus Sousa</h2>
+                <span class="font-mono text-xs font-bold bg-black text-white px-2 py-1">RA: 52319400</span>
+            </div>
+            
+            <div class="p-5 border-b-4 border-black flex gap-2">
+                <span class="tag bg-white">DEV CORE</span>
+                <span class="tag bg-white">API</span>
+            </div>
+            
+            <div class="p-6 flex-grow bg-white font-mono text-sm">
+                <div class="mission-box p-4 bg-[#c2fcff] mb-6">
+                    <strong class="text-base uppercase underline">A Missão:</strong><br>
+                    Fazer o código rodar. Orquestrar as APIs das Inteligências Artificiais e transformar a teoria em software executável.
+                </div>
+                
+                <div class="task-item">
+                    <label class="flex gap-3 items-start cursor-pointer w-full">
+                        <input type="checkbox" class="mt-1">
+                        <div class="task-content">
+                            <span class="task-title font-bold text-base block mb-2 text-lg">Configurar e Automatizar o "Battle IA"</span>
+                            <div class="task-details space-y-2 mt-2 pl-2 border-l-2 border-black text-xs text-gray-800">
+                                <p><strong>Na Prática:</strong> Criar script (Python/Node) com as chaves de API. Desenvolver um loop que manda o mesmo prompt para todos os 5~10 modelos simultaneamente. O script deve extrair do Payload os <i>Tokens in/out</i> e a <i>Latência</i>.</p>
+                                <p><strong>Entregável:</strong> Script rodando e um arquivo JSON/CSV contendo todos os dados brutos (consumo de tokens vs modelo) extraídos das APIs.</p>
+                            </div>
+                        </div>
+                    </label>
+                </div>
+                
+                <div class="task-item">
+                    <label class="flex gap-3 items-start cursor-pointer w-full">
+                        <input type="checkbox" class="mt-1">
+                        <div class="task-content">
+                            <span class="task-title font-bold text-base block mb-2 text-lg">Integração no App Prático</span>
+                            <div class="task-details space-y-2 mt-2 pl-2 border-l-2 border-black text-xs text-gray-800">
+                                <p><strong>Na Prática:</strong> Pegar a técnica de prompt que "vencer" a batalha (a mais barata/eficiente) e implementar direto no código-fonte do App real em ambiente de produção.</p>
+                                <p><strong>Entregável:</strong> O aplicativo rodando com a técnica otimizada para demonstrar economia no cenário real.</p>
+                            </div>
+                        </div>
+                    </label>
+                </div>
+            </div>
+        </article>
+
+        <!-- FELIPE (PINETE) -->
+        <article class="brutal-card bg-[#b8ff5c] flex flex-col">
+            <div class="border-b-4 border-black p-4 bg-white flex justify-between items-center">
+                <h2 class="text-2xl font-black uppercase tracking-tighter">Felipe (Pinete)</h2>
+                <span class="font-mono text-xs font-bold bg-black text-white px-2 py-1">RA: 52319337</span>
+            </div>
+            
+            <div class="p-5 border-b-4 border-black flex gap-2">
+                <span class="tag bg-white">PROMPTING</span>
+            </div>
+            
+            <div class="p-6 flex-grow bg-white font-mono text-sm">
+                <div class="mission-box p-4 bg-[#e5ffbd] mb-6">
+                    <strong class="text-base uppercase underline">A Missão:</strong><br>
+                    Garantir o rigor científico das técnicas de IA. Escrever os Prompts exatos e avaliar matematicamente a qualidade (BERTScore).
+                </div>
+                
+                <div class="task-item">
+                    <label class="flex gap-3 items-start cursor-pointer w-full">
+                        <input type="checkbox" class="mt-1">
+                        <div class="task-content">
+                            <span class="task-title font-bold text-base block mb-2 text-lg">Projetar as 3 Técnicas de Prompting e Revisar TCC</span>
+                            <div class="task-details space-y-2 mt-2 pl-2 border-l-2 border-black text-xs text-gray-800">
+                                <p><strong>Na Prática:</strong> Construir a string de texto final das técnicas (Zero-shot, Few-shot, CoT/LLMLingua). Atualizar o Cap. 3 do TCC para garantir que a teoria explique rigorosamente esses prompts.</p>
+                                <p><strong>Entregável:</strong> Um doc contendo os Prompts prontas que o Matheus vai usar no script e o Cap. 3 atualizado.</p>
+                            </div>
+                        </div>
+                    </label>
+                </div>
+                
+                <div class="task-item">
+                    <label class="flex gap-3 items-start cursor-pointer w-full">
+                        <input type="checkbox" class="mt-1">
+                        <div class="task-content">
+                            <span class="task-title font-bold text-base block mb-2 text-lg">Auditoria e Qualidade Semântica (BERTScore)</span>
+                            <div class="task-details space-y-2 mt-2 pl-2 border-l-2 border-black text-xs text-gray-800">
+                                <p><strong>Na Prática:</strong> Não basta gastar menos token, a IA tem que responder certo. Você vai medir a qualidade das respostas dos modelos processando-as com BERTScore (ou BLEU/ROUGE).</p>
+                                <p><strong>Entregável:</strong> Um laudo/tabela técnica provando estatisticamente se a técnica comprimida perdeu ou manteve o significado original.</p>
+                            </div>
+                        </div>
+                    </label>
+                </div>
+            </div>
+        </article>
+
+        <!-- GUILHERME W. -->
+        <article class="brutal-card bg-[#ff6b6b] flex flex-col">
+            <div class="border-b-4 border-black p-4 bg-white flex justify-between items-center">
+                <h2 class="text-2xl font-black uppercase tracking-tighter">Guilherme W.</h2>
+                <span class="font-mono text-xs font-bold bg-black text-white px-2 py-1">RA: 52420339</span>
+            </div>
+            
+            <div class="p-5 border-b-4 border-black flex gap-2">
+                <span class="tag bg-white">DATA</span>
+                <span class="tag bg-white">MANAGEMENT</span>
+            </div>
+            
+            <div class="p-6 flex-grow bg-white font-mono text-sm">
+                <div class="mission-box p-4 bg-[#ffcaca] mb-6">
+                    <strong class="text-base uppercase underline">A Missão:</strong><br>
+                    Plotar os dados, formatar o trabalho no rigor da ABNT e gerenciar a burocracia dos prazos oficiais do WebTCC.
+                </div>
+                
+                <div class="task-item">
+                    <label class="flex gap-3 items-start cursor-pointer w-full">
+                        <input type="checkbox" class="mt-1">
+                        <div class="task-content">
+                            <span class="task-title font-bold text-base block mb-2 text-lg">Tabulação e Gráficos do Cap. 10 (Resultados)</span>
+                            <div class="task-details space-y-2 mt-2 pl-2 border-l-2 border-black text-xs text-gray-800">
+                                <p><strong>Na Prática:</strong> Pegar o CSV/JSON sujo do Matheus e plotar gráficos visuais e acadêmicos: Ex: Barras (Contexto vs Gasto de Token) ou Dispersão (Latência vs Qualidade do Felipe).</p>
+                                <p><strong>Entregável:</strong> Todas as figuras finalizadas e o texto dissertativo do Cap 10 explicando o que deu certo e o que deu errado na experiência.</p>
+                            </div>
+                        </div>
+                    </label>
+                </div>
+                
+                <div class="task-item">
+                    <label class="flex gap-3 items-start cursor-pointer w-full">
+                        <input type="checkbox" class="mt-1">
+                        <div class="task-content">
+                            <span class="task-title font-bold text-base block mb-2 text-lg">Gestão WebTCC e Formatação (PDF Banca Virtual)</span>
+                            <div class="task-details space-y-2 mt-2 pl-2 border-l-2 border-black text-xs text-gray-800">
+                                <p><strong>Na Prática:</strong> Subir as 3 atas de orientação. Revisar todo o documento no Word, ajustando margens, citações ABNT e removendo os nomes para gerar o PDF cego que vai pra Banca Virtual no dia 03/Nov.</p>
+                                <p><strong>Entregável:</strong> Prazos cumpridos e o arquivo PDF Final perfeitamente alinhado com as normas da faculdade.</p>
+                            </div>
+                        </div>
+                    </label>
+                </div>
+            </div>
+        </article>
+
+    </main>
+
+    <footer class="max-w-7xl mx-auto mt-12 text-center font-mono text-sm font-bold border-t-4 border-black pt-6 pb-12">
+        <p>TCC 2026.2 /// SYSTEM ONLINE /// BATTLE IA</p>
+    </footer>
+
+</body>
+</html>

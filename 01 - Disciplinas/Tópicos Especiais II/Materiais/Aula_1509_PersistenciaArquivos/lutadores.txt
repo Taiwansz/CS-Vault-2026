@@ -1,0 +1,4 @@
+Charles Oliveira;Jiu-Jitsu / MMA;34
+Alex Poatan;Kickboxing / MMA;12
+Jon Jones;Wrestling / MMA;27
+Islam Makhachev;Sambo / MMA;26
