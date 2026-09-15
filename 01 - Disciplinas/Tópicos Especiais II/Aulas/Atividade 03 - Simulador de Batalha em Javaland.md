@@ -3,6 +3,8 @@ tipo: aula
 disciplina: "Tópicos Especiais II"
 data: 2026-08-18
 assunto: "Simulador de Batalha em Javaland - POO, Interfaces e Abstração"
+professor: "Luiz Claudio Chiavini Oliveira Junior"
+status: concluido
 ---
 
 # 📜 Atividade 03 — Simulador de Batalha em Javaland
@@ -76,3 +78,15 @@ Na sua classe principal, você será o Mestre do Jogo:
 ## 🌟 Desafio Extra (Para os mais rápidos)
 
 Quer tornar o jogo mais imprevisível? Utilize a classe `java.util.Random` ou `Math.random()` dentro do método `atacar()` do Guerreiro para criar uma **"Chance de Acerto Crítico"**. Exemplo: 20% de probabilidade de o dano do ataque ser multiplicado por 2 naquele turno!
+
+---
+
+## 💻 Código Fonte e Arquivos do Projeto
+
+Todos os arquivos foram organizados e validados na pasta de materiais:
+- 📄 [[01 - Disciplinas/Tópicos Especiais II/Materiais/Atividade_Aula_3_SimuladorBatalha/Personagem.java|Personagem.java]] — Classe abstrata base com controle de vida e dano
+- 📄 [[01 - Disciplinas/Tópicos Especiais II/Materiais/Atividade_Aula_3_SimuladorBatalha/Magia.java|Magia.java]] — Interface com contrato de cura e bola de fogo
+- 📄 [[01 - Disciplinas/Tópicos Especiais II/Materiais/Atividade_Aula_3_SimuladorBatalha/Guerreiro.java|Guerreiro.java]] — Subclasse de ataque físico com chance de crítico
+- 📄 [[01 - Disciplinas/Tópicos Especiais II/Materiais/Atividade_Aula_3_SimuladorBatalha/Mago.java|Mago.java]] — Subclasse mágica com cura limitada à vida máxima
+- 📄 [[01 - Disciplinas/Tópicos Especiais II/Materiais/Atividade_Aula_3_SimuladorBatalha/Main.java|Main.java]] — Loop de batalha por turnos com intervalo de suspense
+- 📄 [[01 - Disciplinas/Tópicos Especiais II/Materiais/Atividade_Aula_3_SimuladorBatalha/README.md|README.md]] — Instruções de execução e documentação
