@@ -441,13 +441,16 @@ def executar_inferencia_real_stream(
         t_total_s = time.time() - t0
         resposta_completa = "".join(chunks_texto).strip()
 
-        # Fallback de tokens caso a API não envie o bloco usage
-        prompt_tokens = usage_info.get("prompt_tokens", len(prompt.split()))
-        completion_tokens = usage_info.get("completion_tokens", len(resposta_completa.split()))
-        total_tokens = usage_info.get("total_tokens", prompt_tokens + completion_tokens)
+        # Validação estrita de telemetria da API NVIDIA NIM (ZERO FALLBACK)
+        if not usage_info or "prompt_tokens" not in usage_info or "completion_tokens" not in usage_info:
+            raise RuntimeError("FALHA DE TELEMETRIA: A API NVIDIA NIM não retornou os metadados oficiais de 'usage'. Fallback proibido.")
+
+        prompt_tokens = int(usage_info["prompt_tokens"])
+        completion_tokens = int(usage_info["completion_tokens"])
+        total_tokens = int(usage_info["total_tokens"])
 
         if ttft_ms is None:
-            ttft_ms = t_total_s * 1000.0
+            raise RuntimeError("FALHA DE TELEMETRIA: Nenhum token inicial foi recebido via SSE streaming para calcular o TTFT. Fallback proibido.")
 
         return {
             "sucesso": True,

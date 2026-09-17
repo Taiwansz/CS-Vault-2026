@@ -11,13 +11,15 @@ Gera os 4 gráficos científicos de bancada em alta resolução (300 DPI):
 - Figura 10.3: Curva de Retenção Semântica (BERTScore F1) vs Razão de Compressão
 - Figura 10.4: Projeção de Custo Financeiro e Redução de FLOPs O(n²)
 
-Consome diretamente os dados brutos REAIS gerados pelo benchmark:
+POLÍTICA DE DADOS: ZERO FALLBACK / ZERO DADOS SINTÉTICOS.
+Todos os pontos plotados são estritamente lidos do banco de dados experimental:
 '03 - Bancada Experimental (Código)/battle_ia_resultados_brutos.json'
-Exibe explicitamente o Modelo Avaliado e a Nuvem NVIDIA NIM em todas as figuras.
+Se qualquer medição estiver ausente, o script encerra imediatamente com erro fatal.
 =============================================================================
 """
 
 import os
+import sys
 import json
 from pathlib import Path
 import matplotlib.pyplot as plt
@@ -37,18 +39,28 @@ out_dir = base_dir.parent / "04 - Figuras"
 out_dir.mkdir(parents=True, exist_ok=True)
 json_path = base_dir / "battle_ia_resultados_brutos.json"
 
-# Carregar dados reais se disponíveis
-dados_brutos = []
-modelo_nome_raw = "meta/llama-3.2-11b-vision-instruct"
-if json_path.exists():
-    try:
-        with open(json_path, "r", encoding="utf-8") as f:
-            dados_brutos = json.load(f)
-        if dados_brutos:
-            modelo_nome_raw = dados_brutos[0].get("modelo_avaliado", modelo_nome_raw)
-        print(f"[CARGA] {len(dados_brutos)} registros reais carregados de {json_path.name}")
-    except Exception as e:
-        print(f"[AVISO] Falha ao ler JSON: {e}")
+# =============================================================================
+# CARGA RIGOROSA DE DADOS REAIS (ZERO FALLBACK)
+# =============================================================================
+
+if not json_path.exists():
+    raise FileNotFoundError(
+        f"ERRO FATAL: Arquivo de resultados reais '{json_path}' não encontrado. "
+        f"Execute primeiramente 'python battle_ia_benchmark.py' para coletar as métricas reais via API!"
+    )
+
+with open(json_path, "r", encoding="utf-8") as f:
+    dados_brutos = json.load(f)
+
+if not dados_brutos or len(dados_brutos) < 12:
+    raise ValueError(
+        f"ERRO FATAL: O arquivo '{json_path.name}' contém apenas {len(dados_brutos)} registros "
+        f"(são exigidos exatamente 12 registros correspondentes aos 3 casos sob as 4 técnicas). "
+        f"Fallback estritamente proibido."
+    )
+
+modelo_nome_raw = dados_brutos[0]["modelo_avaliado"]
+print(f"[CARGA REAL] 100% dos {len(dados_brutos)} registros reais carregados de {json_path.name}")
 
 # Formatação limpa do identificador do modelo para exibição acadêmica
 nome_modelo_formatado = "Meta Llama-3.2-11B-Vision-Instruct"
@@ -66,24 +78,32 @@ SUBTITULO_MODELO = f"Modelo Avaliado: {nome_modelo_formatado} | Infraestrutura: 
 # Mapeia registros por (caso_id, tecnica)
 mapa_dados = {}
 for r in dados_brutos:
-    k = (r.get("caso_id"), r.get("tecnica"))
+    k = (r["caso_id"], r["tecnica"])
     mapa_dados[k] = r
 
-def get_val(caso_id, tecnica, campo, padrao):
-    if (caso_id, tecnica) in mapa_dados:
-        return mapa_dados[(caso_id, tecnica)].get(campo, padrao)
-    return padrao
+def get_real_metric(caso_id: str, tecnica: str, campo: str):
+    """
+    Recupera o valor medido estritamente real do JSON gerado pela bancada experimental.
+    Qualquer ausência dispara erro fatal imediato (ZERO FALLBACK).
+    """
+    chave = (caso_id, tecnica)
+    if chave not in mapa_dados:
+        raise KeyError(f"ERRO FATAL: Medição ausente no JSON para a chave {chave}. Fallback proibido.")
+    registro = mapa_dados[chave]
+    if campo not in registro:
+        raise KeyError(f"ERRO FATAL: Campo '{campo}' ausente no registro {chave}. Fallback proibido.")
+    return registro[campo]
 
 labels = ['Caso 1: Sist. Distribuídos', 'Caso 2: SQL sob DDL', 'Caso 3: Auditoria LGPD']
 casos = ['caso_1', 'caso_2', 'caso_3']
 
 # -------------------------------------------------------------
-# FIGURA 10.1: Volume Médio de Tokens de Entrada por Técnica
+# FIGURA 10.1: Volume Real de Tokens de Entrada por Técnica
 # -------------------------------------------------------------
-few_shot = [get_val(c, 'Few-shot (Baseline)', 'tokens_entrada', p) for c, p in zip(casos, [340, 434, 378])]
-zero_shot = [get_val(c, 'Zero-shot', 'tokens_entrada', p) for c, p in zip(casos, [262, 361, 305])]
-llmlingua_2x = [get_val(c, 'LLMLingua (2x)', 'tokens_entrada', p) for c, p in zip(casos, [206, 267, 230])]
-llmlingua_4x = [get_val(c, 'LLMLingua (4x)', 'tokens_entrada', p) for c, p in zip(casos, [149, 185, 171])]
+few_shot = [get_real_metric(c, 'Few-shot (Baseline)', 'tokens_entrada') for c in casos]
+zero_shot = [get_real_metric(c, 'Zero-shot', 'tokens_entrada') for c in casos]
+llmlingua_2x = [get_real_metric(c, 'LLMLingua (2x)', 'tokens_entrada') for c in casos]
+llmlingua_4x = [get_real_metric(c, 'LLMLingua (4x)', 'tokens_entrada') for c in casos]
 
 fig, ax = plt.subplots(figsize=(7.8, 4.5), dpi=300)
 x = np.arange(len(labels))
@@ -111,7 +131,7 @@ def autolabel(rects, ax_target, fmt="{:.0f}"):
                     xy=(rect.get_x() + rect.get_width() / 2, height),
                     xytext=(0, 2),
                     textcoords="offset points",
-                    ha='center', va='bottom', fontsize=7.2, fontweight='semibold')
+                    ha='center', va='bottom', fontsize=7.2, fontweight='bold')
 
 autolabel(rects1, ax)
 autolabel(rects2, ax)
@@ -122,15 +142,15 @@ fig.tight_layout()
 fig1_path = out_dir / "figura_10_1_volume_tokens.png"
 fig.savefig(fig1_path, dpi=300)
 plt.close(fig)
-print(f"[OK] Gerada Figura 10.1: {fig1_path}")
+print(f"[OK] Gerada Figura 10.1 (100% Real): {fig1_path}")
 
 # -------------------------------------------------------------
 # FIGURA 10.2: Latência e Time-to-First-Token (TTFT em ms)
 # -------------------------------------------------------------
-ttft_few = [get_val(c, 'Few-shot (Baseline)', 'ttft_ms', p) for c, p in zip(casos, [12492, 5934, 591])]
-ttft_zero = [get_val(c, 'Zero-shot', 'ttft_ms', p) for c, p in zip(casos, [548, 553, 588])]
-ttft_2x = [get_val(c, 'LLMLingua (2x)', 'ttft_ms', p) for c, p in zip(casos, [832, 560, 2721])]
-ttft_4x = [get_val(c, 'LLMLingua (4x)', 'ttft_ms', p) for c, p in zip(casos, [633, 2462, 1325])]
+ttft_few = [get_real_metric(c, 'Few-shot (Baseline)', 'ttft_ms') for c in casos]
+ttft_zero = [get_real_metric(c, 'Zero-shot', 'ttft_ms') for c in casos]
+ttft_2x = [get_real_metric(c, 'LLMLingua (2x)', 'ttft_ms') for c in casos]
+ttft_4x = [get_real_metric(c, 'LLMLingua (4x)', 'ttft_ms') for c in casos]
 
 fig, ax = plt.subplots(figsize=(7.8, 4.5), dpi=300)
 rects1 = ax.bar(x - width*1.5, ttft_few, width, label='Few-shot (Baseline)', color='#4A5568', edgecolor='#2D3748')
@@ -157,7 +177,7 @@ fig.tight_layout()
 fig2_path = out_dir / "figura_10_2_latencia_ttft.png"
 fig.savefig(fig2_path, dpi=300)
 plt.close(fig)
-print(f"[OK] Gerada Figura 10.2: {fig2_path}")
+print(f"[OK] Gerada Figura 10.2 (100% Real): {fig2_path}")
 
 # -------------------------------------------------------------
 # FIGURA 10.3: Curva de Retenção Semântica (BERTScore F1)
@@ -166,9 +186,9 @@ fig, ax = plt.subplots(figsize=(7.8, 4.5), dpi=300)
 ratios = [1.0, 2.0, 4.0]
 
 def get_case_curve(cid):
-    f1_1 = get_val(cid, 'Zero-shot', 'bertscore_proxy_f1', 0.82)
-    f1_2 = get_val(cid, 'LLMLingua (2x)', 'bertscore_proxy_f1', 0.79)
-    f1_4 = get_val(cid, 'LLMLingua (4x)', 'bertscore_proxy_f1', 0.78)
+    f1_1 = get_real_metric(cid, 'Zero-shot', 'bertscore_proxy_f1')
+    f1_2 = get_real_metric(cid, 'LLMLingua (2x)', 'bertscore_proxy_f1')
+    f1_4 = get_real_metric(cid, 'LLMLingua (4x)', 'bertscore_proxy_f1')
     return [f1_1, f1_2, f1_4]
 
 c1_f1 = get_case_curve('caso_1')
@@ -202,7 +222,7 @@ fig.tight_layout()
 fig3_path = out_dir / "figura_10_3_bertscore_f1.png"
 fig.savefig(fig3_path, dpi=300)
 plt.close(fig)
-print(f"[OK] Gerada Figura 10.3: {fig3_path}")
+print(f"[OK] Gerada Figura 10.3 (100% Real): {fig3_path}")
 
 # -------------------------------------------------------------
 # FIGURA 10.4: Projeção de Custo Financeiro e Redução de FLOPs
@@ -212,13 +232,13 @@ fig, ax1 = plt.subplots(figsize=(7.8, 4.5), dpi=300)
 scenarios = ['Few-shot', 'Zero-shot', 'LLMLingua 2x', 'LLMLingua 4x']
 tecs = ['Few-shot (Baseline)', 'Zero-shot', 'LLMLingua (2x)', 'LLMLingua (4x)']
 
-# Médias consolidadas entre os 3 casos
+# Médias consolidadas estritamente sobre os registros reais dos 3 casos
 cost_usd = [
-    float(np.mean([get_val(c, t, 'custo_total_100k_usd', 490) for c in casos]))
+    float(np.mean([get_real_metric(c, t, 'custo_total_100k_usd') for c in casos]))
     for t in tecs
 ]
 flops_reduction = [
-    float(np.mean([get_val(c, t, 'reducao_flops_atencao_pct', 0) for c in casos]))
+    float(np.mean([get_real_metric(c, t, 'reducao_flops_atencao_pct') for c in casos]))
     for t in tecs
 ]
 
@@ -265,4 +285,4 @@ fig.tight_layout()
 fig4_path = out_dir / "figura_10_4_custo_flops.png"
 fig.savefig(fig4_path, dpi=300)
 plt.close(fig)
-print(f"[OK] Gerada Figura 10.4: {fig4_path}")
+print(f"[OK] Gerada Figura 10.4 (100% Real): {fig4_path}")
