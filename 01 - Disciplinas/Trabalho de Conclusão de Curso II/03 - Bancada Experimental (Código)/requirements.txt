@@ -1,0 +1,12 @@
+# Dependências da Bancada Experimental e Compilador TCC II
+# Centro Universitário Max Planck (UniMAX) - Ciência da Computação (2026)
+
+python-docx>=1.1.0
+matplotlib>=3.8.0
+numpy>=1.26.0
+pymupdf>=1.24.0
+pywin32>=306
+dataclasses-json>=0.6.0
+bert-score>=0.3.13
+torch>=2.2.0
+transformers>=4.40.0
