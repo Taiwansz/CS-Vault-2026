@@ -1,4 +1,4 @@
-﻿---
+---
 tipo: disciplina
 codigo: "53030218"
 turma: N13208A
@@ -69,6 +69,7 @@ horario: "Quarta-feira / 19:00–21:40"
 
 ## ⚡ Simuladores, Calculadoras & Guias Interativos
 
+- 🧭 [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Aulas/Recursos e Ferramentas Interativas/Guia Mestre - Sub-redes e IPv4 do Zero Absoluto|Guia Mestre: Sub-redes IPv4 e VLSM do Zero Absoluto (Método Prático sem Binário)]]
 - 🔢 [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Aulas/Calculadora Interativa - Sub-redes e VLSM|Calculadora Automática de Sub-redes & VLSM (Dimensionamento IPv4)]]
 - 🌐 [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Aulas/Simulador Interativo - Modelo OSI e Encapsulamento|Simulador Interativo: Modelo OSI, Encapsulamento & Troubleshooting]]
 - 💻 [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Aulas/Terminal Interativo - Cisco IOS Catalyst 3560|Terminal Interativo Cisco IOS (Console de Simulação Catalyst 3560)]]
