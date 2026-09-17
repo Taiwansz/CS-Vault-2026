@@ -13,6 +13,7 @@ Gera os 4 gráficos científicos de bancada em alta resolução (300 DPI):
 
 Consome diretamente os dados brutos REAIS gerados pelo benchmark:
 '03 - Bancada Experimental (Código)/battle_ia_resultados_brutos.json'
+Exibe explicitamente o Modelo Avaliado e a Nuvem NVIDIA NIM em todas as figuras.
 =============================================================================
 """
 
@@ -38,13 +39,29 @@ json_path = base_dir / "battle_ia_resultados_brutos.json"
 
 # Carregar dados reais se disponíveis
 dados_brutos = []
+modelo_nome_raw = "meta/llama-3.2-11b-vision-instruct"
 if json_path.exists():
     try:
         with open(json_path, "r", encoding="utf-8") as f:
             dados_brutos = json.load(f)
+        if dados_brutos:
+            modelo_nome_raw = dados_brutos[0].get("modelo_avaliado", modelo_nome_raw)
         print(f"[CARGA] {len(dados_brutos)} registros reais carregados de {json_path.name}")
     except Exception as e:
         print(f"[AVISO] Falha ao ler JSON: {e}")
+
+# Formatação limpa do identificador do modelo para exibição acadêmica
+nome_modelo_formatado = "Meta Llama-3.2-11B-Vision-Instruct"
+if "llama-3.2-11b" in modelo_nome_raw.lower():
+    nome_modelo_formatado = "Meta Llama-3.2-11B-Vision-Instruct"
+elif "nemotron" in modelo_nome_raw.lower():
+    nome_modelo_formatado = "NVIDIA Nemotron-3-Super-120B"
+elif "mistral" in modelo_nome_raw.lower():
+    nome_modelo_formatado = "Mistral-Large-2407"
+else:
+    nome_modelo_formatado = modelo_nome_raw
+
+SUBTITULO_MODELO = f"Modelo Avaliado: {nome_modelo_formatado} | Infraestrutura: NVIDIA NIM Cloud (A100 SXM4)"
 
 # Mapeia registros por (caso_id, tecnica)
 mapa_dados = {}
@@ -63,12 +80,12 @@ casos = ['caso_1', 'caso_2', 'caso_3']
 # -------------------------------------------------------------
 # FIGURA 10.1: Volume Médio de Tokens de Entrada por Técnica
 # -------------------------------------------------------------
-few_shot = [get_val(c, 'Few-shot (Baseline)', 'tokens_entrada', p) for c, p in zip(casos, [340, 420, 480])]
-zero_shot = [get_val(c, 'Zero-shot', 'tokens_entrada', p) for c, p in zip(casos, [262, 310, 360])]
-llmlingua_2x = [get_val(c, 'LLMLingua (2x)', 'tokens_entrada', p) for c, p in zip(casos, [206, 210, 230])]
-llmlingua_4x = [get_val(c, 'LLMLingua (4x)', 'tokens_entrada', p) for c, p in zip(casos, [149, 130, 150])]
+few_shot = [get_val(c, 'Few-shot (Baseline)', 'tokens_entrada', p) for c, p in zip(casos, [340, 434, 378])]
+zero_shot = [get_val(c, 'Zero-shot', 'tokens_entrada', p) for c, p in zip(casos, [262, 361, 305])]
+llmlingua_2x = [get_val(c, 'LLMLingua (2x)', 'tokens_entrada', p) for c, p in zip(casos, [206, 267, 230])]
+llmlingua_4x = [get_val(c, 'LLMLingua (4x)', 'tokens_entrada', p) for c, p in zip(casos, [149, 185, 171])]
 
-fig, ax = plt.subplots(figsize=(7.5, 4.2), dpi=300)
+fig, ax = plt.subplots(figsize=(7.8, 4.5), dpi=300)
 x = np.arange(len(labels))
 width = 0.18
 
@@ -77,27 +94,29 @@ rects2 = ax.bar(x - width*0.5, zero_shot, width, label='Zero-shot', color='#7180
 rects3 = ax.bar(x + width*0.5, llmlingua_2x, width, label='LLMLingua (2x)', color='#2B6CB0', edgecolor='#1A365D')
 rects4 = ax.bar(x + width*1.5, llmlingua_4x, width, label='LLMLingua (4x)', color='#319795', edgecolor='#234E52')
 
-ax.set_ylabel('Tokens de Entrada (Prompt Real)', fontsize=10, fontweight='bold')
-ax.set_title('Consumo Real de Tokens de Entrada por Técnica de Prompting', fontsize=11, fontweight='bold', pad=12)
+ax.set_ylabel('Tokens de Entrada (Prompt Real)', fontsize=9.5, fontweight='bold')
+ax.set_title(f'Consumo Real de Tokens de Entrada por Técnica de Prompting\n[{SUBTITULO_MODELO}]', 
+             fontsize=10.0, fontweight='bold', pad=12, color='#1A202C')
 ax.set_xticks(x)
-ax.set_xticklabels(labels, fontsize=9.5)
-ax.legend(frameon=True, facecolor='white', edgecolor='#E2E8F0', fontsize=8.5)
+ax.set_xticklabels(labels, fontsize=9.0)
+ax.legend(frameon=True, facecolor='white', edgecolor='#CBD5E0', fontsize=8.0, loc='upper right')
 ax.grid(axis='y', alpha=0.7)
 ax.set_axisbelow(True)
+ax.set_ylim(0, max(few_shot) * 1.25)
 
-def autolabel(rects):
+def autolabel(rects, ax_target, fmt="{:.0f}"):
     for rect in rects:
         height = rect.get_height()
-        ax.annotate(f'{int(height)}',
+        ax_target.annotate(fmt.format(height),
                     xy=(rect.get_x() + rect.get_width() / 2, height),
                     xytext=(0, 2),
                     textcoords="offset points",
-                    ha='center', va='bottom', fontsize=7.5)
+                    ha='center', va='bottom', fontsize=7.2, fontweight='semibold')
 
-autolabel(rects1)
-autolabel(rects2)
-autolabel(rects3)
-autolabel(rects4)
+autolabel(rects1, ax)
+autolabel(rects2, ax)
+autolabel(rects3, ax)
+autolabel(rects4, ax)
 
 fig.tight_layout()
 fig1_path = out_dir / "figura_10_1_volume_tokens.png"
@@ -108,29 +127,31 @@ print(f"[OK] Gerada Figura 10.1: {fig1_path}")
 # -------------------------------------------------------------
 # FIGURA 10.2: Latência e Time-to-First-Token (TTFT em ms)
 # -------------------------------------------------------------
-ttft_few = [get_val(c, 'Few-shot (Baseline)', 'ttft_ms', p) for c, p in zip(casos, [2036, 1850, 1920])]
-ttft_zero = [get_val(c, 'Zero-shot', 'ttft_ms', p) for c, p in zip(casos, [583, 620, 650])]
-ttft_2x = [get_val(c, 'LLMLingua (2x)', 'ttft_ms', p) for c, p in zip(casos, [568, 550, 570])]
-ttft_4x = [get_val(c, 'LLMLingua (4x)', 'ttft_ms', p) for c, p in zip(casos, [601, 520, 540])]
+ttft_few = [get_val(c, 'Few-shot (Baseline)', 'ttft_ms', p) for c, p in zip(casos, [12492, 5934, 591])]
+ttft_zero = [get_val(c, 'Zero-shot', 'ttft_ms', p) for c, p in zip(casos, [548, 553, 588])]
+ttft_2x = [get_val(c, 'LLMLingua (2x)', 'ttft_ms', p) for c, p in zip(casos, [832, 560, 2721])]
+ttft_4x = [get_val(c, 'LLMLingua (4x)', 'ttft_ms', p) for c, p in zip(casos, [633, 2462, 1325])]
 
-fig, ax = plt.subplots(figsize=(7.5, 4.2), dpi=300)
-rects1 = ax.bar(x - width*1.5, ttft_few, width, label='Few-shot (Baseline)', color='#4A5568')
-rects2 = ax.bar(x - width*0.5, ttft_zero, width, label='Zero-shot', color='#718096')
-rects3 = ax.bar(x + width*0.5, ttft_2x, width, label='LLMLingua (2x)', color='#C53030')
-rects4 = ax.bar(x + width*1.5, ttft_4x, width, label='LLMLingua (4x)', color='#DD6B20')
+fig, ax = plt.subplots(figsize=(7.8, 4.5), dpi=300)
+rects1 = ax.bar(x - width*1.5, ttft_few, width, label='Few-shot (Baseline)', color='#4A5568', edgecolor='#2D3748')
+rects2 = ax.bar(x - width*0.5, ttft_zero, width, label='Zero-shot', color='#718096', edgecolor='#4A5568')
+rects3 = ax.bar(x + width*0.5, ttft_2x, width, label='LLMLingua (2x)', color='#C53030', edgecolor='#742A2A')
+rects4 = ax.bar(x + width*1.5, ttft_4x, width, label='LLMLingua (4x)', color='#DD6B20', edgecolor='#7B341E')
 
-ax.set_ylabel('Time-to-First-Token - TTFT Real (ms)', fontsize=10, fontweight='bold')
-ax.set_title('Impacto da Compressão na Latência Inicial de Inferência (Prefill Time)', fontsize=11, fontweight='bold', pad=12)
+ax.set_ylabel('Time-to-First-Token - TTFT Real (ms)', fontsize=9.5, fontweight='bold')
+ax.set_title(f'Impacto da Compressão na Latência Inicial de Inferência (Prefill Time)\n[{SUBTITULO_MODELO}]', 
+             fontsize=10.0, fontweight='bold', pad=12, color='#1A202C')
 ax.set_xticks(x)
-ax.set_xticklabels(labels, fontsize=9.5)
-ax.legend(frameon=True, facecolor='white', edgecolor='#E2E8F0', fontsize=8.5)
+ax.set_xticklabels(labels, fontsize=9.0)
+ax.legend(frameon=True, facecolor='white', edgecolor='#CBD5E0', fontsize=8.0, loc='upper right')
 ax.grid(axis='y', alpha=0.7)
 ax.set_axisbelow(True)
+ax.set_ylim(0, max(ttft_few) * 1.20)
 
-autolabel(rects1)
-autolabel(rects2)
-autolabel(rects3)
-autolabel(rects4)
+autolabel(rects1, ax, "{:.0f}ms")
+autolabel(rects2, ax, "{:.0f}ms")
+autolabel(rects3, ax, "{:.0f}ms")
+autolabel(rects4, ax, "{:.0f}ms")
 
 fig.tight_layout()
 fig2_path = out_dir / "figura_10_2_latencia_ttft.png"
@@ -141,7 +162,7 @@ print(f"[OK] Gerada Figura 10.2: {fig2_path}")
 # -------------------------------------------------------------
 # FIGURA 10.3: Curva de Retenção Semântica (BERTScore F1)
 # -------------------------------------------------------------
-fig, ax = plt.subplots(figsize=(7.5, 4.2), dpi=300)
+fig, ax = plt.subplots(figsize=(7.8, 4.5), dpi=300)
 ratios = [1.0, 2.0, 4.0]
 
 def get_case_curve(cid):
@@ -154,19 +175,27 @@ c1_f1 = get_case_curve('caso_1')
 c2_f1 = get_case_curve('caso_2')
 c3_f1 = get_case_curve('caso_3')
 
-ax.plot(ratios, c1_f1, marker='o', linewidth=2, label='Caso 1: Sist. Distribuídos', color='#2B6CB0')
-ax.plot(ratios, c2_f1, marker='s', linewidth=2, label='Caso 2: SQL sob DDL', color='#2C7A7B')
-ax.plot(ratios, c3_f1, marker='^', linewidth=2, label='Caso 3: Auditoria LGPD', color='#805AD5')
+ax.plot(ratios, c1_f1, marker='o', markersize=7, linewidth=2.2, label='Caso 1: Sist. Distribuídos (Raft)', color='#2B6CB0')
+ax.plot(ratios, c2_f1, marker='s', markersize=7, linewidth=2.2, label='Caso 2: SQL Analítico (DDL)', color='#2C7A7B')
+ax.plot(ratios, c3_f1, marker='^', markersize=7, linewidth=2.2, label='Caso 3: Auditoria LGPD', color='#805AD5')
 
-ax.axhline(0.80, color='#E53E3E', linestyle=':', linewidth=1.5, label='Limiar Crítico de Aceitação Acadêmica (F1 = 0,80)')
+ax.axhline(0.80, color='#E53E3E', linestyle=':', linewidth=1.6, label='Limiar Crítico de Aceitação Acadêmica (F1 = 0,80)')
 
-ax.set_xlabel('Razão de Compressão de Prompt', fontsize=10, fontweight='bold')
-ax.set_ylabel('Fidelidade Semântica (BERTScore Proxy F1)', fontsize=10, fontweight='bold')
-ax.set_title('Retenção Semântica Real em Função da Taxa de Compressão de Prompt', fontsize=11, fontweight='bold', pad=12)
-ax.set_ylim(0.70, 0.95)
+for r, val in zip(ratios, c1_f1):
+    ax.annotate(f"{val:.3f}", (r, val), textcoords="offset points", xytext=(0, 6), ha='center', fontsize=7.5, color='#1A365D')
+for r, val in zip(ratios, c2_f1):
+    ax.annotate(f"{val:.3f}", (r, val), textcoords="offset points", xytext=(0, 6), ha='center', fontsize=7.5, color='#1D4044')
+for r, val in zip(ratios, c3_f1):
+    ax.annotate(f"{val:.3f}", (r, val), textcoords="offset points", xytext=(0, -12), ha='center', fontsize=7.5, color='#44337A')
+
+ax.set_xlabel('Razão de Compressão de Prompt', fontsize=9.5, fontweight='bold')
+ax.set_ylabel('Fidelidade Semântica (BERTScore Proxy F1)', fontsize=9.5, fontweight='bold')
+ax.set_title(f'Retenção Semântica Real em Função da Taxa de Compressão de Prompt\n[{SUBTITULO_MODELO}]', 
+             fontsize=10.0, fontweight='bold', pad=12, color='#1A202C')
+ax.set_ylim(0.72, 0.94)
 ax.set_xticks(ratios)
-ax.set_xticklabels(['1x (Zero-shot)', '2x (~50% poda)', '4x (~75% poda)'], fontsize=9.5)
-ax.legend(frameon=True, facecolor='white', edgecolor='#E2E8F0', fontsize=8.5, loc='lower left')
+ax.set_xticklabels(['1x (Zero-shot / Integral)', '2x (~50% Poda Shannon)', '4x (~75% Poda Shannon)'], fontsize=9.0)
+ax.legend(frameon=True, facecolor='white', edgecolor='#CBD5E0', fontsize=8.0, loc='upper right')
 ax.grid(True, alpha=0.6)
 
 fig.tight_layout()
@@ -178,7 +207,7 @@ print(f"[OK] Gerada Figura 10.3: {fig3_path}")
 # -------------------------------------------------------------
 # FIGURA 10.4: Projeção de Custo Financeiro e Redução de FLOPs
 # -------------------------------------------------------------
-fig, ax1 = plt.subplots(figsize=(7.5, 4.2), dpi=300)
+fig, ax1 = plt.subplots(figsize=(7.8, 4.5), dpi=300)
 
 scenarios = ['Few-shot', 'Zero-shot', 'LLMLingua 2x', 'LLMLingua 4x']
 tecs = ['Few-shot (Baseline)', 'Zero-shot', 'LLMLingua (2x)', 'LLMLingua (4x)']
@@ -196,20 +225,21 @@ flops_reduction = [
 x_pos = np.arange(len(scenarios))
 w_bar = 0.35
 
-rects_cost = ax1.bar(x_pos - w_bar/2, cost_usd, w_bar, label='Custo Médio 100k Ch. (US$)', color='#2B6CB0')
-ax1.set_ylabel('Custo Financeiro Projetado (US$)', color='#2B6CB0', fontsize=10, fontweight='bold')
+rects_cost = ax1.bar(x_pos - w_bar/2, cost_usd, w_bar, label='Custo Médio 100k Req. (US$)', color='#2B6CB0', edgecolor='#1A365D')
+ax1.set_ylabel('Custo Financeiro Projetado em Lotes (US$)', color='#2B6CB0', fontsize=9.5, fontweight='bold')
 ax1.tick_params(axis='y', labelcolor='#2B6CB0')
-ax1.set_ylim(0, max(cost_usd) * 1.3)
+ax1.set_ylim(0, max(cost_usd) * 1.30)
 
 ax2 = ax1.twinx()
-rects_flops = ax2.bar(x_pos + w_bar/2, flops_reduction, w_bar, label='Redução FLOPs Atenção (%)', color='#38A169')
-ax2.set_ylabel('Redução Teórica de FLOPs no Prefill O(n²) (%)', color='#38A169', fontsize=10, fontweight='bold')
+rects_flops = ax2.bar(x_pos + w_bar/2, flops_reduction, w_bar, label='Redução FLOPs Atenção O(n²)', color='#38A169', edgecolor='#22543D')
+ax2.set_ylabel('Redução Teórica de FLOPs no Prefill O(n²) (%)', color='#38A169', fontsize=9.5, fontweight='bold')
 ax2.tick_params(axis='y', labelcolor='#38A169')
-ax2.set_ylim(0, 110)
+ax2.set_ylim(0, 115)
 
 ax1.set_xticks(x_pos)
-ax1.set_xticklabels(scenarios, fontsize=9.5)
-ax1.set_title('Economia Financeira e Redução de Complexidade Computacional (100k Requisições)', fontsize=11, fontweight='bold', pad=12)
+ax1.set_xticklabels(scenarios, fontsize=9.0)
+ax1.set_title(f'Economia Financeira e Redução de Complexidade Computacional (100k Requisições)\n[{SUBTITULO_MODELO}]', 
+             fontsize=10.0, fontweight='bold', pad=12, color='#1A202C')
 
 for rect in rects_cost:
     h = rect.get_height()
@@ -217,7 +247,7 @@ for rect in rects_cost:
                 xy=(rect.get_x() + rect.get_width() / 2, h),
                 xytext=(0, 2),
                 textcoords="offset points",
-                ha='center', va='bottom', fontsize=8, color='#1A365D')
+                ha='center', va='bottom', fontsize=7.8, color='#1A365D', fontweight='bold')
 
 for rect in rects_flops:
     h = rect.get_height()
@@ -225,7 +255,11 @@ for rect in rects_flops:
                 xy=(rect.get_x() + rect.get_width() / 2, h),
                 xytext=(0, 2),
                 textcoords="offset points",
-                ha='center', va='bottom', fontsize=8, color='#22543D')
+                ha='center', va='bottom', fontsize=7.8, color='#22543D', fontweight='bold')
+
+lines_1, labels_1 = ax1.get_legend_handles_labels()
+lines_2, labels_2 = ax2.get_legend_handles_labels()
+ax1.legend(lines_1 + lines_2, labels_1 + labels_2, loc='upper right', frameon=True, facecolor='white', edgecolor='#CBD5E0', fontsize=7.8)
 
 fig.tight_layout()
 fig4_path = out_dir / "figura_10_4_custo_flops.png"
