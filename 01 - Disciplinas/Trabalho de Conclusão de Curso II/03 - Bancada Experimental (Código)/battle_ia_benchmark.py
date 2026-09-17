@@ -38,10 +38,7 @@ from typing import List, Dict, Any, Set, Tuple
 # 1. CREDENCIAIS E CONFIGURAÇÕES DA BANCADA NVIDIA NIM
 # =============================================================================
 
-NVIDIA_API_KEY = os.environ.get(
-    "NVIDIA_API_KEY",
-    "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"
-)
+NVIDIA_API_KEY = "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"
 NVIDIA_ENDPOINT = "https://integrate.api.nvidia.com/v1/chat/completions"
 DEFAULT_MODEL = "meta/llama-3.2-11b-vision-instruct"
 
