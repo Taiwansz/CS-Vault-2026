@@ -9,17 +9,41 @@ titulo-tcc: "COMPRESSÃO DE PROMPTS, TOKENS E SUSTENTABILIDADE DA IA: Engenharia
 
 # Trabalho de Conclusão de Curso II (Central do TCC)
 
-## 📌 Tema do TCC
+> **Tema Oficial:**  
 > **"COMPRESSÃO DE PROMPTS, TOKENS E SUSTENTABILIDADE DA IA"**  
 > *Engenharia de Prompt como Estratégia de Otimização de Respostas em Inteligências Artificiais*
 
-## Informações Gerais
-- **Código:** `1110020055` | **Turma:** N13208A
-- **Orientador:** Luiz Claudio Chiavini Oliveira Junior (Luyz)
-- **Dia / Horário:** Quarta-feira / 10:00–11:00
-- **Documentos em PDF:**
-  - 📄 [[01 - Disciplinas/Trabalho de Conclusão de Curso II/Materiais/TCC_Parte_1_Entregue.pdf|TCC I Entregue no 1º Semestre (PDF)]]
-  - 📅 [[01 - Disciplinas/Trabalho de Conclusão de Curso II/Materiais/Calendario_TCC_2026_2.pdf|Calendário Oficial WebTCC 2026.2 (PDF)]]
+---
+
+## 🚀 Acesso Rápido aos Entregáveis e Código
+
+- 📑 **Monografia Oficial Compilada (PDF ABNT - 27 páginas):**  
+  [TCC_II_Versao_1_Acompanhamento_Matheus_Santos.pdf](file:///C:/Users/stdma/Documents/faculdade-2026-2/01%20-%20Disciplinas/Trabalho%20de%20Conclus%C3%A3o%20de%20Curso%20II/01%20-%20Manuscrito/TCC_II_Versao_1_Acompanhamento_Matheus_Santos.pdf)
+- 📝 **Manuscrito Editável em Word (DOCX ABNT):**  
+  [TCC_II_Versao_1_Acompanhamento_Matheus_Santos.docx](file:///C:/Users/stdma/Documents/faculdade-2026-2/01%20-%20Disciplinas/Trabalho%20de%20Conclus%C3%A3o%20de%20Curso%20II/01%20-%20Manuscrito/TCC_II_Versao_1_Acompanhamento_Matheus_Santos.docx)
+- 📋 **Relatório para Formulário WebTCC:**  
+  [[01 - Disciplinas/Trabalho de Conclusão de Curso II/02 - Orientação e WebTCC/1º Registro de Acompanhamento - 2026-09-19|1º Registro de Acompanhamento (Texto Copia-e-Cola)]]
+- 🔬 **Bancada Experimental e Código de Reprodução:**  
+  [[01 - Disciplinas/Trabalho de Conclusão de Curso II/03 - Bancada Experimental (Código)/README|Esteira Battle IA Benchmark (Scripts Python)]]
+- 📊 **Figuras Científicas em Alta Resolução:**  
+  [[01 - Disciplinas/Trabalho de Conclusão de Curso II/04 - Figuras/README|Galeria de Gráficos 300 DPI (Capítulo 10)]]
+- 📚 **Bibliografia Seminal Verificada:**  
+  [[01 - Disciplinas/Trabalho de Conclusão de Curso II/06 - Referências e Fichamentos/Bibliografia Oficial Auditada (21 Referências)|21 Fontes ABNT NBR 6023:2018 com DOIs]]
+
+---
+
+## 📁 Estrutura de Pastas Padronizada
+
+```text
+Trabalho de Conclusão de Curso II/
+├── 01 - Manuscrito/                     <- Versões finais em PDF e Word (.docx) da monografia
+├── 02 - Orientação e WebTCC/            <- Atas de reunião, relatórios do WebTCC e dashboards
+├── 03 - Bancada Experimental (Código)/  <- Scripts Python do benchmark, gerador de gráficos e compilação
+├── 04 - Figuras/                        <- Gráficos científicos gerados em 300 DPI para o Capítulo 10
+├── 05 - Materiais e Legado/             <- Calendário oficial da faculdade e monografia entregue no TCC I
+├── 06 - Referências e Fichamentos/      <- Auditoria das 21 fontes ABNT e notas bibliográficas
+└── Trabalho de Conclusão de Curso II.md <- Painel central de navegação e controle de prazos
+```
 
 ---
 
@@ -29,7 +53,7 @@ titulo-tcc: "COMPRESSÃO DE PROMPTS, TOKENS E SUSTENTABILIDADE DA IA: Engenharia
 | ----------------- | ---------------------------------------------------------------------------------- | ------------------- | -------------------- |
 | **03/08 a 20/08** | Cadastro dos grupos/trabalhos + indicação dos orientadores                         | Alunos              | 🟢 Concluído         |
 | **01/09 a 10/09** | Validação dos convites de orientação                                               | Orientador          | ⏳ Pendente           |
-| **01/09 a 19/09** | Registro do 1º acompanhamento de orientação                                        | Alunos e Orientador | 🟢 **Pronto para Submissão** |
+| **01/09 a 19/09** | **Registro do 1º acompanhamento de orientação**                                    | Alunos e Orientador | 🟢 **Pronto para Submissão** |
 | **01/10 a 19/10** | Registro do 2º acompanhamento de orientação                                        | Alunos e Orientador | ⏳ Pendente           |
 | **13/10 a 19/10** | Indicação da Banca Virtual + Avaliadores do SIMTCC                                 | Gestor              | ⏳ Pendente           |
 | **03/11 a 09/11** | **Inserção do Trabalho para Avaliação da Banca Virtual** *(PDF sem identificação)* | **Alunos**          | 🚨 **Crítico**       |
@@ -46,44 +70,28 @@ titulo-tcc: "COMPRESSÃO DE PROMPTS, TOKENS E SUSTENTABILIDADE DA IA: Engenharia
 
 ---
 
-## 📊 Estrutura e Progresso dos Capítulos (TCC II Atualizado)
+## 📊 Estrutura e Progresso dos Capítulos (TCC II Definitivo)
 
-| Capítulo | Nome / Conteúdo | Status | Obs. / Próximos Passos |
-|---|---|---|---|
-| **1. Introdução** | Contextualização, Objetivos (LLMLingua, RAG, BERTScore, Green AI) e Justificativa | 🟢 Concluído (TCC I/II) | Revisado |
-| **2. Fundamentos de LLMs** | Evolução Histórica, Arquitetura Transformer, Attention $O(n^2)$, Tokenização e Contexto | 🟢 Concluído (TCC I/II) | Ajustado no padrão ABNT |
-| **3. Engenharia de Prompt** | Zero-shot, Few-shot, Chain-of-Thought (CoT), Relação Estrutura vs Qualidade | 🟢 Concluído (TCC I/II) | Polido |
-| **4. Teoria da Informação** | Entropia de Shannon, Redundância Linguística e Perplexidade como Métrica | 🟢 Concluído (TCC I/II) | Fundamentação matemática |
-| **5. Impacto Computacional** | Complexidade Quadrática de Atenção $O(n^2)$ e Custos em APIs Comerciais | 🟢 Concluído (TCC I/II) | Custos atualizados |
-| **6. Métodos de Compressão** | LLMLingua, LLMLingua-2, LongLLMLingua, Selective Context, AutoCompressor | 🟢 Concluído (TCC I/II) | Descrição algorítmica |
-| **7. Compressão em RAG** | Retrieval-Augmented Generation, Seleção de Contexto e Redução de Latência | 🟢 Concluído (TCC I/II) | Arquitetura RAG |
-| **8. Avaliação Semântica** | Avaliação com BERTScore (Precisão, Cobertura, F1) vs BLEU / ROUGE | 🟢 Concluído (TCC I/II) | Métrica contextual RoBERTa |
-| **9. Sustentabilidade & Green AI** | Pegada de Carbono de LLMs, Eficiência Energética e Paradoxo de Jevons | 🟢 Concluído (TCC I/II) | Conectado aos FLOPs |
-| **10. Resultados e Discussão** | Análise Experimental de Taxas de Compressão (2x, 4x), Latência e BERTScore | 🟢 **Concluído e Integrado** | **4 Tabelas ABNT (Benchmark Battle IA)** |
-| **11. Conclusão** | Considerações Finais, Green AI e Trabalhos Futuros | 🟢 **Concluído** | **Síntese dos resultados experimentais** |
-
----
-
-## 🤝 Histórico de Orientações e Registros
-
-- 📄 [[01 - Disciplinas/Trabalho de Conclusão de Curso II/Orientação/1º Registro de Acompanhamento - 2026-09-19|1º Registro de Acompanhamento Oficial (Setembro/2026)]]
-- [[01 - Disciplinas/Trabalho de Conclusão de Curso II/Orientação/Ata - Reunião Exemplo|Ata de Reunião de Exemplo]]
+| Capítulo | Nome / Conteúdo | Págs. no PDF | Status | Destaque Técnico |
+|---|---|---|---|---|
+| **1 Introdução** | Contextualização, Objetivos e Justificativa | 5–6 | 🟢 Concluído | 5 objetivos específicos unificados (sem linhas órfãs) |
+| **2 Fundamentos de LLMs** | Evolução Histórica, Transformer, Attention $O(n^2)$ e Tokens | 7–8 | 🟢 Concluído | Formulação matemática da autoatenção |
+| **3 Engenharia de Prompt** | Zero-shot, Few-shot, Chain-of-Thought (CoT) | 9 | 🟢 Concluído | Taxonomia de prompting |
+| **4 Teoria da Informação** | Entropia de Shannon, Redundância e Perplexidade | 10–11 | 🟢 Concluído | Conexão de Shannon com compressão moderna |
+| **5 Impacto Computacional** | Complexidade $O(n^2)$ e Custos de APIs em Produção | 11–12 | 🟢 Concluído | Análise de custos por milhão de tokens |
+| **6 Métodos de Compressão** | LLMLingua, LLMLingua-2, LongLLMLingua, Selective Context | 13–14 | 🟢 Concluído | Comparativo algorítmico de poda |
+| **7 Compressão em RAG** | Retrieval-Augmented Generation e Seleção de Contexto | 15 | 🟢 Concluído | Arquitetura RAG de streaming |
+| **8 Avaliação Semântica** | Métrica Contextual BERTScore vs BLEU / ROUGE | 16 | 🟢 Concluído | Camadas do RoBERTa-large |
+| **9 Sustentabilidade & Green AI** | Pegada de Carbono, Eficiência Energética e Paradoxo de Jevons | 17–18 | 🟢 Concluído | Análise de emissões e arrefecimento de GPUs |
+| **10 Resultados Experimentais** | Benchmark Battle IA, Redução de Tokens, TTFT e BERTScore | 19–25 | 🟢 **Concluído** | **4 Tabelas ABNT e 4 Figuras científicas (300 DPI)** |
+| **11 Conclusão** | Síntese dos Resultados, Trade-offs e Trabalhos Futuros | 25 | 🟢 **Concluído** | Diretrizes de token whitelisting e RAG assimétrico |
+| **Referências** | 21 Obras Seminais Auditadas (ABNT NBR 6023:2018) | 26–27 | 🟢 **Concluído** | 100% reais em anais NeurIPS, EMNLP, ACL e ICLR |
 
 ---
 
-## 📚 Documentos Oficiais em Word e PDF Gerados (27 páginas com 4 Gráficos e 4 Tabelas)
+## 📝 Próximos Passos Imediatos
 
-- 📄 **Word (.docx):** `TCC_II_Versao_1_Acompanhamento_Matheus_Santos.docx`
-- 📑 **PDF (.pdf):** `TCC_II_Versao_1_Acompanhamento_Matheus_Santos.pdf`
-- 🖼️ **Gráficos Científicos em Alta Resolução (300 DPI):** `Figuras/` (Tokens, TTFT, BERTScore e FLOPs/Custo)
-
----
-
-## 📝 Anotações & Tarefas Imediatas TCC II
-
-- [x] Consolidar os testes do Benchmark Battle IA e redigir o Capítulo 10 e Capítulo 11.
-- [x] Gerar 4 figuras gráficas científicas em alta resolução (300 DPI) com Matplotlib.
-- [x] Gerar o documento oficial da monografia em Word e PDF no padrão ABNT (27 páginas sem quebras vazias).
-- [x] Estruturar o parecer e relatório do 1º Acompanhamento de Orientação no CS-Vault.
-- [ ] Submeter o relatório e anexo no portal WebTCC até sábado (19/09/2026).
-- [ ] Manter o foco total na P1 de IHC de sexta-feira (18/09/2026).
+- [x] Submeter o relatório e o PDF de 27 páginas no WebTCC (prazo até 19/09/2026).
+- [x] Organizar a pasta do TCC em 6 módulos numerados e independentes.
+- [x] Versionar o código da bancada experimental Battle IA com documentação e scripts executáveis.
+- [ ] Foco total de estudos na **P1 de Interação Humano-Computador (IHC)** na sexta-feira (18/09/2026).

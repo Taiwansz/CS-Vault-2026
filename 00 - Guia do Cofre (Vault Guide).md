@@ -59,8 +59,8 @@ status: concluido # pendente | em_andamento | concluido
 3. Preencha a data e o resumo dos tópicos abordados.
 
 ### B. Registrar Reunião de Orientação do TCC II
-1. Salve a ata na pasta `01 - Disciplinas/Trabalho de Conclusão de Curso II/Orientação/`.
-2. Utilize o **Template - Ata de Reunião com Orientador**.
+1. Salve a ata na pasta `01 - Disciplinas/Trabalho de Conclusão de Curso II/02 - Orientação e WebTCC/`.
+2. Nomeie o arquivo como `AAAA-MM-DD - Ata Reunião TCC.md`.
 3. Atualize o progresso da tabela no **TCC II.md** e o registro mensal na plataforma WebTCC.
 
 ---

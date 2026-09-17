@@ -22,11 +22,11 @@ status: pronto-para-submissao-webtcc
 ## 1. Arquivos Oficiais Gerados no Padrão ABNT (Entregáveis Anexos)
 
 - 📄 **Documento Completo Editável (Word ABNT):**  
-  [TCC_II_Versao_1_Acompanhamento_Matheus_Santos.docx](file:///C:/Users/stdma/Documents/faculdade-2026-2/01%20-%20Disciplinas/Trabalho%20de%20Conclus%C3%A3o%20de%20Curso%20II/TCC_II_Versao_1_Acompanhamento_Matheus_Santos.docx)
+  [TCC_II_Versao_1_Acompanhamento_Matheus_Santos.docx](file:///C:/Users/stdma/Documents/faculdade-2026-2/01%20-%20Disciplinas/Trabalho%20de%20Conclus%C3%A3o%20de%20Curso%20II/01%20-%20Manuscrito/TCC_II_Versao_1_Acompanhamento_Matheus_Santos.docx)
 - 📑 **Documento Oficial Compilado (PDF ABNT - 27 páginas com 4 Gráficos e 4 Tabelas):**  
-  [TCC_II_Versao_1_Acompanhamento_Matheus_Santos.pdf](file:///C:/Users/stdma/Documents/faculdade-2026-2/01%20-%20Disciplinas/Trabalho%20de%20Conclus%C3%A3o%20de%20Curso%20II/TCC_II_Versao_1_Acompanhamento_Matheus_Santos.pdf)
+  [TCC_II_Versao_1_Acompanhamento_Matheus_Santos.pdf](file:///C:/Users/stdma/Documents/faculdade-2026-2/01%20-%20Disciplinas/Trabalho%20de%20Conclus%C3%A3o%20de%20Curso%20II/01%20-%20Manuscrito/TCC_II_Versao_1_Acompanhamento_Matheus_Santos.pdf)
 - 📊 **Baseline do Semestre Anterior (TCC I):**  
-  [[01 - Disciplinas/Trabalho de Conclusão de Curso II/Materiais/TCC_Parte_1_Entregue.pdf|TCC Parte 1 Entregue (PDF)]]
+  [[01 - Disciplinas/Trabalho de Conclusão de Curso II/05 - Materiais e Legado/TCC_Parte_1_Entregue.pdf|TCC Parte 1 Entregue (PDF)]]
 
 ---
 
