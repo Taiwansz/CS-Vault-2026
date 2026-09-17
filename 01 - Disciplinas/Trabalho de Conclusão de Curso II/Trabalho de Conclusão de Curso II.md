@@ -71,17 +71,19 @@ titulo-tcc: "COMPRESSÃO DE PROMPTS, TOKENS E SUSTENTABILIDADE DA IA: Engenharia
 
 ---
 
-## 📚 Documentos Oficiais em Word e PDF Gerados (26 páginas)
+## 📚 Documentos Oficiais em Word e PDF Gerados (30 páginas com 4 Gráficos e 4 Tabelas)
 
 - 📄 **Word (.docx):** `TCC_II_Versao_1_Acompanhamento_Matheus_Santos.docx`
 - 📑 **PDF (.pdf):** `TCC_II_Versao_1_Acompanhamento_Matheus_Santos.pdf`
+- 🖼️ **Gráficos Científicos em Alta Resolução (300 DPI):** `Figuras/` (Tokens, TTFT, BERTScore e FLOPs/Custo)
 
 ---
 
 ## 📝 Anotações & Tarefas Imediatas TCC II
 
 - [x] Consolidar os testes do Benchmark Battle IA e redigir o Capítulo 10 e Capítulo 11.
-- [x] Gerar o documento oficial da monografia em Word e PDF no padrão ABNT (26 páginas).
+- [x] Gerar 4 figuras gráficas científicas em alta resolução (300 DPI) com Matplotlib.
+- [x] Gerar o documento oficial da monografia em Word e PDF no padrão ABNT (30 páginas).
 - [x] Estruturar o parecer e relatório do 1º Acompanhamento de Orientação no CS-Vault.
 - [ ] Submeter o relatório e anexo no portal WebTCC até sábado (19/09/2026).
 - [ ] Manter o foco total na P1 de IHC de sexta-feira (18/09/2026).

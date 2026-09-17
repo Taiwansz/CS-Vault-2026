@@ -5,7 +5,7 @@ codigo_disciplina: "1110020055"
 turma: N13208A
 periodo_oficial: 01/09/2026 a 19/09/2026
 data_registro: 2026-09-16
-orientador: Prof. Me. Luiz Claudio Chiavini Oliveira Junior
+orientador: Prof. Luiz Claudio Chiavini Oliveira Junior
 titulo_tcc: "COMPRESSÃO DE PROMPTS, TOKENS E SUSTENTABILIDADE DA IA: Engenharia de Prompt como Estratégia de Otimização de Respostas em Inteligências Artificiais"
 status: pronto-para-submissao-webtcc
 ---
@@ -15,7 +15,7 @@ status: pronto-para-submissao-webtcc
 > **Documento Oficial de Prestação de Contas Acadêmicas para a Plataforma WebTCC**  
 > Período de Referência: 01/09/2026 a 19/09/2026  
 > Aluno: Matheus Sousa dos Santos (RA: 52319400) e Equipe  
-> Orientador: Prof. Me. Luiz Claudio Chiavini Oliveira Junior (Luyz)
+> Orientador: Prof. Luiz Claudio Chiavini Oliveira Junior (Luyz)
 
 ---
 
@@ -23,7 +23,7 @@ status: pronto-para-submissao-webtcc
 
 - 📄 **Documento Completo Editável (Word ABNT):**  
   [TCC_II_Versao_1_Acompanhamento_Matheus_Santos.docx](file:///C:/Users/stdma/Documents/faculdade-2026-2/01%20-%20Disciplinas/Trabalho%20de%20Conclus%C3%A3o%20de%20Curso%20II/TCC_II_Versao_1_Acompanhamento_Matheus_Santos.docx)
-- 📑 **Documento Oficial Compilado (PDF ABNT - 26 páginas):**  
+- 📑 **Documento Oficial Compilado (PDF ABNT - 30 páginas com 4 Gráficos e 4 Tabelas):**  
   [TCC_II_Versao_1_Acompanhamento_Matheus_Santos.pdf](file:///C:/Users/stdma/Documents/faculdade-2026-2/01%20-%20Disciplinas/Trabalho%20de%20Conclus%C3%A3o%20de%20Curso%20II/TCC_II_Versao_1_Acompanhamento_Matheus_Santos.pdf)
 - 📊 **Baseline do Semestre Anterior (TCC I):**  
   [[01 - Disciplinas/Trabalho de Conclusão de Curso II/Materiais/TCC_Parte_1_Entregue.pdf|TCC Parte 1 Entregue (PDF)]]
@@ -38,7 +38,7 @@ status: pronto-para-submissao-webtcc
 RELATÓRIO DO 1º ACOMPANHAMENTO DE ORIENTAÇÃO — TCC II (2026.2)
 
 Título do Trabalho: COMPRESSÃO DE PROMPTS, TOKENS E SUSTENTABILIDADE DA IA: Engenharia de Prompt como Estratégia de Otimização de Respostas em Inteligências Artificiais
-Orientador: Prof. Me. Luiz Claudio Chiavini Oliveira Junior
+Orientador: Prof. Luiz Claudio Chiavini Oliveira Junior
 
 1. ATIVIDADES DESENVOLVIDAS NO PERÍODO (01/09 a 19/09/2026):
 No presente ciclo inicial de TCC II, consolidamos a transição da fundamentação puramente teórica para a esteira experimental de bancada científica (Benchmark Battle IA). As seguintes metas foram plenamente cumpridas:
@@ -46,7 +46,7 @@ a) Modelagem de três cenários densos de testes corporativos reais: (1) Racioc�
 b) Execução de testes empíricos de inferência confrontando as linhas de base convencionais (Zero-shot e Few-shot) com a técnica de compressão de prompts baseada em perplexidade (LLMLingua) em taxas nominais de 2x e 4x sobre modelos de fronteira (Llama-3-70B e Mistral-Large).
 c) Quantificação da redução de complexidade no mecanismo de autoatenção O(n²), apurando economia de até 93,75% em operações matemáticas de produto interno e redução de até 81,9% no Time-to-First-Token (TTFT).
 d) Avaliação sistemática de fidelidade semântica por meio do BERTScore contextual (RoBERTa-large), demonstrando que a preservação de significado (F1-score) sustentou-se acima do patamar crítico de 0,86 em todos os domínios avaliados.
-e) Redação, estruturação e incorporação integral do Capítulo 10 ("Resultados e Discussão Experimental") e revisão do Capítulo 11 ("Conclusão e Trabalhos Futuros") na monografia oficial, agora totalizando 26 páginas formatadas estritamente sob as normas ABNT e diretrizes institucionais da UniMAX.
+e) Redação, estruturação e incorporação integral do Capítulo 10 ("Resultados e Discussão Experimental") com 4 Tabelas ABNT e 4 Figuras gráficas científicas, e revisão do Capítulo 11 ("Conclusão e Trabalhos Futuros") na monografia oficial, agora totalizando 30 páginas formatadas estritamente sob as normas ABNT e diretrizes institucionais da UniMAX.
 
 2. DIFICULDADES ENCONTRADAS E SOLUÇÕES ADOTADAS:
 - Identificou-se que em taxas de compressão agressivas (> 5x) em tarefas de SQL, a poda cega de tokens removia identificadores de chaves estrangeiras. A solução adotada consistiu em formular diretrizes para listas de preservação obrigatória (whitelist tokens) e compressão segmentada (preservando o prompt de sistema e focando a compressão no payload de contexto documental).
