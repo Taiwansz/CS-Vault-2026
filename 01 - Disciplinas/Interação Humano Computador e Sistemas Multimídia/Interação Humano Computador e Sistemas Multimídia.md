@@ -32,6 +32,9 @@ tags:
 ---
 
 ## 🚀 Atividades Entregues
+- [x] **Atividade 02 (18/09/2026) — Redesenho de Interface e Diagnóstico de Usabilidade no Figma**  
+  - 🎨 [Acessar Protótipo Oficial no Figma](https://www.figma.com/design/W8ag0icTUccROB8vs1EMAr/Redesenho-de-Interface-e-Diagn%C3%B3stico-de-Usabilidade-no-Figma--c%C3%B3pia-?node-id=0-1&t=a1fiCSqVM6V8GgWg-1)
+  - 📄 [[01 - Disciplinas/Interação Humano Computador e Sistemas Multimídia/Aulas/2026-09-18 - Atividade IHC - Redesenho de Interface e Diagnostico de Usabilidade (Figma)|Ver Nota Detalhada da Atividade no Cofre]]
 - [x] **Atividade 01 (07/08/2026) — Análise Comparativa de Interfaces (Apple vs UniEduK/TOTVS)**  
   - 📄 [[01 - Disciplinas/Interação Humano Computador e Sistemas Multimídia/Aulas/2026-08-07 - Atividade IHC - Analise de Interfaces (UniEduK vs Apple)|Ver Nota Detalhada da Atividade]]
   - 📄 [[01 - Disciplinas/Interação Humano Computador e Sistemas Multimídia/Materiais/Atividade — Analisando Boas e Más Interfaces.pdf|Abrir PDF da Entrega]]
