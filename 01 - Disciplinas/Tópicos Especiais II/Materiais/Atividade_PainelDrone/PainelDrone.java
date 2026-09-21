@@ -1,13 +1,13 @@
 import java.util.InputMismatchException;
+import java.util.Locale;
 import java.util.Scanner;
 
 public class PainelDrone {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
+        scanner.useLocale(Locale.forLanguageTag("pt-BR"));
 
-        int altitude = 0;
-        double velocidade = 0.0;
         boolean altitudeValida = false;
         boolean dadosValidados = false;
 
@@ -18,14 +18,17 @@ public class PainelDrone {
                 if (!altitudeValida) {
                     System.out.println("Digite a altitude desejada (0 a 120m):");
                     System.out.print("> ");
-                    altitude = scanner.nextInt();
 
-                    if (altitude < 0 || altitude > 120) {
-                        if (altitude > 120) {
-                            throw new IllegalArgumentException("Altitude inválida: O limite máximo é 120 metros.");
-                        } else {
-                            throw new IllegalArgumentException("Altitude inválida: A altitude não pode ser negativa.");
-                        }
+                    int altitude = scanner.nextInt();
+
+                    if (altitude < 0) {
+                        throw new IllegalArgumentException(
+                                "Altitude inválida: O valor mínimo é 0 metros.");
+                    }
+
+                    if (altitude > 120) {
+                        throw new IllegalArgumentException(
+                                "Altitude inválida: O limite máximo é 120 metros.");
                     }
 
                     altitudeValida = true;
@@ -35,23 +38,28 @@ public class PainelDrone {
                 }
 
                 System.out.print("> ");
-                velocidade = scanner.nextDouble();
+                double velocidade = scanner.nextDouble();
 
-                if (velocidade < 0.0 || velocidade > 60.0) {
-                    if (velocidade > 60.0) {
-                        throw new IllegalArgumentException("Velocidade inválida: O limite máximo é 60 km/h.");
-                    } else {
-                        throw new IllegalArgumentException("Velocidade inválida: A velocidade não pode ser negativa.");
-                    }
+                if (velocidade < 0.0) {
+                    throw new IllegalArgumentException(
+                            "Velocidade inválida: O valor mínimo é 0 km/h.");
+                }
+
+                if (velocidade > 60.0) {
+                    throw new IllegalArgumentException(
+                            "Velocidade inválida: O limite máximo é 60 km/h.");
                 }
 
                 dadosValidados = true;
                 System.out.println("[SUCESSO] Dados validados. Drone em rota!");
 
             } catch (InputMismatchException e) {
-                System.out.println("[ALERTA CRÍTICO] Falha de comunicação: Digite apenas números! Pouso de emergência evitado.");
+                System.out.println(
+                        "[ALERTA CRÍTICO] Falha de comunicação: Digite apenas números! "
+                                + "Pouso de emergência evitado.");
                 System.out.println();
-                scanner.nextLine(); // limpa o buffer
+                scanner.nextLine();
+
             } catch (IllegalArgumentException e) {
                 System.out.println("[ALERTA DE SEGURANÇA] " + e.getMessage());
                 System.out.println();
