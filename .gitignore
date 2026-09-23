@@ -6,3 +6,12 @@ thumbs.db
 bin/
 out/
 .idea/
+
+# Modelos ML grandes
+*.h5
+*.pkl
+*.model
+# Binários
+*.exe
+*.dll
+*.class
