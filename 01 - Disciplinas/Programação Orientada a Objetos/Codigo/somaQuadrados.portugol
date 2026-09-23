@@ -1,0 +1,14 @@
+algoritmo "somaQuadrados"
+funcao inteiro somaQuadrados(vetor: vetor de inteiro)
+var i,soma: inteiro
+inicio
+    soma <- 0
+    para i de 1 ate tamanho(vetor) faca
+        soma <- soma + vetor[i]*vetor[i]
+    fimpara
+    retorne soma
+fimfuncao
+
+inicio
+    escreva(somaQuadrados({1,2,3,4,5}))
+fimalgoritmo

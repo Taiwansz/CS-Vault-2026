@@ -1,0 +1,277 @@
+Exercícios Capítulo 4
+
+Tables
+
+create schema empresa;
+use empresa
+
+"""Figura 2.1"""
+
+CREATE TABLE ALUNO (
+    Nome VARCHAR(50),
+    Numero_aluno INT,
+    Tipo_aluno VARCHAR(20),
+    curso VARCHAR(50)
+);
+
+CREATE TABLE DISCIPLINA (
+    Nome_disciplina VARCHAR(50),
+    Numero_disciplina INT,
+    Credito INT,
+    Departamento VARCHAR(50)
+);
+
+CREATE TABLE PRE_REQUISITO (
+    Numero_disciplina INT,
+    Numero_pre_requisito INT
+);
+
+CREATE TABLE TURMA (
+    Identificacao_turma VARCHAR(10),
+    Numero_disciplina INT,
+    Semestre INT,
+    Ano INT,
+    Professor VARCHAR(50)
+);
+
+CREATE TABLE HISTORICO_ESCOLAR (
+    Numero_aluno INT,
+    Identificacao_turma VARCHAR(10),
+    Nota FLOAT
+);
+
+
+
+
+"""Figura 3.8"""
+
+CREATE TABLE AEROPORTO (
+    Codigo_aeroporto VARCHAR(10),
+    Nome VARCHAR(50),
+    Cidade VARCHAR(50),
+    Estado VARCHAR(50)
+);
+
+CREATE TABLE VOO (
+    Numero_voo INT,
+    Companhia_aerea VARCHAR(50),
+    Dias_da_semana VARCHAR(15)
+);
+
+CREATE TABLE TRECHO_VOO (
+    Numero_voo INT,
+    Numero_trecho INT,
+    Codigo_aeroporto_partida VARCHAR(10),
+    Horario_partida_previsto TIME,
+    Codigo_aeroporto_chegada VARCHAR(10),
+    Horario_chegada_previsto TIME
+);
+
+
+========================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
+Exercício 4.07
+
+
+Para cada restrição de integridade referencial no esquema de banco de dados relacional BIBLIOTECA, a ação apropriada para cada caso de exclusão ou atualização de uma tupla referenciada é a seguinte:
+
+1. LIVRO_AUTOR (Cod_livro) referencia LIVRO (Cod_livro):
+Exclusão: Propagar
+Justificativa: Se um livro for excluído, é provável que os autores associados a ele também devem ser excluídos, pois eles não poderão mais escrever esse livro. No entanto, se um autor tiver outros livros associados a ele, ele não deve ser excluído. Nesse caso, a ação apropriada é propagar a exclusão, ou seja, excluir as tuplas referenciadas em LIVRO_AUTOR quando uma tupla for excluída em LIVRO.
+Atualização: SET NULL
+Justificativa: Se o código de um livro for atualizado, as referências a esse código em LIVRO_AUTOR devem ser atualizadas também. No entanto, se um autor tiver outros livros associados a ele, atualizar o código do livro pode causar problemas, pois as referências em outras tabelas podem não ser atualizadas. Nesse caso, a ação apropriada é definir o valor do atributo referenciado como NULL, indicando que o livro não tem um código válido.
+
+2. LIVRO_CAPAS (Cod_livro) referencia LIVRO (Cod_livro):
+Exclusão: Propagar
+Justificativa: Se um livro for excluído, as capas associadas a ele também devem ser excluídas, pois elas não poderão mais ser usadas para cobrir esse livro. Nesse caso, a ação apropriada é propagar a exclusão, ou seja, excluir as tuplas referenciadas em LIVRO_CAPAS quando uma tupla for excluída em LIVRO.
+Atualização: SET DEFAULT
+Justificativa: Se o código de um livro for atualizado, as referências a esse código em LIVRO_CAPAS devem ser atualizadas também. No entanto, se houver outras tabelas que fazem referência ao código do livro, atualizar o código pode causar problemas, pois as referências em outras tabelas podem não ser atualizadas. Nesse caso, a ação apropriada é definir o valor do atributo referenciado como o valor padrão, indicando que o código do livro foi atualizado.
+
+3. LIVRO_EMPRESTADO (Cod_livro) referencia LIVRO (Cod_livro):
+Exclusão: Rejeitar
+Justificativa: Se um livro for excluído, as empréstimos associados a ele não devem ser excluídos, pois isso pode causar a perda de informações importantes sobre os empréstimos anteriores do livro. Nesse caso, a ação apropriada é rejeitar a exclusão, ou seja, impedir a exclusão de uma tupla em LIVRO se houver tuplas referenciadas em LIVRO_EMPRESTADO.
+Atualização: SET NULL
+Justificativa: Se o código de um livro for atualizado, as referências a esse código em LIVRO_EMPRESTADO devem ser atualizadas também. No entanto, se houver outras tabelas que fazem referência ao código do livro, atualizar o código pode causar problemas, pois as referências em outras tabelas podem não ser atualizadas. Nesse caso, a ação apropriada é definir o valor do atributo referenciado como NULL, indicando que o livro não tem um código válido.
+
+4. LIVRO_EMPRESTADO (Cod_unidade) referencia UNIDADE_BIBLIOTECA (Cod_unidade):
+Exclusão: Propagar
+Justificativa: Se uma unidade da biblioteca for excluída, os empréstimos associados a ela também devem ser excluídos, pois eles não poderão mais ser usados para rastrear os empréstimos da unidade excluída. Nesse caso, a ação apropriada é propagar a exclusão, ou seja, excluir as tuplas referenciadas em LIVRO_EMPRESTADO quando uma tupla for excluída em UNIDADE_BIBLIOTECA.
+Atualização: SET DEFAULT
+Justificativa: Se o código de uma unidade da biblioteca for atualizado, as referências a esse código em LIVRO_EMPRESTADO devem ser atualizadas também. No entanto, se houver outras tabelas que fazem referência ao código da unidade, atualizar o código pode causar problemas, pois as referências em outras tabelas podem não ser atualizadas. Nesse caso, a ação apropriada é definir o valor do atributo referenciado como o valor padrão, indicando que a unidade da biblioteca foi atualizada.
+
+5. USUARIO (Num_cartao) referencia LIVRO_EMPRESTADO (Nr_cartao):
+Exclusão: SET NULL
+Justificativa: Se um usuário for excluído, os empréstimos associados a ele devem ser mantidos, mas o número do cartão do usuário deve ser definido como NULL, indicando que o usuário foi excluído. Nesse caso, a ação apropriada é definir o valor do atributo referenciado como NULL.
+Atualização: SET NULL
+Justificativa: Se o número do cartão de um usuário for atualizado, as referências a esse número em LIVRO_EMPRESTADO devem ser atualizadas também. No entanto, se houver outras tabelas que fazem referência ao número do cartão do usuário, atualizar o número pode causar problemas, pois as referências em outras tabelas podem não ser atualizadas. Nesse caso, a ação apropriada é definir o valor do atributo referenciado como NULL, indicando que o número do cartão do usuário foi atualizado.
+
+========================================================================================================================================================================================================================================================================================================================================================================================================================================================================================CREATE TABLE EDITORA (
+  Exercício 4.08
+
+  
+    Nome VARCHAR(50) NOT NULL,
+    Endereco VARCHAR(100),
+    Telefone VARCHAR(15),
+    PRIMARY KEY (Nome)
+);
+
+CREATE TABLE LIVRO (
+    Cod_livro INT NOT NULL,
+    Titulo VARCHAR(50) NOT NULL,
+    Nome_editora VARCHAR(50) NOT NULL,
+    PRIMARY KEY (Cod_livro),
+    FOREIGN KEY (Nome_editora) REFERENCES EDITORA(Nome) ON DELETE CASCADE
+);
+
+CREATE TABLE LIVRO_AUTOR (
+    Cod_livro INT NOT NULL,
+    Nome_autor VARCHAR(50) NOT NULL,
+    PRIMARY KEY (Cod_livro, Nome_autor),
+    FOREIGN KEY (Cod_livro) REFERENCES LIVRO(Cod_livro) ON DELETE CASCADE
+);
+
+CREATE TABLE LIVRO_CAPAS (
+    Cod_livro INT NOT NULL,
+    Cod_unidade INT NOT NULL,
+    Qt_copia INT NOT NULL,
+    PRIMARY KEY (Cod_livro, Cod_unidade),
+    FOREIGN KEY (Cod_livro) REFERENCES LIVRO(Cod_livro) ON DELETE CASCADE
+);
+
+CREATE TABLE UNIDADE_BIBLIOTECA (
+    Cod_unidade INT NOT NULL,
+    Nome_unidade VARCHAR(50) NOT NULL,
+    Endereco VARCHAR(100),
+    PRIMARY KEY (Cod_unidade)
+);
+
+CREATE TABLE LIVRO_EMPRESTADO (
+    Cod_livro INT NOT NULL,
+    Cod_unidade INT NOT NULL,
+    Nr_cartao INT NOT NULL,
+    Data_emprestimo DATE NOT NULL,
+    Data_devolucao DATE,
+    PRIMARY KEY (Cod_livro, Cod_unidade, Nr_cartao, Data_emprestimo),
+    FOREIGN KEY (Cod_livro) REFERENCES LIVRO(Cod_livro) ON DELETE CASCADE,
+    FOREIGN KEY (Cod_unidade) REFERENCES UNIDADE_BIBLIOTECA(Cod_unidade) ON DELETE CASCADE,
+    FOREIGN KEY (Nr_cartao) REFERENCES USUARIO(Num_cartao) ON DELETE SET NULL
+);
+
+CREATE TABLE USUARIO (
+    Num_cartao INT NOT NULL,
+    NOme VARCHAR(50) NOT NULL,
+    Endereco VARCHAR(100),
+    Telefone VARCHAR(15),
+    PRIMARY KEY (Num_cartao)
+);
+
+========================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
+Exercício 4.09
+
+
+As restrições de chave e chave estrangeira podem ser impostas por um SGBD através do uso de índices e verificações eficientes. Quando uma nova gravação é inserida, o SGBD verifica se o valor da chave primária já existe no índice antes de adicionar a nova gravação. Da mesma forma, quando uma gravação é removida, o SGBD verifica se alguma outra gravação se refere à chave primária removida antes de efetivamente removê-la.
+
+A técnica de imposição de restrições de chave e chave estrangeira não é difícil de ser implementada, especialmente quando se utiliza um SGBD que oferece suporte a essas funcionalidades. Além disso, a verificação de restrições pode ser executada de maneira eficiente durante as atualizações no banco de dados, uma vez que o uso de índices permite que as verificações sejam realizadas em tempo constante ou quase constante.
+
+Em resumo, as restrições de chave e chave estrangeira podem ser impostas de maneira eficiente e confiável por um SGBD, sem requerer esforço significativo na implementação ou manutenção.
+
+========================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
+Exercício 4.10
+
+
+SELECT Nome, Codigo_aeroporto, Cidade 
+FROM AEROPORTO;
+
+SELECT Numero_voo, Companhia_aerea, Horario_partida_previsto 
+FROM VOO, TRECHO_VOO 
+WHERE VOO.Numero_voo = TRECHO_VOO.Numero_voo AND Codigo_aeroporto_partida = 'A01';
+
+SELECT Pnome, Salario 
+FROM FUNCIONARIO, TABALHA_EM, DEPARTAMENTO 
+WHERE FUNCIONARIO.Cpf = TABALHA_EM.Fcpf AND DEPARTAMENTO.Dnumero = TABALHA_EM.Dnumero AND Dnome = 'D01';
+
+SELECT Pnome, Datanasc, COUNT(*) 
+FROM FUNCIONARIO, DEPENDENTE 
+WHERE FUNCIONARIO.Cpf = DEPENDENTE.Fcpf AND Parentesco = 'Filho' 
+GROUP BY Pnome, Datanasc;
+
+SELECT DEPARTAMENTO.Dnome, COUNT(*) 
+FROM DEPARTAMENTO, TABALHA_EM 
+WHERE DEPARTAMENTO.Dnumero = TABALHA_EM.Dnumero 
+GROUP BY DEPARTAMENTO.Dnome 
+ORDER BY COUNT(*) DESC;
+
+========================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
+Exercício 4.11
+
+
+A.
+SELECT Pnome 
+FROM FUNCIONARIO, TABALHA_EM 
+WHERE FUNCIONARIO.Cpf = TABALHA_EM.Fcpf 
+AND Dnum = 5 AND Pnr = (SELECT Projnome FROM PROJETO WHERE Projnome = 'ProdutoX') 
+AND Horas > 10;
+
+B.
+SELECT DISTINCT Pnome 
+FROM FUNCIONARIO, DEPENDENTE 
+WHERE SUBSTR(Pnome, 1, 1) = (SELECT Nome_dependente FROM DEPENDENTE WHERE Fcpf = FUNCIONARIO.Cpf) 
+AND Fcpf = Cpf;
+
+C.
+SELECT Pnome 
+FROM FUNCIONARIO 
+WHERE Cpf_supervisor = (SELECT Cpf FROM FUNCIONARIO WHERE Pnome = 'Fernando Wong');
+
+========================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
+Exercício 4.12
+
+
+A.
+SELECT Nome 
+FROM ALUNO 
+WHERE Tipo_aluno = 4 AND curso = 'CC';
+
+B.
+SELECT Nome_disciplina 
+FROM DISCIPLINA, TURMA, PROFESSOR 
+WHERE DISCIPLINA.Numero_disciplina = TURMA.Numero_disciplina 
+AND PROFESSOR.Cod_professor = TURMA.Cod_professor 
+AND Nome = 'Kleber' AND Ano BETWEEN 2007 AND 2008;
+
+C.
+SELECT TURMA.Numero_disciplina, Semestre, Ano, COUNT(*) 
+FROM TURMA, HISTORICO_ESCOLAR 
+WHERE TURMA.Identificacao_turma = HISTORICO_ESCOLAR.Identificacao_turma 
+AND PROFESSOR.Nome = 'Kleber' 
+GROUP BY TURMA.Numero_disciplina, Semestre, Ano;
+
+D.
+SELECT ALUNO.Nome, DISCIPLINA.Nome_disciplina, TURMA.Numero_disciplina, Credito, Semestre, Ano, HISTORICO_ESCOLAR.Nota 
+FROM ALUNO, DISCIPLINA, TURMA, HISTORICO_ESCOLAR, PROFESSOR 
+WHERE ALUNO.Numero_aluno = HISTORICO_ESCOLAR.Numero_aluno 
+AND DISCIPLINA.Numero_disciplina = TURMA.Numero_disciplina 
+AND TURMA.Identificacao_turma = HISTORICO_ESCOLAR.Identificacao_turma 
+AND PROFESSOR.Cod_professor = TURMA.Cod_professor 
+AND ALUNO.Tipo_aluno = 4 AND curso = 'CC';
+
+========================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
+Exercício 4.13
+
+
+A.
+INSERT INTO ALUNO (Nome, Numero_aluno, Tipo_aluno, curso)
+VALUES ('Alves', 25, 1, 'MAT');
+
+B.
+UPDATE ALUNO
+SET Numero_aluno = 2
+WHERE Nome = 'Silva';
+
+C.
+INSERT INTO DISCIPLINA (Nome_disciplina, Numero_disciplina, Credito, Departamento)
+VALUES ('Engenharia do conhecimento', 'CC4390', 3, 'CC');
+
+D.
+DELETE FROM ALUNO
+WHERE Nome = 'Silva' AND Numero_aluno = 17;
+

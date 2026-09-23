@@ -1,0 +1,298 @@
+Exercícios Capítulo 5
+========================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
+
+Tables
+
+"""Figura 3.6"""
+
+CREATE TABLE Funcionario (
+    Pnome varchar(50),
+    Minicial char(1),
+    Unome varchar(50),
+    Cpf char(11) PRIMARY KEY,
+    Datanasc date,
+    Endereco varchar(100),
+    Sexo char(1),
+    Salario decimal(10,2),
+    Cpf_supervisor char(11),
+    Dnr int,
+    FOREIGN KEY (Cpf_supervisor) REFERENCES Funcionario(Cpf),
+    FOREIGN KEY (Dnr) REFERENCES Departamento(Dnumero)
+);
+
+CREATE TABLE Departamento (
+    Dnome varchar(50) PRIMARY KEY,
+    Dnumero int,
+    Cpf_gerente char(11),
+    Data_inicio_gerente date,
+    FOREIGN KEY (Cpf_gerente) REFERENCES Funcionario(Cpf)
+);
+
+CREATE TABLE Localizacao_Dep (
+    Dnumero int,
+    Dlocal varchar(50),
+    PRIMARY KEY (Dnumero, Dlocal),
+    FOREIGN KEY (Dnumero) REFERENCES Departamento(Dnumero)
+);
+
+CREATE TABLE Projeto (
+    Projnomer varchar(50),
+    Projnumero int PRIMARY KEY,
+    Projlocal varchar(50),
+    Dnum int,
+    FOREIGN KEY (Dnum) REFERENCES Departamento(Dnumero)
+);
+
+CREATE TABLE Trabalha_Em (
+    Fcpf char(11),
+    Pnr int,
+    Horas decimal(3,2),
+    PRIMARY KEY (Fcpf, Pnr),
+    FOREIGN KEY (Fcpf) REFERENCES Funcionario(Cpf),
+    FOREIGN KEY (Pnr) REFERENCES Projeto(Projnumero)
+);
+
+CREATE TABLE Dependente (
+    Fcpf char(11),
+    Nome_dependente varchar(50),
+    Sexo char(1),
+    Datanasc date,
+    Parentesco varchar(50),
+    PRIMARY KEY (Fcpf, Nome_dependente),
+    FOREIGN KEY (Fcpf) REFERENCES Funcionario(Cpf)
+);
+
+
+
+"""Figura 1.2"""
+
+
+
+CREATE TABLE Aluno (
+    Nome varchar(50),
+    Numero_aluno int PRIMARY KEY,
+    Tipo_aluno varchar(50),
+    Cursos varchar(50)
+);
+
+CREATE TABLE Disciplina (
+    Nome_disciplina varchar(50),
+    Numero_disciplina int PRIMARY KEY,
+    Creditos int,
+    Departamento varchar(50)
+);
+
+CREATE TABLE Pre_Requisito (
+    Numero_disciplina int,
+    Numero_pre_requisito int,
+    PRIMARY KEY (Numero_disciplina, Numero_pre_requisito),
+    FOREIGN KEY (Numero_disciplina) REFERENCES Disciplina(Numero_disciplina),
+    FOREIGN KEY (Numero_pre_requisito) REFERENCES Disciplina(Numero_disciplina)
+);
+
+CREATE TABLE Turma (
+    Identificacao_turma varchar(50),
+    Numero_disciplina int,
+    Semestre int,
+    Ano int,
+    Professor varchar(50),
+    PRIMARY KEY (Identificacao_turma, Numero_disciplina),
+    FOREIGN KEY (Numero_disciplina) REFERENCES Disciplina(Numero_disciplina)
+);
+
+CREATE TABLE Historico_Escolar (
+    Numero_aluno int,
+    Identificacao_turma varchar(50),
+    Nota decimal(3,2),
+    PRIMARY KEY (Numero_aluno, Identificacao_turma),
+    FOREIGN KEY (Numero_aluno) REFERENCES Aluno(Numero_aluno),
+    FOREIGN KEY (Identificacao_turma) REFERENCES Turma(Identificacao_turma)
+);
+
+
+========================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
+
+Exercício 5.5
+
+A.
+
+SELECT D.Dnome, COUNT(F.Cpf) as NumFuncionarios
+FROM Departamento D
+JOIN Funcionario F ON D.Dnumero = F.Dnr
+WHERE F.Salario > 30000
+GROUP BY D.Dnome;
+Esta consulta fará a junção das tabelas Departamento e Funcionario nas colunas Dnumero e Dnr, respectivamente, e filtrará os resultados para incluir apenas as linhas onde a coluna Salario na tabela Funcionario seja maior do que 30000. Em seguida, agrupará os resultados pela coluna Dnome na tabela Departamento e contará o número de linhas em cada grupo usando a função COUNT.
+
+
+B.
+
+SELECT D.Dnome, COUNT(F.Cpf) as NumFuncionarios
+FROM Departamento D
+JOIN Funcionario F ON D.Dnumero = F.Dnr
+WHERE F.Salario > 30000 AND F.Sexo = 'M'
+GROUP BY D.Dnome;
+Esta consulta contará apenas o número de funcionários do sexo masculino em cada departamento que ganham mais de R$30.000,00.
+
+Sim, podemos especificar essa consulta em SQL porque a coluna Sexo está presente na tabela Funcionario, e podemos usar o operador AND para filtrar os resultados com base em múltiplas condições.
+
+========================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
+
+Exercício 5.6
+
+Para responder à questão 5.6a, podemos usar a seguinte consulta SQL:
+
+
+SELECT A.Nome, D.Dnome AS Departamento
+FROM Aluno A
+JOIN Turma T ON A.Numero_aluno = T.Numero_aluno
+JOIN Disciplina D ON T.Numero_disciplina = D.Numero_disciplina
+WHERE T.Nota = 'A'
+GROUP BY A.Nome, D.Dnome
+HAVING COUNT(DISTINCT T.Numero_disciplina) = (SELECT COUNT(*) FROM Disciplina);
+
+Esta consulta retornará os nomes e departamentos de todos os alunos que receberam nota A em todas as disciplinas.
+
+Para responder à questão 5.6b, podemos usar a seguinte consulta SQL:
+
+SELECT A.Nome, D.Dnome AS Departamento
+FROM Aluno A
+JOIN Turma T ON A.Numero_aluno = T.Numero_aluno
+JOIN Disciplina D ON T.Numero_disciplina = D.Numero_disciplina
+WHERE T.Nota = 'A'
+GROUP BY A.Nome, D.Dnome;
+Esta consulta retornará os nomes e departamentos de todos os alunos que receberam nota A em pelo menos uma disciplina.
+
+Observe que a cláusula HAVING é usada para filtrar os resultados com base em funções agregadas, como COUNT, SUM, AVG, etc. Neste caso, usamos a função COUNT para contar o número de valores distintos de Numero_disciplina em cada grupo e filtrar os resultados para incluir apenas os grupos em que o número de valores distintos é igual ao número total de disciplinas.
+
+========================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
+
+Exercício 5.7
+
+a. A seguinte consulta em SQL retorna os nomes e departamentos de todos os funcionários que trabalham no departamento com o funcionário de maior salário entre todos os funcionários da Figura 3.5:
+
+
+SELECT D.Dnome, F.Pnome
+FROM Departamento D
+JOIN Funcionario F ON D.Dnumero = F.Dnr
+WHERE F.Salario = (
+    SELECT MAX(Salario)
+    FROM Funcionario
+)
+
+b. A seguinte consulta em SQL retorna os nomes de todos os funcionários cujo supervisor do supervisor tenha como CPF o número '88866555576' na Figura 3.5:
+
+
+SELECT F.Pnome
+FROM Funcionario F
+WHERE F.Cpf_supervisor = (
+    SELECT F2.Cpf_supervisor
+    FROM Funcionario F2
+    WHERE F2.Cpf = '88866555576'
+)
+
+c. A seguinte consulta em SQL retorna os nomes dos funcionários que ganham pelo menos R$10.000,00 a mais que o funcionário que recebe menos na empresa da Figura 3.5:
+
+
+SELECT F.Pnome
+FROM Funcionario F
+WHERE F.Salario >= (
+    SELECT MIN(Salario) + 10000
+    FROM Funcionario
+)
+
+Note que essas consultas são baseadas no esquema de banco de dados da Figura 3.5, mas podem ser aplicadas ao banco de dados da Figura 3.6, supondo que os nomes dos objetos sejam os mesmos.
+
+========================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
+
+Exercício 5.8
+
+a. A seguinte view em SQL retorna o nome do departamento, nome do gerente e salário do gerente para todo departamento no esquema de banco de dados EMPRESA da Figura 3.5:
+
+
+CREATE VIEW Departamento_Gerente AS
+SELECT D.Dnome, G.Pnome AS Gerente, G.Salario
+FROM Departamento D
+JOIN Funcionario G ON D.Cpf_gerente = G.Cpf
+
+
+b. A seguinte view em SQL retorna o nome do funcionário, nome do supervisor e salário do supervisor para cada funcionário que trabalha no departamento 'Pesquisa' no esquema de banco de dados EMPRESA da Figura 3.5:
+
+
+CREATE VIEW Funcionario_Supervisor AS
+SELECT F.Pnome, S.Pnome AS Supervisor, S.Salario
+FROM Funcionario F
+JOIN Funcionario S ON F.Cpf_supervisor = S.Cpf
+WHERE F.Dnr = (
+    SELECT D.Dnumero
+    FROM Departamento D
+    WHERE D.Dnome = 'Pesquisa'
+)
+
+
+c. A seguinte view em SQL retorna o nome do projeto, nome do departamento que o controla, número de funcionários e total de horas trabalhadas por semana em cada projeto no esquema de banco de dados EMPRESA da Figura 3.5:
+
+
+CREATE VIEW Projeto_Funcionario_Horas AS
+SELECT P.Projnomer, D.Dnome, COUNT(TF.Fcpf) AS NumFuncionarios, SUM(TF.Horas) AS HorasTrabalhadas
+FROM Projeto P
+JOIN Trabalha_Em TF ON P.Projnumero = TF.Pnr
+JOIN Departamento D ON P.Dnum = D.Dnumero
+GROUP BY P.Projnomer, D.Dnome
+
+
+d. A seguinte view em SQL retorna o nome do projeto, nome do departamento que o controla, número de funcionários e total de horas trabalhadas por semana no projeto para cada projeto com mais de um funcionário trabalhando nele no esquema de banco de dados EMPRESA da Figura 3.5:
+
+
+CREATE VIEW Projeto_Funcionario_Horas_MaisDeUm AS
+SELECT P.Projnomer, D.Dnome, COUNT(TF.Fcpf) AS NumFuncionarios, SUM(TF.Horas) AS HorasTrabalhadas
+FROM Projeto P
+JOIN Trabalha_Em TF ON P.Projnumero = TF.Pnr
+JOIN Departamento D ON P.Dnum = D.Dnumero
+GROUP BY P.Projnomer, D.Dnome
+HAVING COUNT(TF.Fcpf) > 1
+
+
+Note que essas views são baseadas no esquema de banco de dados EMPRESA da Figura 3.5, mas podem ser aplicadas ao banco de dados da Figura 3.6, supondo que os nomes dos objetos sejam os mesmos.
+
+========================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
+
+Exercício 5.9
+
+a. SELECT * FROM RESUMO_DEPARTAMENTO;
+
+Esta consulta é permitida sobre a view, e retornaria as seguintes colunas: Dnr, COUNT(*), SUM(Salario), AVG(Salario). O resultado seria:
+
+Dnr	COUNT(*)	SUM(Salario)	AVG(Salario)
+1	2	120000	60000
+2	3	210000	70000
+3	1	80000	80000
+4	2	150000	75000
+
+
+
+b. SELECT D, C FROM RESUMO_DEPARTAMENTO WHERE TOTAL_SAL > 100.000;
+
+Esta consulta é permitida sobre a view, mas a coluna TOTAL_SAL não existe, então deve ser alterada para SUM(Salario). O resultado seria:
+
+Dnr	COUNT(*)
+2	3
+4	2
+
+
+
+c. SELECT D, MEDIA_SAL FROM RESUMO_DEPARTAMENTO WHERE C > ( SELECT C FROM RESUMO_DEPARTAMENTO WHERE D=4);
+
+Esta consulta é permitida sobre a view, mas a coluna MEDIA_SAL não existe, então deve ser alterada para AVG(Salario). O resultado seria:
+
+Dnr	AVG(Salario)
+2	70000
+
+
+
+d. UPDATE RESUMO_DEPARTAMENTO SET D=3 WHERE D=4;
+
+Esta atualização não é permitida sobre a view, porque a coluna D é uma chave de agregação e não pode ser atualizada.
+
+e. DELETE FROM RESUMO_DEPARTAMENTO WHERE C > 4;
+
+Esta atualização não é permitida sobre a view, porque a tabela FUNCIONARIO não pode ser atualizada diretamente através da view RESUMO_DEPARTAMENTO.

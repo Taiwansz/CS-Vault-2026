@@ -1,0 +1,25 @@
+Atividade Prática – Paradigmas de Programação
+Problema: Calcular a soma dos quadrados de uma lista de números.
+
+Comparação entre os paradigmas utilizados:
+
+1. Facilidade de raciocínio
+   - O paradigma lógico (Prolog) e o paradigma funcional (Java com streams) foram os mais simples de estruturar.
+   - Ambos permitem traduzir o problema diretamente em operações matemáticas ou recursivas, sem necessidade de criar muita estrutura adicional.
+
+2. Legibilidade
+   - O paradigma funcional se destacou pela clareza: o uso de map + sum transmite exatamente a ideia de aplicar o quadrado e depois somar.
+   - O Portugol também é muito legível, já que a sintaxe é próxima da linguagem natural.
+   - O Prolog é compacto, mas exige familiaridade com recursão e pode não ser tão intuitivo para quem não tem prática.
+
+3. Quantidade de código
+   - O paradigma orientado a objetos (Java OO) foi o que exigiu mais linhas e estrutura, pois precisou criar uma classe, atributos e métodos.
+   - O Prolog e o Java funcional foram os mais enxutos, resolvendo em poucas linhas.
+   - O Portugol ficou no meio termo, com código simples mas ainda necessitando de laço explícito.
+
+Conclusão
+   - Cada paradigma tem pontos fortes diferentes.
+   - OO oferece organização e encapsulamento, mas é mais "pesado" para problemas simples.
+   - Funcional é direto e elegante quando há boas abstrações disponíveis.
+   - Lógico expressa bem a definição matemática do problema.
+   - Portugol é ideal para fins didáticos e clareza inicial.
