@@ -1,0 +1,24 @@
+{
+    "conhecimento": {
+        "lara croft é uma personagem do jogo tomb rider": {
+            "jogos": [
+                "Lara Croft é um personagem da saga Tomb  Raider"
+            ]
+        },
+        "jogos": {
+            "biografia": [
+                "Lara Croft é uma arqueóloga, faz parte do jogo Tomb Rider."
+            ]
+        },
+        "personagem de jogo": {
+            "jogos": [
+                "Principal personagem do jogo Tomb Raider"
+            ]
+        },
+        "lara croft": {
+            "biografia": [
+                "É uma arqueóloga britânica fictícia, inteligente e atlética."
+            ]
+        }
+    }
+}

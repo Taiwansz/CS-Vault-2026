@@ -1,0 +1,143 @@
+ID Cliente,Produto Visualizado,Histórico de Navegação,Campanha,Dias desde a última compra,Produto Comprado,Probabilidade de Compra
+Sasuke Uchiha,Notebook,Anúncio,1,147,1,73.9% chance de compra
+Temari,Smart TV,Anúncio,1,87,1,96.5% chance de compra
+Neji Hyuga,Tablet,Recomendação,1,75,1,95.0% chance de compra
+Neji Hyuga,Tablet,Email Marketing,1,23,1,90.5% chance de compra
+Choji Akimichi,Smartphone,Anúncio,1,7,0,90.0% chance de compra
+Sasuke Uchiha,Smartphone,Busca,0,14,1,86.0% chance de compra
+Shino Aburame,Relógio,Anúncio,0,10,1,78.5% chance de compra
+Obito Uchiha,Notebook,Recomendação,0,7,1,90.5% chance de compra
+Temari,Headset,Página de Oferta,1,25,1,95.0% chance de compra
+Obito Uchiha,Tablet,Página de Oferta,0,65,1,72.0% chance de compra
+Temari,Notebook,Email Marketing,0,12,1,73.5% chance de compra
+Sakura Haruno,Notebook,Página de Oferta,0,87,1,85.5% chance de compra
+Ino Yamanaka,Notebook,Página de Oferta,1,65,1,97.7% chance de compra
+Tsunade,Smart TV,Recomendação,0,40,1,98.0% chance de compra
+Rock Lee,Notebook,Anúncio,0,83,1,78.0% chance de compra
+Temari,Teclado Mecânico,Redes Sociais,0,140,1,84.5% chance de compra
+Madara Uchiha,Smart TV,Página de Oferta,0,17,1,82.5% chance de compra
+Ino Yamanaka,Headset,Página de Oferta,0,100,1,73.5% chance de compra
+Neji Hyuga,Smart TV,Página de Oferta,1,10,1,99.0% chance de compra
+Hinata Hyuga,Smartphone,Página de Oferta,0,139,1,77.5% chance de compra
+Jiraiya,Teclado Mecânico,Recomendação,1,39,1,98.0% chance de compra
+Sasuke Uchiha,Relógio,Busca,1,64,1,96.0% chance de compra
+Choji Akimichi,Relógio,Busca,1,166,1,71.5% chance de compra
+Ino Yamanaka,Console,Recomendação,0,93,1,88.5% chance de compra
+Shikamaru Nara,Smartphone,Anúncio,1,37,1,96.5% chance de compra
+Kakashi Hatake,Cadeira Gamer,Página de Oferta,0,27,1,70.5% chance de compra
+Temari,Relógio,Página de Oferta,1,0,1,91.0% chance de compra
+Obito Uchiha,Tablet,Página de Oferta,1,69,1,93.0% chance de compra
+Sasuke Uchiha,Relógio,Recomendação,1,87,1,99.0% chance de compra
+Neji Hyuga,Notebook,Página de Oferta,0,34,0,76.0% chance de compra
+Minato Namikaze,Smart TV,Recomendação,0,12,1,98.0% chance de compra
+Kakashi Hatake,Cadeira Gamer,Página de Oferta,0,65,1,74.0% chance de compra
+Rock Lee,Teclado Mecânico,Redes Sociais,1,5,1,96.0% chance de compra
+Tsunade,Headset,Página de Oferta,0,67,1,77.5% chance de compra
+Tsunade,Smart TV,Anúncio,1,68,1,99.0% chance de compra
+Kakashi Hatake,Relógio,Anúncio,1,140,1,84.5% chance de compra
+Obito Uchiha,Cadeira Gamer,Anúncio,1,80,1,98.5% chance de compra
+Obito Uchiha,Câmera,Página de Oferta,0,39,1,83.5% chance de compra
+Rock Lee,Smartphone,Recomendação,0,52,0,92.5% chance de compra
+Shino Aburame,Câmera,Recomendação,0,64,0,91.0% chance de compra
+Neji Hyuga,Smart TV,Anúncio,1,67,1,99.0% chance de compra
+Gaara,Notebook,Recomendação,1,26,1,97.5% chance de compra
+Rock Lee,Smart TV,Email Marketing,1,89,1,96.0% chance de compra
+Temari,Tablet,Recomendação,0,69,1,97.0% chance de compra
+Kakashi Hatake,Tablet,Busca,1,54,1,89.0% chance de compra
+Tsunade,Notebook,Página de Oferta,1,110,1,84.7% chance de compra
+Sakura Haruno,Cadeira Gamer,Busca,0,47,1,77.5% chance de compra
+Gaara,Console,Busca,1,122,1,73.0% chance de compra
+Hinata Hyuga,Console,Email Marketing,0,7,1,80.0% chance de compra
+Minato Namikaze,Console,Redes Sociais,0,55,1,86.5% chance de compra
+Neji Hyuga,Notebook,Recomendação,1,122,1,93.5% chance de compra
+Ino Yamanaka,Teclado Mecânico,Recomendação,0,29,0,78.0% chance de compra
+Sasuke Uchiha,Cadeira Gamer,Anúncio,0,53,1,88.5% chance de compra
+Gaara,Smartphone,Recomendação,1,22,1,99.0% chance de compra
+Temari,Notebook,Email Marketing,1,3,1,97.0% chance de compra
+Ino Yamanaka,Smart TV,Busca,0,118,1,72.0% chance de compra
+Neji Hyuga,Smart TV,Email Marketing,1,19,1,97.5% chance de compra
+Rock Lee,Câmera,Anúncio,0,50,1,80.0% chance de compra
+Choji Akimichi,Relógio,Página de Oferta,0,138,1,70.5% chance de compra
+Minato Namikaze,Headset,Email Marketing,0,15,1,76.5% chance de compra
+Sakura Haruno,Teclado Mecânico,Redes Sociais,1,93,1,96.5% chance de compra
+Kakashi Hatake,Cadeira Gamer,Redes Sociais,0,51,1,89.5% chance de compra
+Naruto Uzumaki,Smart TV,Recomendação,1,97,1,97.5% chance de compra
+Temari,Teclado Mecânico,Anúncio,0,55,1,85.0% chance de compra
+Temari,Cadeira Gamer,Anúncio,0,147,1,88.0% chance de compra
+Tsunade,Notebook,Recomendação,1,128,1,88.3% chance de compra
+Obito Uchiha,Notebook,Página de Oferta,1,0,1,94.5% chance de compra
+Shikamaru Nara,Smart TV,Email Marketing,0,51,0,74.5% chance de compra
+Jiraiya,Cadeira Gamer,Recomendação,1,108,1,99.0% chance de compra
+Tsunade,Relógio,Recomendação,0,107,1,93.5% chance de compra
+Itachi Uchiha,Teclado Mecânico,Recomendação,1,86,1,99.0% chance de compra
+Jiraiya,Teclado Mecânico,Recomendação,1,45,1,99.0% chance de compra
+Naruto Uzumaki,Notebook,Anúncio,0,171,1,74.5% chance de compra
+Minato Namikaze,Câmera,Página de Oferta,0,55,1,86.0% chance de compra
+Sasuke Uchiha,Relógio,Anúncio,0,142,1,90.5% chance de compra
+Temari,Headset,Email Marketing,1,117,1,70.2% chance de compra
+Madara Uchiha,Console,Anúncio,1,234,1,81.0% chance de compra
+Jiraiya,Tablet,Busca,0,85,1,75.5% chance de compra
+Temari,Câmera,Página de Oferta,1,30,1,98.0% chance de compra
+Gaara,Smartphone,Página de Oferta,0,57,1,81.5% chance de compra
+Naruto Uzumaki,Console,Busca,1,52,1,86.5% chance de compra
+Neji Hyuga,Cadeira Gamer,Email Marketing,1,20,1,87.5% chance de compra
+Shino Aburame,Smartphone,Recomendação,0,35,1,93.0% chance de compra
+Hinata Hyuga,Teclado Mecânico,Redes Sociais,0,47,1,95.0% chance de compra
+Neji Hyuga,Cadeira Gamer,Recomendação,0,59,1,94.0% chance de compra
+Shino Aburame,Smartphone,Busca,0,106,1,83.5% chance de compra
+Choji Akimichi,Notebook,Redes Sociais,1,82,1,98.5% chance de compra
+Hinata Hyuga,Câmera,Redes Sociais,1,23,1,92.5% chance de compra
+Shikamaru Nara,Notebook,Página de Oferta,0,70,1,93.0% chance de compra
+Kiba Inuzuka,Headset,Recomendação,1,58,1,98.5% chance de compra
+Shikamaru Nara,Smart TV,Email Marketing,1,3,1,96.0% chance de compra
+Neji Hyuga,Console,Página de Oferta,1,138,1,81.5% chance de compra
+Minato Namikaze,Câmera,Recomendação,1,22,1,99.0% chance de compra
+Jiraiya,Notebook,Busca,0,119,1,90.0% chance de compra
+Temari,Headset,Busca,0,141,1,80.0% chance de compra
+Neji Hyuga,Headset,Anúncio,1,172,1,74.0% chance de compra
+Neji Hyuga,Relógio,Redes Sociais,0,18,0,81.0% chance de compra
+Gaara,Relógio,Busca,1,35,1,85.0% chance de compra
+Naruto Uzumaki,Smartphone,Redes Sociais,1,26,1,99.5% chance de compra
+Sakura Haruno,Notebook,Email Marketing,1,170,1,85.9% chance de compra
+Minato Namikaze,Smartphone,Página de Oferta,0,11,1,86.5% chance de compra
+Tsunade,Tablet,Página de Oferta,1,38,1,93.0% chance de compra
+Kakashi Hatake,Notebook,Anúncio,1,107,1,96.5% chance de compra
+Itachi Uchiha,Smart TV,Redes Sociais,1,175,1,76.5% chance de compra
+Kiba Inuzuka,Teclado Mecânico,Email Marketing,1,61,1,97.0% chance de compra
+Tsunade,Console,Página de Oferta,1,258,1,85.0% chance de compra
+Minato Namikaze,Smart TV,Página de Oferta,1,4,1,98.0% chance de compra
+Tsunade,Relógio,Email Marketing,1,107,1,92.0% chance de compra
+Rock Lee,Câmera,Anúncio,0,118,1,77.0% chance de compra
+Hinata Hyuga,Smartphone,Página de Oferta,1,79,1,94.5% chance de compra
+Gaara,Console,Anúncio,1,28,0,87.5% chance de compra
+Minato Namikaze,Smartphone,Redes Sociais,1,111,1,90.0% chance de compra
+Madara Uchiha,Console,Anúncio,0,148,1,83.0% chance de compra
+Madara Uchiha,Câmera,Email Marketing,0,15,1,79.5% chance de compra
+Sasuke Uchiha,Notebook,Página de Oferta,1,114,1,81.7% chance de compra
+Gaara,Smart TV,Página de Oferta,0,36,0,85.5% chance de compra
+Gaara,Smartphone,Email Marketing,1,42,1,98.0% chance de compra
+Shino Aburame,Headset,Email Marketing,1,58,1,98.0% chance de compra
+Rock Lee,Teclado Mecânico,Anúncio,1,102,1,89.5% chance de compra
+Kiba Inuzuka,Headset,Página de Oferta,1,13,1,95.0% chance de compra
+Tsunade,Notebook,Email Marketing,1,77,1,96.5% chance de compra
+Tsunade,Smart TV,Busca,0,19,1,80.5% chance de compra
+Shikamaru Nara,Tablet,Email Marketing,1,44,1,96.5% chance de compra
+Temari,Headset,Redes Sociais,1,69,1,90.0% chance de compra
+Shino Aburame,Teclado Mecânico,Email Marketing,0,123,1,79.5% chance de compra
+Shikamaru Nara,Teclado Mecânico,Página de Oferta,1,40,1,86.0% chance de compra
+Obito Uchiha,Teclado Mecânico,Anúncio,0,3,1,70.5% chance de compra
+Temari,Relógio,Email Marketing,1,10,1,88.5% chance de compra
+Obito Uchiha,Smart TV,Página de Oferta,0,16,1,81.5% chance de compra
+Shikamaru Nara,Smart TV,Página de Oferta,0,41,1,85.0% chance de compra
+Sasuke Uchiha,Notebook,Redes Sociais,0,84,1,85.0% chance de compra
+Sasuke Uchiha,Tablet,Recomendação,0,175,1,77.0% chance de compra
+Neji Hyuga,Câmera,Anúncio,0,165,1,71.5% chance de compra
+Kiba Inuzuka,Notebook,Email Marketing,1,61,1,95.5% chance de compra
+Sakura Haruno,Console,Recomendação,1,156,1,87.0% chance de compra
+Obito Uchiha,Console,Redes Sociais,1,32,1,97.5% chance de compra
+Hinata Hyuga,Relógio,Busca,0,122,1,79.5% chance de compra
+Obito Uchiha,Smartphone,Recomendação,1,91,1,100.0% chance de compra
+Gaara,Teclado Mecânico,Email Marketing,0,78,1,87.5% chance de compra
+Choji Akimichi,Câmera,Recomendação,0,137,0,75.0% chance de compra
+Neji Hyuga,Smartphone,Email Marketing,1,92,1,98.0% chance de compra
+Madara Uchiha,Notebook,Busca,0,112,1,84.5% chance de compra
