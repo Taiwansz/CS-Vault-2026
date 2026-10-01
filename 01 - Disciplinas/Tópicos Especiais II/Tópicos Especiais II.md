@@ -78,5 +78,6 @@ horario: "Terça-feira / 19:00–21:40"
 - 📁 [[01 - Disciplinas/Tópicos Especiais II/Aulas/2026-08-25 - Sistema de Lista de Tarefas em Java|Aula 25/08 - Sistema de Lista de Tarefas em Java]]
 - 📁 [[01 - Disciplinas/Tópicos Especiais II/Aulas/2026-09-01 - Automação Industrial e Polimorfismo|Aula 01/09 - Automação Industrial e Polimorfismo]]
 - 📁 [[01 - Disciplinas/Tópicos Especiais II/Aulas/2026-09-15 - Persistência em Arquivos e Gestão de Eventos|Aula 15/09 - Persistência em Arquivos e Gestão de Eventos]]
+- 📁 [[01 - Disciplinas/Tópicos Especiais II/Aulas/2026-09-29 - Banco de Dados Relacional e SQL|Aula 29/09 - Banco de Dados Relacional e SQL]]
 - 📁 [[01 - Disciplinas/Tópicos Especiais II/Materiais/Apostila de POO com Java.pdf|Apostila de POO com Java (PDF)]]
 - 📁 [[01 - Disciplinas/Tópicos Especiais II/Materiais/diagrama.html|Diagrama de Classes Interativo (HTML)]]

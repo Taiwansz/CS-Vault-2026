@@ -195,6 +195,16 @@ git clone https://github.com/Taiwansz/CS-Vault-2026.git
 
 ---
 
+---
+
+## 📋 Diretrizes de Gestão Acadêmica
+
+- Sincronização dual com o ecossistema ThSyr via SOP-005.
+- Documentação de exercícios e gabaritos atualizada ao término de cada aula.
+- Zero arquivos órfãos no cofre.
+
+---
+
 <p align="center">
   <sub>Construído com base nas melhores práticas de Personal Knowledge Management (PKM) e Engenharia de Computação.</sub>
 </p>
