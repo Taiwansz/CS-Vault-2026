@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Compiladores & Engenharia de Bootstrap · Da Fragilidade do Low-Code à Soberania Ontológica</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&family=Schibsted+Grotesk:wght@600;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --void:#FFFFFF; --ink:#141310; --ink-2:#4E4A42; --ink-3:#7E7A70;
+  --red:#B3392C; --blue:#1F5FA8; --yellow:#8A6A00; --bone:#3A3630;
+  --emerald:#1B7A4B;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  background:var(--void); color:var(--ink);
+  font-family:'Schibsted Grotesk',system-ui,-apple-system,sans-serif;
+  -webkit-font-smoothing:antialiased; overflow-x:hidden;
+}
+code{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:.88em;color:var(--bone);background:rgba(20,19,16,.05);padding:2px 5px;border-radius:2px}
+
+#stage{position:fixed;inset:0;z-index:0}
+#c{display:block;width:100%;height:100%}
+#vig{position:fixed;inset:0;z-index:1;pointer-events:none;
+  background:radial-gradient(ellipse 80% 64% at 50% 50%,transparent 0%,rgba(255,255,255,.55) 74%,rgba(255,255,255,.94) 100%)}
+
+/* trilho de rolagem contínuo */
+#rail{position:relative;z-index:2}
+.panel{min-height:100vh;display:flex;align-items:center;padding:0 6vw;pointer-events:none}
+.panel .box{max-width:440px;opacity:0;transform:translateY(16px);pointer-events:auto;transition:transform .2s cubic-bezier(0.16,1,0.3,1),opacity .2s ease}
+.panel.right{justify-content:flex-end}
+.panel.mid{justify-content:center;text-align:center}
+.panel.mid .box{max-width:640px}
+.panel.mid .box.wide{max-width:760px}
+
+.tag{display:inline-flex;align-items:center;gap:9px;font:800 10.5px/1 'JetBrains Mono',ui-monospace,monospace;
+  letter-spacing:.22em;color:var(--ink-2);margin-bottom:20px;cursor:default;user-select:none;transition:transform .12s cubic-bezier(0.16,1,0.3,1)}
+.tag:active{transform:scale(0.97)}
+.tag i{width:8px;height:8px;background:var(--red);display:block}
+.tag i.b{background:var(--blue)} .tag i.y{background:var(--yellow)} .tag i.n{background:var(--bone);border-radius:50%} .tag i.g{background:var(--emerald)}
+
+h1{font-size:clamp(38px,6.6vw,78px);line-height:.96;letter-spacing:-.04em;font-weight:900}
+h2{font-size:clamp(27px,3.7vw,45px);line-height:1.02;letter-spacing:-.035em;font-weight:800;margin-bottom:18px}
+.n{font-size:clamp(44px,7vw,86px);line-height:1;letter-spacing:-.05em;font-weight:900;
+  font-variant-numeric:tabular-nums;margin-bottom:6px;white-space:nowrap}
+.unit{font:700 11px/1 'JetBrains Mono',ui-monospace,monospace;letter-spacing:.2em;color:var(--ink-2);margin-bottom:16px}
+p{font-size:16.5px;line-height:1.62;color:var(--ink-2);max-width:44ch}
+p+p{margin-top:13px}
+p b{color:var(--ink);font-weight:800}
+.hint{margin-top:34px;font:700 11px/1 'JetBrains Mono',ui-monospace,monospace;letter-spacing:.2em;color:var(--ink-3);transition:transform .15s ease}
+.hint:active{transform:scale(0.96)}
+
+.facts{margin-top:24px;border-top:1px solid rgba(20,19,16,.16)}
+.facts div{display:flex;justify-content:space-between;gap:18px;padding:11px 0;
+  border-bottom:1px solid rgba(20,19,16,.11);font-size:14.5px;transition:background .2s,transform .12s cubic-bezier(0.16,1,0.3,1)}
+.facts div:active{transform:scale(0.985)}
+.facts .k{color:var(--ink-3)}
+.facts .v{font-weight:700;font-variant-numeric:tabular-nums;color:var(--ink)}
+
+/* HUD inferior contínuo de estado */
+#hud{position:fixed;left:0;right:0;bottom:0;z-index:3;padding:20px 6vw;
+  display:flex;justify-content:space-between;align-items:flex-end;gap:20px;pointer-events:none;
+  font:700 10.5px/1.5 'JetBrains Mono',ui-monospace,monospace;letter-spacing:.14em;color:var(--ink-3)}
+#hud .set{color:var(--ink-2)}
+#ticks{display:flex;gap:5px;align-items:center}
+#ticks b{width:26px;height:2px;background:rgba(20,19,16,.20);display:block;transition:background .35s ease}
+#ticks b.on{background:var(--red)}
+
+#load{position:fixed;inset:0;z-index:9;background:var(--void);display:flex;align-items:center;justify-content:center;
+  font:700 11px/1 ui-monospace,monospace;letter-spacing:.24em;color:var(--ink-3);transition:opacity .6s ease}
+#load.off{opacity:0;pointer-events:none}
+
+@media (max-width:760px){
+  .panel{padding:0 5vw} .panel.right{justify-content:flex-start} p{font-size:15px}
+  .panel .box{background:rgba(255,255,255,.88);padding:22px 18px;
+    -webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);border:1px solid rgba(20,19,16,.08)}
+  #hud .set{display:none} #hud{justify-content:flex-end;padding:16px 5vw}
+}
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{transition-duration:0.01ms !important;animation-duration:0.01ms !important;scroll-behavior:auto !important}
+}
+</style>
+</head>
+<body>
+<div id="load">PREPARANDO AULA · 05/10/2026</div>
+<div id="stage"><canvas id="c"></canvas></div>
+<div id="vig"></div>
+<div id="hud"><span class="set" id="hudSet">—</span><div id="ticks"></div></div>
+
+<div id="rail">
+  <!-- S0: Introdução -->
+  <section class="panel mid" data-s="0">
+    <div class="box">
+      <div class="tag"><i class="n"></i>COMPILADORES · 05 DE OUTUBRO DE 2026</div>
+      <h1>Como a matéria<br>se constrói<br>a si mesma</h1>
+      <p style="margin:22px auto 0">Da metodologia de problemas e do colapso do low-code até o milagre ontológico do compilador auto-hospedado (bootstrapping). Sem abstrações mágicas.</p>
+      <div class="hint">ROLE PARA INICIAR A DISSECÇÃO</div>
+    </div>
+  </section>
+
+  <!-- S1: O Problema antes do Código -->
+  <section class="panel" data-s="1">
+    <div class="box">
+      <div class="tag"><i class="b"></i>FASE 01 · DIAGNÓSTICO</div>
+      <h2>O problema antes<br>de qualquer linha</h2>
+      <p>A aula começou desconstruindo o erro clássico de engenharia: pular para a ferramenta antes de isolar a causa-raiz do problema.</p>
+      <p>Uma fila de supermercado parada não é um problema de banco de dados — é um sintoma de <b>gargalo de atendimento</b>. O software existe para formalizar uma solução, não para encobrir a desordem do processo.</p>
+      <p>O que você vê na tela é a dispersão caótica de eventos corporativos antes da modelagem formal.</p>
+    </div>
+  </section>
+
+  <!-- S2: A Farsa das Planilhas e Low-Code -->
+  <section class="panel right" data-s="2">
+    <div class="box">
+      <div class="tag"><i></i>FASE 02 · A ILUSÃO</div>
+      <div class="n">0,82</div>
+      <div class="unit">COEFICIENTE DE RISCO</div>
+      <h2>Planilhas não são<br>bancos de dados</h2>
+      <p>O professor desfez o fetiche corporativo por Power Apps e Google Sheets no coração das operações.</p>
+      <p>Uma planilha não possui transações ACID, não impõe integridade referencial e é vulnerável a <b>injeção de fórmulas CSV</b>. Basta um caractere malicioso para corromper dados silenciosamente.</p>
+      <p>As partículas tentam se alinhar numa grade frágil: sob a primeira perturbação de concorrência, ela colapsa.</p>
+    </div>
+  </section>
+
+  <!-- S3: Gramática Formal e o DFA -->
+  <section class="panel" data-s="3">
+    <div class="box">
+      <div class="tag"><i class="b"></i>FASE 03 · DETERMINISMO</div>
+      <div class="n">O(n)</div>
+      <div class="unit">COMPLEXIDADE ESTREITA</div>
+      <h2>A gramática formal<br>e o autômato</h2>
+      <p>Um compilador não adivinha. Ele recebe texto e o processa através de uma Gramática Livre de Contexto <code>G = (V, Σ, R, S)</code>.</p>
+      <p>O analisador léxico converte caracteres em tokens usando um <b>Autômato Finito Determinístico (DFA)</b>. Cada caractere é consumido exatamente uma vez em tempo estritamente linear.</p>
+      <p>As partículas se ordenam nos anéis de estados determinísticos: a desordem vira um pipeline sem retrocesso.</p>
+    </div>
+  </section>
+
+  <!-- S4: Anatomia do Desvio (if-else vs tableswitch) -->
+  <section class="panel right" data-s="4">
+    <div class="box">
+      <div class="tag"><i class="y"></i>FASE 04 · DESPACHO DE CPU</div>
+      <div class="n">O(1)</div>
+      <div class="unit">TEMPO DE SALTO CONSTANTE</div>
+      <h2>Como o processador<br>toma decisões</h2>
+      <p>Por que encadear dez <code>if-else</code> é um crime contra a latência? Cada teste exige uma instrução de comparação e salto condicional: <code>O(n)</code> no pior caso.</p>
+      <p>Um <code>switch</code> denso compila na JVM diretamente para <b>tableswitch</b>: o processador calcula o endereço de destino em um único ciclo <code>O(1)</code>, indexando a tabela de offsets.</p>
+      <p>Veja as partículas organizadas em colunas de saltos diretos: zero busca sequencial, tempo imediato.</p>
+    </div>
+  </section>
+
+  <!-- S5: O Paradoxo do Compilador -->
+  <section class="panel mid" data-s="5">
+    <div class="box">
+      <div class="tag"><i class="n"></i>FASE 05 · O ENIGMA ONTOLÓGICO</div>
+      <h2>Quem compila<br>o primeiro compilador?</h2>
+      <p style="margin:20px auto 0">Se o compilador de C é escrito em C, e o compilador de Java é escrito em Java, onde começou a primeira cadeia de montagem?</p>
+      <p style="margin:14px auto 0">Para compilar um programa na linguagem <b>L</b>, você precisa de um compilador executável. Mas para criar esse compilador, você precisa escrevê-lo na linguagem <b>L</b>. É o paradoxo do ovo e da galinha no silício.</p>
+      <p style="margin:14px auto 0">As partículas dobram-se num anel de Möbius tridimensional: uma auto-referência infinita que exige uma saída física de engenharia.</p>
+    </div>
+  </section>
+
+  <!-- S6: A Engenharia de Bootstrapping (v0 -> v1 -> v2) -->
+  <section class="panel" data-s="6">
+    <div class="box">
+      <div class="tag"><i class="g"></i>FASE 06 · A SOLUÇÃO</div>
+      <div class="n">v0 → v1 → v2</div>
+      <div class="unit">OS TRÊS TOMBSTONES</div>
+      <h2>O milagre do<br>Bootstrapping</h2>
+      <p>A resposta da ciência da computação chama-se <b>Self-Hosting Bootstrapping</b>:</p>
+      <div class="facts">
+        <div><span class="k">1. v0</span><span class="v">Escrito em Assembly/C existente</span></div>
+        <div><span class="k">2. v1</span><span class="v">Escrito na linguagem nova, compilado por v0</span></div>
+        <div><span class="k">3. v2</span><span class="v">O código v1 compila a si mesmo</span></div>
+      </div>
+      <p style="margin-top:16px">Quando <code>v1</code> compila <code>v1</code> e produz exatamente <code>v2</code>, o cordão umbilical é cortado. A linguagem atinge <b>auto-suficiência ontológica</b>.</p>
+    </div>
+  </section>
+
+  <!-- S7: O Ataque de Thompson e o Quine de Kleene -->
+  <section class="panel right" data-s="7">
+    <div class="box">
+      <div class="tag"><i></i>FASE 07 · O FANTASMA NO BINÁRIO</div>
+      <div class="n">1984</div>
+      <div class="unit">KEN THOMPSON TURING AWARD</div>
+      <h2>O cavalo de Troia<br>auto-replicante</h2>
+      <p>Em 1984, Ken Thompson provou a vulnerabilidade mais profunda da história: <b>Reflections on Trusting Trust</b>.</p>
+      <p>Ele modificou o compilador C para injetar um backdoor no comando <code>login</code>, E TAMBÉM para injetar a própria rotina de infecção toda vez que recompilasse o código do compilador.</p>
+      <p><b>O código-fonte estava 100% limpo.</b> O binário estava infectado. É a prova do Teorema da Recursão de Kleene: a confiança no software nunca é transitiva.</p>
+    </div>
+  </section>
+
+  <!-- S8: A Realidade Física: O PDV de Varejo e Kingman -->
+  <section class="panel" data-s="8">
+    <div class="box">
+      <div class="tag"><i class="y"></i>FASE 08 · A FÍSICA DAS FILAS</div>
+      <div class="n">Wq → ∞</div>
+      <div class="unit">COLAPSO EXPONENCIAL</div>
+      <h2>Por que o caixa de loja<br>não pode usar nuvem</h2>
+      <p>A aula encerrou com uma prova no varejo. A <b>Fórmula de Kingman</b> para filas <code>G/G/1</code> governa o tempo de espera:</p>
+      <p>Se a latência do serviço salta de 50 ms (local) para 3.000 ms (nuvem com oscilação), a intensidade de tráfego <code>ρ → 1</code> e o tempo de fila <code>Wq</code> <b>explode para o infinito</b>.</p>
+      <p>O caixa trava. A fila física do supermercado vira motim. A única resposta é a <b>Doutrina Soberana</b>: daemons locais em Java/Linux que funcionam offline com compilação determinística.</p>
+    </div>
+  </section>
+
+  <!-- S9: Síntese e Veredito de Soberania -->
+  <section class="panel mid" data-s="9">
+    <div class="box wide">
+      <div class="tag"><i class="g"></i>FASE 09 · O VEREDITO</div>
+      <h2>A hierarquia da soberania</h2>
+      <div class="facts" style="max-width:620px;margin:24px auto 0;text-align:left">
+        <div><span class="k">Planilhas / Low-Code</span><span class="v" style="color:var(--red)">Frágil · Injeção CSV · Lock-in de Nuvem</span></div>
+        <div><span class="k">Cadeias de if-else</span><span class="v" style="color:var(--yellow)">O(n) · Desperdício de ciclos de clock</span></div>
+        <div><span class="k">Despacho tableswitch</span><span class="v" style="color:var(--blue)">O(1) · Tabela direta de salto em bytecode</span></div>
+        <div><span class="k">Compilador Self-Hosting</span><span class="v" style="color:var(--emerald)">Independência total · Auto-suficiência ontológica</span></div>
+        <div><span class="k">Arquitetura PDV Soberana</span><span class="v" style="color:var(--ink)">Resiliência offline-first contra colapso de Kingman</span></div>
+      </div>
+      <p style="margin:26px auto 0">Software sério não pede licença a APIs alheias para continuar operando quando o cabo de rede se rompe.</p>
+      <p style="margin:20px auto 0;font-size:12.5px;color:var(--ink-3);max-width:54ch">Compiladores (Turma N13208A) — Prof. Luiz Claudio Chiavini Oliveira Junior. Relatório homologado sob a Doutrina Atlas Deep Reporting no CS-Vault-2026.</p>
+    </div>
+  </section>
+</div>
+
+<script>
+/* ─────────────────────────────────────────────────────────────
+   Motor 3D Vetorial em Canvas 2D Puro. Zero Bibliotecas.
+   Baseado na Doutrina de Engenharia Editorial Canvas 3D.
+   ───────────────────────────────────────────────────────────── */
+const cv = document.getElementById('c'), gx = cv.getContext('2d', {alpha: false});
+const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const MOB = innerWidth < 760;
+
+const CLUSTERS = 128, PER = MOB ? 24 : 48, N = CLUSTERS * PER; // 3.072 no celular, 6.144 no desktop
+const STATES = 10;
+const px = new Float32Array(N * STATES), py = new Float32Array(N * STATES), pz = new Float32Array(N * STATES);
+const cx_ = new Float32Array(N), cy_ = new Float32Array(N), cz_ = new Float32Array(N);
+const kind = new Uint8Array(N); // 0 neutro, 1 azul (lógica), 2 vermelho (ataque/falha), 3 amarelo (desvio/fila), 4 verde (bootstrap)
+const clus = new Uint16Array(N);
+const seedA = new Float32Array(N), seedB = new Float32Array(N);
+
+let rnd = (s => () => ((s = s * 1664525 + 1013904223 | 0) >>> 8) / 16777216)(20261005);
+
+for(let i = 0; i < N; i++){
+  clus[i] = i % CLUSTERS;
+  seedA[i] = rnd();
+  seedB[i] = rnd();
+  kind[i] = (i % 5 === 0) ? 1 : (i % 11 === 0) ? 2 : (i % 7 === 0) ? 3 : 0;
+}
+
+function set(s, i, x, y, z){
+  const k = s * N + i;
+  px[k] = x; py[k] = y; pz[k] = z;
+}
+
+const TAU = Math.PI * 2;
+function fib(i, n, R){
+  const y = 1 - (i / (n - 1)) * 2, r = Math.sqrt(Math.max(0, 1 - y * y)), th = Math.PI * (1 + Math.sqrt(5)) * i;
+  return [Math.cos(th) * r * R, y * R, Math.sin(th) * r * R];
+}
+
+/* ── S0: O Caos Primitivo (Nuvem Difusa de Eventos) ──────────── */
+for(let i = 0; i < N; i++){
+  const [x, y, z] = fib(i, N, 160 + seedA[i] * 50);
+  set(0, i, x * 1.4, y * 1.4, z * 1.4);
+}
+
+/* ── S1: A Falsa Grade da Planilha (Matriz Instável que Trepida) ─ */
+for(let i = 0; i < N; i++){
+  const cols = 24, rows = Math.ceil(N / cols);
+  const c = i % cols, r = (i / cols | 0);
+  const x = (c - cols / 2) * 14 + (seedA[i] - 0.5) * 4;
+  const y = (r - rows / 2) * 5.2 + (seedB[i] - 0.5) * 4;
+  const z = Math.sin(c * 0.4) * 22 + (seedA[i] - 0.5) * 20;
+  set(1, i, x, y, z);
+}
+
+/* ── S2: O Autômato Finito e a Gramática (Anéis Concêntricos) ── */
+for(let i = 0; i < N; i++){
+  const ring = i % 6;
+  const radR = 36 + ring * 28;
+  const ang = ((i / 6 | 0) / (N / 6)) * TAU;
+  const x = Math.cos(ang) * radR;
+  const y = (ring - 2.5) * 18 + Math.sin(ang * 3) * 6;
+  const z = Math.sin(ang) * radR;
+  set(2, i, x, y, z);
+}
+
+/* ── S3: A Árvore Sintática e Lexer (Hierarquia Ramificada) ─── */
+for(let i = 0; i < N; i++){
+  const depth = Math.floor(Math.log2(1 + (i % 1024) * 0.03)) % 6;
+  const branch = (i % (1 << depth));
+  const span = 260 / (1 << depth);
+  const x = (branch - (1 << depth) / 2 + 0.5) * span + (seedA[i] - 0.5) * 12;
+  const y = -110 + depth * 46 + (seedB[i] - 0.5) * 10;
+  const z = (seedA[i] - 0.5) * 40;
+  set(3, i, x, y, z);
+}
+
+/* ── S4: Despacho O(1) de CPU (Tabela Indexada de Bytecode) ──── */
+for(let i = 0; i < N; i++){
+  const col = i % 8;
+  const row = (i / 8 | 0);
+  const x = (col - 3.5) * 38 + (seedA[i] - 0.5) * 8;
+  const y = (row / (N / 8)) * 260 - 130;
+  const z = (col % 2 === 0 ? 1 : -1) * 14 + (seedB[i] - 0.5) * 8;
+  set(4, i, x, y, z);
+}
+
+/* ── S5: O Paradoxo Ontológico (Fita de Möbius / DNA Espiral) ── */
+for(let i = 0; i < N; i++){
+  const u = (i / N) * TAU * 2;
+  const v = ((i % 12) - 5.5) * 4.0;
+  const x = (130 + v * Math.cos(u / 2)) * Math.cos(u);
+  const y = (130 + v * Math.cos(u / 2)) * Math.sin(u);
+  const z = v * Math.sin(u / 2) * 2.2;
+  set(5, i, x * 0.9, y * 0.7, z);
+}
+
+/* ── S6: Engenharia de Bootstrap (Os 3 Prismas T-Diagrams) ──── */
+for(let i = 0; i < N; i++){
+  const tier = i % 3; // 0: v0, 1: v1, 2: v2
+  const cx_tier = (tier - 1) * 110;
+  const cy_tier = (tier === 1 ? -40 : 40);
+  const [ox, oy, oz] = fib(i % (PER * 4), PER * 4, 38 + seedA[i] * 10);
+  set(6, i, cx_tier + ox, cy_tier + oy, oz);
+}
+
+/* ── S7: O Ataque de Thompson (Núcleo com Quine Parasitário) ─── */
+for(let i = 0; i < N; i++){
+  if(i < N * 0.12){
+    // O Quine oculto no centro
+    const [x, y, z] = fib(i, Math.floor(N * 0.12), 26 + seedA[i] * 8);
+    set(7, i, x, y, z);
+  } else {
+    // A carcaça do compilador exterior
+    const [x, y, z] = fib(i, N, 140 + seedB[i] * 32);
+    set(7, i, x, y, z);
+  }
+}
+
+/* ── S8: A Física de Filas de Kingman (Gargalo Exponencial) ───── */
+for(let i = 0; i < N; i++){
+  const t = i / N;
+  // Funil de garrafa: afunilamento súbito onde Wq explode
+  const neck = Math.pow(Math.abs(t - 0.5) * 2, 0.45);
+  const radius = 12 + neck * 95;
+  const angle = t * TAU * 24;
+  const x = Math.cos(angle) * radius + (seedA[i] - 0.5) * 12;
+  const y = (t - 0.5) * 310;
+  const z = Math.sin(angle) * radius + (seedB[i] - 0.5) * 12;
+  set(8, i, x, y, z);
+}
+
+/* ── S9: O Monólito da Soberania (Estrutura Facetada Estável) ── */
+for(let i = 0; i < N; i++){
+  const [x, y, z] = fib(i, N, 150 + seedA[i] * 20);
+  // Monólito central cilíndrico com anel planetário
+  if(i % 3 === 0){
+    const a = (i / N) * TAU;
+    set(9, i, Math.cos(a) * 220, (seedA[i] - 0.5) * 20, Math.sin(a) * 220);
+  } else {
+    set(9, i, x * 0.85, y * 1.15, z * 0.85);
+  }
+}
+
+for(let i = 0; i < N; i++){
+  cx_[i] = px[i]; cy_[i] = py[i]; cz_[i] = pz[i];
+}
+
+/* ── Estado e Câmera ────────────────────────────────────────── */
+let P = 0, Pt = 0, rotY = 0, rotX = 0, W = 0, H = 0, DPR = 1;
+
+function resize(){
+  DPR = Math.min(devicePixelRatio || 1, 2);
+  W = innerWidth; H = innerHeight;
+  cv.width = W * DPR; cv.height = H * DPR;
+  gx.setTransform(DPR, 0, 0, DPR, 0, 0);
+}
+addEventListener('resize', resize);
+resize();
+
+const COL = {
+  0: '58,54,48',     // Carvão mineral neutro
+  1: '31,95,168',    // Azul cobalto (DFA, JVM, lógica)
+  2: '179,57,44',    // Carmim técnico (Ataque, vulnerabilidade)
+  3: '138,106,0',    // Amarelo ocre (Desvios, tabelas, Kingman)
+  4: '27,122,75'     // Esmeralda (Bootstrap, soberania)
+};
+
+const ease = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+
+function frame(ts){
+  P += (Pt - P) * 0.075; // Amortecimento exponencial canônico
+  const s0 = Math.max(0, Math.min(STATES - 1, Math.floor(P)));
+  const s1 = Math.min(STATES - 1, s0 + 1);
+  const t = ease(Math.min(1, Math.max(0, P - s0)));
+
+  if(!RM){
+    rotY += 0.0016;
+    rotX = Math.sin(ts * 0.00012) * 0.12;
+  }
+  const cosY = Math.cos(rotY), sinY = Math.sin(rotY), cosX = Math.cos(rotX), sinX = Math.sin(rotX);
+
+  gx.fillStyle = '#FFFFFF';
+  gx.fillRect(0, 0, W, H);
+
+  // Compensação de peso visual da câmera (Off-Axis Offset)
+  const OFFS = [0, 1, -1, 1, -1, 0, 1, -1, 1, 0];
+  const off = (OFFS[s0] + (OFFS[s1] - OFFS[s0]) * t) * (MOB ? 0 : W * 0.20);
+  const ccx = W * 0.5 + off, ccy = H * 0.5, FOV = 520, SC = Math.min(W, H) / 270 * (MOB ? 0.62 : 1);
+
+  const proj = [];
+  for(let i = 0; i < N; i++){
+    const a = s0 * N + i, b = s1 * N + i;
+    let x = px[a] + (px[b] - px[a]) * t;
+    let y = py[a] + (py[b] - py[a]) * t;
+    let z = pz[a] + (pz[b] - pz[a]) * t;
+    cx_[i] = x; cy_[i] = y; cz_[i] = z;
+
+    // Rotação Y depois X
+    let X = x * cosY - z * sinY, Z = x * sinY + z * cosY;
+    let Y = y * cosX - Z * sinX; Z = y * sinX + Z * cosX;
+
+    const d = Z + FOV * 1.55;
+    if(d < 40) continue;
+    const f = FOV / d;
+    const sx = ccx + X * f * SC, sy = ccy + Y * f * SC;
+    if(sx < -30 || sx > W + 30 || sy < -30 || sy > H + 30) continue;
+
+    let al = Math.min(1, Math.max(0, (f - 0.15) * 3.1)) * (MOB ? 0.8 : 1);
+    let sz = Math.max(1.4, f * (MOB ? 2.8 : 4.4));
+    let k = kind[i];
+
+    // Semântica de cores dinâmica por estado
+    if(P > 1.4 && P < 2.6){
+      // Estado da Planilha: quase tudo cinza com erros em vermelho
+      k = (seedA[i] > 0.82) ? 2 : 0;
+    } else if(P >= 2.6 && P < 3.6){
+      // Estado do DFA: azul técnico predominante
+      k = (i % 3 === 0) ? 1 : 0;
+    } else if(P >= 3.6 && P < 4.6){
+      // Estado do tableswitch: colunas em amarelo e azul
+      k = (i % 8 < 4) ? 3 : 1;
+    } else if(P >= 5.6 && P < 6.6){
+      // Bootstrap: esmeralda no v2
+      k = (i % 3 === 2) ? 4 : (i % 3 === 1 ? 1 : 0);
+    } else if(P >= 6.6 && P < 7.6){
+      // Thompson Attack: o quine central é vermelho vivo
+      if(i < N * 0.12){ k = 2; sz *= 1.8; al = Math.min(1, al * 1.8); }
+      else { k = 0; al *= 0.45; }
+    } else if(P >= 7.6 && P < 8.6){
+      // Fila de Kingman: amarelo congestionamento
+      k = (Math.abs(i / N - 0.5) < 0.15) ? 2 : 3;
+    } else if(P >= 8.6){
+      // Soberania: monólito esmeralda e anel azul
+      k = (i % 3 === 0) ? 1 : 4;
+    }
+
+    if(al < 0.05) continue;
+    proj.push(sx, sy, sz, al, k);
+  }
+
+  // Renderização direta em voxels 2D
+  for(let p = 0; p < proj.length; p += 5){
+    gx.fillStyle = 'rgba(' + COL[proj[p + 4]] + ',' + proj[p + 3].toFixed(3) + ')';
+    const s = proj[p + 2];
+    gx.fillRect(proj[p] - s * .5, proj[p + 1] - s * .5, s, s);
+  }
+
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+
+/* ── Scrollytelling de Distância Euclidiana Contínua ─────────── */
+const panels = [...document.querySelectorAll('.panel')];
+const ticks = document.getElementById('ticks');
+panels.forEach(() => ticks.appendChild(document.createElement('b')));
+const tk = [...ticks.children];
+const NAMES = [
+  'COMO A MATÉRIA SE CONSTRÓI',
+  'O PROBLEMA ANTES DO CÓDIGO',
+  'A FARSA DAS PLANILHAS',
+  'GRAMÁTICA FORMAL E DFA',
+  'DESPACHO O(1) DE CPU',
+  'O PARADOXO ONTOLÓGICO',
+  'A ENGENHARIA DE BOOTSTRAP',
+  'O ATAQUE DE THOMPSON',
+  'A FÍSICA DE FILAS DE KINGMAN',
+  'O VEREDITO DE SOBERANIA'
+];
+const hudSet = document.getElementById('hudSet');
+
+function onScroll(){
+  const vh = innerHeight, mid = vh / 2;
+  let best = 0, bd = 1e9, cBest = 0;
+
+  panels.forEach((pn, i) => {
+    const r = pn.getBoundingClientRect();
+    const c = (r.top + r.height / 2) - mid;
+    if(Math.abs(c) < bd){
+      bd = Math.abs(c);
+      best = i;
+      cBest = c;
+    }
+  });
+
+  const nb = cBest > 0 ? best - 1 : best + 1;
+  let frac = 0;
+  if(nb >= 0 && nb < panels.length){
+    const rn = panels[nb].getBoundingClientRect();
+    const cn = (rn.top + rn.height / 2) - mid;
+    const span = Math.abs(cBest) + Math.abs(cn);
+    if(span > 1) frac = Math.abs(cBest) / span;
+  }
+
+  Pt = Math.max(0, Math.min(STATES - 1, best + (nb > best ? frac : -frac)));
+  const cur = Math.round(Pt);
+  hudSet.textContent = NAMES[cur] || '';
+  tk.forEach((b, i) => b.classList.toggle('on', i <= cur));
+
+  panels.forEach((pn, i) => {
+    const r = pn.getBoundingClientRect();
+    const c = (r.top + r.height / 2) / vh;
+    const v = Math.max(0, 1 - Math.abs(c - 0.5) * 2.35);
+    const bx = pn.querySelector('.box');
+    bx.style.opacity = v.toFixed(3);
+    bx.style.transform = 'translateY(' + ((1 - v) * 16).toFixed(1) + 'px)';
+  });
+}
+
+addEventListener('scroll', onScroll, {passive: true});
+addEventListener('resize', onScroll);
+setInterval(onScroll, 160);
+onScroll();
+setTimeout(() => document.getElementById('load').classList.add('off'), 380);
+</script>
+</body>
+</html>
