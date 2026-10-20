@@ -1,4 +1,4 @@
----
+﻿---
 tipo: disciplina
 codigo: "1110020054"
 turma: N13208A
@@ -78,6 +78,10 @@ horario: "Terça-feira / 19:00–21:40"
 - 📁 [[01 - Disciplinas/Tópicos Especiais II/Aulas/2026-08-25 - Sistema de Lista de Tarefas em Java|Aula 25/08 - Sistema de Lista de Tarefas em Java]]
 - 📁 [[01 - Disciplinas/Tópicos Especiais II/Aulas/2026-09-01 - Automação Industrial e Polimorfismo|Aula 01/09 - Automação Industrial e Polimorfismo]]
 - 📁 [[01 - Disciplinas/Tópicos Especiais II/Aulas/2026-09-15 - Persistência em Arquivos e Gestão de Eventos|Aula 15/09 - Persistência em Arquivos e Gestão de Eventos]]
-- 📁 [[01 - Disciplinas/Tópicos Especiais II/Aulas/2026-09-29 - Banco de Dados Relacional e SQL|Aula 29/09 - Banco de Dados Relacional e SQL]]
+- [[01 - Disciplinas/Tópicos Especiais II/Aulas/2026-09-29 - Banco de Dados Relacional e SQL|Aula 29/09 - Banco de Dados Relacional e SQL]]
+- [[01 - Disciplinas/Tópicos Especiais II/Aulas/2026-10-06 - Modelagem Dimensional, Star Schema e Telemetria Operacional ANAC|Aula 06/10 - Modelagem Dimensional, Star Schema e Telemetria Operacional ANAC]]
+- [[01 - Disciplinas/Tópicos Especiais II/Aulas/2026-10-20 - Integracao Java e Banco de Dados com JDBC|Aula 20/10 - Integracao Java e Banco de Dados com JDBC]]
+- [[01 - Disciplinas/Tópicos Especiais II/Materiais/Aula_20261020_Java_JDBC|Materiais da Aula 20/10 - Projeto Java JDBC e Scripts SQL]]
 - 📁 [[01 - Disciplinas/Tópicos Especiais II/Materiais/Apostila de POO com Java.pdf|Apostila de POO com Java (PDF)]]
 - 📁 [[01 - Disciplinas/Tópicos Especiais II/Materiais/diagrama.html|Diagrama de Classes Interativo (HTML)]]
+
