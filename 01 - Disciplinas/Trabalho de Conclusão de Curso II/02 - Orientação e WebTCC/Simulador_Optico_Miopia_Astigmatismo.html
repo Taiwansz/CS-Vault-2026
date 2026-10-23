@@ -249,6 +249,12 @@
             background: rgba(56, 189, 248, 0.03);
         }
 
+        .rx-card.active-matheus {
+            border-color: var(--gold);
+            box-shadow: inset 0 1px 0 rgba(212, 175, 55, 0.3), 0 8px 24px rgba(0, 0, 0, 0.5);
+            background: rgba(212, 175, 55, 0.03);
+        }
+
         .rx-badge {
             display: inline-flex;
             align-items: center;
@@ -373,7 +379,6 @@
             user-select: none;
         }
 
-        /* Split Mode Canvas Overlays */
         #canvas-viewport {
             width: 100%;
             height: 100%;
@@ -455,9 +460,44 @@
             align-items: center;
             margin-bottom: 20px;
             border-bottom: 1px solid var(--border-hairline);
-            padding-bottom: 12px;
+            padding-bottom: 14px;
             flex-wrap: wrap;
             gap: 12px;
+        }
+
+        .target-profile-selector {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 4px;
+            border-radius: 9999px;
+            border: 1px solid var(--border-hairline);
+        }
+
+        .target-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 6px 14px;
+            border-radius: 9999px;
+            cursor: pointer;
+            transition: all 0.2s var(--ease-snappy);
+            line-height: 1;
+        }
+
+        .target-btn.active-m {
+            background: var(--gold);
+            color: #000000;
+            font-weight: 700;
+        }
+
+        .target-btn.active-p {
+            background: var(--cyan-optic);
+            color: #000000;
+            font-weight: 700;
         }
 
         .sliders-grid {
@@ -487,7 +527,7 @@
         }
 
         .slider-value-badge {
-            font-size: 0.95rem;
+            font-size: 1.05rem;
             font-weight: 700;
             color: #FFFFFF;
         }
@@ -497,28 +537,29 @@
             width: 100%;
             height: 6px;
             border-radius: 9999px;
-            background: rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.12);
             outline: none;
             transition: background 0.2s;
+            cursor: pointer;
         }
 
         .slider-input::-webkit-slider-thumb {
             -webkit-appearance: none;
-            width: 18px;
-            height: 18px;
+            width: 20px;
+            height: 20px;
             border-radius: 50%;
             background: #FFFFFF;
             cursor: pointer;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+            box-shadow: 0 0 12px rgba(0, 0, 0, 0.8);
             transition: all 0.15s ease;
         }
 
         .slider-input::-webkit-slider-thumb:hover {
-            transform: scale(1.2);
+            transform: scale(1.25);
             background: var(--cyan-optic);
         }
 
-        /* Scientific Breakdown Accordion / Grid */
+        /* Scientific Breakdown */
         .science-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -605,7 +646,7 @@
                 <strong>Alto Astigmatismo</strong> vs. <strong>Alta Miopia</strong>: Como os olhos deformam a realidade.
             </h1>
             <p class="hero-sub">
-                O astigmatismo gera deformação direcional e raios anidrópicos em pontos de luz (Conoide de Sturm). A miopia expande os fótons em círculos de confusão (bokeh isotrópico). Arraste a cortina para comparar a visão do Matheus contra a do Pinete.
+                O astigmatismo gera feixes direcionais longos e halos anidrópicos em pontos de luz (Conoide de Sturm). A miopia expande os fótons em discos circulares leitosos (bokeh de Airy). Manipule os sliders abaixo para ver a refração mudar em tempo real.
             </p>
         </div>
 
@@ -613,7 +654,7 @@
         <div class="prescription-grid">
             
             <!-- Card Matheus -->
-            <div class="rx-card active" id="card-matheus" onclick="applyPreset('matheus')">
+            <div class="rx-card active-matheus" id="card-matheus" onclick="selectProfile('matheus')">
                 <div class="rx-badge rx-badge-gold font-mono">PERFIL 01 — MATHEUS (MAJOR)</div>
                 <div class="rx-title">Alto Astigmatismo + Média Miopia</div>
                 <div class="rx-clinical font-mono">Diagnóstico: Astigmatismo Miópico Composto Assimétrico</div>
@@ -621,24 +662,24 @@
                 <div class="rx-values-row font-mono">
                     <div class="rx-val-block">
                         <div class="rx-val-label">Esférico (Miopia)</div>
-                        <div class="rx-val-num" style="color: #F0CA65;">-2.75 D</div>
+                        <div class="rx-val-num" id="card-m-sph" style="color: #F0CA65;">-2.75 D</div>
                         <div class="rx-val-sub">Médio grau</div>
                     </div>
                     <div class="rx-val-block">
                         <div class="rx-val-label">Cilíndrico (Astigm.)</div>
-                        <div class="rx-val-num" style="color: #FDA4AF;">-4.50 D</div>
+                        <div class="rx-val-num" id="card-m-cyl" style="color: #FDA4AF;">-4.50 D</div>
                         <div class="rx-val-sub">GRAU ALTO</div>
                     </div>
                     <div class="rx-val-block">
                         <div class="rx-val-label">Eixo da Córnea</div>
-                        <div class="rx-val-num">180°</div>
+                        <div class="rx-val-num" id="card-m-axis">180°</div>
                         <div class="rx-val-sub">Horizontal</div>
                     </div>
                 </div>
             </div>
 
             <!-- Card Pinete -->
-            <div class="rx-card" id="card-pinete" onclick="applyPreset('pinete')">
+            <div class="rx-card" id="card-pinete" onclick="selectProfile('pinete')">
                 <div class="rx-badge rx-badge-cyan font-mono">PERFIL 02 — PINETE</div>
                 <div class="rx-title">Alta Miopia + Baixo Astigmatismo</div>
                 <div class="rx-clinical font-mono">Diagnóstico: Miopia Axial Severa com Astigmatismo Residual</div>
@@ -646,17 +687,17 @@
                 <div class="rx-values-row font-mono">
                     <div class="rx-val-block">
                         <div class="rx-val-label">Esférico (Miopia)</div>
-                        <div class="rx-val-num" style="color: #FDA4AF;">-7.50 D</div>
+                        <div class="rx-val-num" id="card-p-sph" style="color: #FDA4AF;">-7.50 D</div>
                         <div class="rx-val-sub">GRAU ALTO</div>
                     </div>
                     <div class="rx-val-block">
                         <div class="rx-val-label">Cilíndrico (Astigm.)</div>
-                        <div class="rx-val-num" style="color: #7DD3FC;">-0.75 D</div>
+                        <div class="rx-val-num" id="card-p-cyl" style="color: #7DD3FC;">-0.75 D</div>
                         <div class="rx-val-sub">Baixo grau</div>
                     </div>
                     <div class="rx-val-block">
                         <div class="rx-val-label">Eixo da Córnea</div>
-                        <div class="rx-val-num">90°</div>
+                        <div class="rx-val-num" id="card-p-axis">90°</div>
                         <div class="rx-val-sub">Vertical</div>
                     </div>
                 </div>
@@ -675,7 +716,7 @@
                             Cortina Split-Screen (Matheus ◄► Pinete)
                         </button>
                         <button class="scene-btn" id="btn-view-single" onclick="setViewMode('single')">
-                            Visão Integral (Perfil Ativo)
+                            Visão Integral (Perfil Selecionado)
                         </button>
                     </div>
 
@@ -706,12 +747,20 @@
                     <div class="sliders-header">
                         <div>
                             <span class="eyebrow font-mono">Bancada Optométrica Interativa</span>
-                            <h3 style="font-size: 1.15rem; font-weight: 700; color: #FFFFFF;">
-                                Calibração Dióptrica em Tempo Real
+                            <h3 style="font-size: 1.15rem; font-weight: 700; color: #FFFFFF;" id="slider-title">
+                                Calibrando: Perfil do Matheus (Lado Esquerdo)
                             </h3>
                         </div>
-                        <div class="font-mono" style="font-size: 0.72rem; color: var(--text-tertiary);">
-                            ARRASTE OS SLIDERS PARA TESTAR QUALQUER RECEITA OFTALMOLÓGICA
+
+                        <!-- Seletor de qual perfil os sliders controlam -->
+                        <div class="target-profile-selector font-mono">
+                            <span style="font-size: 0.68rem; color: var(--text-tertiary); padding-left: 8px;">SLIDERS CONTROLAM:</span>
+                            <button class="target-btn active-m" id="btn-target-m" onclick="selectProfile('matheus')">
+                                MATHEUS
+                            </button>
+                            <button class="target-btn" id="btn-target-p" onclick="selectProfile('pinete')">
+                                PINETE
+                            </button>
                         </div>
                     </div>
 
@@ -724,8 +773,8 @@
                                 <span class="slider-value-badge font-mono" id="val-sph">-2.75 D</span>
                             </div>
                             <input type="range" class="slider-input" id="input-sph" min="-10.0" max="0.0" step="0.25" value="-2.75" oninput="onSliderChange()">
-                            <span style="font-size: 0.7rem; color: var(--text-tertiary);">
-                                Borrão circular uniforme por diâmetro de Airy
+                            <span style="font-size: 0.7rem; color: var(--text-tertiary);" id="desc-sph">
+                                Desfoque circular puro (Airy disk).
                             </span>
                         </div>
 
@@ -736,8 +785,8 @@
                                 <span class="slider-value-badge font-mono" id="val-cyl" style="color: #FDA4AF;">-4.50 D</span>
                             </div>
                             <input type="range" class="slider-input" id="input-cyl" min="-6.0" max="0.0" step="0.25" value="-4.50" oninput="onSliderChange()">
-                            <span style="font-size: 0.7rem; color: var(--text-tertiary);">
-                                Deformação anamórfica e fantasma direcional
+                            <span style="font-size: 0.7rem; color: var(--text-tertiary);" id="desc-cyl">
+                                Deformação anamórfica e fantasma direcional.
                             </span>
                         </div>
 
@@ -748,8 +797,8 @@
                                 <span class="slider-value-badge font-mono" id="val-axis">180°</span>
                             </div>
                             <input type="range" class="slider-input" id="input-axis" min="0" max="180" step="5" value="180" oninput="onSliderChange()">
-                            <span style="font-size: 0.7rem; color: var(--text-tertiary);">
-                                Ângulo de inclinação do Conoide de Sturm
+                            <span style="font-size: 0.7rem; color: var(--text-tertiary);" id="desc-axis">
+                                Ângulo de inclinação do Conoide de Sturm.
                             </span>
                         </div>
 
@@ -761,7 +810,7 @@
                             </div>
                             <input type="range" class="slider-input" id="input-pupil" min="2.5" max="8.0" step="0.5" value="6.5" oninput="onSliderChange()">
                             <span style="font-size: 0.7rem; color: var(--text-tertiary);">
-                                Pupila dilatada no escuro amplia aberrações
+                                Pupila dilatada no escuro amplifica as aberrações.
                             </span>
                         </div>
 
@@ -776,9 +825,9 @@
                             Como o Matheus enxerga (Alto Astigmatismo)
                         </div>
                         <p class="science-desc">
-                            A córnea não é uma esfera perfeita; tem o formato de uma bola de futebol americano. Os raios de luz sofrem refração desigual em dois eixos perpendiculares (<strong>Conoide de Sturm</strong>).<br><br>
-                            - <strong>À noite no trânsito:</strong> Os faróis e semáforos não viram círculos; eles esticam em raios longos, feixes pontiagudos e halos direcionais ao longo do eixo (180° = feixes horizontais/radiais).<br>
-                            - <strong>Em telas e textos:</strong> As letras parecem ter uma "sombra fantasma" impressa ao lado (diplopia monocular), fazendo linhas de código vazarem umas sobre as outras.
+                            A córnea possui formato tórico (bola de futebol americano). Os raios sofrem refração desigual em dois eixos perpendiculares (<strong>Conoide de Sturm</strong>).<br><br>
+                            - <strong>À noite no trânsito:</strong> Os faróis e semáforos esticam em raios longos, feixes pontiagudos e halos direcionais ao longo do eixo cilíndrico.<br>
+                            - <strong>Em telas e textos:</strong> As letras sofrem diplopia monocular (sombra fantasma duplicada), fazendo linhas de código vazarem umas sobre as outras.
                         </p>
                     </div>
 
@@ -787,9 +836,9 @@
                             Como o Pinete enxerga (Alta Miopia)
                         </div>
                         <p class="science-desc">
-                            O globo ocular é mais longo que o normal no eixo ântero-posterior. A luz converge e atinge o foco <strong>antes da retina</strong>, projetando um cone divergente sobre a mácula.<br><br>
-                            - <strong>À noite no trânsito:</strong> Faróis distantes não esticam em linhas; explodem em discos de bokeh gigantescos, circulares e leitosos. Tudo a mais de 1 metro de distância perde as bordas completamente.<br>
-                            - <strong>Em telas e textos:</strong> O texto perde o contraste em todas as direções igualmente, tornando-se uma névoa difusa homogênea onde pequenas letras simplesmente desaparecem no fundo.
+                            O globo ocular é mais longo que o normal no eixo ântero-posterior. A luz atinge o foco <strong>antes da retina</strong>, projetando um cone divergente simétrico.<br><br>
+                            - <strong>À noite no trânsito:</strong> Faróis distantes não esticam em linhas; explodem em discos de bokeh circulares gigantescos e leitosos.<br>
+                            - <strong>Em telas e textos:</strong> O texto perde contraste simetricamente em todas as direções, tornando-se uma névoa difusa homogênea.
                         </p>
                     </div>
 
@@ -817,13 +866,12 @@
         let hasGlasses = false;
         let splitPct = 50.0;
         let isDragging = false;
+        let activeProfile = 'matheus'; // 'matheus' ou 'pinete'
 
         // Parametros Matheus
         const rxMatheus = { sph: -2.75, cyl: -4.50, axis: 180, pupil: 6.5 };
         // Parametros Pinete
         const rxPinete = { sph: -7.50, cyl: -0.75, axis: 90, pupil: 6.5 };
-        // Parametros Ativos do Slider (Modo Single ou Lado Esquerdo)
-        let activeRx = { ...rxMatheus };
 
         // ==============================================================
         // DESENHISTA DOS CENÁRIOS EM RESOLUÇÃO VETORIAL NATIVA
@@ -923,7 +971,7 @@
             c.fill();
             c.shadowBlur = 0;
 
-            // Carro vindo no sentido oposto (FARÓIS XENON POTENTES - O TESTE SUPREMO)
+            // Carro vindo no sentido oposto (FARÓIS XENON POTENTES)
             c.fillStyle = '#FFFFFF';
             c.shadowColor = '#FFFFFF';
             c.shadowBlur = 35;
@@ -947,7 +995,6 @@
             c.fillStyle = '#F8FAFC';
             c.fillRect(0, 0, w, h);
 
-            // Moldura da tabela de clínica
             c.strokeStyle = '#CBD5E1';
             c.lineWidth = 3;
             c.strokeRect(w * 0.2, 20, w * 0.6, h - 40);
@@ -979,7 +1026,6 @@
             c.font = '700 14px "Plus Jakarta Sans", monospace';
             c.fillText('D  E  F  P  O  T  E  C', w * 0.5, 495);
 
-            // Barra verde e vermelha oficial de Snellen
             c.fillStyle = '#10B981';
             c.fillRect(w * 0.28, 520, w * 0.2, 5);
             c.fillStyle = '#EF4444';
@@ -993,7 +1039,6 @@
             c.fillStyle = '#0D1117';
             c.fillRect(0, 0, w, h);
 
-            // Barra de título da IDE
             c.fillStyle = '#161B22';
             c.fillRect(0, 0, w, 40);
             c.fillStyle = '#EF4444'; c.beginPath(); c.arc(20, 20, 6, 0, Math.PI * 2); c.fill();
@@ -1004,7 +1049,6 @@
             c.fillStyle = '#94A3B8';
             c.fillText('tcc_neural_inference.py — Antigravity Engine', 80, 25);
 
-            // Código
             const codeLines = [
                 { num: '01', tokens: [['import ', '#F43F5E'], ['torch', '#38BDF8'], [', numpy as ', '#F43F5E'], ['np', '#38BDF8']] },
                 { num: '02', tokens: [['from ', '#F43F5E'], ['transformers', '#E2E8F0'], [' import ', '#F43F5E'], ['AutoModelForCausalLM', '#38BDF8']] },
@@ -1049,13 +1093,11 @@
             c.textAlign = 'center';
             c.textBaseline = 'middle';
 
-            // 12 raios principais (a cada 30 graus, como um relogio)
             for (let i = 0; i < 12; i++) {
                 const angle = (i * 30) * Math.PI / 180;
                 const cos = Math.cos(angle);
                 const sin = Math.sin(angle);
 
-                // Desenha 3 linhas paralelas por hora para teste de resolucao
                 [-4, 0, 4].forEach(offset => {
                     const perpX = -sin * offset;
                     const perpY = cos * offset;
@@ -1066,14 +1108,11 @@
                     c.stroke();
                 });
 
-                // Numero da hora
-                const hourNum = (i === 0 ? 3 : (i <= 3 ? i + 3 : (i <= 9 ? i - 9 + 12 : i - 9)));
                 c.font = '700 20px "JetBrains Mono", monospace';
                 c.fillStyle = '#0F172A';
                 c.fillText(i === 0 ? '3' : (i === 3 ? '6' : (i === 6 ? '9' : (i === 9 ? '12' : ''))), cx + cos * (radius + 25), cy + sin * (radius + 25));
             }
 
-            // Circulo central de fixacao
             c.fillStyle = '#E11D48';
             c.beginPath();
             c.arc(cx, cy, 6, 0, Math.PI * 2);
@@ -1088,71 +1127,67 @@
         // MOTOR DE REFRAÇÃO ÓPTICA (CONOIDE DE STURM & DEFOCUS)
         // ==============================================================
         function renderOpticalFilter(targetCtx, rx, sx, sy, sw, sh, dx, dy, dw, dh) {
-            // Se o usuario colocou oculos, visao 20/20 perfeita
             if (hasGlasses) {
                 targetCtx.drawImage(masterCanvas, sx, sy, sw, sh, dx, dy, dw, dh);
                 return;
             }
 
-            // Calculo da deformacao dioptrica
-            // sph: Miopia esferica (defocus circular)
-            // cyl: Astigmatismo cilindrico (defocus anidropico no eixo)
             const sphAbs = Math.abs(rx.sph);
             const cylAbs = Math.abs(rx.cyl);
             const pupilScale = rx.pupil / 4.0;
 
-            // Raio de desfoque no eixo principal vs eixo perpendicular (Conoide de Sturm)
-            // Meridian 1: determinado por sph
-            // Meridian 2: determinado por sph + cyl
-            const blur1 = (sphAbs * 1.6) * pupilScale;
-            const blur2 = ((sphAbs + cylAbs) * 1.6) * pupilScale;
+            // Se o olho for emetrope puro
+            if (sphAbs < 0.1 && cylAbs < 0.1) {
+                targetCtx.drawImage(masterCanvas, sx, sy, sw, sh, dx, dy, dw, dh);
+                return;
+            }
+
+            // Calculo da escala de desfoque
+            // Calibrado para dar resposta perceptivel e realista a cada 0.25D
+            const blur1 = Math.max(0.5, sphAbs * 2.8 * pupilScale);
+            const blur2 = Math.max(0.5, (sphAbs + cylAbs) * 3.2 * pupilScale);
 
             const angleRad = (rx.axis * Math.PI) / 180;
             const cosA = Math.cos(angleRad);
             const sinA = Math.sin(angleRad);
 
-            // Passo 1: Desenhar a base com o desfoque esferico primario
+            // 1. Desfoque esferico de fundo
             targetCtx.save();
-            targetCtx.filter = `blur(${Math.max(1, blur1)}px)`;
+            targetCtx.filter = `blur(${blur1}px)`;
             targetCtx.drawImage(masterCanvas, sx, sy, sw, sh, dx, dy, dw, dh);
             targetCtx.restore();
 
-            // Passo 2: Se houver astigmatismo significativo, aplicar o alongamento direcional
-            // e fantasmas (diplopia monocular)
-            if (cylAbs > 0.5) {
+            // 2. Anamorfismo e fantasmas de astigmatismo
+            if (cylAbs >= 0.25) {
                 targetCtx.save();
                 
-                // Fantasmas multiplos ao longo do eixo do astigmatismo
-                const passes = Math.min(6, Math.ceil(cylAbs * 1.2));
-                const maxOffset = (cylAbs * 4.2) * pupilScale;
+                const passes = Math.min(8, Math.max(3, Math.ceil(cylAbs * 1.5)));
+                const maxOffset = cylAbs * 6.5 * pupilScale;
 
                 for (let p = 1; p <= passes; p++) {
                     const dist = (p / passes) * maxOffset;
-                    const alpha = (0.28 / passes) * (cylAbs / 4.0);
+                    const alpha = (0.35 / passes) * Math.min(1.0, cylAbs / 3.0);
 
                     targetCtx.globalAlpha = alpha;
                     targetCtx.filter = `blur(${Math.max(1, blur2 * (p / passes))}px)`;
                     
-                    // Deslocamento positivo
                     targetCtx.drawImage(masterCanvas, sx, sy, sw, sh, dx + cosA * dist, dy + sinA * dist, dw, dh);
-                    // Deslocamento negativo
                     targetCtx.drawImage(masterCanvas, sx, sy, sw, sh, dx - cosA * dist, dy - sinA * dist, dw, dh);
                 }
 
                 targetCtx.restore();
 
-                // Passo 3: Feixes de Luz / Starbursts em fontes luminosas (especialmente no cenario noturno)
-                if (currentScene === 'night' && cylAbs >= 2.0) {
+                // 3. Feixes pontiagudos de luz (starbursts noturnos)
+                if (currentScene === 'night' && cylAbs >= 1.0) {
                     targetCtx.save();
                     targetCtx.globalCompositeOperation = 'screen';
                     
-                    const streakCount = Math.ceil(cylAbs * 2);
-                    const streakLength = cylAbs * 24 * pupilScale;
+                    const streakLength = cylAbs * 38 * pupilScale;
 
-                    for (let s = 1; s <= 4; s++) {
-                        const sDist = s * (streakLength / 4);
-                        targetCtx.globalAlpha = 0.12 / s;
-                        targetCtx.filter = `blur(${s * 2}px)`;
+                    for (let s = 1; s <= 5; s++) {
+                        const sDist = s * (streakLength / 5);
+                        targetCtx.globalAlpha = 0.16 / s;
+                        targetCtx.filter = `blur(${Math.max(1, s * 2.2)}px)`;
                         targetCtx.drawImage(masterCanvas, sx, sy, sw, sh, dx + cosA * sDist, dy + sinA * sDist, dw, dh);
                         targetCtx.drawImage(masterCanvas, sx, sy, sw, sh, dx - cosA * sDist, dy - sinA * sDist, dw, dh);
                     }
@@ -1161,17 +1196,16 @@
             }
         }
 
-        // Atualizar Renderizador
+        // Render Principal
         function render() {
             const w = canvas.width;
             const h = canvas.height;
             ctx.clearRect(0, 0, w, h);
 
             if (viewMode === 'split') {
-                // Modo Cortina Split: Matheus na esquerda, Pinete na direita
                 const splitX = (splitPct / 100) * w;
 
-                // Metade Esquerda: Matheus (Alto Astigmatismo)
+                // Metade Esquerda: Matheus
                 ctx.save();
                 ctx.beginPath();
                 ctx.rect(0, 0, splitX, h);
@@ -1179,7 +1213,7 @@
                 renderOpticalFilter(ctx, rxMatheus, 0, 0, w, h, 0, 0, w, h);
                 ctx.restore();
 
-                // Metade Direita: Pinete (Alta Miopia)
+                // Metade Direita: Pinete
                 ctx.save();
                 ctx.beginPath();
                 ctx.rect(splitX, 0, w - splitX, h);
@@ -1187,38 +1221,115 @@
                 renderOpticalFilter(ctx, rxPinete, 0, 0, w, h, 0, 0, w, h);
                 ctx.restore();
 
-                // Desenhar linha de separacao
                 const curtainLine = document.getElementById('curtain-line');
                 if (curtainLine) curtainLine.style.left = `${splitPct}%`;
 
             } else {
-                // Modo Single: renderizar com activeRx no canvas inteiro
-                renderOpticalFilter(ctx, activeRx, 0, 0, w, h, 0, 0, w, h);
+                // Modo Single: renderiza o perfil ativo na tela inteira
+                const targetRx = (activeProfile === 'matheus' ? rxMatheus : rxPinete);
+                renderOpticalFilter(ctx, targetRx, 0, 0, w, h, 0, 0, w, h);
             }
         }
 
         // ==============================================================
-        // CONTROLES DE INTERFACE
+        // CONTROLES DE INTERFACE & SINCRONIZAÇÃO BIDIRECIONAL
         // ==============================================================
+        function selectProfile(profile) {
+            activeProfile = profile;
+            
+            const cardM = document.getElementById('card-matheus');
+            const cardP = document.getElementById('card-pinete');
+            const btnTargetM = document.getElementById('btn-target-m');
+            const btnTargetP = document.getElementById('btn-target-p');
+            const titleEl = document.getElementById('slider-title');
+
+            if (profile === 'matheus') {
+                cardM.className = 'rx-card active-matheus';
+                cardP.className = 'rx-card';
+                btnTargetM.className = 'target-btn active-m';
+                btnTargetP.className = 'target-btn';
+                titleEl.textContent = 'Calibrando: Perfil do Matheus (Lado Esquerdo)';
+                syncSlidersWithRx(rxMatheus);
+            } else {
+                cardM.className = 'rx-card';
+                cardP.className = 'rx-card active';
+                btnTargetM.className = 'target-btn';
+                btnTargetP.className = 'target-btn active-p';
+                titleEl.textContent = 'Calibrando: Perfil do Pinete (Lado Direito)';
+                syncSlidersWithRx(rxPinete);
+            }
+
+            render();
+        }
+
+        function syncSlidersWithRx(rx) {
+            document.getElementById('input-sph').value = rx.sph;
+            document.getElementById('val-sph').textContent = rx.sph.toFixed(2) + ' D';
+            
+            document.getElementById('input-cyl').value = rx.cyl;
+            document.getElementById('val-cyl').textContent = rx.cyl.toFixed(2) + ' D';
+            
+            document.getElementById('input-axis').value = rx.axis;
+            document.getElementById('val-axis').textContent = rx.axis + '°';
+
+            document.getElementById('input-pupil').value = rx.pupil;
+            document.getElementById('val-pupil').textContent = rx.pupil.toFixed(1) + ' mm';
+        }
+
+        // Disparado no input de qualquer slider
+        function onSliderChange() {
+            const currentRx = (activeProfile === 'matheus' ? rxMatheus : rxPinete);
+
+            currentRx.sph = parseFloat(document.getElementById('input-sph').value);
+            currentRx.cyl = parseFloat(document.getElementById('input-cyl').value);
+            currentRx.axis = parseInt(document.getElementById('input-axis').value);
+            currentRx.pupil = parseFloat(document.getElementById('input-pupil').value);
+
+            // Atualiza os badges dos sliders
+            document.getElementById('val-sph').textContent = currentRx.sph.toFixed(2) + ' D';
+            document.getElementById('val-cyl').textContent = currentRx.cyl.toFixed(2) + ' D';
+            document.getElementById('val-axis').textContent = currentRx.axis + '°';
+            document.getElementById('val-pupil').textContent = currentRx.pupil.toFixed(1) + ' mm';
+
+            // Atualiza os numeros nos cards
+            if (activeProfile === 'matheus') {
+                document.getElementById('card-m-sph').textContent = currentRx.sph.toFixed(2) + ' D';
+                document.getElementById('card-m-cyl').textContent = currentRx.cyl.toFixed(2) + ' D';
+                document.getElementById('card-m-axis').textContent = currentRx.axis + '°';
+                document.getElementById('pill-left').textContent = `MATHEUS: ASTIGM ${currentRx.cyl.toFixed(2)}D / MIOPIA ${currentRx.sph.toFixed(2)}D (${currentRx.axis}°)`;
+            } else {
+                document.getElementById('card-p-sph').textContent = currentRx.sph.toFixed(2) + ' D';
+                document.getElementById('card-p-cyl').textContent = currentRx.cyl.toFixed(2) + ' D';
+                document.getElementById('card-p-axis').textContent = currentRx.axis + '°';
+                document.getElementById('pill-right').textContent = `PINETE: MIOPIA ${currentRx.sph.toFixed(2)}D / ASTIGM ${currentRx.cyl.toFixed(2)}D (${currentRx.axis}°)`;
+            }
+
+            // Re-render imediato
+            render();
+        }
+
         function setScene(sceneName, btn) {
             currentScene = sceneName;
             document.querySelectorAll('.scene-selector-bar .scene-btn').forEach(b => b.classList.remove('active'));
             if (btn) btn.classList.add('active');
 
-            // Ajustar pupila default conforme a cena
             if (sceneName === 'night') {
-                document.getElementById('input-pupil').value = '6.5';
-                document.getElementById('val-pupil').textContent = '6.5 mm';
+                rxMatheus.pupil = 6.5;
+                rxPinete.pupil = 6.5;
                 document.getElementById('lbl-status').textContent = 'PUPILA 6.5mm (NOTURNA / DILATADA)';
             } else if (sceneName === 'snellen') {
-                document.getElementById('input-pupil').value = '4.0';
-                document.getElementById('val-pupil').textContent = '4.0 mm';
+                rxMatheus.pupil = 4.0;
+                rxPinete.pupil = 4.0;
                 document.getElementById('lbl-status').textContent = 'PUPILA 4.0mm (CLÍNICA OPTOMÉTRICA)';
             } else {
-                document.getElementById('input-pupil').value = '4.5';
-                document.getElementById('val-pupil').textContent = '4.5 mm';
+                rxMatheus.pupil = 4.5;
+                rxPinete.pupil = 4.5;
                 document.getElementById('lbl-status').textContent = 'PUPILA 4.5mm (MONITOR / AMBIENTE INTERNO)';
             }
+
+            const currentRx = (activeProfile === 'matheus' ? rxMatheus : rxPinete);
+            document.getElementById('input-pupil').value = currentRx.pupil;
+            document.getElementById('val-pupil').textContent = currentRx.pupil.toFixed(1) + ' mm';
 
             drawMasterScene();
             render();
@@ -1248,49 +1359,6 @@
             render();
         }
 
-        function applyPreset(preset) {
-            const cardM = document.getElementById('card-matheus');
-            const cardP = document.getElementById('card-pinete');
-
-            if (preset === 'matheus') {
-                cardM.classList.add('active');
-                cardP.classList.remove('active');
-                activeRx = { ...rxMatheus };
-            } else {
-                cardM.classList.remove('active');
-                cardP.classList.add('active');
-                activeRx = { ...rxPinete };
-            }
-
-            // Sincronizar sliders
-            document.getElementById('input-sph').value = activeRx.sph;
-            document.getElementById('val-sph').textContent = activeRx.sph.toFixed(2) + ' D';
-            document.getElementById('input-cyl').value = activeRx.cyl;
-            document.getElementById('val-cyl').textContent = activeRx.cyl.toFixed(2) + ' D';
-            document.getElementById('input-axis').value = activeRx.axis;
-            document.getElementById('val-axis').textContent = activeRx.axis + '°';
-
-            render();
-        }
-
-        function onSliderChange() {
-            activeRx.sph = parseFloat(document.getElementById('input-sph').value);
-            activeRx.cyl = parseFloat(document.getElementById('input-cyl').value);
-            activeRx.axis = parseInt(document.getElementById('input-axis').value);
-            activeRx.pupil = parseFloat(document.getElementById('input-pupil').value);
-
-            document.getElementById('val-sph').textContent = activeRx.sph.toFixed(2) + ' D';
-            document.getElementById('val-cyl').textContent = activeRx.cyl.toFixed(2) + ' D';
-            document.getElementById('val-axis').textContent = activeRx.axis + '°';
-            document.getElementById('val-pupil').textContent = activeRx.pupil.toFixed(1) + ' mm';
-
-            // Se o usuario mexer nos sliders, o preset vira customizado
-            document.getElementById('card-matheus').classList.remove('active');
-            document.getElementById('card-pinete').classList.remove('active');
-
-            render();
-        }
-
         function toggleGlasses() {
             hasGlasses = !hasGlasses;
             const btn = document.getElementById('btn-glasses');
@@ -1309,7 +1377,7 @@
             render();
         }
 
-        // Interacao de Arraste da Cortina
+        // Arraste da Cortina
         const viewportBox = document.getElementById('viewport-box');
 
         function updateCurtain(clientX) {
@@ -1345,6 +1413,7 @@
 
         // Inicializacao
         drawMasterScene();
+        selectProfile('matheus');
         render();
     </script>
 </body>
