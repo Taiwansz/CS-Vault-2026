@@ -22,9 +22,9 @@ horario: "Segunda-feira / 19:00–21:40"
 
 | Etapa | Nota | Peso | Data | Status |
 |---|---:|---:|---|---|
-| Nota 01 |  |  |  | ⏳ Pendente |
-| Nota 02 |  |  |  | ⏳ Pendente |
-| Substitutiva |  |  |  | ⏳ Pendente |
+| Nota 01 (AP01: 6,0 + APEx1: 1,0 + Integrativa 1: 0,8) | **7,8** | 10,0 | Outubro/2026 | Consolidada (Aprovado na N1) |
+| Nota 02 |  | 10,0 |  | Pendente |
+| Substitutiva |  | 10,0 |  | Pendente |
 
 ---
 

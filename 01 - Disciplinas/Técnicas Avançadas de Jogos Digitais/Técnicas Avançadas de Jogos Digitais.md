@@ -21,6 +21,16 @@ tags:
 
 ---
 
+## 📊 Acompanhamento de Notas
+
+| Etapa | Nota | Peso | Data | Status |
+|---|---:|---:|---|---|
+| Nota 01 (AP01: 7,0 + APEx1: 1,0 + Integrativa 1: 0,8) | **8,8** | 10,0 | Outubro/2026 | Consolidada (Gabaritou AP01: 7,0/7,0) |
+| Nota 02 |  | 10,0 |  | Pendente |
+| Substitutiva |  | 10,0 |  | Pendente |
+
+---
+
 ## 📝 Aulas Registradas
 
 ```dataview

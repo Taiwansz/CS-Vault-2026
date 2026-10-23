@@ -22,10 +22,10 @@ horario: "Terça-feira / 19:00–21:40"
 
 | Etapa | Nota | Peso | Data | Status / Obs. |
 |---|---:|---:|---|---|
-| Nota 01 |  |  | 22/09/2026 | ⏳ Pendente (Prova 1 - Java POO) |
-| Nota 02 |  |  |  | ⏳ Pendente |
-| Substitutiva |  |  |  | ⏳ Pendente |
-| Média Final |  |  |  | ⏳ Pendente |
+| Nota 01 (AP01: 6,0 + APEx1: 1,0 + Integrativa 1: 0,8) | **7,8** | 10,0 | 22/09/2026 | Consolidada (Aprovado na N1 - Java POO) |
+| Nota 02 |  | 10,0 |  | Pendente |
+| Substitutiva |  | 10,0 |  | Pendente |
+| Média Final |  | 10,0 |  | Em andamento |
 
 ---
 

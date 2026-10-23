@@ -23,9 +23,9 @@ horario: "Quarta-feira / 19:00–21:40"
 
 | Etapa | Nota | Peso | Data | Status |
 |---|---:|---:|---|---|
-| Avaliação N1 (Packet Tracer + Teoria) |  |  | 30/09/2026 | ⏳ Pendente |
-| Avaliação N2 |  |  | 25/11/2026 | ⏳ Pendente |
-| Substitutiva |  |  |  | ⏳ Pendente |
+| Nota 01 (AP01: 7,0 + APEx1: 1,0 + Integrativa 1: 0,8) | **8,8** | 10,0 | 30/09/2026 | Consolidada (Gabaritou AP01: 7,0/7,0) |
+| Avaliação N2 |  | 10,0 | 25/11/2026 | Pendente |
+| Substitutiva |  | 10,0 |  | Pendente |
 
 ---
 

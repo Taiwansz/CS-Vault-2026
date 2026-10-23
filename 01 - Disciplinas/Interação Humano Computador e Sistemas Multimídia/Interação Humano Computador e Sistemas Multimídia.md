@@ -27,7 +27,14 @@ tags:
 - **18/09/2026:** [[01 - Disciplinas/Interação Humano Computador e Sistemas Multimídia/Provas/Provas|Prova 1 (P1)]]
 - **06/11/2026:** [[01 - Disciplinas/Interação Humano Computador e Sistemas Multimídia/Provas/Provas|Prova 2 (P2)]]
 - **11/12/2026:** [[01 - Disciplinas/Interação Humano Computador e Sistemas Multimídia/Provas/Provas|Prova Substitutiva]]
-- 📊 [[01 - Disciplinas/Interação Humano Computador e Sistemas Multimídia/Notas/Notas|Acompanhamento de Notas]]
+
+## 📊 Acompanhamento de Notas
+
+| Etapa | Nota | Peso | Data | Status |
+|---|---:|---:|---|---|
+| Nota 01 (AP01: 7,0 + APEx1: 1,0 + Integrativa 1: 0,8) | **8,8** | 10,0 | 18/09/2026 | Consolidada (Gabaritou AP01: 7,0/7,0) |
+| Nota 02 |  | 10,0 | 06/11/2026 | Pendente |
+| Substitutiva |  | 10,0 | 11/12/2026 | Pendente |
 
 ---
 
