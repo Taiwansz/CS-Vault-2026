@@ -1,0 +1,1351 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laboratório de Óptica Refrativa — Astigmatismo vs. Miopia</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-void: #060709;
+            --bg-chassis: #0D0F14;
+            --bg-card: #12151D;
+            --bg-tray: rgba(255, 255, 255, 0.025);
+            --border-hairline: rgba(255, 255, 255, 0.07);
+            --border-specular: rgba(255, 255, 255, 0.14);
+            --gold: #D4AF37;
+            --gold-glow: rgba(212, 175, 55, 0.16);
+            --cyan-optic: #38BDF8;
+            --cyan-glow: rgba(56, 189, 248, 0.15);
+            --crimson: #E11D48;
+            --crimson-glow: rgba(225, 29, 72, 0.12);
+            --emerald: #10B981;
+            --emerald-glow: rgba(16, 185, 129, 0.12);
+            --text-pure: #FFFFFF;
+            --text-muted: #94A3B8;
+            --text-tertiary: #64748B;
+            --ease-snappy: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-void);
+            background-image: 
+                linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 32px 32px;
+            color: var(--text-pure);
+            font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+            min-height: 100vh;
+            padding-bottom: 96px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .font-mono {
+            font-family: 'JetBrains Mono', monospace;
+            font-variant-numeric: tabular-nums lining-nums;
+            font-feature-settings: "tnum" 1, "lnum" 1;
+        }
+
+        .container {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 28px;
+        }
+
+        /* Liquid Glass Floating Command Bar */
+        .command-bar-wrapper {
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+            margin-bottom: 36px;
+        }
+
+        .command-bar {
+            background: rgba(13, 15, 20, 0.85);
+            backdrop-filter: blur(28px) saturate(190%);
+            -webkit-backdrop-filter: blur(28px) saturate(190%);
+            border: 1px solid var(--border-specular);
+            box-shadow: 
+                inset 0 1px 1px 0 rgba(255, 255, 255, 0.18),
+                0 20px 40px -15px rgba(0, 0, 0, 0.8);
+            border-radius: 9999px;
+            padding: 10px 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .brand-meta {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .status-bullet {
+            width: 8px;
+            height: 8px;
+            border-radius: 9999px;
+            background: var(--cyan-optic);
+            box-shadow: 0 0 10px var(--cyan-optic);
+            animation: pulse-bullet 2s infinite ease-in-out;
+        }
+
+        @keyframes pulse-bullet {
+            0%, 100% { transform: scale(1); opacity: 0.9; }
+            50% { transform: scale(1.3); opacity: 1; }
+        }
+
+        .brand-text-macro {
+            font-size: 0.85rem;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+            color: #FFFFFF;
+        }
+
+        .brand-text-micro {
+            font-size: 0.68rem;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            color: var(--text-tertiary);
+        }
+
+        .scene-selector-bar {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 4px;
+            border-radius: 9999px;
+            border: 1px solid var(--border-hairline);
+        }
+
+        .scene-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: 0.78rem;
+            font-weight: 600;
+            padding: 8px 16px;
+            border-radius: 9999px;
+            cursor: pointer;
+            transition: all 0.2s var(--ease-snappy);
+            user-select: none;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .scene-btn:hover {
+            color: #FFFFFF;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .scene-btn.active {
+            background: #FFFFFF;
+            color: #000000;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+            font-weight: 700;
+        }
+
+        /* Hero Banner */
+        .hero-banner {
+            padding: 24px 0 36px 0;
+            border-bottom: 1px solid var(--border-hairline);
+            margin-bottom: 36px;
+        }
+
+        .eyebrow {
+            font-size: 0.72rem;
+            font-weight: 600;
+            letter-spacing: 0.20em;
+            text-transform: uppercase;
+            color: var(--cyan-optic);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .hero-title {
+            font-size: clamp(2rem, 1.3rem + 2.4vw, 3.2rem);
+            font-weight: 300;
+            letter-spacing: -0.035em;
+            line-height: 1.08;
+            color: #FFFFFF;
+            max-width: 950px;
+            margin-bottom: 16px;
+            text-wrap: balance;
+        }
+
+        .hero-title strong {
+            font-weight: 600;
+            color: #FFFFFF;
+        }
+
+        .hero-sub {
+            font-size: 1.02rem;
+            color: var(--text-muted);
+            max-width: 65ch;
+            line-height: 1.65;
+        }
+
+        /* Doppelrand Shell */
+        .doppelrand-shell {
+            background: var(--bg-tray);
+            border: 1px solid var(--border-hairline);
+            border-radius: 24px;
+            padding: 8px;
+            margin-bottom: 32px;
+        }
+
+        .doppelrand-core {
+            background: var(--bg-chassis);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
+            padding: 26px;
+        }
+
+        /* Presets Cards: Matheus vs Pinete */
+        .prescription-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        @media (max-width: 900px) {
+            .prescription-grid { grid-template-columns: 1fr; }
+        }
+
+        .rx-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-hairline);
+            border-radius: 14px;
+            padding: 20px;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.2s var(--ease-snappy);
+        }
+
+        .rx-card:hover {
+            border-color: rgba(255, 255, 255, 0.18);
+            transform: translateY(-2px);
+        }
+
+        .rx-card.active {
+            border-color: var(--cyan-optic);
+            box-shadow: inset 0 1px 0 rgba(56, 189, 248, 0.3), 0 8px 24px rgba(0, 0, 0, 0.5);
+            background: rgba(56, 189, 248, 0.03);
+        }
+
+        .rx-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            border-radius: 9999px;
+            font-size: 0.68rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        .rx-badge-gold {
+            background: var(--gold-glow);
+            color: var(--gold);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .rx-badge-cyan {
+            background: var(--cyan-glow);
+            color: var(--cyan-optic);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+        }
+
+        .rx-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #FFFFFF;
+            margin-bottom: 4px;
+        }
+
+        .rx-clinical {
+            font-size: 0.78rem;
+            color: var(--text-tertiary);
+            margin-bottom: 16px;
+        }
+
+        .rx-values-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            background: rgba(0, 0, 0, 0.35);
+            padding: 12px 14px;
+            border-radius: 10px;
+            border: 1px solid var(--border-hairline);
+        }
+
+        .rx-val-block {
+            text-align: center;
+        }
+
+        .rx-val-label {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--text-tertiary);
+            margin-bottom: 2px;
+        }
+
+        .rx-val-num {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #FFFFFF;
+        }
+
+        .rx-val-sub {
+            font-size: 0.65rem;
+            color: var(--text-muted);
+        }
+
+        /* View Mode & Glasses Toggle */
+        .display-toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .glasses-toggle-btn {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-hairline);
+            color: var(--text-pure);
+            padding: 10px 18px;
+            border-radius: 9999px;
+            font-size: 0.80rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s var(--ease-snappy);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            user-select: none;
+            line-height: 1;
+        }
+
+        .glasses-toggle-btn:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: var(--border-specular);
+        }
+
+        .glasses-toggle-btn.active {
+            background: var(--emerald);
+            color: #000000;
+            border-color: var(--emerald);
+            box-shadow: 0 0 16px var(--emerald-glow);
+            font-weight: 700;
+        }
+
+        /* Main Canvas Visualizer Window */
+        .simulator-viewport {
+            position: relative;
+            width: 100%;
+            height: 640px;
+            background: #000000;
+            border: 1px solid var(--border-hairline);
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.9);
+            user-select: none;
+        }
+
+        /* Split Mode Canvas Overlays */
+        #canvas-viewport {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        /* Split Curtain Controls on Canvas */
+        .curtain-handle {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            width: 2px;
+            background: var(--gold);
+            transform: translateX(-50%);
+            pointer-events: none;
+            box-shadow: 0 0 12px var(--gold);
+        }
+
+        .curtain-thumb {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 44px;
+            height: 44px;
+            border-radius: 9999px;
+            background: #12141B;
+            border: 2px solid var(--gold);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.8), 0 0 14px var(--gold-glow);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            color: var(--gold);
+            font-weight: 700;
+        }
+
+        .label-pill {
+            position: absolute;
+            top: 20px;
+            padding: 8px 16px;
+            border-radius: 9999px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            z-index: 10;
+            pointer-events: none;
+            backdrop-filter: blur(12px);
+        }
+
+        .label-matheus {
+            left: 20px;
+            background: rgba(212, 175, 55, 0.18);
+            color: #F0CA65;
+            border: 1px solid rgba(212, 175, 55, 0.4);
+        }
+
+        .label-pinete {
+            right: 20px;
+            background: rgba(56, 189, 248, 0.18);
+            color: #7DD3FC;
+            border: 1px solid rgba(56, 189, 248, 0.4);
+        }
+
+        /* Real-Time Optical Sliders Laboratory */
+        .optics-sliders-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-hairline);
+            border-radius: 14px;
+            padding: 24px;
+            margin-top: 24px;
+        }
+
+        .sliders-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border-hairline);
+            padding-bottom: 12px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .sliders-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+        }
+
+        .slider-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .slider-label-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+        }
+
+        .slider-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-tertiary);
+        }
+
+        .slider-value-badge {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #FFFFFF;
+        }
+
+        .slider-input {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 6px;
+            border-radius: 9999px;
+            background: rgba(255, 255, 255, 0.08);
+            outline: none;
+            transition: background 0.2s;
+        }
+
+        .slider-input::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #FFFFFF;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+            transition: all 0.15s ease;
+        }
+
+        .slider-input::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+            background: var(--cyan-optic);
+        }
+
+        /* Scientific Breakdown Accordion / Grid */
+        .science-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 24px;
+        }
+
+        @media (max-width: 900px) {
+            .science-grid { grid-template-columns: 1fr; }
+        }
+
+        .science-card {
+            background: rgba(0, 0, 0, 0.35);
+            border: 1px solid var(--border-hairline);
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .science-title {
+            font-size: 0.90rem;
+            font-weight: 700;
+            color: #FFFFFF;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .science-desc {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .science-desc strong {
+            color: #FFFFFF;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <!-- Liquid Glass Header -->
+        <div class="command-bar-wrapper">
+            <header class="command-bar">
+                <div class="brand-meta">
+                    <div class="status-bullet"></div>
+                    <div>
+                        <div class="brand-text-macro">LABORATÓRIO DE ÓPTICA REFRATIVA</div>
+                        <div class="brand-text-micro font-mono">Conoide de Sturm & Defocus Esférico</div>
+                    </div>
+                </div>
+
+                <!-- Seletor de Cenários de Teste -->
+                <div class="scene-selector-bar">
+                    <button class="scene-btn active" onclick="setScene('night', this)">
+                        <span>01</span> Trânsito Noturno
+                    </button>
+                    <button class="scene-btn" onclick="setScene('snellen', this)">
+                        <span>02</span> Tabela de Snellen
+                    </button>
+                    <button class="scene-btn" onclick="setScene('ide', this)">
+                        <span>03</span> Código / IDE
+                    </button>
+                    <button class="scene-btn" onclick="setScene('dial', this)">
+                        <span>04</span> Relógio de Astigmatismo
+                    </button>
+                </div>
+
+                <div>
+                    <button class="glasses-toggle-btn" id="btn-glasses" onclick="toggleGlasses()">
+                        <span id="glasses-icon" class="font-mono">[RX]</span>
+                        <span id="glasses-text">Colocar Óculos (Correção 20/20)</span>
+                    </button>
+                </div>
+            </header>
+        </div>
+
+        <!-- Monumental Hero -->
+        <div class="hero-banner">
+            <div class="eyebrow font-mono">Simulador Físico de Percepção Visual Humana</div>
+            <h1 class="hero-title">
+                <strong>Alto Astigmatismo</strong> vs. <strong>Alta Miopia</strong>: Como os olhos deformam a realidade.
+            </h1>
+            <p class="hero-sub">
+                O astigmatismo gera deformação direcional e raios anidrópicos em pontos de luz (Conoide de Sturm). A miopia expande os fótons em círculos de confusão (bokeh isotrópico). Arraste a cortina para comparar a visão do Matheus contra a do Pinete.
+            </p>
+        </div>
+
+        <!-- Presets Comparativos: Matheus vs Pinete -->
+        <div class="prescription-grid">
+            
+            <!-- Card Matheus -->
+            <div class="rx-card active" id="card-matheus" onclick="applyPreset('matheus')">
+                <div class="rx-badge rx-badge-gold font-mono">PERFIL 01 — MATHEUS (MAJOR)</div>
+                <div class="rx-title">Alto Astigmatismo + Média Miopia</div>
+                <div class="rx-clinical font-mono">Diagnóstico: Astigmatismo Miópico Composto Assimétrico</div>
+                
+                <div class="rx-values-row font-mono">
+                    <div class="rx-val-block">
+                        <div class="rx-val-label">Esférico (Miopia)</div>
+                        <div class="rx-val-num" style="color: #F0CA65;">-2.75 D</div>
+                        <div class="rx-val-sub">Médio grau</div>
+                    </div>
+                    <div class="rx-val-block">
+                        <div class="rx-val-label">Cilíndrico (Astigm.)</div>
+                        <div class="rx-val-num" style="color: #FDA4AF;">-4.50 D</div>
+                        <div class="rx-val-sub">GRAU ALTO</div>
+                    </div>
+                    <div class="rx-val-block">
+                        <div class="rx-val-label">Eixo da Córnea</div>
+                        <div class="rx-val-num">180°</div>
+                        <div class="rx-val-sub">Horizontal</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card Pinete -->
+            <div class="rx-card" id="card-pinete" onclick="applyPreset('pinete')">
+                <div class="rx-badge rx-badge-cyan font-mono">PERFIL 02 — PINETE</div>
+                <div class="rx-title">Alta Miopia + Baixo Astigmatismo</div>
+                <div class="rx-clinical font-mono">Diagnóstico: Miopia Axial Severa com Astigmatismo Residual</div>
+                
+                <div class="rx-values-row font-mono">
+                    <div class="rx-val-block">
+                        <div class="rx-val-label">Esférico (Miopia)</div>
+                        <div class="rx-val-num" style="color: #FDA4AF;">-7.50 D</div>
+                        <div class="rx-val-sub">GRAU ALTO</div>
+                    </div>
+                    <div class="rx-val-block">
+                        <div class="rx-val-label">Cilíndrico (Astigm.)</div>
+                        <div class="rx-val-num" style="color: #7DD3FC;">-0.75 D</div>
+                        <div class="rx-val-sub">Baixo grau</div>
+                    </div>
+                    <div class="rx-val-block">
+                        <div class="rx-val-label">Eixo da Córnea</div>
+                        <div class="rx-val-num">90°</div>
+                        <div class="rx-val-sub">Vertical</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Main Viewport Box -->
+        <div class="doppelrand-shell">
+            <div class="doppelrand-core">
+                
+                <!-- Display Toolbar -->
+                <div class="display-toolbar">
+                    <div style="display: flex; gap: 8px;">
+                        <button class="scene-btn active" id="btn-view-split" onclick="setViewMode('split')">
+                            Cortina Split-Screen (Matheus ◄► Pinete)
+                        </button>
+                        <button class="scene-btn" id="btn-view-single" onclick="setViewMode('single')">
+                            Visão Integral (Perfil Ativo)
+                        </button>
+                    </div>
+
+                    <div class="font-mono" style="font-size: 0.75rem; color: var(--text-tertiary);">
+                        RENDERIZADOR ÓPTICO: <strong id="lbl-status" style="color: #FFFFFF;">PUPILA 6.5mm (NOTURNA)</strong>
+                    </div>
+                </div>
+
+                <!-- Canvas Visualizer Container -->
+                <div class="simulator-viewport" id="viewport-box">
+                    <canvas id="canvas-viewport" width="1380" height="640"></canvas>
+                    
+                    <!-- Split Handle & Badges -->
+                    <div class="label-pill label-matheus font-mono" id="pill-left">
+                        MATHEUS: ASTIGMATISMO -4.50D / MIOPIA -2.75D
+                    </div>
+                    <div class="label-pill label-pinete font-mono" id="pill-right">
+                        PINETE: MIOPIA -7.50D / ASTIGMATISMO -0.75D
+                    </div>
+
+                    <div class="curtain-handle" id="curtain-line">
+                        <div class="curtain-thumb font-mono">◄►</div>
+                    </div>
+                </div>
+
+                <!-- Sliders de Ajuste Fino em Tempo Real -->
+                <div class="optics-sliders-card">
+                    <div class="sliders-header">
+                        <div>
+                            <span class="eyebrow font-mono">Bancada Optométrica Interativa</span>
+                            <h3 style="font-size: 1.15rem; font-weight: 700; color: #FFFFFF;">
+                                Calibração Dióptrica em Tempo Real
+                            </h3>
+                        </div>
+                        <div class="font-mono" style="font-size: 0.72rem; color: var(--text-tertiary);">
+                            ARRASTE OS SLIDERS PARA TESTAR QUALQUER RECEITA OFTALMOLÓGICA
+                        </div>
+                    </div>
+
+                    <div class="sliders-grid">
+                        
+                        <!-- Slider Esferico (Miopia) -->
+                        <div class="slider-group">
+                            <div class="slider-label-row">
+                                <span class="slider-label">Grau Esférico (Miopia)</span>
+                                <span class="slider-value-badge font-mono" id="val-sph">-2.75 D</span>
+                            </div>
+                            <input type="range" class="slider-input" id="input-sph" min="-10.0" max="0.0" step="0.25" value="-2.75" oninput="onSliderChange()">
+                            <span style="font-size: 0.7rem; color: var(--text-tertiary);">
+                                Borrão circular uniforme por diâmetro de Airy
+                            </span>
+                        </div>
+
+                        <!-- Slider Cilindrico (Astigmatismo) -->
+                        <div class="slider-group">
+                            <div class="slider-label-row">
+                                <span class="slider-label">Grau Cilíndrico (Astigmatismo)</span>
+                                <span class="slider-value-badge font-mono" id="val-cyl" style="color: #FDA4AF;">-4.50 D</span>
+                            </div>
+                            <input type="range" class="slider-input" id="input-cyl" min="-6.0" max="0.0" step="0.25" value="-4.50" oninput="onSliderChange()">
+                            <span style="font-size: 0.7rem; color: var(--text-tertiary);">
+                                Deformação anamórfica e fantasma direcional
+                            </span>
+                        </div>
+
+                        <!-- Slider Eixo -->
+                        <div class="slider-group">
+                            <div class="slider-label-row">
+                                <span class="slider-label">Eixo do Astigmatismo</span>
+                                <span class="slider-value-badge font-mono" id="val-axis">180°</span>
+                            </div>
+                            <input type="range" class="slider-input" id="input-axis" min="0" max="180" step="5" value="180" oninput="onSliderChange()">
+                            <span style="font-size: 0.7rem; color: var(--text-tertiary);">
+                                Ângulo de inclinação do Conoide de Sturm
+                            </span>
+                        </div>
+
+                        <!-- Slider Pupila / Luminosidade -->
+                        <div class="slider-group">
+                            <div class="slider-label-row">
+                                <span class="slider-label">Abertura Pupilar</span>
+                                <span class="slider-value-badge font-mono" id="val-pupil">6.5 mm</span>
+                            </div>
+                            <input type="range" class="slider-input" id="input-pupil" min="2.5" max="8.0" step="0.5" value="6.5" oninput="onSliderChange()">
+                            <span style="font-size: 0.7rem; color: var(--text-tertiary);">
+                                Pupila dilatada no escuro amplia aberrações
+                            </span>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Anatomia Cientifica da Diferenca -->
+                <div class="science-grid">
+                    
+                    <div class="science-card">
+                        <div class="science-title font-mono" style="color: var(--gold);">
+                            Como o Matheus enxerga (Alto Astigmatismo)
+                        </div>
+                        <p class="science-desc">
+                            A córnea não é uma esfera perfeita; tem o formato de uma bola de futebol americano. Os raios de luz sofrem refração desigual em dois eixos perpendiculares (<strong>Conoide de Sturm</strong>).<br><br>
+                            - <strong>À noite no trânsito:</strong> Os faróis e semáforos não viram círculos; eles esticam em raios longos, feixes pontiagudos e halos direcionais ao longo do eixo (180° = feixes horizontais/radiais).<br>
+                            - <strong>Em telas e textos:</strong> As letras parecem ter uma "sombra fantasma" impressa ao lado (diplopia monocular), fazendo linhas de código vazarem umas sobre as outras.
+                        </p>
+                    </div>
+
+                    <div class="science-card">
+                        <div class="science-title font-mono" style="color: var(--cyan-optic);">
+                            Como o Pinete enxerga (Alta Miopia)
+                        </div>
+                        <p class="science-desc">
+                            O globo ocular é mais longo que o normal no eixo ântero-posterior. A luz converge e atinge o foco <strong>antes da retina</strong>, projetando um cone divergente sobre a mácula.<br><br>
+                            - <strong>À noite no trânsito:</strong> Faróis distantes não esticam em linhas; explodem em discos de bokeh gigantescos, circulares e leitosos. Tudo a mais de 1 metro de distância perde as bordas completamente.<br>
+                            - <strong>Em telas e textos:</strong> O texto perde o contraste em todas as direções igualmente, tornando-se uma névoa difusa homogênea onde pequenas letras simplesmente desaparecem no fundo.
+                        </p>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ENGINE DE SIMULAÇÃO ÓPTICA NATIVA -->
+    <script>
+        const canvas = document.getElementById('canvas-viewport');
+        const ctx = canvas.getContext('2d', { willReadFrequently: true });
+        
+        // Canvas offscreen para a cena pura (visão 20/20)
+        const masterCanvas = document.createElement('canvas');
+        masterCanvas.width = 1380;
+        masterCanvas.height = 640;
+        const mctx = masterCanvas.getContext('2d');
+
+        // Estado da Simulacao
+        let currentScene = 'night';
+        let viewMode = 'split'; // 'split' ou 'single'
+        let hasGlasses = false;
+        let splitPct = 50.0;
+        let isDragging = false;
+
+        // Parametros Matheus
+        const rxMatheus = { sph: -2.75, cyl: -4.50, axis: 180, pupil: 6.5 };
+        // Parametros Pinete
+        const rxPinete = { sph: -7.50, cyl: -0.75, axis: 90, pupil: 6.5 };
+        // Parametros Ativos do Slider (Modo Single ou Lado Esquerdo)
+        let activeRx = { ...rxMatheus };
+
+        // ==============================================================
+        // DESENHISTA DOS CENÁRIOS EM RESOLUÇÃO VETORIAL NATIVA
+        // ==============================================================
+        function drawMasterScene() {
+            const w = masterCanvas.width;
+            const h = masterCanvas.height;
+            mctx.clearRect(0, 0, w, h);
+
+            if (currentScene === 'night') {
+                drawNightScene(mctx, w, h);
+            } else if (currentScene === 'snellen') {
+                drawSnellenScene(mctx, w, h);
+            } else if (currentScene === 'ide') {
+                drawIDEScene(mctx, w, h);
+            } else if (currentScene === 'dial') {
+                drawDialScene(mctx, w, h);
+            }
+        }
+
+        // Cenário 1: Trânsito Noturno (Faróis, Semáforos e Neon)
+        function drawNightScene(c, w, h) {
+            // Céu Noturno
+            const skyGrad = c.createLinearGradient(0, 0, 0, h * 0.6);
+            skyGrad.addColorStop(0, '#020306');
+            skyGrad.addColorStop(1, '#0B0F19');
+            c.fillStyle = skyGrad;
+            c.fillRect(0, 0, w, h * 0.6);
+
+            // Skyline de edifícios distantes
+            c.fillStyle = '#05070D';
+            for (let i = 0; i < 28; i++) {
+                const bw = 40 + (i * 37) % 60;
+                const bh = 80 + (i * 53) % 180;
+                const bx = i * 50;
+                c.fillRect(bx, h * 0.6 - bh, bw, bh);
+                
+                // Janelas acesas
+                c.fillStyle = '#E2B858';
+                for (let wy = h * 0.6 - bh + 10; wy < h * 0.6 - 15; wy += 18) {
+                    for (let wx = bx + 6; wx < bx + bw - 10; wx += 12) {
+                        if ((wx + wy) % 5 === 0) {
+                            c.fillRect(wx, wy, 4, 6);
+                        }
+                    }
+                }
+                c.fillStyle = '#05070D';
+            }
+
+            // Pista e Asfalto
+            const roadGrad = c.createLinearGradient(0, h * 0.6, 0, h);
+            roadGrad.addColorStop(0, '#10141D');
+            roadGrad.addColorStop(1, '#07090E');
+            c.fillStyle = roadGrad;
+            c.fillRect(0, h * 0.6, w, h * 0.4);
+
+            // Linha central da pista (perspectiva)
+            c.strokeStyle = '#D97706';
+            c.lineWidth = 4;
+            c.setLineDash([24, 20]);
+            c.beginPath();
+            c.moveTo(w * 0.5, h * 0.6);
+            c.lineTo(w * 0.4, h);
+            c.stroke();
+            c.setLineDash([]);
+
+            // Letreiro Neon Urbano
+            c.font = '700 24px "Plus Jakarta Sans", sans-serif';
+            c.fillStyle = '#06B6D4';
+            c.shadowColor = '#06B6D4';
+            c.shadowBlur = 15;
+            c.fillText('ANTIGRAVITY AV. PAULISTA', w * 0.15, h * 0.28);
+            c.fillStyle = '#F43F5E';
+            c.shadowColor = '#F43F5E';
+            c.shadowBlur = 15;
+            c.fillText('CENTRO EMPRESARIAL', w * 0.65, h * 0.24);
+            c.shadowBlur = 0;
+
+            // Semáforo (Verde e Vermelho)
+            c.fillStyle = '#000000';
+            c.fillRect(w * 0.38, h * 0.45 - 60, 20, 50);
+            c.fillStyle = '#10B981';
+            c.shadowColor = '#10B981';
+            c.shadowBlur = 20;
+            c.beginPath();
+            c.arc(w * 0.38 + 10, h * 0.45 - 20, 7, 0, Math.PI * 2);
+            c.fill();
+            c.shadowBlur = 0;
+
+            // Carro à frente (Lanternas vermelhas)
+            c.fillStyle = '#EF4444';
+            c.shadowColor = '#EF4444';
+            c.shadowBlur = 25;
+            c.beginPath();
+            c.arc(w * 0.45, h * 0.72, 8, 0, Math.PI * 2);
+            c.arc(w * 0.52, h * 0.72, 8, 0, Math.PI * 2);
+            c.fill();
+            c.shadowBlur = 0;
+
+            // Carro vindo no sentido oposto (FARÓIS XENON POTENTES - O TESTE SUPREMO)
+            c.fillStyle = '#FFFFFF';
+            c.shadowColor = '#FFFFFF';
+            c.shadowBlur = 35;
+            c.beginPath();
+            c.arc(w * 0.28, h * 0.68, 12, 0, Math.PI * 2);
+            c.arc(w * 0.33, h * 0.68, 12, 0, Math.PI * 2);
+            c.fill();
+
+            // Poste de iluminação com vapor de sódio
+            c.fillStyle = '#FEF08A';
+            c.shadowColor = '#FEF08A';
+            c.shadowBlur = 30;
+            c.beginPath();
+            c.arc(w * 0.85, h * 0.35, 14, 0, Math.PI * 2);
+            c.fill();
+            c.shadowBlur = 0;
+        }
+
+        // Cenário 2: Tabela de Snellen
+        function drawSnellenScene(c, w, h) {
+            c.fillStyle = '#F8FAFC';
+            c.fillRect(0, 0, w, h);
+
+            // Moldura da tabela de clínica
+            c.strokeStyle = '#CBD5E1';
+            c.lineWidth = 3;
+            c.strokeRect(w * 0.2, 20, w * 0.6, h - 40);
+
+            c.fillStyle = '#0F172A';
+            c.textAlign = 'center';
+
+            c.font = '800 110px "Plus Jakarta Sans", monospace';
+            c.fillText('E', w * 0.5, 130);
+
+            c.font = '800 68px "Plus Jakarta Sans", monospace';
+            c.fillText('F  P', w * 0.5, 205);
+
+            c.font = '800 48px "Plus Jakarta Sans", monospace';
+            c.fillText('T  O  Z', w * 0.5, 270);
+
+            c.font = '800 36px "Plus Jakarta Sans", monospace';
+            c.fillText('L  P  E  D', w * 0.5, 325);
+
+            c.font = '800 28px "Plus Jakarta Sans", monospace';
+            c.fillText('P  E  C  F  D', w * 0.5, 375);
+
+            c.font = '700 22px "Plus Jakarta Sans", monospace';
+            c.fillText('E  D  F  C  Z  P', w * 0.5, 420);
+
+            c.font = '700 17px "Plus Jakarta Sans", monospace';
+            c.fillText('F  E  L  O  P  Z  D', w * 0.5, 460);
+
+            c.font = '700 14px "Plus Jakarta Sans", monospace';
+            c.fillText('D  E  F  P  O  T  E  C', w * 0.5, 495);
+
+            // Barra verde e vermelha oficial de Snellen
+            c.fillStyle = '#10B981';
+            c.fillRect(w * 0.28, 520, w * 0.2, 5);
+            c.fillStyle = '#EF4444';
+            c.fillRect(w * 0.52, 520, w * 0.2, 5);
+
+            c.textAlign = 'left';
+        }
+
+        // Cenário 3: Terminal de Código / IDE
+        function drawIDEScene(c, w, h) {
+            c.fillStyle = '#0D1117';
+            c.fillRect(0, 0, w, h);
+
+            // Barra de título da IDE
+            c.fillStyle = '#161B22';
+            c.fillRect(0, 0, w, 40);
+            c.fillStyle = '#EF4444'; c.beginPath(); c.arc(20, 20, 6, 0, Math.PI * 2); c.fill();
+            c.fillStyle = '#EAB308'; c.beginPath(); c.arc(38, 20, 6, 0, Math.PI * 2); c.fill();
+            c.fillStyle = '#10B981'; c.beginPath(); c.arc(56, 20, 6, 0, Math.PI * 2); c.fill();
+
+            c.font = '500 13px "JetBrains Mono", monospace';
+            c.fillStyle = '#94A3B8';
+            c.fillText('tcc_neural_inference.py — Antigravity Engine', 80, 25);
+
+            // Código
+            const codeLines = [
+                { num: '01', tokens: [['import ', '#F43F5E'], ['torch', '#38BDF8'], [', numpy as ', '#F43F5E'], ['np', '#38BDF8']] },
+                { num: '02', tokens: [['from ', '#F43F5E'], ['transformers', '#E2E8F0'], [' import ', '#F43F5E'], ['AutoModelForCausalLM', '#38BDF8']] },
+                { num: '03', tokens: [] },
+                { num: '04', tokens: [['class ', '#F43F5E'], ['InferenceOptimizer', '#FBBF24'], [':', '#E2E8F0']] },
+                { num: '05', tokens: [['    def ', '#38BDF8'], ['__init__', '#A855F7'], ['(self, cluster_id: ', '#E2E8F0'], ['str', '#38BDF8'], [', budget: ', '#E2E8F0'], ['float', '#38BDF8'], [') -> None:', '#E2E8F0']] },
+                { num: '06', tokens: [['        self.model = ', '#E2E8F0'], ['"meta/llama-3.2-11b-vision-instruct"', '#34D399']] },
+                { num: '07', tokens: [['        self.ttft_target_ms = ', '#E2E8F0'], ['585.2', '#F97316'], ['  # Medição real da bancada', '#64748B']] },
+                { num: '08', tokens: [['        self.attention_flops_reduction = ', '#E2E8F0'], ['0.807', '#F97316'], ['  # Redução quadrática 4x', '#64748B']] },
+                { num: '09', tokens: [] },
+                { num: '10', tokens: [['    async def ', '#F43F5E'], ['dispatch_prompt', '#38BDF8'], ['(self, tokens: ', '#E2E8F0'], ['int', '#38BDF8'], [') -> ', '#E2E8F0'], ['dict', '#38BDF8'], [':', '#E2E8F0']] },
+                { num: '11', tokens: [['        if tokens <= ', '#E2E8F0'], ['149', '#F97316'], [': return {', '#E2E8F0'], ['"status"', '#34D399'], [': ', '#E2E8F0'], ['"optimal_latency"', '#34D399'], ['}', '#E2E8F0']] },
+                { num: '12', tokens: [['        return await self.cluster.forward(tokens, shannon_entropy_bound=', '#E2E8F0'], ['0.80', '#F97316'], [')', '#E2E8F0']] }
+            ];
+
+            let y = 80;
+            codeLines.forEach(line => {
+                c.fillStyle = '#475569';
+                c.font = '500 15px "JetBrains Mono", monospace';
+                c.fillText(line.num, 24, y);
+
+                let x = 70;
+                line.tokens.forEach(tok => {
+                    c.fillStyle = tok[1];
+                    c.fillText(tok[0], x, y);
+                    x += c.measureText(tok[0]).width;
+                });
+                y += 32;
+            });
+        }
+
+        // Cenário 4: Relógio de Astigmatismo (Astigmatic Dial)
+        function drawDialScene(c, w, h) {
+            c.fillStyle = '#F8FAFC';
+            c.fillRect(0, 0, w, h);
+
+            const cx = w * 0.5;
+            const cy = h * 0.5;
+            const radius = 240;
+
+            c.strokeStyle = '#0F172A';
+            c.textAlign = 'center';
+            c.textBaseline = 'middle';
+
+            // 12 raios principais (a cada 30 graus, como um relogio)
+            for (let i = 0; i < 12; i++) {
+                const angle = (i * 30) * Math.PI / 180;
+                const cos = Math.cos(angle);
+                const sin = Math.sin(angle);
+
+                // Desenha 3 linhas paralelas por hora para teste de resolucao
+                [-4, 0, 4].forEach(offset => {
+                    const perpX = -sin * offset;
+                    const perpY = cos * offset;
+                    c.lineWidth = 2.5;
+                    c.beginPath();
+                    c.moveTo(cx + perpX, cy + perpY);
+                    c.lineTo(cx + cos * radius + perpX, cy + sin * radius + perpY);
+                    c.stroke();
+                });
+
+                // Numero da hora
+                const hourNum = (i === 0 ? 3 : (i <= 3 ? i + 3 : (i <= 9 ? i - 9 + 12 : i - 9)));
+                c.font = '700 20px "JetBrains Mono", monospace';
+                c.fillStyle = '#0F172A';
+                c.fillText(i === 0 ? '3' : (i === 3 ? '6' : (i === 6 ? '9' : (i === 9 ? '12' : ''))), cx + cos * (radius + 25), cy + sin * (radius + 25));
+            }
+
+            // Circulo central de fixacao
+            c.fillStyle = '#E11D48';
+            c.beginPath();
+            c.arc(cx, cy, 6, 0, Math.PI * 2);
+            c.fill();
+
+            c.font = '600 14px "Plus Jakarta Sans", sans-serif';
+            c.fillStyle = '#64748B';
+            c.fillText('FIXE O OLHAR NO PONTO VERMELHO', cx, cy + radius + 55);
+        }
+
+        // ==============================================================
+        // MOTOR DE REFRAÇÃO ÓPTICA (CONOIDE DE STURM & DEFOCUS)
+        // ==============================================================
+        function renderOpticalFilter(targetCtx, rx, sx, sy, sw, sh, dx, dy, dw, dh) {
+            // Se o usuario colocou oculos, visao 20/20 perfeita
+            if (hasGlasses) {
+                targetCtx.drawImage(masterCanvas, sx, sy, sw, sh, dx, dy, dw, dh);
+                return;
+            }
+
+            // Calculo da deformacao dioptrica
+            // sph: Miopia esferica (defocus circular)
+            // cyl: Astigmatismo cilindrico (defocus anidropico no eixo)
+            const sphAbs = Math.abs(rx.sph);
+            const cylAbs = Math.abs(rx.cyl);
+            const pupilScale = rx.pupil / 4.0;
+
+            // Raio de desfoque no eixo principal vs eixo perpendicular (Conoide de Sturm)
+            // Meridian 1: determinado por sph
+            // Meridian 2: determinado por sph + cyl
+            const blur1 = (sphAbs * 1.6) * pupilScale;
+            const blur2 = ((sphAbs + cylAbs) * 1.6) * pupilScale;
+
+            const angleRad = (rx.axis * Math.PI) / 180;
+            const cosA = Math.cos(angleRad);
+            const sinA = Math.sin(angleRad);
+
+            // Passo 1: Desenhar a base com o desfoque esferico primario
+            targetCtx.save();
+            targetCtx.filter = `blur(${Math.max(1, blur1)}px)`;
+            targetCtx.drawImage(masterCanvas, sx, sy, sw, sh, dx, dy, dw, dh);
+            targetCtx.restore();
+
+            // Passo 2: Se houver astigmatismo significativo, aplicar o alongamento direcional
+            // e fantasmas (diplopia monocular)
+            if (cylAbs > 0.5) {
+                targetCtx.save();
+                
+                // Fantasmas multiplos ao longo do eixo do astigmatismo
+                const passes = Math.min(6, Math.ceil(cylAbs * 1.2));
+                const maxOffset = (cylAbs * 4.2) * pupilScale;
+
+                for (let p = 1; p <= passes; p++) {
+                    const dist = (p / passes) * maxOffset;
+                    const alpha = (0.28 / passes) * (cylAbs / 4.0);
+
+                    targetCtx.globalAlpha = alpha;
+                    targetCtx.filter = `blur(${Math.max(1, blur2 * (p / passes))}px)`;
+                    
+                    // Deslocamento positivo
+                    targetCtx.drawImage(masterCanvas, sx, sy, sw, sh, dx + cosA * dist, dy + sinA * dist, dw, dh);
+                    // Deslocamento negativo
+                    targetCtx.drawImage(masterCanvas, sx, sy, sw, sh, dx - cosA * dist, dy - sinA * dist, dw, dh);
+                }
+
+                targetCtx.restore();
+
+                // Passo 3: Feixes de Luz / Starbursts em fontes luminosas (especialmente no cenario noturno)
+                if (currentScene === 'night' && cylAbs >= 2.0) {
+                    targetCtx.save();
+                    targetCtx.globalCompositeOperation = 'screen';
+                    
+                    const streakCount = Math.ceil(cylAbs * 2);
+                    const streakLength = cylAbs * 24 * pupilScale;
+
+                    for (let s = 1; s <= 4; s++) {
+                        const sDist = s * (streakLength / 4);
+                        targetCtx.globalAlpha = 0.12 / s;
+                        targetCtx.filter = `blur(${s * 2}px)`;
+                        targetCtx.drawImage(masterCanvas, sx, sy, sw, sh, dx + cosA * sDist, dy + sinA * sDist, dw, dh);
+                        targetCtx.drawImage(masterCanvas, sx, sy, sw, sh, dx - cosA * sDist, dy - sinA * sDist, dw, dh);
+                    }
+                    targetCtx.restore();
+                }
+            }
+        }
+
+        // Atualizar Renderizador
+        function render() {
+            const w = canvas.width;
+            const h = canvas.height;
+            ctx.clearRect(0, 0, w, h);
+
+            if (viewMode === 'split') {
+                // Modo Cortina Split: Matheus na esquerda, Pinete na direita
+                const splitX = (splitPct / 100) * w;
+
+                // Metade Esquerda: Matheus (Alto Astigmatismo)
+                ctx.save();
+                ctx.beginPath();
+                ctx.rect(0, 0, splitX, h);
+                ctx.clip();
+                renderOpticalFilter(ctx, rxMatheus, 0, 0, w, h, 0, 0, w, h);
+                ctx.restore();
+
+                // Metade Direita: Pinete (Alta Miopia)
+                ctx.save();
+                ctx.beginPath();
+                ctx.rect(splitX, 0, w - splitX, h);
+                ctx.clip();
+                renderOpticalFilter(ctx, rxPinete, 0, 0, w, h, 0, 0, w, h);
+                ctx.restore();
+
+                // Desenhar linha de separacao
+                const curtainLine = document.getElementById('curtain-line');
+                if (curtainLine) curtainLine.style.left = `${splitPct}%`;
+
+            } else {
+                // Modo Single: renderizar com activeRx no canvas inteiro
+                renderOpticalFilter(ctx, activeRx, 0, 0, w, h, 0, 0, w, h);
+            }
+        }
+
+        // ==============================================================
+        // CONTROLES DE INTERFACE
+        // ==============================================================
+        function setScene(sceneName, btn) {
+            currentScene = sceneName;
+            document.querySelectorAll('.scene-selector-bar .scene-btn').forEach(b => b.classList.remove('active'));
+            if (btn) btn.classList.add('active');
+
+            // Ajustar pupila default conforme a cena
+            if (sceneName === 'night') {
+                document.getElementById('input-pupil').value = '6.5';
+                document.getElementById('val-pupil').textContent = '6.5 mm';
+                document.getElementById('lbl-status').textContent = 'PUPILA 6.5mm (NOTURNA / DILATADA)';
+            } else if (sceneName === 'snellen') {
+                document.getElementById('input-pupil').value = '4.0';
+                document.getElementById('val-pupil').textContent = '4.0 mm';
+                document.getElementById('lbl-status').textContent = 'PUPILA 4.0mm (CLÍNICA OPTOMÉTRICA)';
+            } else {
+                document.getElementById('input-pupil').value = '4.5';
+                document.getElementById('val-pupil').textContent = '4.5 mm';
+                document.getElementById('lbl-status').textContent = 'PUPILA 4.5mm (MONITOR / AMBIENTE INTERNO)';
+            }
+
+            drawMasterScene();
+            render();
+        }
+
+        function setViewMode(mode) {
+            viewMode = mode;
+            const btnSplit = document.getElementById('btn-view-split');
+            const btnSingle = document.getElementById('btn-view-single');
+            const curtain = document.getElementById('curtain-line');
+            const pillLeft = document.getElementById('pill-left');
+            const pillRight = document.getElementById('pill-right');
+
+            if (mode === 'split') {
+                btnSplit.classList.add('active');
+                btnSingle.classList.remove('active');
+                curtain.style.display = 'block';
+                pillLeft.style.display = 'block';
+                pillRight.style.display = 'block';
+            } else {
+                btnSplit.classList.remove('active');
+                btnSingle.classList.add('active');
+                curtain.style.display = 'none';
+                pillLeft.style.display = 'none';
+                pillRight.style.display = 'none';
+            }
+            render();
+        }
+
+        function applyPreset(preset) {
+            const cardM = document.getElementById('card-matheus');
+            const cardP = document.getElementById('card-pinete');
+
+            if (preset === 'matheus') {
+                cardM.classList.add('active');
+                cardP.classList.remove('active');
+                activeRx = { ...rxMatheus };
+            } else {
+                cardM.classList.remove('active');
+                cardP.classList.add('active');
+                activeRx = { ...rxPinete };
+            }
+
+            // Sincronizar sliders
+            document.getElementById('input-sph').value = activeRx.sph;
+            document.getElementById('val-sph').textContent = activeRx.sph.toFixed(2) + ' D';
+            document.getElementById('input-cyl').value = activeRx.cyl;
+            document.getElementById('val-cyl').textContent = activeRx.cyl.toFixed(2) + ' D';
+            document.getElementById('input-axis').value = activeRx.axis;
+            document.getElementById('val-axis').textContent = activeRx.axis + '°';
+
+            render();
+        }
+
+        function onSliderChange() {
+            activeRx.sph = parseFloat(document.getElementById('input-sph').value);
+            activeRx.cyl = parseFloat(document.getElementById('input-cyl').value);
+            activeRx.axis = parseInt(document.getElementById('input-axis').value);
+            activeRx.pupil = parseFloat(document.getElementById('input-pupil').value);
+
+            document.getElementById('val-sph').textContent = activeRx.sph.toFixed(2) + ' D';
+            document.getElementById('val-cyl').textContent = activeRx.cyl.toFixed(2) + ' D';
+            document.getElementById('val-axis').textContent = activeRx.axis + '°';
+            document.getElementById('val-pupil').textContent = activeRx.pupil.toFixed(1) + ' mm';
+
+            // Se o usuario mexer nos sliders, o preset vira customizado
+            document.getElementById('card-matheus').classList.remove('active');
+            document.getElementById('card-pinete').classList.remove('active');
+
+            render();
+        }
+
+        function toggleGlasses() {
+            hasGlasses = !hasGlasses;
+            const btn = document.getElementById('btn-glasses');
+            const text = document.getElementById('glasses-text');
+            const icon = document.getElementById('glasses-icon');
+
+            if (hasGlasses) {
+                btn.classList.add('active');
+                text.textContent = 'Tirar Óculos (Ver Defeito Refrativo)';
+                icon.textContent = '[20/20]';
+            } else {
+                btn.classList.remove('active');
+                text.textContent = 'Colocar Óculos (Correção 20/20)';
+                icon.textContent = '[RX]';
+            }
+            render();
+        }
+
+        // Interacao de Arraste da Cortina
+        const viewportBox = document.getElementById('viewport-box');
+
+        function updateCurtain(clientX) {
+            if (viewMode !== 'split') return;
+            const rect = viewportBox.getBoundingClientRect();
+            let x = clientX - rect.left;
+            if (x < 0) x = 0;
+            if (x > rect.width) x = rect.width;
+            splitPct = (x / rect.width) * 100;
+            render();
+        }
+
+        viewportBox.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            updateCurtain(e.clientX);
+        });
+
+        window.addEventListener('mouseup', () => { isDragging = false; });
+        window.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            updateCurtain(e.clientX);
+        });
+
+        viewportBox.addEventListener('touchstart', (e) => {
+            isDragging = true;
+            if (e.touches[0]) updateCurtain(e.touches[0].clientX);
+        });
+        window.addEventListener('touchend', () => { isDragging = false; });
+        window.addEventListener('touchmove', (e) => {
+            if (!isDragging) return;
+            if (e.touches[0]) updateCurtain(e.touches[0].clientX);
+        });
+
+        // Inicializacao
+        drawMasterScene();
+        render();
+    </script>
+</body>
+</html>
