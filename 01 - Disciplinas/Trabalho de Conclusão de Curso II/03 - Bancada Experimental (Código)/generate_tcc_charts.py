@@ -163,10 +163,11 @@ ax.set_title(f'Impacto da Compressão na Latência Inicial de Inferência (Prefi
              fontsize=10.0, fontweight='bold', pad=12, color='#1A202C')
 ax.set_xticks(x)
 ax.set_xticklabels(labels, fontsize=9.0)
-ax.legend(frameon=True, facecolor='white', edgecolor='#CBD5E0', fontsize=8.0, loc='upper right')
+ax.legend(frameon=True, facecolor='white', edgecolor='#CBD5E0', fontsize=8.0, loc='upper left')
 ax.grid(axis='y', alpha=0.7)
 ax.set_axisbelow(True)
-ax.set_ylim(0, max(ttft_few) * 1.20)
+max_ttft_all = max(ttft_few + ttft_zero + ttft_2x + ttft_4x)
+ax.set_ylim(0, max_ttft_all * 1.18)
 
 autolabel(rects1, ax, "{:.0f}ms")
 autolabel(rects2, ax, "{:.0f}ms")
@@ -202,11 +203,13 @@ ax.plot(ratios, c3_f1, marker='^', markersize=7, linewidth=2.2, label='Caso 3: A
 ax.axhline(0.80, color='#E53E3E', linestyle=':', linewidth=1.6, label='Limiar Crítico de Aceitação Acadêmica (F1 = 0,80)')
 
 for r, val in zip(ratios, c1_f1):
-    ax.annotate(f"{val:.3f}", (r, val), textcoords="offset points", xytext=(0, 6), ha='center', fontsize=7.5, color='#1A365D')
+    offset_y = 7 if r == 1.0 else -13
+    ax.annotate(f"{val:.3f}", (r, val), textcoords="offset points", xytext=(0, offset_y), ha='center', fontsize=7.5, fontweight='bold', color='#1A365D')
 for r, val in zip(ratios, c2_f1):
-    ax.annotate(f"{val:.3f}", (r, val), textcoords="offset points", xytext=(0, 6), ha='center', fontsize=7.5, color='#1D4044')
+    ax.annotate(f"{val:.3f}", (r, val), textcoords="offset points", xytext=(0, 7), ha='center', fontsize=7.5, fontweight='bold', color='#1D4044')
 for r, val in zip(ratios, c3_f1):
-    ax.annotate(f"{val:.3f}", (r, val), textcoords="offset points", xytext=(0, -12), ha='center', fontsize=7.5, color='#44337A')
+    offset_y = -13 if r == 1.0 else 7
+    ax.annotate(f"{val:.3f}", (r, val), textcoords="offset points", xytext=(0, offset_y), ha='center', fontsize=7.5, fontweight='bold', color='#44337A')
 
 ax.set_xlabel('Razão de Compressão de Prompt', fontsize=9.5, fontweight='bold')
 ax.set_ylabel('Fidelidade Semântica (BERTScore Proxy F1)', fontsize=9.5, fontweight='bold')

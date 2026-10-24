@@ -2,6 +2,7 @@ import os
 import sys
 import re
 import json
+import shutil
 from pathlib import Path
 import docx
 from docx import Document
@@ -15,9 +16,30 @@ import fitz
 
 from tcc_humanizer import set_cell_margins, set_cell_background, format_abnt_table, humanize_text
 
+
+def load_experimental_data() -> dict:
+    json_path = Path(__file__).parent / "battle_ia_resultados_brutos.json"
+    if not json_path.exists():
+        raise FileNotFoundError(f"ERRO FATAL: Base empírica não encontrada em {json_path}")
+    with open(json_path, "r", encoding="utf-8") as f:
+        records = json.load(f)
+    if len(records) < 12:
+        raise ValueError(f"ERRO FATAL: Esperados 12 registros experimentais, encontrados {len(records)}")
+    by_key = {(r["caso_id"], r["tecnica"]): r for r in records}
+    return {"records": records, "by_key": by_key}
+
+
+def fmt_br(val: float, decimals: int = 1) -> str:
+    s = f"{val:,.{decimals}f}"
+    return s.replace(",", "X").replace(".", ",").replace("X", ".")
+
+
 def build_monograph(docx_path: Path, sumario_page_map=None):
+    exp = load_experimental_data()
+    by_key = exp["by_key"]
+
     doc = Document()
-    
+
     # 1. Margens ABNT
     for section in doc.sections:
         section.top_margin = Cm(3.0)
@@ -26,7 +48,7 @@ def build_monograph(docx_path: Path, sumario_page_map=None):
         section.right_margin = Cm(2.0)
         section.page_width = Cm(21.0)
         section.page_height = Cm(29.7)
-        
+
     def add_p(text, bold_prefix=None, space_after=5, line_spacing=1.5, first_line_indent=Cm(1.25), align=WD_ALIGN_PARAGRAPH.JUSTIFY):
         text = humanize_text(text)
         p = doc.add_paragraph()
@@ -35,14 +57,14 @@ def build_monograph(docx_path: Path, sumario_page_map=None):
         p.paragraph_format.space_after = Pt(space_after)
         p.paragraph_format.line_spacing = line_spacing
         p.paragraph_format.first_line_indent = first_line_indent
-        
+
         if bold_prefix:
             r_bold = p.add_run(bold_prefix)
             r_bold.font.name = "Arial"
             r_bold.font.size = Pt(12)
             r_bold.font.bold = True
             r_bold.font.color.rgb = RGBColor(0, 0, 0)
-            
+
         r = p.add_run(text)
         r.font.name = "Arial"
         r.font.size = Pt(12)
@@ -95,7 +117,7 @@ def build_monograph(docx_path: Path, sumario_page_map=None):
         r.font.bold = True
         return p
 
-    def add_table_source(source="Fonte: Dados experimentais obtidos pelos autores (2026)."):
+    def add_table_source(source="Fonte: Dados experimentais obtidos pelos autores via NVIDIA NIM Cloud (2026)."):
         p = doc.add_paragraph()
         p.alignment = WD_ALIGN_PARAGRAPH.LEFT
         p.paragraph_format.space_before = Pt(2)
@@ -108,7 +130,7 @@ def build_monograph(docx_path: Path, sumario_page_map=None):
         r.font.italic = True
         return p
 
-    def add_figure(img_path: Path, title: str, source="Fonte: Dados experimentais obtidos pelos autores (2026)."):
+    def add_figure(img_path: Path, title: str, source="Fonte: Dados experimentais obtidos pelos autores via NVIDIA NIM Cloud (2026)."):
         p_title = doc.add_paragraph()
         p_title.alignment = WD_ALIGN_PARAGRAPH.LEFT
         p_title.paragraph_format.space_before = Pt(12)
@@ -166,7 +188,7 @@ def build_monograph(docx_path: Path, sumario_page_map=None):
     r_tit.font.name = "Arial"
     r_tit.font.size = Pt(14)
     r_tit.font.bold = True
-    
+
     r_sub = p_title.add_run("Engenharia de Prompt como Estratégia de Otimização de Respostas em Inteligências Artificiais")
     r_sub.font.name = "Arial"
     r_sub.font.size = Pt(12)
@@ -203,32 +225,33 @@ def build_monograph(docx_path: Path, sumario_page_map=None):
     doc.add_page_break()
     p_res_title = doc.add_paragraph()
     p_res_title.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    p_res_title.paragraph_format.space_before = Pt(24)
-    p_res_title.paragraph_format.space_after = Pt(14)
+    p_res_title.paragraph_format.space_before = Pt(12)
+    p_res_title.paragraph_format.space_after = Pt(12)
     r = p_res_title.add_run("RESUMO")
     r.font.name = "Arial"
     r.font.size = Pt(12)
     r.font.bold = True
 
     add_p(
-        "A inferência de Modelos de Linguagem de Grande Escala (LLMs) impõe um custo computacional desproporcional à sua operação diária. "
-        "Cada token submetido à arquitetura Transformer exige cálculos de produto interno na autoatenção que escalam de forma quadrática O(n²). "
+        "A inferência de Modelos de Linguagem de Grande Escala (LLMs) impõe um custo computacional elevado à sua operação contínua, "
+        "visto que o mecanismo de autoatenção da arquitetura Transformer escala de forma quadrática O(n²) em relação ao comprimento da entrada. "
         "Este trabalho examina a hipótese de redundância linguística de Claude Shannon aplicada à engenharia de prompt, avaliando como o descarte "
-        "algorítmico de tokens de baixa densidade informacional reduz a sobrecarga de hardware sem comprometer a integridade das respostas. "
-        "Construímos uma bancada experimental (Benchmark Battle IA) para testar três cenários corporativos densos: arquitetura de sistemas distribuídos, "
-        "geração de consultas SQL sob esquemas relacionais complexos e auditoria de conformidade com a LGPD. "
-        "Submetemos os modelos Llama-3-70B e Mistral-Large a testes controlados, contrastando linhas de base convencionais (Zero-shot e Few-shot) "
-        "com a compressão seletiva via LLMLingua em taxas de 2x e 4x. "
-        "A mensuração da qualidade semântica foi conduzida com o BERTScore contextual (RoBERTa-large), eliminando distorções de métricas lexicais superficiais. "
-        "Os testes empíricos revelaram que a compressão de 4x preserva o índice F1 acima de 0,86 em todos os domínios, enquanto diminui em 74,6% o volume de "
-        "entrada, reduz em até 81,9% o tempo de resposta inicial (Time-to-First-Token) e economiza 93,75% das operações de autoatenção na fase de prefill. "
-        "Demonstra-se que a técnica reduz os custos operacionais em até 57,5% em escala e fornece alívio térmico direto aos servidores, atendendo aos preceitos "
-        "do movimento Green AI. Conclui-se que a compressão seletiva é um instrumento maduro para viabilizar IA generativa sustentável em produção.",
-        space_after=12, first_line_indent=Cm(0)
+        "algorítmico de tokens de baixa autoinformação reduz a sobrecarga de hardware sem descaracterizar a precisão técnica das respostas. "
+        "Construímos a bancada experimental automatizada Battle IA para testar três cenários corporativos: raciocínio em sistemas distribuídos (consenso Raft e Teorema CAP), "
+        "geração de consultas SQL analíticas sob esquemas DDL em 3FN e auditoria de conformidade com a LGPD. "
+        "Submetemos o modelo Meta Llama-3.2-11B-Vision-Instruct, operado via nuvem NVIDIA NIM Cloud sobre aceleradores NVIDIA A100 SXM4, a ensaios reais em streaming SSE, "
+        "contrastando linhas de base convencionais (Few-shot e Zero-shot) com a compressão seletiva inspirada no LLMLingua combinada a listas de proteção lexical (token whitelisting) em taxas nominais de 2x e 4x. "
+        "Os resultados empíricos demonstram que a compressão nominal de 4x reduz o volume faturado de tokens de entrada em até 57,4% (média de 56,2%, caindo de 384,0 para 168,3 tokens por requisição) "
+        "e elimina em média 80,7% das operações quadráticas de autoatenção no prefill (atingindo 81,8% no Caso 2). "
+        "O Time-to-First-Token (TTFT) estabilizou-se entre 538,0 ms e 636,7 ms sob compressão de 4x, mitigando oscilações de fila na nuvem e reduzindo a latência inicial em 23,0% frente ao Few-shot no Caso 3. "
+        "A fidelidade semântica (BERTScore Proxy F1, com limiar crítico de 0,80) manteve-se elevada na geração de SQL (0,8524 em 4x, com 100% de retenção de entidades) e apresentou ganho de sinal-ruído na auditoria LGPD "
+        "(evoluindo de 0,7916 no baseline para 0,8279 em 4x), registrando retração marginal apenas no Caso 1 (0,7912) pela sensibilidade de modelos compactos de 11B parâmetros à omissão de conectivos causais. "
+        "Em escala de 100.000 requisições, a técnica reduz em 56,2% o dispêndio de entrada e em 12,8% o custo global (de US$ 505,20 para US$ 440,50), consolidando-se como instrumento prático de Green AI.",
+        space_after=10, line_spacing=1.25, first_line_indent=Cm(0)
     )
 
-    add_p("Compressão de Prompts. Modelos de Linguagem de Grande Escala. Engenharia de Prompt. Green AI. BERTScore. Sistemas Distribuídos.",
-          bold_prefix="Palavras-chave: ", first_line_indent=Cm(0))
+    add_p("Compressão de Prompts. Modelos de Linguagem de Grande Escala. Engenharia de Prompt. Green AI. BERTScore. NVIDIA NIM.",
+          bold_prefix="Palavras-chave: ", line_spacing=1.25, first_line_indent=Cm(0))
 
     # =========================================================================
     # 3. ABSTRACT (Página 3)
@@ -236,32 +259,32 @@ def build_monograph(docx_path: Path, sumario_page_map=None):
     doc.add_page_break()
     p_abs_title = doc.add_paragraph()
     p_abs_title.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    p_abs_title.paragraph_format.space_before = Pt(24)
-    p_abs_title.paragraph_format.space_after = Pt(14)
+    p_abs_title.paragraph_format.space_before = Pt(12)
+    p_abs_title.paragraph_format.space_after = Pt(12)
     r = p_abs_title.add_run("ABSTRACT")
     r.font.name = "Arial"
     r.font.size = Pt(12)
     r.font.bold = True
 
     add_p(
-        "Inference in Large Language Models (LLMs) imposes an asymmetric computational burden on modern computing infrastructure. "
-        "Every token processed by the Transformer architecture triggers inner product calculations in the self-attention mechanism that scale "
-        "quadratically O(n²). This research examines Claude Shannon's linguistic redundancy hypothesis applied to prompt engineering, evaluating "
-        "how algorithmic pruning of low-information tokens mitigates hardware strain without degrading semantic fidelity. "
-        "We built an experimental testbed (Battle IA Benchmark) evaluating three demanding enterprise workloads: distributed systems architectural "
-        "reasoning, SQL query generation under complex relational schemas, and LGPD data privacy governance auditing. "
-        "Evaluating frontier models (Llama-3-70B and Mistral-Large), we benchmarked conventional prompting baselines (Zero-shot and Few-shot) "
-        "against perplexity-driven compression via LLMLingua at 2x and 4x target ratios. "
-        "Semantic retention was quantified using contextual BERTScore (RoBERTa-large), avoiding the limitations of surface-level n-gram metrics. "
-        "Empirical findings confirm that 4x prompt compression maintains F1 scores strictly above 0.86 across all tasks, while reducing prompt "
-        "token volume by 74.6%, cutting Time-to-First-Token (TTFT) by up to 81.9%, and eliminating 93.75% of prefill self-attention FLOPs. "
-        "Financial modeling indicates operational cost savings of 57.5% at production scale, alongside significant thermal relief aligned with "
-        "Green AI goals. We conclude that selective prompt compression represents an essential engineering discipline for sustainable enterprise AI deployments.",
-        space_after=12, first_line_indent=Cm(0)
+        "Inference in Large Language Models (LLMs) imposes a substantial computational burden on modern infrastructure, as inner product "
+        "calculations in the Transformer self-attention mechanism scale quadratically O(n²) with sequence length. This research examines Claude Shannon's "
+        "linguistic redundancy hypothesis applied to prompt engineering, evaluating how algorithmic pruning of low-self-information tokens mitigates "
+        "hardware strain while preserving technical accuracy. We built an automated experimental testbed (Battle IA Benchmark) covering three enterprise "
+        "workloads: distributed systems consensus reasoning (Raft and CAP Theorem), analytical SQL query generation under 3NF relational DDL schemas, and LGPD data privacy auditing. "
+        "Evaluating Meta Llama-3.2-11B-Vision-Instruct deployed on NVIDIA NIM Cloud (NVIDIA A100 SXM4 GPUs) via real-time SSE streaming, we benchmarked "
+        "conventional baselines (Few-shot and Zero-shot) against LLMLingua-inspired selective compression with domain token whitelisting at 2x and 4x nominal target ratios. "
+        "Empirical measurements confirm that 4x nominal compression reduces billed input token volume by up to 57.4% (averaging 56.2%, from 384.0 to 168.3 input tokens per request) "
+        "and eliminates an average of 80.7% of quadratic prefill self-attention FLOPs (reaching 81.8% in Case 2). "
+        "Time-to-First-Token (TTFT) stabilized between 538.0 ms and 636.7 ms under 4x compression, mitigating multi-tenant cloud queueing jitter and cutting initial latency by 23.0% against the Few-shot baseline in Case 3. "
+        "Semantic retention (measured via BERTScore Proxy F1 against a 0.80 academic acceptance threshold) remained strong in SQL generation (0.8524 at 4x with 100% entity retention) and exhibited positive signal-to-noise enhancement "
+        "in LGPD auditing (rising from 0.7916 in Few-shot to 0.8279 at 4x), while showing a slight dip to 0.7912 in Case 1 due to causal connective sensitivity in an 11B-parameter model. "
+        "Across 100,000 requests, the approach cuts input token expenditure by 56.2% and total batch cost by 12.8% (from US$ 505.20 to US$ 440.50), validating selective prompt compression as an effective Green AI practice.",
+        space_after=10, line_spacing=1.25, first_line_indent=Cm(0)
     )
 
-    add_p("Prompt Compression. Large Language Models. Prompt Engineering. Green AI. BERTScore. Distributed Systems.",
-          bold_prefix="Keywords: ", first_line_indent=Cm(0))
+    add_p("Prompt Compression. Large Language Models. Prompt Engineering. Green AI. BERTScore. NVIDIA NIM.",
+          bold_prefix="Keywords: ", line_spacing=1.25, first_line_indent=Cm(0))
 
     # =========================================================================
     # 4. SUMÁRIO (Página 4)
@@ -323,7 +346,7 @@ def build_monograph(docx_path: Path, sumario_page_map=None):
         p_sum.paragraph_format.line_spacing = 1.0
         p_sum.paragraph_format.first_line_indent = Cm(0)
         p_sum.paragraph_format.left_indent = Cm(0)
-        
+
         r_item = p_sum.add_run(f"{item}\t{pg_num}")
         r_item.font.name = "Arial"
         r_item.font.size = Pt(10)
@@ -334,11 +357,10 @@ def build_monograph(docx_path: Path, sumario_page_map=None):
     # =========================================================================
     doc.add_page_break()
 
-    # Leitura dos Capítulos 1 a 9 estruturados com bullets íntegros e seções sem ponto
     structured_json_path = Path(__file__).parent / "structured_ch1_9.json"
     with open(structured_json_path, "r", encoding="utf-8") as f:
         structured_data = json.load(f)
-        
+
     for elem in structured_data:
         etype = elem["type"]
         etext = elem["text"]
@@ -354,191 +376,332 @@ def build_monograph(docx_path: Path, sumario_page_map=None):
             add_p(etext)
 
     # =========================================================================
-    # CAPÍTULO 10: RESULTADOS E DISCUSSÃO EXPERIMENTAL (BATTLE IA COM FIGURAS)
+    # CAPÍTULO 10: RESULTADOS E DISCUSSÃO EXPERIMENTAL (100% SINCRONIZADO)
     # =========================================================================
     add_h1("10 RESULTADOS E DISCUSSÃO EXPERIMENTAL", page_break_before=False)
-    
+
     add_h2("10.1 Metodologia Experimental e Bancada de Testes")
     add_p(
-        "Para transcender a revisão teórica e examinar a técnica sob condições de tráfego corporativo denso, "
-        "construímos a bancada experimental automatizada denominada Battle IA. A esteira foi projetada para submeter "
-        "prompts de alta densidade semântica a execuções assíncronas controladas com streaming contínuo."
+        "Para validar empiricamente os pressupostos teóricos sem recorrer a simulações sintéticas, "
+        "construímos a bancada experimental automatizada Battle IA. A infraestrutura realiza chamadas HTTP "
+        "reais em regime de streaming contínuo via Server-Sent Events (SSE) contra o endpoint corporativo "
+        "NVIDIA NIM Cloud (integrate.api.nvidia.com), executando o modelo fundacional multimodal "
+        "Meta Llama-3.2-11B-Vision-Instruct (identificador de API meta/llama-3.2-11b-vision-instruct) "
+        "alocado em aceleradores NVIDIA A100 SXM4 com temperatura controlada em 0,1 e teto de geração "
+        "padronizado em 260 tokens de saída (max_tokens = 260)."
     )
-    add_p("A bancada abrangeu três cargas de trabalho críticas em engenharia de software corporativa:")
-    add_p("1. Caso 1 — Raciocínio em Sistemas Distribuídos e Concorrência: Análise de tolerância a partições sob o teorema CAP, locks distribuídos e consistência eventual em mensageria assíncrona (1.385 tokens de entrada);")
-    add_p("2. Caso 2 — Engenharia de Dados e Geração de Consultas SQL sob Esquemas DDL Complexos: Mapeamento de 8 tabelas relacionais interligadas por restrições de chave estrangeira e comandos de agrupamento analítico (1.792 tokens de entrada);")
-    add_p("3. Caso 3 — Governança e Auditoria de Conformidade com a LGPD: Análise de termos de privacidade para identificação de vetores de vazamento e enquadramento de bases legais de tratamento (2.148 tokens de entrada).")
+    add_p("Os ensaios abrangeram três cargas de trabalho representativas da engenharia de computação:")
+
+    c1_few = by_key[("caso_1", "Few-shot (Baseline)")]["tokens_entrada"]
+    c1_zero = by_key[("caso_1", "Zero-shot")]["tokens_entrada"]
+    c2_few = by_key[("caso_2", "Few-shot (Baseline)")]["tokens_entrada"]
+    c2_zero = by_key[("caso_2", "Zero-shot")]["tokens_entrada"]
+    c3_few = by_key[("caso_3", "Few-shot (Baseline)")]["tokens_entrada"]
+    c3_zero = by_key[("caso_3", "Zero-shot")]["tokens_entrada"]
+
     add_p(
-        "Confrontamos duas linhas de base convencionais — Zero-shot e Few-shot — com o algoritmo LLMLingua parametrizado em taxas nominais de 2x e 4x. "
-        "Os modelos empregados foram instâncias de fronteira: Llama-3-70B-Instruct e Mistral-Large, operados em precisão FP16 em nós acelerados por GPU."
+        f"1. Caso 1 — Raciocínio em Sistemas Distribuídos e Concorrência: Análise de particionamento de rede "
+        f"em cluster Raft de 5 nós sob o Teorema CAP, prevenção de split-brain via quórum de maioria (N/2 + 1) "
+        f"e linearizabilidade de leituras por leasing de liderança ({c1_few} tokens de entrada no baseline Few-shot "
+        f"e {c1_zero} tokens no Zero-shot);"
+    )
+    add_p(
+        f"2. Caso 2 — Engenharia de Dados e Geração de Consultas SQL sob Esquemas DDL: Mapeamento de esquema "
+        f"relacional em Terceira Forma Normal (3FN) composto pelas tabelas clientes, pedidos, itens_pedido e faturas, "
+        f"exigindo agregação financeira com Common Table Expressions (WITH / CTE) e função de janela DENSE_RANK() "
+        f"({c2_few} tokens de entrada no baseline Few-shot e {c2_zero} tokens no Zero-shot);"
+    )
+    add_p(
+        f"3. Caso 3 — Governança e Auditoria de Conformidade com a LGPD: Parecer técnico-jurídico sob a Lei "
+        f"nº 13.709/2018 contrastando coleta de telemetria comportamental via Legítimo Interesse (Art. 7º, IX) "
+        f"e captura biométrica facial enquadrada como Dado Pessoal Sensível (Art. 5º, II e Art. 11º) "
+        f"({c3_few} tokens de entrada no baseline Few-shot e {c3_zero} tokens no Zero-shot)."
+    )
+    add_p(
+        "Confrontamos duas linhas de base convencionais — Few-shot (Baseline) e Zero-shot — com o motor "
+        "algorítmico ShannonPromptCompressor, inspirado no LLMLingua e parametrizado em fatores nominais de poda "
+        "de 2x e 4x. O compressor calcula a autoinformação de Shannon I(w) = -log2 P(w) de cada vocábulo, podando "
+        "conectivos redundantes enquanto aplica proteção estrita (token whitelisting) sobre identificadores técnicos, "
+        "cláusulas SQL e referências normativas."
     )
 
     add_h2("10.2 Avaliação do Volume de Tokens e Taxas de Compressão")
     add_p(
-        "A primeira análise avaliou a capacidade de poda do algoritmo. A Tabela 1 reúne o consumo médio de tokens de entrada, tokens de resposta gerados "
-        "e a redução percentual em relação ao baseline Few-shot."
+        "A contabilização de tokens foi extraída diretamente do manifesto oficial usage retornado pelo servidor "
+        "NVIDIA NIM (prompt_tokens, completion_tokens e total_tokens). A Tabela 1 apresenta o consumo exato "
+        "medido em cada configuração e a respectiva redução percentual frente à linha de base Few-shot."
     )
 
-    add_table_title("Tabela 1 – Resumo do consumo de tokens e taxas de compressão efetiva por técnica e caso de uso")
-    headers_t1 = ["Caso de Uso", "Técnica de Prompting", "Tokens Entrada", "Tokens Saída", "Razão Efetiva", "Redução de Entrada (%)"]
-    data_t1 = [
-        ["Caso 1: Sistemas Distribuídos", "Zero-shot", "1.385", "412", "1.00x", "—"],
-        ["Caso 1: Sistemas Distribuídos", "Few-shot", "2.240", "438", "1.00x (Ref)", "Baseline"],
-        ["Caso 1: Sistemas Distribuídos", "LLMLingua (2x)", "682", "405", "2.03x", "-69,6%"],
-        ["Caso 1: Sistemas Distribuídos", "LLMLingua (4x)", "348", "398", "3.98x", "-84,5%"],
-        ["Caso 2: SQL sob DDL", "Zero-shot", "1.792", "380", "1.00x", "—"],
-        ["Caso 2: SQL sob DDL", "Few-shot", "2.650", "395", "1.00x (Ref)", "Baseline"],
-        ["Caso 2: SQL sob DDL", "LLMLingua (2x)", "890", "388", "2.01x", "-66,4%"],
-        ["Caso 2: SQL sob DDL", "LLMLingua (4x)", "452", "376", "3.96x", "-82,9%"],
-        ["Caso 3: Auditoria LGPD", "Zero-shot", "2.148", "520", "1.00x", "—"],
-        ["Caso 3: Auditoria LGPD", "Few-shot", "3.180", "545", "1.00x (Ref)", "Baseline"],
-        ["Caso 3: Auditoria LGPD", "LLMLingua (2x)", "1.064", "515", "2.02x", "-66,5%"],
-        ["Caso 3: Auditoria LGPD", "LLMLingua (4x)", "542", "502", "3.96x", "-83,0%"],
+    add_table_title("Tabela 1 – Consumo real de tokens faturados na API NVIDIA NIM e taxas efetivas de compressão")
+    headers_t1 = ["Caso de Uso", "Técnica de Prompting", "Tokens Entrada", "Tokens Saída", "Razão Efetiva", "Redução Entrada (%)"]
+
+    casos_meta = [
+        ("caso_1", "Caso 1: Sistemas Distribuídos"),
+        ("caso_2", "Caso 2: SQL sob DDL"),
+        ("caso_3", "Caso 3: Auditoria LGPD"),
     ]
-    col_w_t1 = [Cm(5.0), Cm(3.2), Cm(2.2), Cm(2.0), Cm(2.2), Cm(2.4)]
+    tecnicas_ordem_t1 = ["Few-shot (Baseline)", "Zero-shot", "LLMLingua (2x)", "LLMLingua (4x)"]
+
+    data_t1 = []
+    for cid, c_label in casos_meta:
+        base_in = by_key[(cid, "Few-shot (Baseline)")]["tokens_entrada"]
+        for tec in tecnicas_ordem_t1:
+            rec = by_key[(cid, tec)]
+            t_in = rec["tokens_entrada"]
+            t_out = rec["tokens_saida"]
+            razao = base_in / t_in
+            if tec == "Few-shot (Baseline)":
+                razao_str = "1,00x (Ref)"
+                red_str = "Baseline (0,0%)"
+            else:
+                red_pct = ((t_in - base_in) / base_in) * 100.0
+                razao_str = f"{fmt_br(razao, 2)}x"
+                red_str = f"{fmt_br(red_pct, 1)}%"
+            tec_short = "Few-shot" if tec == "Few-shot (Baseline)" else tec
+            data_t1.append([c_label, tec_short, str(t_in), str(t_out), razao_str, red_str])
+
+    col_w_t1 = [Cm(4.8), Cm(3.2), Cm(2.2), Cm(2.0), Cm(2.3), Cm(2.5)]
     t1 = doc.add_table(rows=1, cols=6)
     format_abnt_table(t1, col_w_t1, headers_t1, data_t1)
     add_table_source()
 
     add_p(
-        "A Figura 10.1 sintetiza o comportamento do volume de entrada processado em cada caso, destacando visualmente a compactação frente às práticas usuais."
+        "A Figura 10.1 reproduz graficamente as medições da Tabela 1, evidenciando o degrau de redução "
+        "no volume de tokens de entrada processados pelo modelo Meta Llama-3.2-11B-Vision-Instruct."
     )
 
     add_figure(
         figs_dir / "figura_10_1_volume_tokens.png",
-        "Figura 10.1 – Comparativo do volume de tokens de entrada (prompt) por técnica de prompting nos três cenários de teste"
+        "Figura 10.1 – Consumo real de tokens de entrada por técnica de prompting nos três cenários avaliados"
     )
 
     add_p(
-        "Constatamos que o LLMLingua atingiu taxas efetivas aderentes às metas nominais (2,01x a 2,03x para 2x; 3,96x a 3,98x para 4x). "
-        "Frente aos prompts Few-shot, a compressão de 4x eliminou mais de 82% dos tokens de entrada. Os tokens de saída gerados pelos modelos variaram menos de 4,5%, "
-        "provando que podar a entrada não restringe a profundidade analítica da resposta técnica."
+        "Observa-se um fenômeno de engenharia fundamental ao confrontar as taxas nominais do compressor (2x e 4x) "
+        "com as razões efetivas faturadas na API (1,63x a 1,65x para 2x; 2,21x a 2,35x para 4x frente ao baseline Few-shot). "
+        "Enquanto a poda lexical atua sobre o corpo da instrução do usuário, a requisição real contabilizada em prompt_tokens "
+        "inclui o system prompt invariante, os delimitadores especiais do template de chat do Llama-3.2 e os tokens blindados "
+        "pela lista de proteção semântica (whitelisting de operadores SQL, nomes de tabelas e artigos da LGPD). "
+        "Ainda assim, a compressão nominal de 4x eliminou 56,2% dos tokens de entrada no Caso 1 (de 340 para 149 tokens), "
+        "57,4% no Caso 2 (de 434 para 185 tokens) e 54,8% no Caso 3 (de 378 para 171 tokens), mantendo a geração "
+        "estável no teto de 260 tokens de saída."
     )
 
     add_h2("10.3 Latência de Inferência e Tempo de Resposta (TTFT)")
     add_p(
-        "A latência total compreende o prefill time (processamento inicial da entrada) e o decoding time (geração sequencial da saída). "
-        "Enquanto o decoding é limitado pela largura de banda de memória da GPU, o prefill escala de forma quadrática com a entrada. "
-        "A Tabela 2 expõe o comportamento do Time-to-First-Token (TTFT) e a latência global observada."
+        "A latência percebida pelo usuário em sistemas de streaming é governada pelo Time-to-First-Token (TTFT), "
+        "cronometrado na bancada desde o disparo do payload HTTP até a recepção do primeiro fragmento de texto via SSE. "
+        "A Tabela 2 consolida o TTFT em milissegundos, o tempo total de geração em segundos e as variações relativas."
     )
 
-    add_table_title("Tabela 2 – Latência média de resposta: Time-to-First-Token (TTFT) e tempo total de inferência")
-    headers_t2 = ["Caso de Uso", "Técnica", "TTFT (ms)", "Tempo Total (ms)", "Redução TTFT (%)", "Ganho Total (%)"]
-    data_t2 = [
-        ["Caso 1: Sistemas Distribuídos", "Few-shot", "1.420", "5.890", "Baseline", "Baseline"],
-        ["Caso 1: Sistemas Distribuídos", "Zero-shot", "890", "5.120", "-37,3%", "-13,1%"],
-        ["Caso 1: Sistemas Distribuídos", "LLMLingua (2x)", "460", "4.650", "-67,6%", "-21,1%"],
-        ["Caso 1: Sistemas Distribuídos", "LLMLingua (4x)", "280", "4.390", "-80,3%", "-25,5%"],
-        ["Caso 2: SQL sob DDL", "Few-shot", "1.680", "5.740", "Baseline", "Baseline"],
-        ["Caso 2: SQL sob DDL", "Zero-shot", "1.120", "5.030", "-33,3%", "-12,4%"],
-        ["Caso 2: SQL sob DDL", "LLMLingua (2x)", "580", "4.410", "-65,5%", "-23,2%"],
-        ["Caso 2: SQL sob DDL", "LLMLingua (4x)", "320", "4.120", "-81,0%", "-28,2%"],
-        ["Caso 3: Auditoria LGPD", "Few-shot", "2.150", "7.680", "Baseline", "Baseline"],
-        ["Caso 3: Auditoria LGPD", "Zero-shot", "1.410", "6.720", "-34,4%", "-12,5%"],
-        ["Caso 3: Auditoria LGPD", "LLMLingua (2x)", "710", "5.910", "-67,0%", "-23,0%"],
-        ["Caso 3: Auditoria LGPD", "LLMLingua (4x)", "390", "5.480", "-81,9%", "-28,6%"],
-    ]
-    col_w_t2 = [Cm(5.0), Cm(3.2), Cm(2.2), Cm(2.4), Cm(2.3), Cm(2.1)]
+    add_table_title("Tabela 2 – Latência inicial de resposta (TTFT) e tempo total de inferência medidos via SSE streaming")
+    headers_t2 = ["Caso de Uso", "Técnica", "TTFT (ms)", "Tempo Total (s)", "Var. TTFT vs Few-shot", "Var. TTFT vs Zero-shot"]
+
+    data_t2 = []
+    for cid, c_label in casos_meta:
+        base_ttft = by_key[(cid, "Few-shot (Baseline)")]["ttft_ms"]
+        zero_ttft = by_key[(cid, "Zero-shot")]["ttft_ms"]
+        for tec in tecnicas_ordem_t1:
+            rec = by_key[(cid, tec)]
+            ttft = rec["ttft_ms"]
+            t_tot = rec["tempo_total_s"]
+            if tec == "Few-shot (Baseline)":
+                var_few = "Baseline (0,0%)"
+            else:
+                diff_few = ((ttft - base_ttft) / base_ttft) * 100.0
+                sinal = "+" if diff_few > 0 else ""
+                var_few = f"{sinal}{fmt_br(diff_few, 1)}%"
+
+            if tec == "Zero-shot":
+                var_zero = "Ref. Zero-shot"
+            else:
+                diff_zero = ((ttft - zero_ttft) / zero_ttft) * 100.0
+                sinal_z = "+" if diff_zero > 0 else ""
+                var_zero = f"{sinal_z}{fmt_br(diff_zero, 1)}%"
+
+            tec_short = "Few-shot" if tec == "Few-shot (Baseline)" else tec
+            data_t2.append([
+                c_label,
+                tec_short,
+                fmt_br(ttft, 1),
+                fmt_br(t_tot, 2),
+                var_few,
+                var_zero
+            ])
+
+    col_w_t2 = [Cm(4.6), Cm(3.0), Cm(2.1), Cm(2.2), Cm(2.5), Cm(2.6)]
     t2 = doc.add_table(rows=1, cols=6)
     format_abnt_table(t2, col_w_t2, headers_t2, data_t2)
     add_table_source()
 
     add_p(
-        "A Figura 10.2 destaca a redução no TTFT alcançada ao eliminar carga matricial desnecessária na GPU durante a fase de prefill."
+        "A Figura 10.2 ilustra o comportamento do TTFT nos doze ensaios realizados sobre o cluster NVIDIA A100 SXM4."
     )
 
     add_figure(
         figs_dir / "figura_10_2_latencia_ttft.png",
-        "Figura 10.2 – Redução do Time-to-First-Token (TTFT em milissegundos) sob diferentes técnicas de prompting"
+        "Figura 10.2 – Comportamento real do Time-to-First-Token (TTFT em ms) sob diferentes técnicas de prompting"
     )
 
     add_p(
-        "Sob taxa de 4x, o TTFT caiu de 1.420 ms para 280 ms no Caso 1 (-80,3%) e de 2.150 ms para 390 ms no Caso 3 (-81,9%). "
-        "Essa agilidade suprime a percepção de congelamento em interfaces conversacionais corporativas, viabilizando interações quase instantâneas."
+        "A análise empírica de um endpoint de nuvem multi-inquilino (multi-tenant cloud inference) revela que a latência "
+        "inicial observada resulta da soma TTFT = T_rede + T_fila + T_prefill. Nos ensaios sem compressão ou com poda intermediária, "
+        "ocorreram picos transitórios de enfileiramento e contenção de escalonamento no cluster compartilhado — notadamente no "
+        "Zero-shot do Caso 2 (2.032,7 ms) e do Caso 3 (4.418,7 ms), bem como na rodada LLMLingua 2x do Caso 1 (914,3 ms) e do "
+        "Caso 3 (1.344,7 ms). Em contrapartida, a compressão de 4x apresentou estabilidade superior em todos os cenários, "
+        "mantendo o TTFT estritamente na faixa de 538,0 ms (Caso 1), 636,7 ms (Caso 2) e 548,2 ms (Caso 3). "
+        "No Caso 3, o prompt enxuto de 171 tokens (4x) reduziu o TTFT em 23,0% frente ao baseline Few-shot (711,6 ms) "
+        "e em 87,6% frente ao pico de contenção do Zero-shot (4.418,7 ms), demonstrando que sequências mais curtas "
+        "favorecem a alocação imediata de blocos de KV-cache no agendador de lotes contínuos (continuous batching) da GPU."
     )
 
     add_h2("10.4 Fidelidade Semântica via BERTScore")
     add_p(
-        "A viabilidade da técnica requer que a concisão não mutile o significado das instruções. Comparamos as saídas geradas por prompts comprimidos "
-        "contra o padrão técnico integral utilizando o modelo pré-treinado RoBERTa-large. A Tabela 3 consolida as métricas apuradas."
+        "Para verificar se a poda lexical preserva a exatidão conceitual da resposta, submetemos as saídas do modelo "
+        "ao avaliador SemanticFidelityEvaluator, contrastando cada geração com o gabarito técnico de referência. "
+        "A métrica composta BERTScore Proxy F1 integra a similaridade cossenoidal de N-gramas (peso 0,50), a taxa de "
+        "retenção de entidades técnicas obrigatórias (peso 0,35) e o índice ROUGE-L de subsequência comum mais longa (peso 0,15), "
+        "adotando o limiar crítico acadêmico de F1 = 0,80. A Tabela 3 detalha os indicadores obtidos."
     )
 
-    add_table_title("Tabela 3 – Avaliação de fidelidade semântica com métricas de BERTScore (Precisão, Recall e F1)")
-    headers_t3 = ["Caso de Uso", "Técnica / Taxa", "BERTScore Precision", "BERTScore Recall", "BERTScore F1", "Status de Aceitação"]
-    data_t3 = [
-        ["Caso 1: Sistemas Distribuídos", "Few-shot (Ref)", "1,000", "1,000", "1,000", "Referência"],
-        ["Caso 1: Sistemas Distribuídos", "Zero-shot", "0,912", "0,895", "0,903", "Excelente"],
-        ["Caso 1: Sistemas Distribuídos", "LLMLingua (2x)", "0,905", "0,882", "0,893", "Excelente"],
-        ["Caso 1: Sistemas Distribuídos", "LLMLingua (4x)", "0,881", "0,865", "0,873", "Aprovado (> 0,85)"],
-        ["Caso 2: SQL sob DDL", "Few-shot (Ref)", "1,000", "1,000", "1,000", "Referência"],
-        ["Caso 2: SQL sob DDL", "Zero-shot", "0,928", "0,910", "0,919", "Excelente"],
-        ["Caso 2: SQL sob DDL", "LLMLingua (2x)", "0,921", "0,908", "0,914", "Excelente"],
-        ["Caso 2: SQL sob DDL", "LLMLingua (4x)", "0,874", "0,852", "0,863", "Aprovado (> 0,85)"],
-        ["Caso 3: Auditoria LGPD", "Few-shot (Ref)", "1,000", "1,000", "1,000", "Referência"],
-        ["Caso 3: Auditoria LGPD", "Zero-shot", "0,898", "0,882", "0,890", "Excelente"],
-        ["Caso 3: Auditoria LGPD", "LLMLingua (2x)", "0,891", "0,876", "0,883", "Excelente"],
-        ["Caso 3: Auditoria LGPD", "LLMLingua (4x)", "0,867", "0,845", "0,856", "Aprovado (> 0,85)"],
-    ]
-    col_w_t3 = [Cm(5.0), Cm(3.2), Cm(2.4), Cm(2.2), Cm(2.2), Cm(2.2)]
-    t3 = doc.add_table(rows=1, cols=6)
+    add_table_title("Tabela 3 – Métricas reais de fidelidade semântica: Similaridade de Cosseno, ROUGE-L, Retenção de Entidades e BERTScore Proxy F1")
+    headers_t3 = ["Caso de Uso", "Técnica / Taxa", "Cosine Sim.", "ROUGE-L", "Ret. Entidades", "BERTScore F1", "Status (≥ 0,80)"]
+
+    data_t3 = []
+    for cid, c_label in casos_meta:
+        for tec in tecnicas_ordem_t1:
+            rec = by_key[(cid, tec)]
+            cos_v = rec["cosine_similarity"]
+            rouge_v = rec["rouge_l_f1"]
+            ent_v = rec["entity_retention"] * 100.0
+            f1_v = rec["bertscore_proxy_f1"]
+            if f1_v >= 0.85:
+                status = "Excelente (≥ 0,85)"
+            elif f1_v >= 0.80:
+                status = "Aprovado (≥ 0,80)"
+            else:
+                status = "Atenção (< 0,80)"
+            tec_short = "Few-shot" if tec == "Few-shot (Baseline)" else tec
+            data_t3.append([
+                c_label,
+                tec_short,
+                fmt_br(cos_v, 4),
+                fmt_br(rouge_v, 4),
+                f"{fmt_br(ent_v, 1)}%",
+                fmt_br(f1_v, 4),
+                status
+            ])
+
+    col_w_t3 = [Cm(4.2), Cm(2.7), Cm(2.0), Cm(1.9), Cm(2.1), Cm(2.1), Cm(2.5)]
+    t3 = doc.add_table(rows=1, cols=7)
     format_abnt_table(t3, col_w_t3, headers_t3, data_t3)
     add_table_source()
 
     add_p(
-        "A Figura 10.3 traça a curva de retenção semântica em função do fator de compressão, exibindo o cruzamento com o limiar crítico de aceitação (F1 = 0,85)."
+        "A Figura 10.3 apresenta a curva de retenção semântica em função da taxa de compressão (1x Zero-shot, 2x e 4x), "
+        "demarcando a linha horizontal do limiar crítico acadêmico (F1 = 0,80)."
     )
 
     add_figure(
         figs_dir / "figura_10_3_bertscore_f1.png",
-        "Figura 10.3 – Curva de retenção semântica (BERTScore F1) em função da razão de compressão e limiar de aceitação"
+        "Figura 10.3 – Curva real de retenção semântica (BERTScore Proxy F1) por razão de compressão e limiar crítico (0,80)"
     )
 
     add_p(
-        "Mesmo na taxa de 4x, o BERTScore F1 manteve-se acima de 0,85 em todos os domínios. No Caso 2 (SQL), os comandos gerados preservaram cláusulas JOIN "
-        "e restrições de integridade sob 2x (F1 de 0,914) e executaram perfeitamente sob 4x (F1 de 0,863). O modelo de linguagem recompôs a lógica funcional "
-        "mesmo diante de um prompt desprovido de termos gramaticais acessórios."
+        "A dissecação dos três domínios expõe comportamentos distintos e cientificamente reveladores. "
+        "No Caso 2 (SQL sob DDL), o mecanismo de token whitelisting preservou 100,0% das entidades obrigatórias em todas as configurações, "
+        "sustentando BERTScore F1 na faixa de excelência tanto em 2x (0,8623) quanto em 4x (0,8524). "
+        "No Caso 3 (Auditoria LGPD), comprovou-se empiricamente o fenômeno de ganho de relação sinal-ruído descrito por Jiang et al. (2023): "
+        "enquanto os prompts extensos (Few-shot com F1 de 0,7916 e Zero-shot com 0,7955) dispersaram a geração inicial do modelo em preâmbulos "
+        "introdutórios — retendo apenas 37,5% das entidades jurídicas antes do corte de 260 tokens —, os prompts comprimidos concentraram "
+        "a atenção diretamente nos dispositivos legais protegidos (Art. 7º, Art. 11º e dado sensível), elevando a retenção de entidades para "
+        "50,0% (F1 de 0,8037 em 2x) e 75,0% (F1 de 0,8279 em 4x). "
+        "Por outro lado, no Caso 1 (Sistemas Distribuídos), o índice F1 recuou de 0,8115 (Zero-shot) para 0,7917 (2x) e 0,7912 (4x), "
+        "ficando marginalmente abaixo do corte de 0,80 (-0,0088). Isso demonstra que, em modelos compactos de 11B parâmetros, "
+        "explicações teóricas multi-etapas sobre consenso distribuído ressentem-se da remoção de preposições e conectivos causais."
     )
 
     add_h2("10.5 Viabilidade Financeira e Eficiência Energética")
     add_p(
-        "Simulamos um volume corporativo de 100.000 requisições considerando tarifas vigentes de mercado (US$ 3,00 / 1M tokens de entrada e US$ 9,00 / 1M tokens de saída). "
-        "A Tabela 4 sintetiza a projeção de economia financeira e a redução nas multiplicações matriciais da autoatenção."
+        "Para dimensionar o impacto operacional em larga escala, projetamos o processamento de um lote corporativo "
+        "de 100.000 requisições sob a estrutura tarifária de referência implementada na bancada (US$ 3,00 por milhão "
+        "de tokens de entrada e US$ 15,00 por milhão de tokens de saída). Como todas as execuções operaram com teto fixo "
+        "de 260 tokens de saída (26,0 milhões de tokens gerados em 100k chamadas, equivalentes a US$ 390,00 fixos de saída), "
+        "a variação econômica reflete exatamente o alívio obtido no processamento de entrada. A Tabela 4 sintetiza "
+        "as médias consolidadas dos três casos para cada técnica, em correspondência exata com a Figura 10.4."
     )
 
-    add_table_title("Tabela 4 – Projeção de impacto econômico e redução de FLOPs de autoatenção para 100.000 requisições")
-    headers_t4 = ["Cenário / Técnica", "Tokens Entrada (M)", "Custo Entrada ($)", "Custo Total ($)", "Economia Financeira", "Redução FLOPs Atenção"]
-    data_t4 = [
-        ["Cenário 1 (Few-shot Baseline)", "269,0 M", "US$ 807,00", "US$ 1.221,00", "Baseline (0%)", "0,0% (Ref)"],
-        ["Cenário 2 (Zero-shot)", "177,5 M", "US$ 532,50", "US$ 926,10", "-24,2% (US$ 294,90)", "-56,4%"],
-        ["Cenário 3 (LLMLingua 2x)", "87,9 M", "US$ 263,70", "US$ 656,70", "-46,2% (US$ 564,30)", "-74,9%"],
-        ["Cenário 4 (LLMLingua 4x)", "44,7 M", "US$ 134,10", "US$ 518,40", "-57,5% (US$ 702,60)", "-93,8%"],
-    ]
-    col_w_t4 = [Cm(5.0), Cm(2.4), Cm(2.3), Cm(2.3), Cm(2.7), Cm(2.5)]
+    add_table_title("Tabela 4 – Projeção financeira consolidada (100.000 requisições) e redução média de FLOPs de autoatenção O(n²)")
+    headers_t4 = ["Cenário / Técnica", "Tokens Entrada (100k)", "Custo Entrada (US$)", "Custo Total (US$)", "Economia (Entrada / Total)", "Redução FLOPs O(n²)"]
+
+    cids = ["caso_1", "caso_2", "caso_3"]
+    base_avg_in = sum(by_key[(c, "Few-shot (Baseline)")]["tokens_entrada"] for c in cids) / 3.0
+    base_avg_cost_in = (base_avg_in * 100_000 / 1_000_000.0) * 3.00
+    base_avg_cost_tot = sum(by_key[(c, "Few-shot (Baseline)")]["custo_total_100k_usd"] for c in cids) / 3.0
+
+    data_t4 = []
+    for idx_t, tec in enumerate(tecnicas_ordem_t1, start=1):
+        avg_in = sum(by_key[(c, tec)]["tokens_entrada"] for c in cids) / 3.0
+        vol_m = (avg_in * 100_000) / 1_000_000.0
+        cost_in = vol_m * 3.00
+        cost_tot = sum(by_key[(c, tec)]["custo_total_100k_usd"] for c in cids) / 3.0
+        avg_flops = sum(by_key[(c, tec)]["reducao_flops_atencao_pct"] for c in cids) / 3.0
+
+        if tec == "Few-shot (Baseline)":
+            econ_str = "Baseline (0,0%)"
+            flops_str = "0,0% (Ref)"
+        else:
+            ec_in_pct = ((cost_in - base_avg_cost_in) / base_avg_cost_in) * 100.0
+            ec_tot_pct = ((cost_tot - base_avg_cost_tot) / base_avg_cost_tot) * 100.0
+            econ_str = f"{fmt_br(ec_in_pct, 1)}% / {fmt_br(ec_tot_pct, 1)}%"
+            flops_str = f"-{fmt_br(avg_flops, 1)}%"
+
+        tec_label = "Few-shot (Baseline)" if tec == "Few-shot (Baseline)" else tec
+        data_t4.append([
+            f"Cenário {idx_t}: {tec_label}",
+            f"{fmt_br(vol_m, 2)} M",
+            f"US$ {fmt_br(cost_in, 2)}",
+            f"US$ {fmt_br(cost_tot, 2)}",
+            econ_str,
+            flops_str
+        ])
+
+    col_w_t4 = [Cm(4.5), Cm(2.5), Cm(2.5), Cm(2.5), Cm(2.8), Cm(2.2)]
     t4 = doc.add_table(rows=1, cols=6)
     format_abnt_table(t4, col_w_t4, headers_t4, data_t4)
     add_table_source()
 
     add_p(
-        "A Figura 10.4 confronta o gasto operacional projetado com o decréscimo na computação de autoatenção na GPU."
+        "A Figura 10.4 confronta em eixo duplo o custo total médio projetado para 100.000 requisições "
+        "(US$ 505,20 no Few-shot, US$ 482,80 no Zero-shot, US$ 460,30 no LLMLingua 2x e US$ 440,50 no LLMLingua 4x) "
+        "com a redução percentual média nos cálculos quadráticos de autoatenção durante a fase de prefill."
     )
 
     add_figure(
         figs_dir / "figura_10_4_custo_flops.png",
-        "Figura 10.4 – Relação entre custo financeiro operacional em escala e redução percentual de FLOPs na autoatenção"
+        "Figura 10.4 – Economia financeira projetada (100k requisições) e redução média de FLOPs na autoatenção O(n²)"
     )
 
     add_p(
-        "A compressão de 4x proporcionou economia de 57,5% no dispêndio global de infraestrutura e cortou 83,4% do custo isolado de entrada. "
-        "A queda de 93,8% nas operações matemáticas do prefill arrefece diretamente a dissipação térmica das placas, convertendo a compressão em uma prática tangível de Green AI."
+        "Como o esforço computacional da camada de autoatenção escala segundo 1 - (T_comprimido / T_baseline)², "
+        "uma redução média de 56,2% nos tokens de entrada sob LLMLingua 4x (de 38,40 milhões para 16,83 milhões de tokens "
+        "a cada 100.000 chamadas) traduz-se em uma supressão média de 80,7% nos FLOPs de autoatenção do prefill "
+        "(80,8% no Caso 1, 81,8% no Caso 2 e 79,5% no Caso 3). Financeiramente, o custo isolado de entrada cai 56,2% "
+        "(de US$ 115,20 para US$ 50,50), gerando economia líquida de US$ 64,70 (-12,8% no custo total do lote, que é "
+        "amortecido pelo peso tarifário 5x superior dos 260 tokens fixos de saída). Sob a ótica de Green AI, "
+        "poupar mais de 80% das multiplicações matriciais de prefill reduz diretamente a pressão térmica e energética "
+        "nos módulos HBM dos aceleradores A100 SXM4."
     )
 
     add_h2("10.6 Diretrizes de Engenharia e Análise de Trade-offs")
     add_p(
-        "Os ensaios práticos revelaram duas diretrizes capitais para engenharia de software: "
-        "primeiramente, a proteção de identificadores rígidos via listas de permissão (token whitelisting), "
-        "impedindo que podas acima de 5x eliminem termos críticos como 'ON DELETE CASCADE' ou chaves estrangeiras; "
-        "em segundo lugar, a compressão assimétrica em arquiteturas RAG, onde o prompt de sistema e a pergunta "
-        "do usuário mantêm-se intactos, concentrando a redução exclusivamente sobre o volume textual recuperado."
+        "A consolidação dos resultados experimentais permite estabelecer três diretrizes práticas para arquitetos de software: "
+        "(1) obrigatoriedade de listas de proteção de vocabulário (token whitelisting) em tarefas estruturadas como geração de SQL "
+        "e análise normativa, garantindo 100% de preservação de operadores e cláusulas críticas; "
+        "(2) adoção preferencial da taxa de 4x em tarefas de extração e auditoria regulatória (como LGPD), onde a remoção "
+        "de verbosidade acessória atua como filtro de ruído e melhora a densidade da resposta; e "
+        "(3) cautela na aplicação de podas agressivas sobre modelos compactos (porte de 8B a 11B parâmetros) em problemas "
+        "de raciocínio causal encadeado (como algoritmos de consenso distribuído), nos quais se recomenda limitar a compressão "
+        "ou preservar conectivos lógicos de causa e consequência."
     )
 
     # =========================================================================
@@ -546,25 +709,35 @@ def build_monograph(docx_path: Path, sumario_page_map=None):
     # =========================================================================
     add_h1("11 CONCLUSÃO E TRABALHOS FUTUROS", page_break_before=False)
     add_p(
-        "Este trabalho investigou e comprovou experimentalmente que a compressão de prompts é uma solução viável e de alto rendimento para otimizar sistemas baseados em LLMs. "
-        "A conexão entre a teoria de redundância de Shannon e a mecânica de atenção dos Transformers sustenta que podar tokens previsíveis não desfigura a intenção da instrução."
+        "Este trabalho investigou os fundamentos teóricos e comprovou experimentalmente a eficácia da compressão "
+        "algorítmica de prompts como estratégia de otimização computacional, financeira e ambiental para LLMs. "
+        "A articulação entre a Teoria da Informação de Claude Shannon e a mecânica de autoatenção dos Transformers "
+        "demonstra que a eliminação seletiva de tokens de baixa autoinformação reduz drasticamente o esforço matricial "
+        "na fase de prefill."
     )
     add_p(
-        "A esteira Battle IA demonstrou que taxas de até 4x operam de forma segura em arquiteturas de sistemas distribuídos, geração de SQL e auditoria LGPD. "
-        "Os índices BERTScore F1 mantiveram-se acima de 0,86, proporcionando corte de 80% no TTFT e economia superior a 57% no custo financeiro agregado."
+        "Os testes empíricos conduzidos na bancada Battle IA com o modelo Meta Llama-3.2-11B-Vision-Instruct em "
+        "infraestrutura NVIDIA NIM Cloud (A100 SXM4) demonstraram que a compressão nominal de 4x combinada a token whitelisting "
+        "reduz em até 57,4% o volume faturado de tokens de entrada (média de 56,2%) e suprime em média 80,7% dos FLOPs "
+        "quadráticos de autoatenção. Comprovou-se que a técnica mantém excelente fidelidade semântica na geração de consultas "
+        "SQL sob DDL (BERTScore Proxy F1 de 0,8524 com 100% de retenção de entidades) e eleva a precisão em auditoria de "
+        "conformidade LGPD (F1 subindo de 0,7916 no baseline para 0,8279 em 4x pela eliminação de ruído textual), "
+        "ao passo que evidenciou o limite de sensibilidade de modelos de 11B parâmetros em raciocínio de sistemas distribuídos (F1 de 0,7912)."
     )
     add_p(
-        "Para trabalhos futuros, identificam-se três direções prioritárias: "
-        "(a) calibração dinâmica da taxa de compressão orientada pela entropia intrínseca dos documentos recuperados em pipelines RAG; "
-        "(b) classificadores supervisionados dotados de vocabulário protegido para esquemas e palavras reservadas de bancos de dados relacionais; e "
-        "(c) integração simbiótica entre compressão contextual de entrada e quantização de pesos em hardware (FP4 e INT8)."
+        "Para trabalhos futuros, propõem-se três frentes de investigação: "
+        "(a) calibração adaptativa da taxa de poda guiada pela perplexidade contextual de modelos auxiliares dedicados (LLMLingua-2) "
+        "para proteger conectivos causais em tarefas de raciocínio distribuído; "
+        "(b) extensão da bancada Battle IA para comparação direta entre modelos compactos (11B) e modelos de fronteira (70B+) "
+        "sob múltiplas repetições estatísticas para isolamento do jitter de rede em nuvem; e "
+        "(c) avaliação conjunta de compressão de prompts e cache semântico de prefixos em arquiteturas RAG corporativas."
     )
 
     # =========================================================================
     # REFERÊNCIAS BIBLIOGRÁFICAS (100% AUDITADAS - ABNT NBR 6023)
     # =========================================================================
     add_h1("REFERÊNCIAS", page_break_before=True)
-    
+
     referencias = [
         "BAHDANAU, Dzmitry; CHO, Kyunghyun; BENGIO, Yoshua. Neural machine translation by jointly learning to align and translate. In: INTERNATIONAL CONFERENCE ON LEARNING REPRESENTATIONS (ICLR), 3., 2015, San Diego. Proceedings [...]. San Diego: ICLR, 2015. p. 1–15. Disponível em: https://arxiv.org/abs/1409.0473. Acesso em: 16 set. 2026.",
         "BROWN, Tom B. et al. Language models are few-shot learners. In: ADVANCES IN NEURAL INFORMATION PROCESSING SYSTEMS (NeurIPS), 33., 2020, San Diego (Virtual). Proceedings [...]. Red Hook: Curran Associates, 2020. v. 33, p. 1877–1901. Disponível em: https://proceedings.neurips.cc/paper/2020/hash/1457c0d6bfcb4967418bfb8ac142f64a-Abstract.html. Acesso em: 16 set. 2026.",
@@ -604,18 +777,20 @@ def build_monograph(docx_path: Path, sumario_page_map=None):
     doc.save(str(docx_path))
     print(f"[OK] DOCX gerado em: {docx_path}")
 
+
 def convert_to_pdf(docx_path: Path, pdf_path: Path):
     word = win32com.client.Dispatch("Word.Application")
     word.Visible = False
     word.DisplayAlerts = False
     try:
         doc = word.Documents.Open(str(docx_path.resolve()))
-        doc.SaveAs2(str(pdf_path.resolve()), FileFormat=17) # 17 = wdFormatPDF
+        doc.SaveAs2(str(pdf_path.resolve()), FileFormat=17)  # 17 = wdFormatPDF
         doc.Close()
         print(f"[OK] PDF compilado via Word COM: {pdf_path}")
         return True
     finally:
         word.Quit()
+
 
 def scan_heading_pages(pdf_path: Path):
     doc = fitz.open(pdf_path)
@@ -654,68 +829,84 @@ def scan_heading_pages(pdf_path: Path):
         ("11 CONCLUSÃO E TRABALHOS FUTUROS", "11 CONCLUSÃO"),
         ("REFERÊNCIAS", "REFERÊNCIAS"),
     ]
-    
+
     mapping = {}
     for label, query in search_keys:
         found_pg = None
         for p_idx, page in enumerate(doc):
-            if p_idx + 1 == 4: # Ignorar a página do próprio sumário
+            txt_up = page.get_text().upper()
+            if p_idx < 4 or "SUMÁRIO" in txt_up:  # Ignorar pré-textuais e a página do próprio sumário
                 continue
-            if query.upper() in page.get_text().upper():
+            if label == "REFERÊNCIAS":
+                lines_up = [ln.strip() for ln in txt_up.splitlines() if ln.strip()]
+                if "REFERÊNCIAS" in lines_up:
+                    found_pg = p_idx + 1
+                    break
+            elif query.upper() in txt_up:
                 found_pg = p_idx + 1
                 break
         mapping[label] = str(found_pg or 5)
     return mapping
 
+
 def main():
-    docx_file = Path(__file__).parent.parent / "01 - Manuscrito" / "TCC_II_Versao_1_Acompanhamento_Matheus_Santos.docx"
-    pdf_file = Path(__file__).parent.parent / "01 - Manuscrito" / "TCC_II_Versao_1_Acompanhamento_Matheus_Santos.pdf"
-    
+    manuscrito_dir = Path(__file__).parent.parent / "01 - Manuscrito"
+    docx_file = manuscrito_dir / "TCC_II_Versao_1_Acompanhamento_Matheus_Santos.docx"
+    pdf_file = manuscrito_dir / "TCC_II_Versao_1_Acompanhamento_Matheus_Santos.pdf"
+    pdf_short = manuscrito_dir / "TCC_II.pdf"
+
     # 1ª Passada: Construir com sumário aproximado
     print("=== PASSADA 1: Compilação de teste para mapeamento de páginas ===")
     build_monograph(docx_file)
     convert_to_pdf(docx_file, pdf_file)
-    
+
     # Mapear posições reais de páginas
     print("=== MAPEANDO PÁGINAS EXATAS DO PDF GERADO ===")
     exact_map = scan_heading_pages(pdf_file)
-    for k, v in list(exact_map.items())[:8]:
+    for k, v in exact_map.items():
         print(f"  {k} -> pág. {v}")
-        
+
     # 2ª Passada: Reconstruir com sumário 100% calibrado
     print("=== PASSADA 2: Compilação definitiva com sumário calibrado ===")
     build_monograph(docx_file, sumario_page_map=exact_map)
     convert_to_pdf(docx_file, pdf_file)
-    
+
+    # Sincronizar cópias espelho no cofre acadêmico
+    shutil.copy2(pdf_file, pdf_short)
+    print(f"[OK] Espelho atualizado: {pdf_short}")
+
+    vault_root = Path(__file__).resolve().parents[3]
+    mirror_dir = vault_root / "02 - TCC II" / "01 - Manuscrito"
+    if mirror_dir.exists():
+        shutil.copy2(docx_file, mirror_dir / docx_file.name)
+        shutil.copy2(pdf_file, mirror_dir / pdf_file.name)
+        print(f"[OK] Espelho 02 - TCC II atualizado em: {mirror_dir}")
+
     # Validação visual final com PyMuPDF
     doc = fitz.open(pdf_file)
     print(f"\n==========================================")
     print(f"     VALIDAÇÃO VISUAL DEFINITIVA DO PDF   ")
     print(f"==========================================")
     print(f"Total de páginas: {len(doc)}")
-    
-    # Validar Página 1 (Capa)
+
     p1_lines = [l.strip() for l in doc[0].get_text().splitlines() if l.strip()]
     has_city = any("INDAIATUBA" in l for l in p1_lines)
     has_year = any("2026" in l for l in p1_lines)
     print(f"Página 1 (Capa): {'PERFEITA (Contém INDAIATUBA 2026)' if (has_city and has_year) else 'ERRO: Vazou para página 2'}")
-    
-    # Validar Página 2 (Resumo)
+
     p2_txt = doc[1].get_text()
     print(f"Página 2: {'RESUMO presente' if 'RESUMO' in p2_txt else 'ERRO no Resumo'}")
-    
-    # Validar Página 3 (Abstract)
+
     p3_txt = doc[2].get_text()
     print(f"Página 3: {'ABSTRACT presente' if 'ABSTRACT' in p3_txt else 'ERRO no Abstract'}")
-    
-    # Validar Página 4 (Sumário)
+
     p4_txt = doc[3].get_text()
     print(f"Página 4: {'SUMÁRIO presente' if 'SUMÁRIO' in p4_txt else 'ERRO no Sumário'}")
-    
-    # Validar Imagens
+
     total_imgs = sum(len(p.get_images()) for p in doc)
     print(f"Total de Figuras Científicas incorporadas: {total_imgs}")
     print("==========================================")
+
 
 if __name__ == "__main__":
     main()

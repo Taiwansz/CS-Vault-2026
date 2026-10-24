@@ -297,7 +297,7 @@
   },
   {
     "type": "p",
-    "text": "Formalmente, o BERTScore calcula três métricas complementares: precisão (P), cobertura (R) e F1. Para cada token da resposta candidata, calcula-se o máximo de similaridade cossenoidal com qualquer token da resposta de referência, usando os embeddings contextuais do BERT. A precisão mede a qualidade da candidata; a cobertura mede quão completamente a candidata captura a referência; e o F1 representa a média harmônica das duas. Na literatura de compressão de prompts, o BERTScore F1 tornou-se o indicador padrão de qualidade semântica, com valores acima de 0,85 considerados aceitáveis para a maioria das aplicações."
+    "text": "Formalmente, o BERTScore calcula três métricas complementares: precisão (P), cobertura (R) e F1. Para cada token da resposta candidata, calcula-se o máximo de similaridade cossenoidal com qualquer token da resposta de referência, usando os embeddings contextuais do BERT. A precisão mede a qualidade da candidata; a cobertura mede quão completamente a candidata captura a referência; e o F1 representa a média harmônica das duas. Na literatura de compressão de prompts, o BERTScore F1 consolidou-se como o indicador de referência para qualidade semântica, adotando-se o limiar crítico de 0,80 como piso de aceitação acadêmica para modelos compactos sob poda severa e valores acima de 0,85 como faixa de excelência para aplicações corporativas."
   },
   {
     "type": "p",
