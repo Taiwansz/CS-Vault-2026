@@ -1,12 +1,13 @@
 /**
  * ==============================================================================
- * ALGORITMO PESADO DE PROCESSAMENTO DE IMAGENS EM C++ (SOBEL & GAUSSIAN CONV)
+ * MICROSERVICO C++ DE PROCESSAMENTO PESADO DE IMAGENS (HTTP REST / SOCKET NATIVO)
  * Disciplina: Compiladores / Infraestrutura em Nuvem (IaaS)
  * Autor: Matheus Sousa dos Santos (Taiwansz)
- * Compilacao Recomendada (LLVM/Clang):
- *   clang++ -O3 -march=native -flto -fopenmp -std=c++17 image_processor.cpp -o image_processor
- * Compilacao Recomendada (GCC):
- *   g++ -O3 -march=native -fopenmp -std=c++17 image_processor.cpp -o image_processor
+ * Requisitos:
+ *   - Roda como servico de rede escutando na porta configurada via variavel de ambiente ($PORT).
+ *   - Le variaveis de ambiente: PORT, NUM_THREADS, BENCHMARK_RES.
+ *   - Implementa algoritmo pesado de convolucao 2D (Sobel Edge Detection) com OpenMP.
+ *   - Usa sockets Linux nativos (sys/socket.h) sem dependencias externas.
  * ==============================================================================
  */
 
@@ -16,7 +17,21 @@
 #include <chrono>
 #include <fstream>
 #include <string>
+#include <sstream>
 #include <iomanip>
+#include <cstdlib>
+#include <cstring>
+
+#ifdef _WIN32
+#include <winsock2.h>
+#include <ws2tcpip.h>
+#pragma comment(lib, "ws2_32.lib")
+#else
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <unistd.h>
+#include <arpa/inet.h>
+#endif
 
 #ifdef _OPENMP
 #include <omp.h>
@@ -44,10 +59,7 @@ public:
         return data[y * width + x];
     }
 
-    // Gerador de Imagem Sintetica de Teste (Carga Pesada de 16M pixels)
     static Image generateBenchmarkImage(int w, int h) {
-        std::cout << "[*] Gerando imagem sintetica de alta densidade (" << w << "x" << h << " = " 
-                  << (w * h) / 1000000.0 << " MP)...\n";
         Image img(w, h);
         #pragma omp parallel for collapse(2) schedule(static)
         for (int y = 0; y < h; ++y) {
@@ -60,24 +72,22 @@ public:
         return img;
     }
 
-    // Exportador para formato binario PPM (P6) - Sem dependencias externas
     bool savePPM(const std::string& filename) const {
         std::ofstream file(filename, std::ios::binary);
         if (!file.is_open()) return false;
-
         file << "P6\n" << width << " " << height << "\n255\n";
         file.write(reinterpret_cast<const char*>(data.data()), data.size() * sizeof(Pixel));
         return true;
     }
 };
 
-// Algoritmo Pesado de Processamento: Convolucao 2D com Deteccao de Bordas Sobel e Realce de Gradiente
-Image processSobelEdgeDetection(const Image& src) {
+// Algoritmo Pesado de Convolucao 2D de Sobel
+double runHeavyProcessing(int width, int height, const std::string& outputFile) {
+    Image src = Image::generateBenchmarkImage(width, height);
     int w = src.width;
     int h = src.height;
     Image dst(w, h);
 
-    // Kernels de Sobel para calculo de gradientes horizontais e verticais
     const int Gx[3][3] = {
         {-1,  0,  1},
         {-2,  0,  2},
@@ -90,13 +100,14 @@ Image processSobelEdgeDetection(const Image& src) {
         { 1,  2,  1}
     };
 
+    auto start = std::chrono::high_resolution_clock::now();
+
     #pragma omp parallel for schedule(dynamic, 64)
     for (int y = 1; y < h - 1; ++y) {
         for (int x = 1; x < w - 1; ++x) {
             float sumRx = 0, sumGx = 0, sumBx = 0;
             float sumRy = 0, sumGy = 0, sumBy = 0;
 
-            // Convolucao 3x3 no espaco de cores
             for (int ky = -1; ky <= 1; ++ky) {
                 for (int kx = -1; kx <= 1; ++kx) {
                     const Pixel& p = src.at(x + kx, y + ky);
@@ -113,7 +124,6 @@ Image processSobelEdgeDetection(const Image& src) {
                 }
             }
 
-            // Magnitude do gradiente vetorial Euclidiano: sqrt(Gx^2 + Gy^2)
             int magR = static_cast<int>(std::sqrt(sumRx * sumRx + sumRy * sumRy));
             int magG = static_cast<int>(std::sqrt(sumGx * sumGx + sumGy * sumGy));
             int magB = static_cast<int>(std::sqrt(sumBx * sumBx + sumBy * sumBy));
@@ -126,59 +136,150 @@ Image processSobelEdgeDetection(const Image& src) {
         }
     }
 
-    return dst;
-}
-
-int main(int argc, char* argv[]) {
-    std::cout << "==============================================================\n";
-    std::cout << "  MOTOR C++ DE PROCESSAMENTO PESADO DE IMAGENS (SOBEL CONV)   \n";
-    std::cout << "  Ambiente Alvo: Servidor Linux IaaS (Bare-Metal / Ubuntu)    \n";
-    std::cout << "==============================================================\n";
-
-    #ifdef _OPENMP
-    std::cout << "[+] OpenMP ativado. Threads disponiveis: " << omp_get_max_threads() << "\n";
-    #else
-    std::cout << "[!] OpenMP desativado. Execucao Single-Thread.\n";
-    #endif
-
-    // Resolucao padrao para benchmark pesado: 4096 x 4096 = 16.7 Megapixels
-    int width = 4096;
-    int height = 4096;
-    std::string outputFile = "output_sobel_processed.ppm";
-
-    if (argc >= 3) {
-        width = std::stoi(argv[1]);
-        height = std::stoi(argv[2]);
-    }
-
-    // 1. Instanciacao da Imagem
-    Image input = Image::generateBenchmarkImage(width, height);
-
-    // 2. Processamento Pesado com Medicao Temporal
-    std::cout << "[*] Executando convolucao pesada de Sobel sobre " << (width * height) << " pixels...\n";
-    auto start = std::chrono::high_resolution_clock::now();
-
-    Image output = processSobelEdgeDetection(input);
-
     auto end = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double, std::milli> duration = end - start;
 
-    double megapixelPerSec = ((width * height) / 1000000.0) / (duration.count() / 1000.0);
+    dst.savePPM(outputFile);
+    return duration.count();
+}
 
-    // 3. Relatorio de Telemetria
-    std::cout << "\n--- TELEMETRIA DE EXECUCAO ---\n";
-    std::cout << "Tempo Total de Convolucao: " << std::fixed << std::setprecision(2) << duration.count() << " ms\n";
-    std::cout << "Taxa de Processamento:     " << std::fixed << std::setprecision(2) << megapixelPerSec << " Megapixels/segundo\n";
+int main() {
+    std::cout << "==============================================================\n";
+    std::cout << "  SERVICO C++ DE PROCESSAMENTO DE IMAGENS - NUVEM IaaS       \n";
+    std::cout << "==============================================================\n";
 
-    // 4. Gravacao do Artefato de Saida
-    std::cout << "[*] Gravando resultado em disco: " << outputFile << "...\n";
-    if (output.savePPM(outputFile)) {
-        std::cout << "[+] Arquivo " << outputFile << " gerado com sucesso.\n";
-    } else {
-        std::cerr << "[-] Erro ao salvar o arquivo.\n";
+    // 1. Leitura de Variaveis de Ambiente Obrigatorias
+    const char* envPort = std::getenv("PORT");
+    int port = envPort ? std::stoi(envPort) : 8080;
+
+    const char* envThreads = std::getenv("NUM_THREADS");
+    int threads = envThreads ? std::stoi(envThreads) : 4;
+
+    const char* envRes = std::getenv("BENCHMARK_RES");
+    int benchmarkRes = envRes ? std::stoi(envRes) : 2048;
+
+    #ifdef _OPENMP
+    omp_set_num_threads(threads);
+    std::cout << "[+] OpenMP ativado com " << threads << " threads configuradas via $NUM_THREADS.\n";
+    #endif
+
+    std::cout << "[+] Variavel de Ambiente PORT: " << port << "\n";
+    std::cout << "[+] Variavel de Ambiente BENCHMARK_RES: " << benchmarkRes << "x" << benchmarkRes << "\n";
+
+    #ifdef _WIN32
+    WSADATA wsaData;
+    WSAStartup(MAKEWORD(2, 2), &wsaData);
+    #endif
+
+    // 2. Criacao do Socket TCP Nativo do Servico
+    int server_fd = socket(AF_INET, SOCK_STREAM, 0);
+    if (server_fd < 0) {
+        std::cerr << "[-] Erro critico ao criar socket.\n";
         return 1;
     }
 
-    std::cout << "[+] Concluido com exito.\n";
+    int opt = 1;
+    #ifdef _WIN32
+    setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR, (const char*)&opt, sizeof(opt));
+    #else
+    setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
+    #endif
+
+    sockaddr_in address;
+    address.sin_family = AF_INET;
+    address.sin_addr.s_addr = INADDR_ANY;
+    address.sin_port = htons(port);
+
+    if (bind(server_fd, (struct sockaddr*)&address, sizeof(address)) < 0) {
+        std::cerr << "[-] Falha ao fazer bind na porta " << port << ". Verifique permissoes.\n";
+        return 1;
+    }
+
+    if (listen(server_fd, 10) < 0) {
+        std::cerr << "[-] Falha ao colocar socket em estado listen.\n";
+        return 1;
+    }
+
+    std::cout << "[*] SERVICO PRONTO E ESCUTANDO NA PORTA: " << port << "\n";
+    std::cout << "[*] Endpoints Disponiveis:\n";
+    std::cout << "    - GET  /health   -> Verifica saude do servico\n";
+    std::cout << "    - POST /process  -> Dispara convolucao pesada de imagens\n";
+    std::cout << "--------------------------------------------------------------\n";
+
+    // 3. Loop de Atendimento de Requisicoes HTTP
+    while (true) {
+        sockaddr_in client_addr;
+        #ifdef _WIN32
+        int addrlen = sizeof(client_addr);
+        int client_socket = accept(server_fd, (struct sockaddr*)&client_addr, &addrlen);
+        #else
+        socklen_t addrlen = sizeof(client_addr);
+        int client_socket = accept(server_fd, (struct sockaddr*)&client_addr, &addrlen);
+        #endif
+
+        if (client_socket < 0) {
+            continue;
+        }
+
+        char buffer[2048] = {0};
+        #ifdef _WIN32
+        recv(client_socket, buffer, sizeof(buffer) - 1, 0);
+        #else
+        read(client_socket, buffer, sizeof(buffer) - 1);
+        #endif
+
+        std::string request(buffer);
+        std::string responseBody;
+        std::string statusCode = "200 OK";
+
+        if (request.find("GET /health") != std::string::npos || request.find("GET / ") != std::string::npos) {
+            responseBody = "{\n"
+                           "  \"status\": \"healthy\",\n"
+                           "  \"service\": \"cpp-image-processor-iaas\",\n"
+                           "  \"port\": " + std::to_string(port) + ",\n"
+                           "  \"threads\": " + std::to_string(threads) + ",\n"
+                           "  \"model\": \"IaaS - Ambiente 100% gerenciado pelo desenvolvedor\"\n"
+                           "}\n";
+        } else if (request.find("/process") != std::string::npos) {
+            std::cout << "[*] Requisicao de processamento recebida! Iniciando convolucao...\n";
+            double elapsedMs = runHeavyProcessing(benchmarkRes, benchmarkRes, "output_sobel_processed.ppm");
+            double mp = (benchmarkRes * benchmarkRes) / 1000000.0;
+            double throughput = mp / (elapsedMs / 1000.0);
+
+            responseBody = "{\n"
+                           "  \"status\": \"completed\",\n"
+                           "  \"resolution\": \"" + std::to_string(benchmarkRes) + "x" + std::to_string(benchmarkRes) + "\",\n"
+                           "  \"pixels_processed\": " + std::to_string(benchmarkRes * benchmarkRes) + ",\n"
+                           "  \"time_ms\": " + std::to_string(elapsedMs) + ",\n"
+                           "  \"throughput_mpps\": " + std::to_string(throughput) + ",\n"
+                           "  \"output_file\": \"output_sobel_processed.ppm\"\n"
+                           "}\n";
+            std::cout << "[+] Processamento concluido em " << elapsedMs << " ms.\n";
+        } else {
+            statusCode = "404 Not Found";
+            responseBody = "{\"error\": \"Endpoint nao encontrado. Use /health ou /process\"}\n";
+        }
+
+        std::string httpResponse = "HTTP/1.1 " + statusCode + "\r\n"
+                                   "Content-Type: application/json\r\n"
+                                   "Content-Length: " + std::to_string(responseBody.size()) + "\r\n"
+                                   "Connection: close\r\n\r\n" + responseBody;
+
+        #ifdef _WIN32
+        send(client_socket, httpResponse.c_str(), httpResponse.size(), 0);
+        closesocket(client_socket);
+        #else
+        write(client_socket, httpResponse.c_str(), httpResponse.size());
+        close(client_socket);
+        #endif
+    }
+
+    #ifdef _WIN32
+    closesocket(server_fd);
+    WSACleanup();
+    #else
+    close(server_fd);
+    #endif
+
     return 0;
 }

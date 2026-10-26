@@ -1,87 +1,137 @@
 #!/usr/bin/env bash
 # ==============================================================================
-# SCRIPT DE PROVISIONAMENTO AUTOMATIZADO PARA SERVIDOR LINUX CRU (IaaS)
+# SCRIPT DE AUTOMACAO E PROVISIONAMENTO IaaS (SERVIDOR LINUX UBUNTU CRU)
 # Disciplina: Compiladores / Infraestrutura em Nuvem
-# Cenário: Servidor Linux/Ubuntu recém-criado sem ferramentas instaladas.
+# Cenário: Servidor Linux/Ubuntu recem-criado com acesso SSH limpo.
+# Prova Pratica: No IaaS, a responsabilidade pelo ambiente e 100% do desenvolvedor.
 # Autor: Matheus Sousa dos Santos (Taiwansz)
-# Uso: chmod +x provision.sh && sudo ./provision.sh
 # ==============================================================================
 
 set -euo pipefail
 
-# 1. Verificacao de Privilegios Administrativos
+# 1. Verificacao de Privilegios Administrativos (Root / Sudo)
 if [[ $EUID -ne 0 ]]; then
-   echo "[-] Este script deve ser executado com privilegios de superusuario (root ou sudo)."
+   echo "[-] Erro: Este script de provisionamento IaaS requer privilegios de superusuario."
+   echo "[!] Execute com: sudo ./provision.sh"
    exit 1
 fi
 
 echo "======================================================================"
-echo "  PROVISIONAMENTO IaaS: AMBIENTE DE PROCESSAMENTO PESADO EM C++      "
+echo "  PROVISIONAMENTO IaaS: SERVICO C++ DE PROCESSAMENTO DE IMAGENS       "
+echo "  Provando a gestao integral de ambiente pelo desenvolvedor           "
 echo "======================================================================"
 
-# 2. Desabilitar prompts interativos do gerenciador de pacotes
+# 2. Desabilitar Prompts Interativos do Sistema Operacional
 export DEBIAN_FRONTEND=noninteractive
 export NEEDRESTART_MODE=a
 
 # 3. Atualizacao dos Repositorios do Sistema Operacional
-echo "[1/5] Atualizando repositorios de pacotes (APT)..."
+echo "[1/6] Atualizando repositorios e pacotes do sistema base..."
 apt-get update -y
 apt-get upgrade -y
 
-# 4. Instalacao da Cadeia de Compiladores (Toolchains GCC e LLVM/Clang)
-echo "[2/5] Instalando toolchains de compilacao e bibliotecas de paralelismo..."
+# 4. Instalacao do Compilador (g++) e Dependencias de Construcao
+echo "[2/6] Instalando compilador g++, bibliotecas OpenMP e utilitarios de rede..."
 apt-get install -y \
     build-essential \
     g++ \
-    clang \
-    llvm \
     libomp-dev \
-    cmake \
-    make \
-    htop \
     curl \
-    git \
-    tree
+    net-tools \
+    ufw \
+    htop
 
-# 5. Telemetria do Hardware Provisionado
-echo "[3/5] Telemetria de Hardware da Instancia IaaS:"
-echo "--------------------------------------------------"
-echo "CPU Modelo:      $(lscpu | grep 'Model name:' | sed 's/Model name:[ \t]*//')"
-echo "Nucleos Fisicos: $(nproc --all)"
-echo "Memoria Total:   $(free -h | awk '/^Mem:/ {print $2}')"
-echo "Disco Disponivel:$(df -h / | awk 'NR==2 {print $4}')"
-echo "--------------------------------------------------"
+# 5. Configuracao de Variaveis de Ambiente do Servico
+echo "[3/6] Configurando variaveis de ambiente persistentes no SO..."
+export PORT=8080
+export NUM_THREADS=$(nproc --all)
+export BENCHMARK_RES=2048
 
-# 6. Compilacao do Codigo C++ (Fase de Sintese e Otimizacao)
+# Persistir no ambiente do sistema (/etc/environment e perfil global)
+cat << 'EOF' > /etc/profile.d/image_service_env.sh
+export PORT=8080
+export NUM_THREADS=$(nproc --all)
+export BENCHMARK_RES=2048
+EOF
+chmod +x /etc/profile.d/image_service_env.sh
+
+echo "  [+] PORT configurada para: $PORT"
+echo "  [+] NUM_THREADS configurado para: $NUM_THREADS (todos os nucleos fisicos)"
+echo "  [+] BENCHMARK_RES configurado para: ${BENCHMARK_RES}x${BENCHMARK_RES}"
+
+# 6. Liberacao da Porta no Firewall (Seguranca IaaS)
+if command -v ufw &> /dev/null && ufw status | grep -q "Status: active"; then
+    echo "[*] Liberando porta ${PORT}/tcp no firewall UFW..."
+    ufw allow ${PORT}/tcp
+fi
+
+# 7. Compilacao do Codigo-Fonte C++ com Otimizacao Maxima
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SOURCE_FILE="${SCRIPT_DIR}/image_processor.cpp"
+BINARY_FILE="${SCRIPT_DIR}/image_service"
 
 if [[ ! -f "$SOURCE_FILE" ]]; then
     echo "[-] Codigo fonte image_processor.cpp nao encontrado em ${SCRIPT_DIR}."
-    echo "[!] Certifique-se de que o arquivo C++ foi transferido via SCP para a maquina."
     exit 1
 fi
 
-echo "[4/5] Executando compilacao otimizada em duas frentes (GCC vs. LLVM Clang)..."
+echo "[4/6] Compilando codigo fonte C++ com g++ (-O3, -march=native, -fopenmp)..."
+g++ -O3 -march=native -fopenmp -std=c++17 "$SOURCE_FILE" -o "$BINARY_FILE"
+chmod +x "$BINARY_FILE"
 
-# Compilacao via GCC com Otimizacao Maxima (-O3, vetorizacao nativa e OpenMP)
-echo "  [*] Compilando com GCC (g++ -O3 -march=native -fopenmp)..."
-g++ -O3 -march=native -fopenmp -std=c++17 "$SOURCE_FILE" -o "${SCRIPT_DIR}/image_processor_gcc"
+echo "[+] Binario executavel gerado com sucesso: $BINARY_FILE"
 
-# Compilacao via LLVM Clang com Link-Time Optimization (-flto)
-echo "  [*] Compilando com LLVM (clang++ -O3 -march=native -flto -fopenmp)..."
-clang++ -O3 -march=native -flto -fopenmp -std=c++17 "$SOURCE_FILE" -o "${SCRIPT_DIR}/image_processor_llvm"
+# 8. Criacao e Inicializacao do Servico no Sistema Operacional (systemd)
+echo "[5/6] Registrando e iniciando servico daemon no systemd..."
+cat << EOF > /etc/systemd/system/image-processor.service
+[Unit]
+Description=Servico C++ de Processamento Pesado de Imagens (IaaS)
+After=network.target
 
-echo "[+] Binarios compilados com sucesso:"
-ls -lh "${SCRIPT_DIR}/image_processor_gcc" "${SCRIPT_DIR}/image_processor_llvm"
+[Service]
+Type=simple
+User=root
+WorkingDirectory=${SCRIPT_DIR}
+Environment="PORT=${PORT}"
+Environment="NUM_THREADS=${NUM_THREADS}"
+Environment="BENCHMARK_RES=${BENCHMARK_RES}"
+ExecStart=${BINARY_FILE}
+Restart=always
+RestartSec=3
 
-# 7. Execucao de Benchmark e Validacao do Servico
-echo "[5/5] Executando validacao do algoritmo em processamento de alta resolucao..."
-echo "--- EXECUCAO COM MOTOR LLVM / CLANG ---"
-"${SCRIPT_DIR}/image_processor_llvm" 2048 2048
+[Install]
+WantedBy=multi-user.target
+EOF
+
+systemctl daemon-reload
+systemctl enable image-processor.service
+systemctl restart image-processor.service
+
+# Aguardar subida do socket
+sleep 2
+
+# 9. Validacao da Inicializacao na Porta Correta e Teste Funcional
+echo "[6/6] Validando o servico ativo na porta ${PORT}..."
+
+if netstat -tuln | grep -q ":${PORT} "; then
+    echo "[+] SUCESSO: Servico ouvindo ativamente na porta ${PORT}!"
+else
+    echo "[-] AVISO: netstat nao detectou a porta ainda. Verificando logs do systemd..."
+    journalctl -u image-processor.service --no-pager -n 10
+fi
+
+echo "--- TESTE DE SAUDE (GET /health) ---"
+curl -s "http://localhost:${PORT}/health" || true
+echo ""
+
+echo "--- TESTE DE PROCESSAMENTO PESADO (POST /process) ---"
+curl -s -X POST "http://localhost:${PORT}/process" || true
+echo ""
 
 echo "======================================================================"
 echo "  PROVISIONAMENTO CONCLUIDO COM EXITO!                                "
-echo "  Binarios prontos em: ${SCRIPT_DIR}                                  "
-echo "  Imagem processada gerada: output_sobel_processed.ppm                "
+echo "  Status do Servico: systemctl status image-processor.service         "
+echo "  Porta Ativa: http://<IP_DO_SERVIDOR>:${PORT}/                       "
+echo "  No IaaS, toda a cadeia (SO, g++, env vars, systemd) foi erguida     "
+echo "  pelo desenvolvedor do zero.                                         "
 echo "======================================================================"
