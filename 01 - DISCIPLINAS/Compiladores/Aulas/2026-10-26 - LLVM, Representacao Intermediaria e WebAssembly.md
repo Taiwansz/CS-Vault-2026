@@ -440,6 +440,36 @@ O **SaaS (*Software as a Service*)** representa a camada final de consumo de sof
    - **PaaS**: Foco no Desenvolvedor de Software (*Developer Experience - DX*).
    - **SaaS**: Foco no Usuario Final / Analista de Negocio (*End User / Business*).
 
+---
+
+## 4. [20:18] Atividade Pratica de Laboratorio (Classroom): C++ em Servidor IaaS Cru
+
+> **Enunciado Oficial da Atividade:**
+> *"Uma empresa possui um algoritmo pesado de processamento de imagens escrito em C++ que precisa rodar em um servidor Linux cru. A equipe de operacoes forneceu apenas o acesso via SSH a uma maquina virtual recem-criada (ou um container Ubuntu limpo).*
+> *Entregaveis: O codigo-fonte em C++ e o script de provisionamento da maquina."*
+
+### 4.1. Artefatos Desenvolvidos e Armazenados no Vault
+Os arquivos de entrega foram gerados e estruturados no diretorio:
+`CS-Vault-2026/01 - DISCIPLINAS/Compiladores/Atividades/Atividade_IaaS_Processamento_Imagem_Cpp/`
+
+1. **Codigo-Fonte em C++ (`image_processor.cpp`)**:
+   - Implementacao de convolucao 2D com **Filtro de Sobel (Detecao de Bordas)** e calculo euclidiano de magnitude de gradiente $\sqrt{G_x^2 + G_y^2}$.
+   - Paralelizacao nativa multi-thread com OpenMP (`#pragma omp parallel for`).
+   - Gerador sintetico integrado de 16 Megapixels (4096 x 4096) para benchmark sem dependencia de arquivos externos, exportando para binario PPM (P6).
+   - Telemetria de alta resolucao em milissegundos e taxa de Megapixels/segundo.
+
+2. **Script de Provisionamento Automatizado (`provision.sh`)**:
+   - Idempotente e robusto com `set -euo pipefail`.
+   - Nao-interativo (`DEBIAN_FRONTEND=noninteractive`).
+   - Atualiza a arvore APT e instala o toolchain completo: `build-essential`, `g++`, `clang`, `llvm`, `libomp-dev`, `cmake`, `htop`.
+   - Coleta e exibe telemetria de CPU e memoria da VM IaaS.
+   - Compila com otimizacoes maximas tanto no **GCC** (`-O3 -march=native -fopenmp`) quanto no **LLVM Clang** (`-O3 -march=native -flto -fopenmp`), amarrando a atividade com a aula de LLVM.
+   - Executa a validacao automatica com geracao de imagem processada em disco.
+
+3. **Guia e Documentacao de Entrega (`README_ENTREGA.md`)**:
+   - Documentacao completa de operacao via SSH/SCP e explicacao das flags de compilacao.
+
+
 
 
 
