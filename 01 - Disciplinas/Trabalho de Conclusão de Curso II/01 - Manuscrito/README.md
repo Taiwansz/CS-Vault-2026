@@ -4,7 +4,8 @@
 > **Tema:** COMPRESSAO DE PROMPTS, TOKENS E SUSTENTABILIDADE DA IA  
 > **Autor:** Matheus Sousa dos Santos (RA: 52319400)  
 > **Orientador:** Prof. Luiz Claudio Chiavini Oliveira Junior  
-> **Instituicao:** Centro Universitario Max Planck (UniMAX) — Bacharelado em Ciencia da Computacao (2026)
+> **Instituicao:** Centro Universitario Max Planck (UniMAX) — Bacharelado em Ciencia da Computacao (2026)  
+> **Repositorio Oficial de Avaliacao e Artigo:** https://github.com/Taiwansz/TokLang-TCC
 
 ---
 
