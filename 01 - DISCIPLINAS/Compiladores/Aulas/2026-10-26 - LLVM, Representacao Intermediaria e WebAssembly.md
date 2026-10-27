@@ -3,7 +3,7 @@ tipo: aula
 disciplina: Compiladores
 data: 2026-10-26
 professor: Luiz Claudio Chiavini Oliveira Junior
-status: em_andamento
+status: assistida
 padrao_auditoria: atlas-deep-reporting-v1
 tags:
   - compiladores
@@ -15,6 +15,9 @@ tags:
   - backend
   - intermediario
   - teoria-da-computacao
+  - docker
+  - cloud-computing
+  - emscripten
 ---
 
 # CADERNO DE BANCADA: LLVM, REPRESENTACAO INTERMEDIARIA (IR) E WEBASSEMBLY
@@ -581,6 +584,36 @@ Embora a metafora didatica transmita a ideia de uma "receita sequencial de insta
    - **Backend Hyper-V Tradicional**: O Docker Desktop pode rodar usando uma VM Linux classica gerenciada pelo Hyper-V (modo legado anterior ao WSL 2).
    - **Containers Nativos do Windows (*Windows Containers*)**: O Docker pode rodar imagens baseadas em Windows (`mcr.microsoft.com/windows/nanoserver`) usando o proprio kernel do Windows, sem nenhum Linux.
    - **Docker Toolbox (VirtualBox)**: Solucao historica para versoes antigas do Windows Home, subindo a distro `Boot2Docker` em uma VM do VirtualBox.
+
+---
+
+## 6. [21:19] Atividade Final: Compilando C++ para a Web via WebAssembly e Docker Multi-stage
+
+> **Atividade Oficial do Classroom:**
+> - **Titulo:** Compilando C++ para a Web
+> - **Docente:** Luiz Claudio Chiavini Oliveira Junior
+> - **Valor:** 100 pontos | **Data de Entrega:** 03/11/2026
+> - **Cenario:** A startup de tecnologia agricola da universidade (Lotus/EcoLaudo) possui um algoritmo de predicao de safra em C++. A diretoria deseja que ele rode no navegador do cliente (SaaS), sem consumir CPU do servidor e sem reescrever para JavaScript.
+> - **Solucao Tecnologica:** Docker Multi-stage Build utilizando a imagem `emscripten/emsdk:latest` (backend LLVM) para gerar `.wasm` e servindo via `nginx:alpine`.
+
+### 6.1. O Multi-Stage Build sob a Otica de Compiladores
+1. **O Compilador Descartavel (*Ephemeral Compiler*)**:
+   - O SDK do Emscripten contem a suite completa do LLVM, Clang e Python, pesando gigabytes.
+   - Em vez de forcar os desenvolvedores a configurar variaveis de ambiente e quebrar dependencias locais, o Docker encapsula a fase de compilacao no estagio `builder`.
+   - Apos a geracao do binario `index.wasm`, o compilador e descartado, copiando apenas os artefatos estaticos para um container Nginx de ~20 MB.
+2. **Execucao na Ponta (*Client-Side Compute*)**:
+   - O codigo C++ executa diretamente no motor V8 do navegador do cliente. O servidor em nuvem atua apenas como um distribuidor de arquivos estaticos, reduzindo o custo operacional (OpEx) a niveis negligenciaveis.
+
+---
+
+## 7. Sintese Epistemologica e Conclusao da Sessao
+
+A aula de 2026-10-26 percorreu um arco estrutural completo da ciencia da computacao:
+1. **Partida (Baixo Nivel):** LLVM, Representacao Intermediaria (IR) em SSA e WebAssembly (Wasm).
+2. **Transicao (Arquitetura Web e Sistemas):** Rotas em JavaScript, a quebra de seguranca do PHP (PHP2Shell / CVE-2026-109618) e a fragilidade de runtimes em C sem memoria isolada.
+3. **Escala (Nuvem e FinOps):** A transicao de CapEx para OpEx, Storage de Bloco (VM) vs. Storage de Objetos (Buckets sem SO) e a desmistificacao da pilha SaaS.
+4. **Pratica de Engenharia (IaaS e Conteinerizacao):** Provisionamento de servidores Linux crus (g++, variaveis de ambiente, systemd na porta 8080) e compilacao de C++ para WebAssembly usando Docker Multi-stage descartavel.
+
 
 
 
