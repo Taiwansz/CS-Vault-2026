@@ -66,6 +66,11 @@ horario: "Terça-feira / 19:00–21:40"
   - 📄 Nota no Cofre: [[01 - Disciplinas/Tópicos Especiais II/Aulas/2026-09-15 - Persistência em Arquivos e Gestão de Eventos|Acessar Detalhes da Aula 15/09]]
   - 💻 Arquivos de Código: [[01 - Disciplinas/Tópicos Especiais II/Materiais/Aula_1509_PersistenciaArquivos/GestaoEvento.java|GestaoEvento.java]], [[01 - Disciplinas/Tópicos Especiais II/Materiais/Aula_1509_PersistenciaArquivos/Lutador.java|Lutador.java]] e [[01 - Disciplinas/Tópicos Especiais II/Materiais/Aula_1509_PersistenciaArquivos/lutadores.txt|lutadores.txt]]
 
+- [x] **Atividade 07 — ArenaPlay Sports Gestão & Scout (CRUD Full, JDBC e SQL)**  
+  - 📄 Nota no Cofre: [[01 - Disciplinas/Tópicos Especiais II/Aulas/2026-10-27 - ArenaPlay Sports Gestao e Scout - CRUD Full JDBC e SQL|Acessar Detalhes da Aula 27/10]]
+  - 🏆 Certificado: [[01 - Disciplinas/Tópicos Especiais II/Materiais/Aula_20261027_Gestao_Atletas_JDBC/badge-arenaplay-matheus.png|Certificado de Conclusão (480 XP - DC-1BOTMYU)]]
+  - 💻 Arquivos de Código: [[01 - Disciplinas/Tópicos Especiais II/Materiais/Aula_20261027_Gestao_Atletas_JDBC/src/Atleta.java|Atleta.java]], [[01 - Disciplinas/Tópicos Especiais II/Materiais/Aula_20261027_Gestao_Atletas_JDBC/src/AtletaDAO.java|AtletaDAO.java]] e [[01 - Disciplinas/Tópicos Especiais II/Materiais/Aula_20261027_Gestao_Atletas_JDBC/missao4_radar_scout.sql|missao4_radar_scout.sql]]
+
 ---
 
 ## 📂 Conteúdo e Aulas
@@ -82,6 +87,8 @@ horario: "Terça-feira / 19:00–21:40"
 - [[01 - Disciplinas/Tópicos Especiais II/Aulas/2026-10-06 - Modelagem Dimensional, Star Schema e Telemetria Operacional ANAC|Aula 06/10 - Modelagem Dimensional, Star Schema e Telemetria Operacional ANAC]]
 - [[01 - Disciplinas/Tópicos Especiais II/Aulas/2026-10-20 - Integracao Java e Banco de Dados com JDBC|Aula 20/10 - Integracao Java e Banco de Dados com JDBC]]
 - [[01 - Disciplinas/Tópicos Especiais II/Materiais/Aula_20261020_Java_JDBC|Materiais da Aula 20/10 - Projeto Java JDBC e Scripts SQL]]
+- [[01 - Disciplinas/Tópicos Especiais II/Aulas/2026-10-27 - ArenaPlay Sports Gestao e Scout - CRUD Full JDBC e SQL|Aula 27/10 - ArenaPlay Sports Gestão & Scout (CRUD Full, JDBC e SQL)]]
+- [[01 - Disciplinas/Tópicos Especiais II/Materiais/Aula_20261027_Gestao_Atletas_JDBC|Materiais da Aula 27/10 - Projeto Java JDBC Atletas e Queries]]
 - 📁 [[01 - Disciplinas/Tópicos Especiais II/Materiais/Apostila de POO com Java.pdf|Apostila de POO com Java (PDF)]]
 - 📁 [[01 - Disciplinas/Tópicos Especiais II/Materiais/diagrama.html|Diagrama de Classes Interativo (HTML)]]
 
