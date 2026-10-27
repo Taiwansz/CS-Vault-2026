@@ -545,6 +545,44 @@ Embora a metafora didatica transmita a ideia de uma "receita sequencial de insta
    - Se um script de shell tradicional (`setup.sh`) quebrar na metade no seu PC, sua maquina fica com pacotes pela metade e arquivos corrompidos.
    - Se o `docker build` quebrar, **seu PC continua 100% intacto**. O Docker descarta as camadas com erro e nada vaza para o sistema operacional host.
 
+---
+
+### 5.5. [21:12] WSL (Windows Subsystem for Linux) & Dependencia do Docker
+
+> **Questionamento em Sala:** *"O que e o WSL? E se nao temos isso, o Docker funciona sem ele?"*
+
+#### A Resposta de Arquitetura:
+
+```
++-------------------------------------------------------------------------------+
+|                    WSL 1 vs. WSL 2 vs. LINUX NATIVO                           |
++-------------------------------------------------------------------------------+
+| CRITERIO               | WSL 1 (2016)         | WSL 2 (Atual)   | LINUX NATIVO|
++------------------------+----------------------+-----------------+-------------+
+| Kernel Linux Real      | NAO (Traducao NT)    | SIM (Micro-VM)  | SIM (Host)  |
+| Suporte a Docker       | Pobre / Incompativel | TOTAL (Padrao)  | NATIVO      |
+| Arquitetura            | lxcore.sys (Syscall) | Hyper-V Leve    | Silicio Puro|
+| Boot                   | Instantaneo          | < 1 segundo     | N/A         |
++------------------------+----------------------+-----------------+-------------+
+```
+
+#### 1. O que e o WSL?
+- O **WSL (*Windows Subsystem for Linux*)** e um recurso da Microsoft que permite rodar distribuiçoes Linux (Ubuntu, Debian, Fedora) diretamente no Windows sem o overhead de emuladores pesados.
+- **Diferenca Crucial (WSL 1 vs WSL 2)**:
+  - **WSL 1**: Nao tinha kernel. Traduzia chamadas de sistema Linux para chamadas do kernel NT do Windows. Nao suportava Docker decentemente por falta de `cgroups` e `namespaces` nativos.
+  - **WSL 2**: Contem um **Kernel Linux real** completo rodando em uma micro-VM customizada pelo Hyper-V, com boot em sub-segundo e alocacao dinamica de memoria.
+
+#### 2. O Docker funciona SEM o WSL?
+**SIM, funciona. A resposta depende do contexto:**
+
+1. **No Linux (Servidores de Producao / Ubuntu / Cloud IaaS)**:
+   - **O Docker nao precisa de WSL de forma alguma**. O WSL sequer existe no Linux. O Docker roda nativamente sobre o proprio kernel Linux do servidor.
+2. **No Windows (Alternativas sem WSL)**:
+   - **Backend Hyper-V Tradicional**: O Docker Desktop pode rodar usando uma VM Linux classica gerenciada pelo Hyper-V (modo legado anterior ao WSL 2).
+   - **Containers Nativos do Windows (*Windows Containers*)**: O Docker pode rodar imagens baseadas em Windows (`mcr.microsoft.com/windows/nanoserver`) usando o proprio kernel do Windows, sem nenhum Linux.
+   - **Docker Toolbox (VirtualBox)**: Solucao historica para versoes antigas do Windows Home, subindo a distro `Boot2Docker` em uma VM do VirtualBox.
+
+
 
 
 
