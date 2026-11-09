@@ -15,3 +15,8 @@ out/
 *.exe
 *.dll
 *.class
+
+# Python Bytecode
+__pycache__/
+*.pyc
+*.pyo
