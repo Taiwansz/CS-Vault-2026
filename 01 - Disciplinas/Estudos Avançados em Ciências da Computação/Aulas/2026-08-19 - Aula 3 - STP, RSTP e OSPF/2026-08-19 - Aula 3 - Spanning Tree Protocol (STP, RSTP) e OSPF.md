@@ -5,38 +5,42 @@ data: 2026-08-19
 professor: Paulo Sergio Granato
 status: assistida
 tags:
-  - redes
-  - spanning-tree
-  - stp
-  - rstp
-  - rapid-pvst
-  - ospf
-  - roteamento-dinamico
-  - packet-tracer
+ - redes
+ - spanning-tree
+ - stp
+ - rstp
+ - rapid-pvst
+ - ospf
+ - roteamento-dinamico
+ - packet-tracer
 ---
 
-# 📖 Aula 3 — Spanning Tree Protocol (STP, RSTP Rapid-PVST+) e Roteamento Dinâmico OSPF
+> [!NOTE] Navegacao no Cofre
+> **Painel Geral:** [[00 - Dashboard]] | **Indice de Aulas:** [[Índice Geral de Aulas]]
+> **Disciplina:** [[Estudos Avançados em Ciências da Computação]] | **Nucleo ENADE:** [[06 - Redes de Computadores e Sistemas Distribuidos (Do Basico ao Avancado)]]
 
-> [!info] 📌 Informações da Aula
-> - **Disciplina:** [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Estudos Avançados em Ciências da Computação|Estudos Avançados em Ciências da Computação]]
+# Aula 3 — Spanning Tree Protocol (STP, RSTP Rapid-PVST+) e Roteamento Dinâmico OSPF
+
+> [!info] Informações da Aula
+> - **Disciplina:** [[Estudos Avançados em Ciências da Computação|Estudos Avançados em Ciências da Computação]]
 > - **Professor:** Paulo Sergio Granato
 > - **Data:** 19/08/2026
 > - **Tema:** Eliminação de Loops de Camada 2 com STP / RSTP (Rapid-PVST+), Eleição de Root Bridge, PortFast, BPDU Guard e Roteamento Dinâmico OSPF (Área 0)
-> - **Status:** <span class="badge badge-success">🟢 Assistida e Documentada</span>
+> - **Status:** <span class="badge badge-success"> Assistida e Documentada</span>
 
 ---
 
-## 📁 Materiais e Resoluções da Aula
-- 📄 [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Materiais/Aula 3 - STP-Avancado-Eliminando-Loops.pdf|Apresentação em PDF (Aula 3 - STP Avançado: Eliminando Loops)]]
-- 🎥 [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Materiais/Aula 3 - STP-Avancado-Eliminando-Loops.mp4|Vídeo da Aula Teórica & Prática (MP4)]]
-- 📄 [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Materiais/EXERCÍCIO PRÁTICO - aula 3 (Professor).pdf|Enunciado Original em PDF (Exercício Prático - Aula 3)]]
-- 📝 [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Aulas/2026-08-19 - Resolução - Exercício Prático Aula 3 - STP RSTP e OSPF|Resolução Completa do Exercício Prático da Aula 3]]
-- 🤖 [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Arquivos Auxiliares - Automação IA Packet Tracer/script_aula_3_stp_ospf.js|Script de Automação Packet Tracer (JS/MCP)]]
-- 🧠 [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Arquivos Auxiliares - Automação IA Packet Tracer/README|Guia do Protocolo MCP Packet Tracer]]
+## Materiais e Resoluções da Aula
+- [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Materiais/Aula 3 - STP-Avancado-Eliminando-Loops.pdf|Apresentação em PDF (Aula 3 - STP Avançado: Eliminando Loops)]]
+- [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Materiais/Aula 3 - STP-Avancado-Eliminando-Loops.mp4|Vídeo da Aula Teórica & Prática (MP4)]]
+- [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Materiais/EXERCÍCIO PRÁTICO - aula 3 (Professor).pdf|Enunciado Original em PDF (Exercício Prático - Aula 3)]]
+- [[2026-08-19 - Resolução - Exercício Prático Aula 3 - STP RSTP e OSPF|Resolução Completa do Exercício Prático da Aula 3]]
+- [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Arquivos Auxiliares - Automação IA Packet Tracer/script_aula_3_stp_ospf.js|Script de Automação Packet Tracer (JS/MCP)]]
+- [[README|Guia do Protocolo MCP Packet Tracer]]
 
 ---
 
-## 🎯 Objetivos de Aprendizagem
+## Objetivos de Aprendizagem
 1. Compreender a anatomia e o perigo catastrófico de **Loops de Camada 2** (*Broadcast Storms* e *MAC Table Flapping*).
 2. Dominar a evolução do protocolo Spanning Tree: do clássico **STP IEEE 802.1D** ao **RSTP IEEE 802.1w** e sua implementação proprietária **Rapid-PVST+** da Cisco.
 3. Entender os critérios de eleição do **Root Bridge**, determinação de **Root Ports**, **Designated Ports** e portas de bloqueio (**Alternate/Discarding**).
@@ -46,15 +50,15 @@ tags:
 
 ---
 
-## 🧠 1. Fundamentos de Camada 2: O Desafio da Redundância e Loops
+## 1. Fundamentos de Camada 2: O Desafio da Redundância e Loops
 
 Em redes corporativas modernas, a redundância física é mandatória para evitar **Pontos Únicos de Falha (SPOF - Single Point of Failure)**. Conectar dois ou mais links entre switches garante que a rede continue operando se um cabo romper.
 
 ```
-       [ SW1 ] ======================== [ SW2 ]
-          │    (Links Físicos Duplos)      │
-          │                                │
-        [PC1]                            [PC2]
+ [ SW1 ] ======================== [ SW2 ]
+ │ (Links Físicos Duplos) │
+ │ │
+ [PC1] [PC2]
 ```
 
 ### Por que o Loop de Camada 2 é fatal?
@@ -67,7 +71,7 @@ Sem um mecanismo de controle:
 
 ---
 
-## 🌳 2. Spanning Tree Protocol (STP / RSTP Rapid-PVST+)
+## 2. Spanning Tree Protocol (STP / RSTP Rapid-PVST+)
 
 Para resolver o problema dos loops sem abrir mão da redundância física, foi criado o algoritmo **STA (Spanning Tree Algorithm)**, concebido pela cientista da computação Radia Perlman.
 
@@ -92,9 +96,9 @@ O switch com o **menor Bridge ID (BID)** vence a eleição:
 $$BID = \text{Prioridade (Múltiplo de 4096)} + \text{VLAN ID} + \text{MAC Address}$$
 * Prioridade padrão Cisco: `32768`.
 * Para forçar um switch a ser o líder principal (**Root Primary**):
-  `spanning-tree vlan 1 priority 4096` (ou `spanning-tree vlan 1 root primary`).
+ `spanning-tree vlan 1 priority 4096` (ou `spanning-tree vlan 1 root primary`).
 * Para forçar o backup (**Root Secondary**):
-  `spanning-tree vlan 1 priority 28672` (ou `spanning-tree vlan 1 root secondary`).
+ `spanning-tree vlan 1 priority 28672` (ou `spanning-tree vlan 1 root secondary`).
 
 #### 2º Passo: Eleição da Root Port (RP) nos Switches Não-Root
 Cada switch que não é o Root Bridge deve escolher **uma única porta** que possui o menor custo de caminho até o Root:
@@ -103,7 +107,7 @@ Cada switch que não é o Root Bridge deve escolher **uma única porta** que pos
 
 #### 3º Passo: Eleição das Designated Ports (DP)
 Em cada enlace físico, a porta com o menor custo de caminho até o Root vira **Designated Port (Forwarding / Verde)**.
-> 📌 **Regra de Ouro:** No Root Bridge, **TODAS as portas são Designated Ports (Verdes)**.
+> **Regra de Ouro:** No Root Bridge, **TODAS as portas são Designated Ports (Verdes)**.
 
 #### 4º Passo: Bloqueio da Porta Redundante (Alternate Port / Discarding)
 A porta que perder nos critérios de desempate (mesmo custo $\rightarrow$ menor Bridge ID vizinho $\rightarrow$ menor Port ID vizinho) é colocada no papel de **Alternate Port** e estado **Discarding (Bolinha Laranja)**.
@@ -111,7 +115,7 @@ A porta que perder nos critérios de desempate (mesmo custo $\rightarrow$ menor 
 
 ---
 
-## ⚡ 3. Recursos de Segurança e Otimização: PortFast e BPDU Guard
+## 3. Recursos de Segurança e Otimização: PortFast e BPDU Guard
 
 Em ambientes de produção, portas conectadas a computadores, servidores e impressoras (*Edge Ports*) não precisam esperar o tempo de negociação do STP.
 
@@ -133,18 +137,18 @@ interface FastEthernet0/1
 
 ---
 
-## 🌐 4. Roteamento Dinâmico com OSPFv2 (Área 0)
+## 4. Roteamento Dinâmico com OSPFv2 (Área 0)
 
 O **OSPF (Open Shortest Path First)** é um protocolo de gateway interior (IGP) do tipo **Link-State (Estado de Enlace)** padronizado pela IETF (RFC 2328).
 
 ```
-       [ Rede A: 192.168.10.0/24 ]
-                   │
-                [ R1 ] (10.0.0.1/30)
-                   │  (Área 0 - Backbone)
-                [ R2 ] (10.0.0.2/30)
-                   │
-       [ Rede B: 192.168.20.0/24 ]
+ [ Rede A: 192.168.10.0/24 ]
+ │
+ [ R1 ] (10.0.0.1/30)
+ │ (Área 0 - Backbone)
+ [ R2 ] (10.0.0.2/30)
+ │
+ [ Rede B: 192.168.20.0/24 ]
 ```
 
 ### Principais Características do OSPF:
@@ -165,7 +169,7 @@ router ospf 1
 
 ---
 
-## 🧪 5. Comandos Úteis de Diagnóstico e Cheat-Sheet
+## 5. Comandos Úteis de Diagnóstico e Cheat-Sheet
 
 | Objetivo | Comando Cisco IOS |
 |---|---|
@@ -180,7 +184,7 @@ router ospf 1
 
 ---
 
-## 🤖 6. Automação do Laboratório com IA e Servidor MCP
+## 6. Automação do Laboratório com IA e Servidor MCP
 
 Nesta aula, a montagem e validação da topologia foi realizada via integração programática utilizando o **Packet Tracer MCP Server** (`packet-tracer-mcp`):
 1. **Ponte HTTP Bridge (:54321):** Comunicação bidirecional autenticada com a extensão do Script Engine do Cisco Packet Tracer.

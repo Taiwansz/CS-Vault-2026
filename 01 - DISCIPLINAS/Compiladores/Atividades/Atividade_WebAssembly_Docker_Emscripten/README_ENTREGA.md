@@ -1,3 +1,6 @@
+> [!NOTE] Navegacao no Cofre
+> **Disciplina:** [[Compiladores]] | **Painel Geral:** [[00 - Dashboard]]
+
 # RELATORIO DE ATIVIDADE: COMPILANDO C++ PARA A WEB VIA WEBASSEMBLY (WASM)
 
 - **Disciplina:** Compiladores (Turma N13208A) — 8º Semestre

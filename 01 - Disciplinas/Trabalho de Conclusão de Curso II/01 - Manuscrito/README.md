@@ -1,3 +1,6 @@
+> [!NOTE] Navegacao no Cofre
+> **Central TCC II:** [[Trabalho de Conclusão de Curso II]] | **Painel Geral:** [[00 - Dashboard]]
+
 # 01 - Manuscrito Oficial (TCC II)
 
 > **Repositorio Central dos Entregaveis em Word (.docx) e PDF (.pdf)**  

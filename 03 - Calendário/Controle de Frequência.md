@@ -1,31 +1,34 @@
+> [!NOTE] Navegacao no Cofre
+> **Painel Geral:** [[00 - Dashboard]] | **Quadro de Horarios:** [[Quadro de Horários]] | **Calendario:** [[Calendário do Semestre]]
+
 ---
 tipo: frequencia
 semestre: 2026.2
 status: em-dia
 ---
 
-# 📊 Controle de Frequência e Faltômetro — 2026.2
+# Controle de Frequência e Faltômetro — 2026.2
 
-> [!important] 🎯 Regra Geral de Aprovação por Frequência
+> [!important] Regra Geral de Aprovação por Frequência
 > É obrigatório manter no mínimo **75% de presença** em cada disciplina no semestre.
 
 ---
 
-## 📈 Painel Geral de Faltas (Atualizado em 14/08/2026)
+## Painel Geral de Faltas (Atualizado em 14/08/2026)
 
 | Disciplina | Carga Horária | Limite Máx. Faltas | Faltas Acumuladas | Presença Atual | Situação |
 |---|---:|---:|---:|---:|---|
-| [[01 - Disciplinas/Compiladores/Compiladores|Compiladores]] | 80h | 20h | 0h | 100% | 🟢 Regular |
-| [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Estudos Avançados em Ciências da Computação|Estudos Avançados em Ciências da Computação]] | 80h | 20h | 0h | 100% | 🟢 Regular |
-| [[01 - Disciplinas/Interação Humano Computador e Sistemas Multimídia/Interação Humano Computador e Sistemas Multimídia|Interação Humano Computador e Sistemas Multimídia]] | 80h | 20h | 0h | 100% | 🟢 Regular |
-| [[01 - Disciplinas/Projeto Prático Integrado - Desenvolvimento de Jogos Digitais/Projeto Prático Integrado - Desenvolvimento de Jogos Digitais|Projeto Prático Integrado - Jogos]] | 40h | 10h | 0h | 100% | 🟢 Regular |
-| [[01 - Disciplinas/Técnicas Avançadas de Jogos Digitais/Técnicas Avançadas de Jogos Digitais|Técnicas Avançadas de Jogos Digitais]] | 40h | 10h | 0h | 100% | 🟢 Regular |
-| [[01 - Disciplinas/Tópicos Especiais II/Tópicos Especiais II|Tópicos Especiais II]] | 80h | 20h | 0h | 100% | 🟢 Regular |
-| [[01 - Disciplinas/Trabalho de Conclusão de Curso II/Trabalho de Conclusão de Curso II|Trabalho de Conclusão de Curso II]] | 40h | 10h | 0h | 100% | 🟢 Regular |
+| [[Compiladores|Compiladores]] | 80h | 20h | 0h | 100% | Regular |
+| [[Estudos Avançados em Ciências da Computação|Estudos Avançados em Ciências da Computação]] | 80h | 20h | 0h | 100% | Regular |
+| [[Interação Humano Computador e Sistemas Multimídia|Interação Humano Computador e Sistemas Multimídia]] | 80h | 20h | 0h | 100% | Regular |
+| [[Projeto Prático Integrado - Desenvolvimento de Jogos Digitais|Projeto Prático Integrado - Jogos]] | 40h | 10h | 0h | 100% | Regular |
+| [[Técnicas Avançadas de Jogos Digitais|Técnicas Avançadas de Jogos Digitais]] | 40h | 10h | 0h | 100% | Regular |
+| [[Tópicos Especiais II|Tópicos Especiais II]] | 80h | 20h | 0h | 100% | Regular |
+| [[Trabalho de Conclusão de Curso II|Trabalho de Conclusão de Curso II]] | 40h | 10h | 0h | 100% | Regular |
 
 ---
 
-## 🗓️ Registro Semanal de Presença (Agosto/2026)
+## ️ Registro Semanal de Presença (Agosto/2026)
 
 ### Semana 1 (03/08 a 07/08/2026) — Abertura do Semestre
 - [x] **03/08 (Seg)** — Compiladores (Aula Inaugural e Ementa) $
@@ -53,5 +56,5 @@ ightarrow$ **Presente**
 
 ---
 
-## 🚨 Histórico de Ausências por Disciplina
+## Histórico de Ausências por Disciplina
 - *(Nenhuma ausência registrada até o momento no semestre 2026.2)*

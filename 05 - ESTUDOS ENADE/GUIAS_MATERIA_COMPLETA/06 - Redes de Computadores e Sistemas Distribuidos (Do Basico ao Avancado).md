@@ -6,6 +6,11 @@ data: 2026-11-09
 autor: "ThSyr Cognitive Sentinel"
 ---
 
+> [!NOTE] Navegacao de Estudos ENADE
+> **Central:** [[00 - Dashboard]] | **Hub Mestre ENADE:** [[INDEX_ESTUDOS_ENADE]]
+> **Modulo Anterior:** [[05 - Banco de Dados, SQL Avancado e Modelagem (Do Basico ao Avancado)]]
+> **Proximo Modulo:** [[07 - Engenharia de Software, SOLID e Padroes de Projeto (Do Basico ao Avancado)]]
+
 # 06 — Redes de Computadores e Sistemas Distribuidos (Do Basico ao Nivel ENADE)
 
 > [!INFO] **Objetivo deste Guia**
@@ -18,20 +23,20 @@ autor: "ThSyr Cognitive Sentinel"
 A comunicacao em rede e organizada em camadas hierarquicas, onde cada camada oferece servicos para a camada superior e consome servicos da camada inferior.
 
 ```text
-Modelo OSI (7 Camadas)             Modelo TCP/IP (4 Camadas)       PDU (Unidade de Dados)
-┌────────────────────────┐         ┌────────────────────────┐      ┌────────────────────┐
-│ 7. Aplicacao           │         │                        │      │                    │
-│ 6. Apresentacao        │ ──────> │ 4. Aplicacao           │ ───> │ Dados / Mensagem   │
-│ 5. Sessao              │         │                        │      │                    │
-├────────────────────────┤         ├────────────────────────┤      ├────────────────────┤
-│ 4. Transporte          │ ──────> │ 3. Transporte          │ ───> │ Segmento (TCP/UDP) │
-├────────────────────────┤         ├────────────────────────┤      ├────────────────────┤
-│ 3. Rede                │ ──────> │ 2. Internet (Rede)     │ ───> │ Pacote (IP)        │
-├────────────────────────┤         ├────────────────────────┤      ├────────────────────┤
-│ 2. Enlace de Dados     │ ──────> │ 1. Acesso a Rede       │ ───> │ Quadro (Frame MAC) │
-├────────────────────────┤         │    (Enlace + Fisica)   │      ├────────────────────┤
-│ 1. Fisica              │ ──────> │                        │ ───> │ Bits (Sinais)      │
-└────────────────────────┘         └────────────────────────┘      └────────────────────┘
+Modelo OSI (7 Camadas) Modelo TCP/IP (4 Camadas) PDU (Unidade de Dados)
+┌────────────────────────┐ ┌────────────────────────┐ ┌────────────────────┐
+│ 7. Aplicacao │ │ │ │ │
+│ 6. Apresentacao │ ──────> │ 4. Aplicacao │ ───> │ Dados / Mensagem │
+│ 5. Sessao │ │ │ │ │
+├────────────────────────┤ ├────────────────────────┤ ├────────────────────┤
+│ 4. Transporte │ ──────> │ 3. Transporte │ ───> │ Segmento (TCP/UDP) │
+├────────────────────────┤ ├────────────────────────┤ ├────────────────────┤
+│ 3. Rede │ ──────> │ 2. Internet (Rede) │ ───> │ Pacote (IP) │
+├────────────────────────┤ ├────────────────────────┤ ├────────────────────┤
+│ 2. Enlace de Dados │ ──────> │ 1. Acesso a Rede │ ───> │ Quadro (Frame MAC) │
+├────────────────────────┤ │ (Enlace + Fisica) │ ├────────────────────┤
+│ 1. Fisica │ ──────> │ │ ───> │ Bits (Sinais) │
+└────────────────────────┘ └────────────────────────┘ └────────────────────┘
 ```
 
 - **Encapsulamento:** Ao descer a pilha para transmissao, cada camada adiciona seu proprio cabecalho (*Header*). Ao receber o sinal na maquina de destino, o processo inverso (*Desencapsulamento*) remove os cabecalhos camada por camada.
@@ -61,8 +66,8 @@ Em um endereco IPv4 de 32 bits com prefixo `/P`:
 #### Exemplo Classico do ENADE:
 *"Uma empresa precisa alocar uma sub-rede para 100 computadores na rede `192.168.10.0`."*
 - Quantos bits de host precisamos?
-  - $2^6 = 64$ (insuficiente para 100 hosts).
-  - $2^7 = 128 \implies 128 - 2 = 126$ hosts validos. **Atende com precisao!**
+ - $2^6 = 64$ (insuficiente para 100 hosts).
+ - $2^7 = 128 \implies 128 - 2 = 126$ hosts validos. **Atende com precisao!**
 - Prefixo da mascara: $32 - 7 = \mathbf{/25}$.
 - Mascara em decimal: `255.255.255.128`.
 - Bloco: Rede `192.168.10.0/25`, Primeiro host `192.168.10.1`, Ultimo host `192.168.10.126`, Broadcast `192.168.10.127`.
@@ -82,9 +87,9 @@ Em um endereco IPv4 de 32 bits com prefixo `/P`:
 ### 4.1 TCP (Transmission Control Protocol) — Confiabilidade Estrita
 - Orientado a conexao, confiavel, garante entrega na ordem exata e sem duplicacao.
 - **Handshake de 3 Vias (Three-Way Handshake) para Abertura:**
-  1. Cliente envia `SYN` (Sequence Number inicial $X$).
-  2. Servidor responde `SYN-ACK` (Seq $Y$, Acknowledgment $X+1$).
-  3. Cliente confirma `ACK` (Ack $Y+1$). Conexao aberta!
+ 1. Cliente envia `SYN` (Sequence Number inicial $X$).
+ 2. Servidor responde `SYN-ACK` (Seq $Y$, Acknowledgment $X+1$).
+ 3. Cliente confirma `ACK` (Ack $Y+1$). Conexao aberta!
 - **Encerramento de Conexao (Four-Way Handshake):** `FIN` -> `ACK` -> `FIN` -> `ACK`.
 - **Controle de Fluxo:** Mecanismo de **Janela Deslizante (Sliding Window)**, onde o receptor avisa no campo *Window Size* quanto espaco de buffer ele ainda tem livre para evitar que o transmissor o afogue.
 - **Controle de Congestionamento:** Prevencao de colapso da rede atraves de algoritmos como **Slow Start** (dobro da janela a cada RTT ate o limiar *ssthresh*), **Congestion Avoidance** (crescimento aditivo linear) e **Fast Retransmit/Fast Recovery** (ao receber 3 ACKs duplicados, retransmite o segmento sem esperar pelo timeout).
@@ -109,10 +114,10 @@ Como redes reais invariavelmente sofrem particoes ($P$), os arquitetos sao obrig
 ### 5.2 Hashing Consistente (Consistent Hashing)
 - Em caches distribuidos tradicionais, calcular `servidor = hash(chave) % N` e desastroso quando um servidor falha ou e adicionado: quase **todas as chaves mudam de no**, esvaziando o cache e gerando sobrecarga em cascata.
 - **A Mecanica do Hashing Consistente:**
-  1. Mapeia servidores e chaves de dados no mesmo **anel circular uniforme** ($0$ a $2^b - 1$).
-  2. Cada chave e alocada no primeiro servidor encontrado no sentido horario.
-  3. Ao adicionar ou remover um servidor, **apenas as chaves do no vizinho imediato sao movidas (em media $K/N$ chaves)**. O resto do cluster permanece 100% estavel.
-  4. Utiliza **Nos Virtuais (Virtual Nodes)** para evitar desbalanceamento de carga (hotspots).
+ 1. Mapeia servidores e chaves de dados no mesmo **anel circular uniforme** ($0$ a $2^b - 1$).
+ 2. Cada chave e alocada no primeiro servidor encontrado no sentido horario.
+ 3. Ao adicionar ou remover um servidor, **apenas as chaves do no vizinho imediato sao movidas (em media $K/N$ chaves)**. O resto do cluster permanece 100% estavel.
+ 4. Utiliza **Nos Virtuais (Virtual Nodes)** para evitar desbalanceamento de carga (hotspots).
 
 ---
 
@@ -121,3 +126,13 @@ Como redes reais invariavelmente sofrem particoes ($P$), os arquitetos sao obrig
 1. **Broadcast em Roteadores vs. Switches:** Switches comuns propagam broadcasts para todas as portas da mesma VLAN. **Roteadores (Camada 3) bloqueiam e descartam broadcasts por padrao**, delimitando o dominio de broadcast.
 2. **Mascara /30:** Muito cobrada para conexoes entre dois roteadores. Tem 4 enderecos: 1 de rede, 2 para as interfaces dos roteadores e 1 de broadcast.
 3. **Métrica do RIP:** O RIP escolhe o caminho com menos saltos, mesmo que seja por uma linha discada de 64 kbps, ignorando um caminho com 2 saltos em fibra optica de 10 Gbps. O OSPF escolhe pela velocidade real da banda.
+
+---
+
+## Conexoes no Cofre e Disciplinas Praticas
+
+- **Hub Geral:** [[INDEX_ESTUDOS_ENADE]] | [[00 - Dashboard]]
+- **Simulado de Referencia:** [[Simulado 04 - Ciencia da Computacao Completo 20 Questoes 2026-11-09]]
+- **Disciplinas Praticas:** [[Estudos Avançados em Ciências da Computação]], [[Redes de Computadores - Convergentes]], [[Redes Móveis]]
+- **Topologia Visual:** [[Topologia_TechSolutions_Switching.excalidraw]]
+- **Simulado Especifico:** [[Simulado_03_Mapeamento_Completo_e_Plano_de_Estudos_ENADE_2026]]

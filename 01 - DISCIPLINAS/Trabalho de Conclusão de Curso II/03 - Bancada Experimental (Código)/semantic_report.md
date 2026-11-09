@@ -1,3 +1,8 @@
+> [!NOTE] Navegacao no Cofre
+> **Painel Geral:** [[00 - Dashboard]] | **Indice de Aulas:** [[Índice Geral de Aulas]]
+> **Disciplina:** [[Trabalho de Conclusão de Curso II]] | **Nucleo ENADE:** [[08 - Formacao Geral, Etica, LGPD e Sociedade Digital (Do Basico ao Avancado)]]
+
+
 # Laudo de Qualidade Semantica e BERTScore (TCC II)
 
 > Avaliacao de retencao informacional: A resposta gerada sob compressao mantem o significado original?

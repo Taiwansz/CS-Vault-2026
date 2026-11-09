@@ -3,7 +3,7 @@
   "search": "",
   "showTags": false,
   "showAttachments": true,
-  "hideUnresolved": true,
+  "hideUnresolved": false,
   "showOrphans": true,
   "collapse-color-groups": false,
   "colorGroups": [
@@ -15,7 +15,14 @@
       }
     },
     {
-      "query": "path:\"01 - Disciplinas\" -path:Aulas -path:Materiais -path:Notas -path:Provas -path:Orientação -path:Referências -path:Arquivos",
+      "query": "path:\"05 - ESTUDOS ENADE\"",
+      "color": {
+        "a": 1,
+        "rgb": 15383562
+      }
+    },
+    {
+      "query": "path:\"01 - Disciplinas\" -path:Aulas -path:Materiais -path:Notas -path:Provas -path:Orienta\u00e7\u00e3o -path:Refer\u00eancias -path:Arquivos",
       "color": {
         "a": 1,
         "rgb": 3447003
@@ -36,10 +43,17 @@
       }
     },
     {
-      "query": "path:\"02 - Avaliações\" OR path:Provas",
+      "query": "path:\"02 - Avalia\u00e7\u00f5es\" OR path:Provas",
       "color": {
         "a": 1,
         "rgb": 15158332
+      }
+    },
+    {
+      "query": "path:\"03 - Calend\u00e1rio\"",
+      "color": {
+        "a": 1,
+        "rgb": 2085340
       }
     }
   ],
@@ -49,10 +63,10 @@
   "nodeSizeMultiplier": 1.45,
   "lineSizeMultiplier": 1.1,
   "collapse-forces": false,
-  "centerStrength": 0.581658536585366,
-  "repelStrength": 14,
+  "centerStrength": 0.52,
+  "repelStrength": 12,
   "linkStrength": 1,
-  "linkDistance": 180,
-  "scale": 0.06105403136850507,
+  "linkDistance": 140,
+  "scale": 0.06105403136850505,
   "close": false
 }

@@ -7,61 +7,65 @@ professor: "Luiz Claudio Chiavini Oliveira Junior"
 status: concluido
 ---
 
-# 🏭 Aula 01/09 — Automação Industrial e Arquitetura Orientada a Objetos
+> [!NOTE] Navegacao no Cofre
+> **Painel Geral:** [[00 - Dashboard]] | **Indice de Aulas:** [[Índice Geral de Aulas]]
+> **Disciplina:** [[Tópicos Especiais II]] | **Nucleo ENADE:** [[01 - Algoritmos, Estruturas de Dados e Paradigmas (Do Basico ao Avancado)]]
 
-> [!info] 📌 Informações da Aula
+# Aula 01/09 — Automação Industrial e Arquitetura Orientada a Objetos
+
+> [!info] Informações da Aula
 > - **Data:** 01/09/2026
-> - **Disciplina:** [[01 - Disciplinas/Tópicos Especiais II/Tópicos Especiais II|Tópicos Especiais II]]
+> - **Disciplina:** [[Tópicos Especiais II|Tópicos Especiais II]]
 > - **Professor:** Luiz Claudio Chiavini Oliveira Junior
 > - **Tópicos:** Encapsulamento, Herança (`extends`), Sobrescrita de Métodos (`@Override`), Classes Abstratas e Interfaces (`implements`)
 
 ---
 
-## 🎯 Contexto e Missões do Laboratório
+## Contexto e Missões do Laboratório
 
 Nesta aula prática, o desafio consistiu em modelar um ecossistema de controle fabril e automação de manufatura dividido em 6 missões progressivas de POO em Java:
 
 ```
-                  ┌──────────────────────┐
-                  │    <<interface>>     │
-                  │     Monitoravel      │
-                  └──────────┬───────────┘
-                             │ implements
-                  ┌──────────┴───────────┐
-                  │    SensorTermico     │
-                  └──────────────────────┘
+ ┌──────────────────────┐
+ │ <<interface>> │
+ │ Monitoravel │
+ └──────────┬───────────┘
+ │ implements
+ ┌──────────┴───────────┐
+ │ SensorTermico │
+ └──────────────────────┘
 
-                  ┌──────────────────────┐
-                  │       Maquina        │
-                  ├──────────────────────┤
-                  │ - nome: String       │
-                  │ - potencia: int      │
-                  ├──────────────────────┤
-                  │ + operar()           │
-                  └──────────┬───────────┘
-                             ▲
-                ┌────────────┴────────────┐
-                │                         │
-     ┌──────────┴──────────┐   ┌──────────┴──────────┐
-     │       Esteira       │   │    BracoRobotico    │
-     ├─────────────────────┤   ├─────────────────────┤
-     │ - velocidade: double│   │ + operar()          │
-     ├─────────────────────┤   └─────────────────────┘
-     │ + operar()          │
-     └─────────────────────┘
+ ┌──────────────────────┐
+ │ Maquina │
+ ├──────────────────────┤
+ │ - nome: String │
+ │ - potencia: int │
+ ├──────────────────────┤
+ │ + operar() │
+ └──────────┬───────────┘
+ ▲
+ ┌────────────┴────────────┐
+ │ │
+ ┌──────────┴──────────┐ ┌──────────┴──────────┐
+ │ Esteira │ │ BracoRobotico │
+ ├─────────────────────┤ ├─────────────────────┤
+ │ - velocidade: double│ │ + operar() │
+ ├─────────────────────┤ └─────────────────────┘
+ │ + operar() │
+ └─────────────────────┘
 
-                  ┌──────────────────────┐
-                  │      <<abstract>>    │
-                  │   EstacaoIndustrial  │
-                  ├──────────────────────┤
-                  │+ executarCiclo()*    │
-                  └──────────┬───────────┘
-                             ▲
-                  ┌──────────┴───────────┐
-                  │        Prensa        │
-                  ├──────────────────────┤
-                  │ + executarCiclo()    │
-                  └──────────────────────┘
+ ┌──────────────────────┐
+ │ <<abstract>> │
+ │ EstacaoIndustrial │
+ ├──────────────────────┤
+ │+ executarCiclo()* │
+ └──────────┬───────────┘
+ ▲
+ ┌──────────┴───────────┐
+ │ Prensa │
+ ├──────────────────────┤
+ │ + executarCiclo() │
+ └──────────────────────┘
 ```
 
 ### 1. Missão 1: Gerador Central (Encapsulamento)
@@ -92,15 +96,15 @@ Nesta aula prática, o desafio consistiu em modelar um ecossistema de controle f
 
 ---
 
-## 💻 Código Fonte Organizado no Cofre
+## Código Fonte Organizado no Cofre
 
 Todos os arquivos estão organizados na pasta de materiais:
-- 📄 [[01 - Disciplinas/Tópicos Especiais II/Materiais/Aula_0109_AutomacaoIndustrial/Maquina.java|Maquina.java]] — Classe base com atributos encapsulados e método operar
-- 📄 [[01 - Disciplinas/Tópicos Especiais II/Materiais/Aula_0109_AutomacaoIndustrial/Esteira.java|Esteira.java]] — Subclasse de esteira rolante com velocidade variável
-- 📄 [[01 - Disciplinas/Tópicos Especiais II/Materiais/Aula_0109_AutomacaoIndustrial/BracoRobotico.java|BracoRobotico.java]] — Subclasse de braço mecânico para soldagem de precisão
-- 📄 [[01 - Disciplinas/Tópicos Especiais II/Materiais/Aula_0109_AutomacaoIndustrial/EstacaoIndustrial.java|EstacaoIndustrial.java]] — Classe abstrata base para postos de trabalho pesados
-- 📄 [[01 - Disciplinas/Tópicos Especiais II/Materiais/Aula_0109_AutomacaoIndustrial/Prensa.java|Prensa.java]] — Subclasse concreta de prensagem hidráulica
-- 📄 [[01 - Disciplinas/Tópicos Especiais II/Materiais/Aula_0109_AutomacaoIndustrial/Monitoravel.java|Monitoravel.java]] — Interface de contrato para telemetria de sensores
-- 📄 [[01 - Disciplinas/Tópicos Especiais II/Materiais/Aula_0109_AutomacaoIndustrial/SensorTermico.java|SensorTermico.java]] — Leitura térmica de temperatura industrial
-- 📄 [[01 - Disciplinas/Tópicos Especiais II/Materiais/Aula_0109_AutomacaoIndustrial/PainelDeControle.java|PainelDeControle.java]] — Ponto de execução e orquestração polimórfica
-- 📄 [[01 - Disciplinas/Tópicos Especiais II/Materiais/Aula_0109_AutomacaoIndustrial/README.md|README.md]] — Guia de compilação e execução
+- [[01 - Disciplinas/Tópicos Especiais II/Materiais/Aula_0109_AutomacaoIndustrial/Maquina.java|Maquina.java]] — Classe base com atributos encapsulados e método operar
+- [[01 - Disciplinas/Tópicos Especiais II/Materiais/Aula_0109_AutomacaoIndustrial/Esteira.java|Esteira.java]] — Subclasse de esteira rolante com velocidade variável
+- [[01 - Disciplinas/Tópicos Especiais II/Materiais/Aula_0109_AutomacaoIndustrial/BracoRobotico.java|BracoRobotico.java]] — Subclasse de braço mecânico para soldagem de precisão
+- [[01 - Disciplinas/Tópicos Especiais II/Materiais/Aula_0109_AutomacaoIndustrial/EstacaoIndustrial.java|EstacaoIndustrial.java]] — Classe abstrata base para postos de trabalho pesados
+- [[01 - Disciplinas/Tópicos Especiais II/Materiais/Aula_0109_AutomacaoIndustrial/Prensa.java|Prensa.java]] — Subclasse concreta de prensagem hidráulica
+- [[01 - Disciplinas/Tópicos Especiais II/Materiais/Aula_0109_AutomacaoIndustrial/Monitoravel.java|Monitoravel.java]] — Interface de contrato para telemetria de sensores
+- [[01 - Disciplinas/Tópicos Especiais II/Materiais/Aula_0109_AutomacaoIndustrial/SensorTermico.java|SensorTermico.java]] — Leitura térmica de temperatura industrial
+- [[01 - Disciplinas/Tópicos Especiais II/Materiais/Aula_0109_AutomacaoIndustrial/PainelDeControle.java|PainelDeControle.java]] — Ponto de execução e orquestração polimórfica
+- [[README|README.md]] — Guia de compilação e execução

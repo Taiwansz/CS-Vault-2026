@@ -6,9 +6,13 @@ professor: Luiz Claudio Chiavini Oliveira Junior
 status: assistida
 ---
 
-# 📖 Aula Inaugural — Programação Orientada a Objetos em Java e Diagramas
+> [!NOTE] Navegacao no Cofre
+> **Painel Geral:** [[00 - Dashboard]] | **Indice de Aulas:** [[Índice Geral de Aulas]]
+> **Disciplina:** [[Tópicos Especiais II]] | **Nucleo ENADE:** [[01 - Algoritmos, Estruturas de Dados e Paradigmas (Do Basico ao Avancado)]]
 
-> [!info] 📌 Informações da Aula
+# Aula Inaugural — Programação Orientada a Objetos em Java e Diagramas
+
+> [!info] Informações da Aula
 > - **Disciplina:** Tópicos Especiais II
 > - **Professor:** Luiz Claudio Chiavini Oliveira Junior
 > - **Data:** 04/08/2026
@@ -16,13 +20,13 @@ status: assistida
 
 ---
 
-## 📁 Materiais da Aula
-- 📄 [[01 - Disciplinas/Tópicos Especiais II/Materiais/Apostila de POO com Java.pdf|Apostila de POO com Java (PDF)]]
-- 🌐 [[01 - Disciplinas/Tópicos Especiais II/Materiais/diagrama.html|Diagrama de Classes Interativo (HTML)]]
+## Materiais da Aula
+- [[01 - Disciplinas/Tópicos Especiais II/Materiais/Apostila de POO com Java.pdf|Apostila de POO com Java (PDF)]]
+- [[01 - Disciplinas/Tópicos Especiais II/Materiais/diagrama.html|Diagrama de Classes Interativo (HTML)]]
 
 ---
 
-## 🎯 Conceitos Chave Abordados
+## Conceitos Chave Abordados
 
 ### 1. Pilares da POO em Java
 - **Abstração:** Representação de entidades do mundo real em classes.
@@ -36,6 +40,6 @@ status: assistida
 
 ---
 
-## 💡 Próximos Passos
+## Próximos Passos
 - [ ] Abrir e revisar a apostila de POO com Java.
 - [ ] Explorar o arquivo `diagrama.html` no navegador.

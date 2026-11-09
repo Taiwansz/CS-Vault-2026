@@ -5,6 +5,10 @@ tema: "Criptografia Moderna, Chaves Simetricas, Chaves Assimetricas e Curvas Eli
 status: concluido
 ---
 
+> [!NOTE] Navegacao no Cofre
+> **Painel Geral:** [[00 - Dashboard]] | **Indice de Aulas:** [[Índice Geral de Aulas]]
+> **Disciplina:** [[Segurança da Informação]] | **Nucleo ENADE:** [[08 - Formacao Geral, Etica, LGPD e Sociedade Digital (Do Basico ao Avancado)]]
+
 # Criptografia Moderna: AES, RSA e Curvas Elipticas
 
 > [!INFO] **Visao Geral do Modulo**
@@ -19,9 +23,9 @@ status: concluido
 - **Vantagem:** Desempenho computacional altissimo (aceleracao por instrucoes de hardware como AES-NI na CPU).
 - **Padrao de Ouro:** **AES (Advanced Encryption Standard)** com tamanho de bloco de 128 bits e chaves de 128, 192 ou 256 bits.
 - **Modos de Operacao:**
-  - *ECB (Electronic Codebook):* Vulneravel (padroes visuais vazam). Nunca usar em producao.
-  - *CBC (Cipher Block Chaining):* Exige vetor de inicializacao (IV) aleatorio, mas nao provê integridade nativa.
-  - *GCM (Galois/Counter Mode):* **Padrao moderno (AEAD — Authenticated Encryption with Associated Data)**. Garante confidencialidade e autenticidade/integridade simultaneamente atraves de uma tag de autenticacao imutavel.
+ - *ECB (Electronic Codebook):* Vulneravel (padroes visuais vazam). Nunca usar em producao.
+ - *CBC (Cipher Block Chaining):* Exige vetor de inicializacao (IV) aleatorio, mas nao provê integridade nativa.
+ - *GCM (Galois/Counter Mode):* **Padrao moderno (AEAD — Authenticated Encryption with Associated Data)**. Garante confidencialidade e autenticidade/integridade simultaneamente atraves de uma tag de autenticacao imutavel.
 
 ### Criptografia Assimetrica (Par de Chaves Publica e Privada):
 - A chave publica e compartilhada livremente para criptografar dados ou verificar assinaturas; a chave privada permanece em sigilo absoluto para descriptografar ou gerar assinaturas.

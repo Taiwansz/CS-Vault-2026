@@ -6,20 +6,24 @@ data: 2026-10-05
 autor: ThSyr para Matheus (Taiwansz)
 padrao: ENADE / Pos-Graduacao / Industria
 tags:
-  - enade
-  - compiladores
-  - bootstrapping
-  - self-hosting
-  - trusting-trust
-  - ken-thompson
-  - ast
-  - seguranca-supply-chain
+ - enade
+ - compiladores
+ - bootstrapping
+ - self-hosting
+ - trusting-trust
+ - ken-thompson
+ - ast
+ - seguranca-supply-chain
 ---
 
+> [!NOTE] Navegacao no Cofre
+> **Painel Geral:** [[00 - Dashboard]] | **Indice de Aulas:** [[Índice Geral de Aulas]]
+> **Disciplina:** [[Compiladores]] | **Nucleo ENADE:** [[03 - Teoria da Computacao, Automatos e Compiladores (Do Basico ao Avancado)]]
+
 # GUIA DE ESTUDOS AVANCADO: BOOTSTRAPPING, AST E O ATAQUE DE KEN THOMPSON
-**Eixo Tematico:** Teoria de Compiladores e Seguranca de Sistemas (ENADE 2026)  
-**Destinatario:** Matheus Sousa dos Santos (Taiwansz) — Ciencia da Computacao  
-**Data:** 05/10/2026  
+**Eixo Tematico:** Teoria de Compiladores e Seguranca de Sistemas (ENADE 2026) 
+**Destinatario:** Matheus Sousa dos Santos (Taiwansz) — Ciencia da Computacao 
+**Data:** 05/10/2026 
 
 ---
 
@@ -47,15 +51,15 @@ Escreve-se um compilador minimo e rudimentar de Omega em C.
 Compila-se com o GCC.
 Resultado: Binario v0 (executavel na maquina).
 
-         │
-         ▼
+ │
+ ▼
 [Estagio 1: O Primeiro Salto]
 Escreve-se o compilador completo e elegante de Omega em Omega.
 Usa-se o Binario v0 para compilar o codigo-fonte de Omega.
 Resultado: Binario v1 (executavel de Omega, gerado pelo compilador C).
 
-         │
-         ▼
+ │
+ ▼
 [Estagio 2: A Auto-Hospedagem / Self-Hosting]
 Usa-se o Binario v1 para compilar o mesmo codigo-fonte de Omega.
 Resultado: Binario v2.
@@ -79,40 +83,40 @@ Para entender questoes de prova sobre onde injetar codigos, onde ocorrem falhas 
 
 ```
 +─────────────────────────────────────────────────────────────────────────────+
-| FRONT-END (Analise da Linguagem Fonte)                                      |
+| FRONT-END (Analise da Linguagem Fonte) |
 +─────────────────────────────────────────────────────────────────────────────+
 1. Analisador Lexico (Scanner):
-   - Le caracteres crus (char by char).
-   - Agrupa caracteres em unidades atomicas chamadas TOKENS (palavras-chave, ids, numeros).
-   - Modelo matematico subjacente: Automatos Finitos Deterministicos (AFD) e Expressoes Regulares.
-   - Limitacao: Nao entende estrutura gramatical, escopo ou aninhamento.
+ - Le caracteres crus (char by char).
+ - Agrupa caracteres em unidades atomicas chamadas TOKENS (palavras-chave, ids, numeros).
+ - Modelo matematico subjacente: Automatos Finitos Deterministicos (AFD) e Expressoes Regulares.
+ - Limitacao: Nao entende estrutura gramatical, escopo ou aninhamento.
 
 2. Analisador Sintatico (Parser):
-   - Recebe a sequencia linear de tokens.
-   - Verifica se os tokens obedecem as regras da Gramatica Livre de Contexto (GLC).
-   - Constroi a ARVORE SINTATICA ABSTRATA (AST - Abstract Syntax Tree).
-   - Papel: Define a hierarquia formal do programa (quem esta dentro de quem).
+ - Recebe a sequencia linear de tokens.
+ - Verifica se os tokens obedecem as regras da Gramatica Livre de Contexto (GLC).
+ - Constroi a ARVORE SINTATICA ABSTRATA (AST - Abstract Syntax Tree).
+ - Papel: Define a hierarquia formal do programa (quem esta dentro de quem).
 
 3. Analisador Semantico:
-   - Percorre a AST.
-   - Verifica regras de tipos (type checking), escopos de variaveis e consistencia logica.
-   - Alimenta e consulta a Tabela de Simbolos.
+ - Percorre a AST.
+ - Verifica regras de tipos (type checking), escopos de variaveis e consistencia logica.
+ - Alimenta e consulta a Tabela de Simbolos.
 
 +─────────────────────────────────────────────────────────────────────────────+
-| MIDDLE-END & BACK-END (Otimizacao e Geracao de Maquina)                      |
+| MIDDLE-END & BACK-END (Otimizacao e Geracao de Maquina) |
 +─────────────────────────────────────────────────────────────────────────────+
 4. Gerador de Codigo Intermediario (IR):
-   - Converte a AST em uma representacao neutra (Three-Address Code, LLVM IR, Bytecode).
+ - Converte a AST em uma representacao neutra (Three-Address Code, LLVM IR, Bytecode).
 
 5. Otimizador de Codigo:
-   - Constant Folding, Dead Code Elimination, Loop Unrolling, Inlining.
+ - Constant Folding, Dead Code Elimination, Loop Unrolling, Inlining.
 
 6. Gerador de Codigo Objeto / Nativo:
-   - Emite instrucoes binarias reais da CPU alvo (x86-64, ARM) ou Bytecode para a JVM.
+ - Emite instrucoes binarias reais da CPU alvo (x86-64, ARM) ou Bytecode para a JVM.
 ```
 
 > [!important] Regra de Ouro para a Prova: Onde Injetar Codigo Estruturado?
-> Se uma questao perguntar onde um compilador (ou malware de compilador) deve injetar uma estrutura logica complexa (como um comando `if` ou `while` inteiro), a resposta correta e sempre na **AST (Arvore Sintatica Abstrata) ou na Representacao Intermediaria (IR)**.  
+> Se uma questao perguntar onde um compilador (ou malware de compilador) deve injetar uma estrutura logica complexa (como um comando `if` ou `while` inteiro), a resposta correta e sempre na **AST (Arvore Sintatica Abstrata) ou na Representacao Intermediaria (IR)**. 
 > Tentar mexer no analisador lexico ou no AFD quebra o parsing, pois eles nao compreendem hierarquia ou relacoes estruturais.
 
 ---
@@ -124,16 +128,16 @@ Em 1984, ao receber o Premio Turing (o Nobel da Computacao), Ken Thompson aprese
 ### 3.1. O Ataque em Tres Passos Cirurgicos
 
 1. **A Vulnerabilidade Alvo:** Thompson queria um backdoor no comando `login` do UNIX para obter acesso root com uma senha mestra secreta.
-   - Se ele colocasse o backdoor no arquivo `login.c`, qualquer auditor humano leria o codigo e o demitiria.
+ - Se ele colocasse o backdoor no arquivo `login.c`, qualquer auditor humano leria o codigo e o demitiria.
 
 2. **O Salto para o Compilador:** Thompson alterou o compilador C (`cc.c`).
-   - O compilador passou a verificar: *"Quando eu estiver compilando um arquivo chamado `login.c`, injete o backdoor no binario gerado."*
-   - Mas se alguem auditar o codigo-fonte `cc.c`, encontrara essa trapaça.
+ - O compilador passou a verificar: *"Quando eu estiver compilando um arquivo chamado `login.c`, injete o backdoor no binario gerado."*
+ - Mas se alguem auditar o codigo-fonte `cc.c`, encontrara essa trapaça.
 
 3. **O Golpe Quine (A Auto-Reinjeccao):** Thompson adicionou uma segunda instrucao ao compilador:
-   - *"Quando eu estiver compilando a mim mesmo (`cc.c`), injete no binario tanto o codigo para infectar o `login` quanto o proprio codigo para me auto-reinjetar!"*
-   - Ele compilou esse `cc.c` uma unica vez, gerando o executavel binario `cc`.
-   - **Em seguida, apagou o codigo malicioso do arquivo `cc.c`.**
+ - *"Quando eu estiver compilando a mim mesmo (`cc.c`), injete no binario tanto o codigo para infectar o `login` quanto o proprio codigo para me auto-reinjetar!"*
+ - Ele compilou esse `cc.c` uma unica vez, gerando o executavel binario `cc`.
+ - **Em seguida, apagou o codigo malicioso do arquivo `cc.c`.**
 
 ### 3.2. A Consequencia Filosofica e Pratica
 - O codigo-fonte de `login.c` ficou **100% limpo**.
@@ -142,7 +146,7 @@ Em 1984, ao receber o Premio Turing (o Nobel da Computacao), Ken Thompson aprese
 - Porem, toda vez que o binario do compilador compila o login, o backdoor e gerado; e toda vez que ele compila um novo compilador, o virus perpetua a si mesmo no executavel final.
 
 > [!warning] Axioma de Thompson
-> *"You can't trust code that you did not totally create yourself."*  
+> *"You can't trust code that you did not totally create yourself."* 
 > (Voce nao pode confiar em codigo que nao tenha criado por completo, incluindo o compilador e as ferramentas que o geraram.)
 
 ### 3.3. As Solucoes Tecnologicas Modernas

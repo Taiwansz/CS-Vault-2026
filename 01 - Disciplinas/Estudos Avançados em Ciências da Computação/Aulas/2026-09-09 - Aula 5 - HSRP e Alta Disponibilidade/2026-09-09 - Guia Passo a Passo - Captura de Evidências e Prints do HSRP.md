@@ -1,10 +1,15 @@
+> [!NOTE] Navegacao no Cofre
+> **Painel Geral:** [[00 - Dashboard]] | **Indice de Aulas:** [[Índice Geral de Aulas]]
+> **Disciplina:** [[Estudos Avançados em Ciências da Computação]] | **Nucleo ENADE:** [[06 - Redes de Computadores e Sistemas Distribuidos (Do Basico ao Avancado)]]
+
+
 # Guia Passo a Passo: Captura de Evidências e Prints do HSRP
 
-**Data:** 2026-09-09  
-**Disciplina:** Estudos Avançados em Ciências da Computação  
-**Professor:** Paulo Sérgio Granato  
-**Turma:** N13208A (Semestre 2026.2)  
-**Grupo:** 03  
+**Data:** 2026-09-09 
+**Disciplina:** Estudos Avançados em Ciências da Computação 
+**Professor:** Paulo Sérgio Granato 
+**Turma:** N13208A (Semestre 2026.2) 
+**Grupo:** 03 
 **Integrantes:**
 - Matheus Sousa dos Santos (RA: 52319400)
 - Felipe Guarnieri Pinete (RA: 52319337)
@@ -20,7 +25,7 @@ Para executar os passos, utilize o arquivo de simulação já configurado:
 - Caminho no Vault: `CS-Vault-2026/01 - Disciplinas/Estudos Avançados em Ciências da Computação/Aulas/GRUPO_03_HSRP_ALTA_DISPONIBILIDADE.pkt`
 - Caminho em Downloads: `C:\Users\52319400\Downloads\GRUPO_03_HSRP_ALTA_DISPONIBILIDADE.pkt`
 
-> **Atalho recomendado no Windows para capturar a tela:**  
+> **Atalho recomendado no Windows para capturar a tela:** 
 > Pressione as teclas `Win + Shift + S`, selecione a área desejada e salve a imagem.
 
 ---
@@ -33,12 +38,12 @@ Mostrar todos os equipamentos montados, seus nomes obrigatórios e as conexões 
 ### Onde e como fazer
 1. Abra o arquivo `GRUPO_03_HSRP_ALTA_DISPONIBILIDADE.pkt` no Cisco Packet Tracer.
 2. Na tela principal (Logical Workspace), verifique se todos os dispositivos estão visíveis:
-   - `R1-PRINCIPAL` (Cisco 2911)
-   - `R2-BACKUP` (Cisco 2911)
-   - `SW1-LAN` (Cisco 2960)
-   - `PC1`
-   - `PC2`
-   - `SERVER1`
+ - `R1-PRINCIPAL` (Cisco 2911)
+ - `R2-BACKUP` (Cisco 2911)
+ - `SW1-LAN` (Cisco 2960)
+ - `PC1`
+ - `PC2`
+ - `SERVER1`
 3. Certifique-se de que todos os cabos diretos estão conectados e com luzes verdes operacionais.
 
 ### O que deve aparecer no print
@@ -60,36 +65,36 @@ Mostrar o estado dos dois roteadores antes de qualquer falha:
 ### Onde e como fazer
 1. Clique no roteador `R1-PRINCIPAL` e acesse a aba **CLI**.
 2. Pressione `Enter`, digite os comandos abaixo e tecle Enter:
-   ```text
-   enable
-   show standby brief
-   ```
+ ```text
+ enable
+ show standby brief
+ ```
 3. Mantenha a janela do R1 aberta.
 4. Clique no roteador `R2-BACKUP` e acesse a aba **CLI**.
 5. Digite os comandos:
-   ```text
-   enable
-   show standby brief
-   ```
+ ```text
+ enable
+ show standby brief
+ ```
 6. Posicione as duas janelas CLI lado a lado na tela.
 
 ### O que deve aparecer no print
 - **No R1-PRINCIPAL:**
-  - Interface: `Gi0/0`
-  - Group: `1`
-  - Priority: `110`
-  - State: `Active`
-  - Active: `local`
-  - Standby: `192.168.10.3`
-  - Virtual IP: `192.168.10.1`
+ - Interface: `Gi0/0`
+ - Group: `1`
+ - Priority: `110`
+ - State: `Active`
+ - Active: `local`
+ - Standby: `192.168.10.3`
+ - Virtual IP: `192.168.10.1`
 - **No R2-BACKUP:**
-  - Interface: `Gi0/0`
-  - Group: `1`
-  - Priority: `90`
-  - State: `Standby`
-  - Active: `192.168.10.2`
-  - Standby: `local`
-  - Virtual IP: `192.168.10.1`
+ - Interface: `Gi0/0`
+ - Group: `1`
+ - Priority: `90`
+ - State: `Standby`
+ - Active: `192.168.10.2`
+ - Standby: `local`
+ - Virtual IP: `192.168.10.1`
 
 **Sugestão de nome do arquivo:** `evidencia_02_hsrp_estado_normal.png`
 
@@ -104,13 +109,13 @@ Comprovar que os computadores alcançam o Gateway Virtual e os demais nós da re
 1. Clique no `PC1`.
 2. Acesse a aba **Desktop** e abra o aplicativo **Command Prompt**.
 3. Execute os seguintes comandos de teste:
-   ```cmd
-   ping 192.168.10.1
-   ping 192.168.10.2
-   ping 192.168.10.3
-   ping 192.168.10.20
-   ping 192.168.10.100
-   ```
+ ```cmd
+ ping 192.168.10.1
+ ping 192.168.10.2
+ ping 192.168.10.3
+ ping 192.168.10.20
+ ping 192.168.10.100
+ ```
 4. Se o primeiro pacote de algum ping falhar por resolução de ARP (`Request timed out`), repita o comando para obter 100% de taxa de sucesso (`Lost = 0`).
 
 ### O que deve aparecer no print
@@ -130,15 +135,15 @@ Mostrar o `R1-PRINCIPAL` indisponível.
 ### Onde e como fazer
 1. Clique no `R1-PRINCIPAL` e abra a aba **CLI**.
 2. Digite os seguintes comandos para derrubar a interface conectada à rede local:
-   ```text
-   enable
-   configure terminal
-   interface GigabitEthernet0/0
-   shutdown
-   ```
+ ```text
+ enable
+ configure terminal
+ interface GigabitEthernet0/0
+ shutdown
+ ```
 3. O roteador exibirá o log no terminal:
-   `%LINK-5-CHANGED: Interface GigabitEthernet0/0, changed state to administratively down`
-   `%LINEPROTO-5-UPDOWN: Line protocol on Interface GigabitEthernet0/0, changed state to down`
+ `%LINK-5-CHANGED: Interface GigabitEthernet0/0, changed state to administratively down`
+ `%LINEPROTO-5-UPDOWN: Line protocol on Interface GigabitEthernet0/0, changed state to down`
 4. Deixe a janela do CLI aberta com essas mensagens e posicione-a de forma que dê para ver a topologia ao fundo.
 
 ### O que deve aparecer no print
@@ -159,15 +164,15 @@ Mostrar:
 ### Onde e como fazer
 1. Aguarde cerca de 10 segundos após a queda do R1 (tempo para expirar o *Holdtime* do HSRP).
 2. Clique no `R2-BACKUP`, abra a aba **CLI** e execute:
-   ```text
-   show standby brief
-   ```
-   *Observe que o campo State mudou de `Standby` para `Active`.*
+ ```text
+ show standby brief
+ ```
+ *Observe que o campo State mudou de `Standby` para `Active`.*
 3. Imediatamente abra o `PC1` > **Desktop** > **Command Prompt** e execute novamente:
-   ```cmd
-   ping 192.168.10.1
-   ping 192.168.10.100
-   ```
+ ```cmd
+ ping 192.168.10.1
+ ping 192.168.10.100
+ ```
 4. Posicione a janela do CLI do R2 ao lado do Command Prompt do PC1.
 
 ### O que deve aparecer no print
@@ -183,13 +188,13 @@ Mostrar:
 Para deixar a simulação pronta novamente após os prints:
 1. Acesse o CLI do `R1-PRINCIPAL`.
 2. Digite:
-   ```text
-   enable
-   configure terminal
-   interface GigabitEthernet0/0
-   no shutdown
-   end
-   ```
+ ```text
+ enable
+ configure terminal
+ interface GigabitEthernet0/0
+ no shutdown
+ end
+ ```
 3. Em poucos segundos o enlace volta a ficar verde e, devido à instrução `standby 1 preempt`, o `R1` reassume automaticamente como `Active`.
 
 ---

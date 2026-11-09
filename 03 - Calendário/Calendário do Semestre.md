@@ -1,6 +1,9 @@
-# 📅 Calendário do Semestre — 2026.2
+> [!NOTE] Navegacao no Cofre
+> **Painel Geral:** [[00 - Dashboard]] | **Quadro de Horarios:** [[Quadro de Horários]] | **Faltometro:** [[Controle de Frequência]]
 
-## 🎓 Marcos e Prazos do TCC II (WebTCC Oficial)
+# Calendário do Semestre — 2026.2
+
+## Marcos e Prazos do [[Trabalho de Conclusão de Curso II|TCC II]] (WebTCC Oficial)
 
 - **03/08 a 20/08** — Cadastro dos grupos e indicação dos orientadores (Alunos)
 - **01/09 a 10/09** — Validação dos convites de orientação (Orientador)
@@ -20,14 +23,14 @@
 
 ---
 
-## 🌐 Estudos Avançados em Ciências da Computação
+## [[Estudos Avançados em Ciências da Computação]]
 
 - **30/09/2026** — Avaliação N1 (Packet Tracer + Teoria)
 - **25/11/2026** — Avaliação N2
 
 ---
 
-## 📝 Interação Humano Computador e Sistemas Multimídia
+## [[Interação Humano Computador e Sistemas Multimídia]]
 
 - **18/09/2026** — Prova 1
 - **06/11/2026** — Prova 2
@@ -35,7 +38,7 @@
 
 ---
 
-## ☕ Tópicos Especiais II (Java POO)
+## [[Tópicos Especiais II]] (Java POO)
 
 - **21/09 a 25/09/2026** — Atividade Integrativa
 - **22/09/2026** — Prova 1 (P1) — POO em Java (Prof. Luiz Claudio Chiavini)
@@ -43,6 +46,6 @@
 
 ---
 
-## 📌 Outras Datas Importantes
+## Outras Datas Importantes
 - [x] **21/09 a 25/09/2026** — Semana / Atividade Integrativa
 - [x] **28/09 e 29/09/2026** — Período de Avaliações / Provas

@@ -6,15 +6,19 @@ professor: Luiz Claudio Chiavini Oliveira Junior
 status: assistida
 padrao_auditoria: atlas-deep-reporting-v1
 tags:
-  - compiladores
-  - bootstrapping
-  - self-hosting
-  - engenharia-de-software
-  - formalismo-matematico
-  - teoria-da-computacao
-  - seguranca
-  - atlas-os
+ - compiladores
+ - bootstrapping
+ - self-hosting
+ - engenharia-de-software
+ - formalismo-matematico
+ - teoria-da-computacao
+ - seguranca
+ - atlas-os
 ---
+
+> [!NOTE] Navegacao no Cofre
+> **Painel Geral:** [[00 - Dashboard]] | **Indice de Aulas:** [[Índice Geral de Aulas]]
+> **Disciplina:** [[Compiladores]] | **Nucleo ENADE:** [[03 - Teoria da Computacao, Automatos e Compiladores (Do Basico ao Avancado)]]
 
 # RELATORIO TECNICO ATLAS-GRADE: COMPILADORES E ENGENHARIA DE BOOTSTRAP
 
@@ -54,25 +58,25 @@ A sessao expositiva transicionou da metodologia qualitativa de resolucao de prob
 
 ```
 +-------------------------------------------------------------------------------+
-|                      PIPELINE DE ENGENHARIA DE BOOTSTRAP                      |
+| PIPELINE DE ENGENHARIA DE BOOTSTRAP |
 +-------------------------------------------------------------------------------+
 
 [ 1. Problema ] ---> [ 2. Causa-Raiz ] ---> [ 3. Ideacao ] ---> [ 4. Compilador/DSL ]
-       |                     |                     |                     |
-       v                     v                     v                     v
-   (Sintoma)             (Isolamento)          (Hipoteses)         (Regras Formais)
-                                                                         |
-                                                                         v
-+------------------+     Nao      +------------------+    Sim    +---------------+
-| Desenvolver v(n) | <----------- | 9. Funciona?     | --------> | 10. Executavel|
-|   (Patch/Refac)  |              | (Validacao 100%) |           |   Final (.exe)|
-+------------------+              +------------------+           +---------------+
-         |                                 ^                             |
-         v                                 |                             v
-+------------------+              +------------------+           +---------------+
-| 7. Armazenamento | ------------>| 8. Bateria de    |           | 11. Producao  |
-|  Interno Local   |              |  Testes Unit/Int |           |  (Soberania)  |
-+------------------+              +------------------+           +---------------+
+ | | | |
+ v v v v
+ (Sintoma) (Isolamento) (Hipoteses) (Regras Formais)
+ |
+ v
++------------------+ Nao +------------------+ Sim +---------------+
+| Desenvolver v(n) | <----------- | 9. Funciona? | --------> | 10. Executavel|
+| (Patch/Refac) | | (Validacao 100%) | | Final (.exe)|
++------------------+ +------------------+ +---------------+
+ | ^ |
+ v | v
++------------------+ +------------------+ +---------------+
+| 7. Armazenamento | ------------>| 8. Bateria de | | 11. Producao |
+| Interno Local | | Testes Unit/Int | | (Soberania) |
++------------------+ +------------------+ +---------------+
 ```
 
 ---

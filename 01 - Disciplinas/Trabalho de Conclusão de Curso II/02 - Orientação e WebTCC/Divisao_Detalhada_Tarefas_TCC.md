@@ -5,13 +5,17 @@ atualizado_em: 2026-09-14
 status: ativo
 ---
 
+> [!NOTE] Navegacao no Cofre
+> **Painel Geral:** [[00 - Dashboard]] | **Indice de Aulas:** [[Índice Geral de Aulas]]
+> **Disciplina:** [[Trabalho de Conclusão de Curso II]] | **Nucleo ENADE:** [[08 - Formacao Geral, Etica, LGPD e Sociedade Digital (Do Basico ao Avancado)]]
+
 # Plano de Ação: Detalhamento de Tarefas por Integrante
 
 Este documento descreve minuciosamente *o que* cada membro do grupo deve fazer, *como* deve fazer e *qual o resultado esperado* (entregável) de cada etapa. O foco é a execução do "Battle IA" e a escrita do Capítulo 10.
 
 ---
 
-## 🟨 Juan Pedro (RA: 52319411) — Research & Writer
+## Juan Pedro (RA: 52319411) — Research & Writer
 **Foco:** Garantir que o trabalho tenha embasamento acadêmico e justificativa de negócio clara.
 
 ### 1. Escrever a Problematização e Argumentação (Capítulo 1 e 10)
@@ -25,7 +29,7 @@ Este documento descreve minuciosamente *o que* cada membro do grupo deve fazer, 
 
 ---
 
-## 🟦 Matheus Sousa (RA: 52319400) — Dev Core & API
+## Matheus Sousa (RA: 52319400) — Dev Core & API
 **Foco:** Engenharia de software, automação dos testes e aplicação na prática.
 
 ### 1. Configurar Integração com os 5 a 10 Modelos
@@ -42,7 +46,7 @@ Este documento descreve minuciosamente *o que* cada membro do grupo deve fazer, 
 
 ---
 
-## 🟩 Felipe (Pinete) (RA: 52319337) — Prompt Engineering
+## Felipe (Pinete) (RA: 52319337) — Prompt Engineering
 **Foco:** Definir as regras do jogo. Garantir que as técnicas de IA aplicadas estão academicamente corretas.
 
 ### 1. Formalizar as 3 Técnicas de Prompting
@@ -58,7 +62,7 @@ Este documento descreve minuciosamente *o que* cada membro do grupo deve fazer, 
 
 ---
 
-## 🟥 Guilherme W. (RA: 52420339) — Data & Management
+## Guilherme W. (RA: 52420339) — Data & Management
 **Foco:** Tratar os dados, formatar visualmente e garantir que o grupo não perca prazos.
 
 ### 1. Tabulação e Geração de Gráficos (Capítulo 10)

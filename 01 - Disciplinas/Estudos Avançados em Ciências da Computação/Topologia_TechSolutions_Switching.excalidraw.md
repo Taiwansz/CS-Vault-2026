@@ -1,13 +1,18 @@
 ---
 excalidraw-plugin: parsed
 tags:
-  - excalidraw
-  - redes
-  - switching
-  - topologia
-  - cisco
+ - excalidraw
+ - redes
+ - switching
+ - topologia
+ - cisco
 ---
-==⚠  Switch to EXCALIDRAW VIEW in the MORE OPTIONS menu of this document. ⚠==
+
+> [!NOTE] Navegacao no Cofre
+> **Painel Geral:** [[00 - Dashboard]] | **Indice de Aulas:** [[Índice Geral de Aulas]]
+> **Disciplina:** [[Estudos Avançados em Ciências da Computação]] | **Nucleo ENADE:** [[06 - Redes de Computadores e Sistemas Distribuidos (Do Basico ao Avancado)]]
+
+== Switch to EXCALIDRAW VIEW in the MORE OPTIONS menu of this document. ==
 
 # Excalidraw Data
 
@@ -51,7 +56,7 @@ SETOR 1 (SW-ACCESS-1) ^ba90a39d
 
 • PC-ADM-01: 192.168.10.11 /24 (Fa0/2 - VLAN 10)
 • PC-FIN-01: 192.168.20.11 /24 (Fa0/3 - VLAN 20)
-• PC-TI-01:  192.168.30.11 /24 (Fa0/4 - VLAN 30)
+• PC-TI-01: 192.168.30.11 /24 (Fa0/4 - VLAN 30)
 • IP-PHONE-01: Fa0/5 (Voice VLAN 40 + Dados 10)
 • Gateway: 192.168.X.1 ^b17b8a2d
 
@@ -59,14 +64,14 @@ SETOR 2 (SW-ACCESS-2) ^744cad4e
 
 • PC-ADM-02: 192.168.10.12 /24 (Fa0/2 - VLAN 10)
 • PC-FIN-02: 192.168.20.12 /24 (Fa0/3 - VLAN 20)
-• PC-TI-02:  192.168.30.12 /24 (Fa0/4 - VLAN 30)
+• PC-TI-02: 192.168.30.12 /24 (Fa0/4 - VLAN 30)
 • IP-PHONE-02: Fa0/5 (Voice VLAN 40 + Dados 10)
 • Gateway: 192.168.X.1 ^195fddcb
 
 VALIDAÇÃO DOS TESTES DE PING (RESULTADOS REAIS DO CISCO PACKET TRACER):
-• Teste A (VLAN 10): PC-ADM-01 -> PC-ADM-02 (0% perda) ✅ SUCESSO (Comutação L2 via Port-Channel)
-• Teste B (VLAN 20): PC-FIN-01 -> PC-FIN-02 (0% perda) ✅ SUCESSO | Teste C (VLAN 30): PC-TI-01 -> PC-TI-02 (0% perda) ✅ SUCESSO
-• Teste D (Inter-VLAN): PC-ADM-01 -> PC-FIN-01 (100% perda) ❌ BLOQUEIO ESPERADO (VLANs isoladas sem roteador L3) ^01008ef5
+• Teste A (VLAN 10): PC-ADM-01 -> PC-ADM-02 (0% perda) SUCESSO (Comutação L2 via Port-Channel)
+• Teste B (VLAN 20): PC-FIN-01 -> PC-FIN-02 (0% perda) SUCESSO | Teste C (VLAN 30): PC-TI-01 -> PC-TI-02 (0% perda) SUCESSO
+• Teste D (Inter-VLAN): PC-ADM-01 -> PC-FIN-01 (100% perda) BLOQUEIO ESPERADO (VLANs isoladas sem roteador L3) ^01008ef5
 
 %%
 ## Drawing

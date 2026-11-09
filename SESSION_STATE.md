@@ -1,3 +1,6 @@
+> [!NOTE] Navegacao no Cofre
+> **Central:** [[00 - Dashboard]] | **Guia do Cofre:** [[00 - Guia do Cofre (Vault Guide)]] | **Hub ENADE:** [[INDEX_ESTUDOS_ENADE]]
+
 # SESSION_STATE — 2026-10-27T20:30:00-03:00
 
 ## 1. Objetivo da Sessão
@@ -11,10 +14,10 @@ Registro, implementação em bancada e homologação integral da atividade prát
 - [x] **Missão 6 — Renovação Salarial (DAO Update):** Método `atualizarSalarioEStatus(int id, double novoSalario, String novoStatus)` com mapeamento posicional seguro.
 - [x] **Missão 7 — Rescisão & Compliance (DAO Delete):** Método `dispensarAtleta(int id)` com retorno booleano baseado em contagem de linhas afetadas (`linhas > 0`).
 - [x] **Homologação e Certificação Oficial:**
-  - Desempenho: 480 XP | 10/10 desafios | 8/8 conquistas.
-  - Certificado emitido: `badge-arenaplay-matheus.png` (Código de validação: `DC-1BOTMYU`).
-  - Nota de aula detalhada: `01 - DISCIPLINAS/Tópicos Especiais II/Aulas/2026-10-27 - ArenaPlay Sports Gestao e Scout - CRUD Full JDBC e SQL.md`.
-  - Índice da disciplina atualizado com link permanente para a atividade 07.
+ - Desempenho: 480 XP | 10/10 desafios | 8/8 conquistas.
+ - Certificado emitido: `badge-arenaplay-matheus.png` (Código de validação: `DC-1BOTMYU`).
+ - Nota de aula detalhada: `01 - DISCIPLINAS/Tópicos Especiais II/Aulas/2026-10-27 - ArenaPlay Sports Gestao e Scout - CRUD Full JDBC e SQL.md`.
+ - Índice da disciplina atualizado com link permanente para a atividade 07.
 
 ## 3. Estado dos Repositórios e Ambientes
 - **Cofre Acadêmico:** `01 - DISCIPLINAS/Tópicos Especiais II/Materiais/Aula_20261027_Gestao_Atletas_JDBC/` contendo fontes e certificado.

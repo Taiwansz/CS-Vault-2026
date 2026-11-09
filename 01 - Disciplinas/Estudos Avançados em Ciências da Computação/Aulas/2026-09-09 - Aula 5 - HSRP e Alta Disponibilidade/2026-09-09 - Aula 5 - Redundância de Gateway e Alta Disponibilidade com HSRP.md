@@ -1,3 +1,8 @@
+> [!NOTE] Navegacao no Cofre
+> **Painel Geral:** [[00 - Dashboard]] | **Indice de Aulas:** [[Índice Geral de Aulas]]
+> **Disciplina:** [[Estudos Avançados em Ciências da Computação]] | **Nucleo ENADE:** [[06 - Redes de Computadores e Sistemas Distribuidos (Do Basico ao Avancado)]]
+
+
 ﻿---
 tipo: aula
 disciplina: Estudos Avançados em Ciências da Computação
@@ -5,35 +10,35 @@ data: 2026-09-09
 professor: Paulo Sergio Granato
 status: assistida
 tags:
-  - redes
-  - hsrp
-  - fhrp
-  - alta-disponibilidade
-  - redundancia
-  - failover
-  - gateway-virtual
-  - cisco-ios
-  - packet-tracer
+ - redes
+ - hsrp
+ - fhrp
+ - alta-disponibilidade
+ - redundancia
+ - failover
+ - gateway-virtual
+ - cisco-ios
+ - packet-tracer
 ---
 
-# 📖 Aula 5 — Redundância de Gateway e Alta Disponibilidade com HSRP (Hot Standby Router Protocol)
+# Aula 5 — Redundância de Gateway e Alta Disponibilidade com HSRP (Hot Standby Router Protocol)
 
-> [!info] 📌 Informações da Aula
-> - **Disciplina:** [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Estudos Avançados em Ciências da Computação|Estudos Avançados em Ciências da Computação]]
+> [!info] Informações da Aula
+> - **Disciplina:** [[Estudos Avançados em Ciências da Computação|Estudos Avançados em Ciências da Computação]]
 > - **Professor:** Paulo Sergio Granato
 > - **Data:** 09/09/2026
 > - **Tema:** Protocolos de Redundância de Primeiro Salto (FHRP), Arquitetura e Operação do HSRP, Eleição de Active e Standby, Mecanismos de Preempção (*Preempt*) e Validação de Failover em Cenários Corporativos.
-> - **Status:** <span class="badge badge-success">🟢 Assistida e Documentada</span>
+> - **Status:** <span class="badge badge-success"> Assistida e Documentada</span>
 
 ---
 
-## 📁 Materiais e Atividades Práticas da Aula 5
+## Materiais e Atividades Práticas da Aula 5
 
-> [!example] 🔗 Recursos Disponíveis no Cofre
-> - 📄 **Enunciado do Exercício do Professor (PDF):** [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Materiais/EXERCÍCIO PRÁTICO - aula 5.pdf|EXERCÍCIO PRÁTICO - aula 5.pdf]]
-> - 📝 **Resolução Detalhada do Exercício Prático (com 15 Questões):** [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Aulas/2026-09-09 - Resolução - Exercício Prático Aula 5 - HSRP e Alta Disponibilidade|Resolução Completa da Aula 5 (HSRP)]]
-> - 🔌 **Laboratório Concluído Cisco Packet Tracer (PKT):** [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Aulas/GRUPO_03_HSRP_ALTA_DISPONIBILIDADE.pkt|GRUPO_03_HSRP_ALTA_DISPONIBILIDADE.pkt]]
-> - 🤖 **Script de Automação da Topologia (Script Engine / MCP):** [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Arquivos Auxiliares - Automação IA Packet Tracer/script_aula_5_hsrp.js|script_aula_5_hsrp.js]]
+> [!example] Recursos Disponíveis no Cofre
+> - **Enunciado do Exercício do Professor (PDF):** [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Materiais/EXERCÍCIO PRÁTICO - aula 5.pdf|EXERCÍCIO PRÁTICO - aula 5.pdf]]
+> - **Resolução Detalhada do Exercício Prático (com 15 Questões):** [[2026-09-09 - Resolução - Exercício Prático Aula 5 - HSRP e Alta Disponibilidade|Resolução Completa da Aula 5 (HSRP)]]
+> - **Laboratório Concluído Cisco Packet Tracer (PKT):** [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Aulas/GRUPO_03_HSRP_ALTA_DISPONIBILIDADE.pkt|GRUPO_03_HSRP_ALTA_DISPONIBILIDADE.pkt]]
+> - **Script de Automação da Topologia (Script Engine / MCP):** [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Arquivos Auxiliares - Automação IA Packet Tracer/script_aula_5_hsrp.js|script_aula_5_hsrp.js]]
 
 ---
 
@@ -66,7 +71,7 @@ A solução é utilizar uma tecnologia do grupo **FHRP (*First Hop Redundancy Pr
 No HSRP (Versão 1), os roteadores compartilham:
 * **IP Virtual:** Configurado pelos administradores (ex: `192.168.10.1`).
 * **MAC Address Virtual:** Formato padronizado: `0000.0c07.acXX`, onde `XX` é o número do grupo HSRP em hexadecimal.
-  * *Exemplo:* Grupo HSRP 1 $\rightarrow$ MAC Virtual `0000.0c07.ac01`.
+ * *Exemplo:* Grupo HSRP 1 $\rightarrow$ MAC Virtual `0000.0c07.ac01`.
 
 ### 3.2. Temporizadores e Mensagens de Keepalive (Hello)
 * **Hello Timer:** A cada **3 segundos**, o roteador Active envia pacotes *Hello* via multicast (`224.0.0.2`, porta UDP 1985).
@@ -109,14 +114,14 @@ interface GigabitEthernet0/0
 
 ### Comandos de Diagnóstico e Verificação:
 ```cisco
-show standby brief       ! Tabela consolidada com Grupo, Prioridade, Estado, IPs e Preempt
-show standby             ! Estatísticas completas, timers, contadores de transição de estado
-debug standby events     ! Monitoramento em tempo real das eleições e mensagens Hello
-debug standby packets    ! Inspeção detalhada de cada pacote de controle recebido/enviado
+show standby brief ! Tabela consolidada com Grupo, Prioridade, Estado, IPs e Preempt
+show standby ! Estatísticas completas, timers, contadores de transição de estado
+debug standby events ! Monitoramento em tempo real das eleições e mensagens Hello
+debug standby packets ! Inspeção detalhada de cada pacote de controle recebido/enviado
 ```
 
 ---
 
 ## 5. Relação com a Atividade Prática de Hoje
 A prática de hoje colocou essa teoria em ação com 2 roteadores Cisco 2911 (`R1-PRINCIPAL` e `R2-BACKUP`), validando o failover com desligamento simulado da interface e verificação de continuidade do ping sem qualquer reconfiguração nos clientes.
-Consulte a documentação completa em: [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Aulas/2026-09-09 - Resolução - Exercício Prático Aula 5 - HSRP e Alta Disponibilidade|Resolução do Exercício Prático - Aula 5]].
+Consulte a documentação completa em: [[2026-09-09 - Resolução - Exercício Prático Aula 5 - HSRP e Alta Disponibilidade|Resolução do Exercício Prático - Aula 5]].

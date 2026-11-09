@@ -6,6 +6,10 @@ data: 2026-11-09
 autor: "ThSyr Cognitive Sentinel"
 ---
 
+> [!NOTE] Navegacao de Estudos ENADE
+> **Central:** [[00 - Dashboard]] | **Hub Mestre ENADE:** [[INDEX_ESTUDOS_ENADE]]
+> **Modulo Anterior:** [[07 - Engenharia de Software, SOLID e Padroes de Projeto (Do Basico ao Avancado)]]
+
 # 08 — Formacao Geral, Etica, LGPD e Sociedade Digital (Do Basico ao Nivel ENADE)
 
 > [!INFO] **Objetivo deste Guia**
@@ -20,9 +24,9 @@ O Marco Civil e a constituicao da internet brasileira, estabelecendo principios,
 ### Principios Fundamentais:
 1. **Neutralidade de Rede (Art. 9º):** Os provedores de transmissao devem tratar quaisquer pacotes de dados de forma isonomica, sem distincao por conteudo, origem, destino, servico, terminal ou aplicacao. E proibido degradar ou priorizar o trafego de um concorrente de streaming por interesses comerciais.
 2. **Guarda de Registros de Conexao e Acesso a Aplicacoes:**
-   - *Provedores de Acesso (Ex: Claro, Vivo):* Devem guardar os registros de conexao (IP, data, hora de inicio e fim) sob sigilo pelo prazo minimo de **1 ano**.
-   - *Provedores de Aplicacoes (Ex: Google, Meta):* Devem guardar os registros de acesso a aplicacoes (IP, data e hora) pelo prazo minimo de **6 meses**.
-   - A quebra de sigilo desses registros exige **obrigatoriamente ordem judicial previa**.
+ - *Provedores de Acesso (Ex: Claro, Vivo):* Devem guardar os registros de conexao (IP, data, hora de inicio e fim) sob sigilo pelo prazo minimo de **1 ano**.
+ - *Provedores de Aplicacoes (Ex: Google, Meta):* Devem guardar os registros de acesso a aplicacoes (IP, data e hora) pelo prazo minimo de **6 meses**.
+ - A quebra de sigilo desses registros exige **obrigatoriamente ordem judicial previa**.
 
 ### Responsabilidade Civil por Danos de Terceiros (Art. 19 e Art. 21):
 - **Regra Geral (Art. 19):** Para assegurar a liberdade de expressao e impedir a censura privada, o provedor de aplicacao (redes sociais) **so responde civilmente por danos decorrentes de conteudo publicado por terceiros se, apos ordem judicial especifica, nao tomar as providencias para tornar indisponivel o conteudo**.
@@ -70,12 +74,12 @@ O consentimento e apenas UMA das bases legais. Um banco ou hospital pode tratar 
 - Modelos generativos (GANs e Difusao) permitem criar desinformacao em video e audio hiper-realistas.
 - **Insuficiencia do Fact-Checking:** A checagem de fatos tradicional e inoperante em periodos eleitorais devido a assimetria temporal (o conteudo viraliza em minutos por mensageiros privados, enquanto a pericia leva dias) e ao *Efeito de Influencia Continua* (o ser humano mantem a impressao emocional negativa mesmo apos o desmentido formal).
 - **O Padrao C2PA (Coalition for Content Provenance and Authenticity):**
-  - Utiliza Criptografia de Chave Publica (PKI).
-  - No instante da captura ou sintese, calcula o hash criptografico (SHA-256) dos dados e dos metadados (autor, dispositivo, data/hora).
-  - Assina esse manifesto com uma chave privada e certificado de autoridade confiavel.
+ - Utiliza Criptografia de Chave Publica (PKI).
+ - No instante da captura ou sintese, calcula o hash criptografico (SHA-256) dos dados e dos metadados (autor, dispositivo, data/hora).
+ - Assina esse manifesto com uma chave privada e certificado de autoridade confiavel.
 - **Desafios e Vulnerabilidades Praticas:**
-  1. *Furo Analogico (Analog Hole):* Fotografar a tela do computador ou regravar o audio por um microfone externo quebra a cadeia de assinatura original, gerando uma copia "nao assinada" de dificil rastreio.
-  2. *Strip de Metadados:* Redes sociais (WhatsApp, Instagram) removem metadados EXIF e C2PA por padrao para economizar largura de banda e preservar privacidade.
+ 1. *Furo Analogico (Analog Hole):* Fotografar a tela do computador ou regravar o audio por um microfone externo quebra a cadeia de assinatura original, gerando uma copia "nao assinada" de dificil rastreio.
+ 2. *Strip de Metadados:* Redes sociais (WhatsApp, Instagram) removem metadados EXIF e C2PA por padrao para economizar largura de banda e preservar privacidade.
 
 ### 3.2 Vies Algoritmico e Reconhecimento Facial em Smart Cities
 - Softwares de visao computacional baseados em Aprendizado Profundo (*Deep Learning*) aplicados a seguranca publica apresentam **disparidades criticas de falsos positivos em populacoes negras e pardas**.
@@ -105,3 +109,11 @@ Regula corporacoes classificadas como **Gatekeepers** (empresas que controlam si
 1. **Responsabilidade do Engenheiro por Ordens Superiores:** Em questoes sobre etica profissional (SBC/IEEE/ACM), o engenheiro que atende ordens de chefes corporativos para pular testes de seguranca ou violar privacidade age com **INFRACAO ETICA GRAVE**. O dever com a sociedade e o rigor tecnico suplantam qualquer obediencia hierarquica cega.
 2. **Consentimento na LGPD:** Dizer que "todo e qualquer tratamento de dados pessoais exige consentimento expresso do usuario" e **FALSO**. Ha outras 9 bases legais expressas na lei (como obrigacao legal e legitimo interesse).
 3. **Neutralidade de Rede e Planos Promocionais:** Acordos onde operadoras nao cobram dados para o WhatsApp (*zero-rating*) sao polemicos e frequentemente auditados contra o principio da neutralidade do Art. 9º do Marco Civil da Internet.
+
+---
+
+## Conexoes no Cofre e Disciplinas Praticas
+
+- **Hub Geral:** [[INDEX_ESTUDOS_ENADE]] | [[00 - Dashboard]]
+- **Simulado de Referencia:** [[Simulado 04 - Ciencia da Computacao Completo 20 Questoes 2026-11-09]]
+- **Disciplinas Praticas:** [[Interação Humano Computador e Sistemas Multimídia]], [[Segurança da Informação]], [[Trabalho de Conclusão de Curso II]]

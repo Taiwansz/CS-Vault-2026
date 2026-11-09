@@ -6,6 +6,11 @@ data: 2026-11-09
 autor: "ThSyr Cognitive Sentinel"
 ---
 
+> [!NOTE] Navegacao de Estudos ENADE
+> **Central:** [[00 - Dashboard]] | **Hub Mestre ENADE:** [[INDEX_ESTUDOS_ENADE]]
+> **Modulo Anterior:** [[04 - Sistemas Operacionais, Concorrencia e Memoria (Do Basico ao Avancado)]]
+> **Proximo Modulo:** [[06 - Redes de Computadores e Sistemas Distribuidos (Do Basico ao Avancado)]]
+
 # 05 — Banco de Dados, SQL Avancado e Modelagem (Do Basico ao Nivel ENADE)
 
 > [!INFO] **Objetivo deste Guia**
@@ -30,10 +35,10 @@ Proposto por Edgar F. Codd em 1970, o modelo relacional organiza dados em **rela
 A Algebra Relacional e a linguagem procedural teorica que serve de base para o SQL. Uma consulta recebe relacoes e produz uma nova relacao.
 
 ### Operadores Fundamentais:
-1. **Selecao ($\sigma_{condicao}(R)$):** Filtra linhas que atendem a um predicado (equivale ao `WHERE` do SQL).  
-   *Exemplo:* $\sigma_{idade > 18}(Alunos)$.
-2. **Projecao ($\pi_{colunas}(R)$):** Filtra e extrai colunas especificas, eliminando duplicatas (equivale ao `SELECT DISTINCT` do SQL).  
-   *Exemplo:* $\pi_{nome, email}(Alunos)$.
+1. **Selecao ($\sigma_{condicao}(R)$):** Filtra linhas que atendem a um predicado (equivale ao `WHERE` do SQL). 
+ *Exemplo:* $\sigma_{idade > 18}(Alunos)$.
+2. **Projecao ($\pi_{colunas}(R)$):** Filtra e extrai colunas especificas, eliminando duplicatas (equivale ao `SELECT DISTINCT` do SQL). 
+ *Exemplo:* $\pi_{nome, email}(Alunos)$.
 3. **Uniao ($R \cup S$):** Combina tuplas de duas relacoes compativeis quanto a esquema.
 4. **Diferenca ($R - S$):** Tuplas que estao em $R$ mas nao estao em $S$.
 5. **Produto Cartesiano ($R \times S$):** Combina todas as tuplas de $R$ com todas as tuplas de $S$.
@@ -99,11 +104,11 @@ Diferente do `GROUP BY` (que colapsa varias linhas em uma unica saida), as Windo
 
 ```sql
 SELECT 
-    nome_funcionario,
-    departamento,
-    salario,
-    AVG(salario) OVER (PARTITION BY departamento) AS media_salarial_depto,
-    DENSE_RANK() OVER (PARTITION BY departamento ORDER BY salario DESC) AS ranking_no_depto
+ nome_funcionario,
+ departamento,
+ salario,
+ AVG(salario) OVER (PARTITION BY departamento) AS media_salarial_depto,
+ DENSE_RANK() OVER (PARTITION BY departamento ORDER BY salario DESC) AS ranking_no_depto
 FROM Funcionarios;
 ```
 - `ROW_NUMBER()`: Atribui um numero sequencial unico ($1, 2, 3$).
@@ -114,7 +119,15 @@ FROM Funcionarios;
 
 ## CAMADA 6: ARMADILHAS CLASSICAS DO ENADE
 
-1. **Diferenca entre 2FN e 3FN:**  
-   - Se a questao mostrar uma tabela com **Chave Primaria Simples (um unico atributo)**, ela **automaticamente ja esta na 2FN** (pois e impossivel haver dependencia parcial de chave unica!). O problema so podera ser violacao de 1FN ou 3FN.
+1. **Diferenca entre 2FN e 3FN:** 
+ - Se a questao mostrar uma tabela com **Chave Primaria Simples (um unico atributo)**, ela **automaticamente ja esta na 2FN** (pois e impossivel haver dependencia parcial de chave unica!). O problema so podera ser violacao de 1FN ou 3FN.
 2. **Where com Funcao de Agregacao:** Bancas adoram colocar `SELECT dept, AVG(sal) FROM emp WHERE AVG(sal) > 5000`. Isso gera **ERRO DE SINTAXE**. O correto e `HAVING AVG(sal) > 5000`.
 3. **Nulos em Chaves:** Chave Primaria **NUNCA** pode ser nula. Chave Estrangeira **PODE** aceitar valores nulos (se o relacionamento for opcional).
+
+---
+
+## Conexoes no Cofre e Disciplinas Praticas
+
+- **Hub Geral:** [[INDEX_ESTUDOS_ENADE]] | [[00 - Dashboard]]
+- **Simulado de Referencia:** [[Simulado 04 - Ciencia da Computacao Completo 20 Questoes 2026-11-09]]
+- **Disciplinas Praticas:** [[Banco de Dados]], [[Banco de Dados e Aplicações]], [[Tópicos Especiais II]]

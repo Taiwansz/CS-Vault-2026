@@ -1,3 +1,8 @@
+> [!NOTE] Navegacao no Cofre
+> **Painel Geral:** [[00 - Dashboard]] | **Indice de Aulas:** [[Índice Geral de Aulas]]
+> **Disciplina:** [[Tópicos Especiais II]] | **Nucleo ENADE:** [[01 - Algoritmos, Estruturas de Dados e Paradigmas (Do Basico ao Avancado)]]
+
+
 # GUIA COMPLETO — Tratamento de Exceções em Java
 **Disciplina:** Tópicos Especiais II
 **Autor:** ThSyr para Matheus (Taiwansz)
@@ -35,8 +40,8 @@ Se ninguém **capturar** esse objeto, ele sobe pela pilha de chamadas até não 
 Um stack trace parece assim:
 ```
 Exception in thread "main" java.lang.ArithmeticException: / by zero
-    at GeradorCentral.calcularCarga(GeradorCentral.java:4)
-    at Main.main(Main.java:10)
+ at GeradorCentral.calcularCarga(GeradorCentral.java:4)
+ at Main.main(Main.java:10)
 ```
 
 **Como ler isso:**
@@ -54,26 +59,26 @@ Você vai ver isso em prova prática. Leia de cima para baixo — a primeira lin
 Todas as exceções em Java fazem parte de uma família. É importante saber quem é filho de quem porque isso afeta como você captura.
 
 ```
-Throwable  ← raiz de tudo que pode ser lançado
+Throwable ← raiz de tudo que pode ser lançado
 │
 ├── Error
-│   └── OutOfMemoryError, StackOverflowError...
-│       ↑ JVM em colapso. Não tem o que fazer. Nunca capture isso.
+│ └── OutOfMemoryError, StackOverflowError...
+│ ↑ JVM em colapso. Não tem o que fazer. Nunca capture isso.
 │
-└── Exception  ← o que você vai lidar em 99% dos casos
-    │
-    ├── IOException, SQLException...
-    │   ↑ CHECKED — compilador OBRIGA você a tratar
-    │     Se você não tratar, o código NEM COMPILA
-    │
-    └── RuntimeException
-        ├── ArithmeticException      ← int dividido por zero
-        ├── NullPointerException     ← usar objeto que é null
-        ├── NumberFormatException    ← parseInt("ABC")
-        ├── IllegalArgumentException ← você mesmo lança quando o valor é inválido
-        └── ArrayIndexOutOfBoundsException ← índice fora do array
-            ↑ UNCHECKED — compilador não obriga tratar
-              Mas se não tratar e acontecer, o programa morre
+└── Exception ← o que você vai lidar em 99% dos casos
+ │
+ ├── IOException, SQLException...
+ │ ↑ CHECKED — compilador OBRIGA você a tratar
+ │ Se você não tratar, o código NEM COMPILA
+ │
+ └── RuntimeException
+ ├── ArithmeticException ← int dividido por zero
+ ├── NullPointerException ← usar objeto que é null
+ ├── NumberFormatException ← parseInt("ABC")
+ ├── IllegalArgumentException ← você mesmo lança quando o valor é inválido
+ └── ArrayIndexOutOfBoundsException ← índice fora do array
+ ↑ UNCHECKED — compilador não obriga tratar
+ Mas se não tratar e acontecer, o programa morre
 ```
 
 **Resumo que importa para a prova:**
@@ -89,11 +94,11 @@ Throwable  ← raiz de tudo que pode ser lançado
 
 ```java
 try {
-    // Coloque AQUI o código que pode dar errado
-    // Só o código de risco — nada mais
+ // Coloque AQUI o código que pode dar errado
+ // Só o código de risco — nada mais
 } catch (TipoDeExcecao nomeVariavel) {
-    // O que fazer SE der esse tipo de erro
-    // nomeVariavel é o objeto da exceção — use e.getMessage() para ver a mensagem
+ // O que fazer SE der esse tipo de erro
+ // nomeVariavel é o objeto da exceção — use e.getMessage() para ver a mensagem
 }
 ```
 
@@ -123,22 +128,22 @@ Por que `int / 0` é diferente de `double / 0`?
 **A solução:**
 ```java
 public class GeradorCentral {
-    public static int calcularCarga(int cargaTotal, int geradoresAtivos) {
-        try {
-            return cargaTotal / geradoresAtivos; // ← pode lançar ArithmeticException
-        } catch (ArithmeticException e) {
-            // chegamos aqui SOMENTE se geradoresAtivos for zero
-            System.out.println("Alerta: divisao por zero!");
-            return 0; // valor seguro — o programa continua
-        }
-    }
+ public static int calcularCarga(int cargaTotal, int geradoresAtivos) {
+ try {
+ return cargaTotal / geradoresAtivos; // ← pode lançar ArithmeticException
+ } catch (ArithmeticException e) {
+ // chegamos aqui SOMENTE se geradoresAtivos for zero
+ System.out.println("Alerta: divisao por zero!");
+ return 0; // valor seguro — o programa continua
+ }
+ }
 }
 ```
 
 **O fluxo na cabeça:**
 ```
-calcularCarga(1000, 5)  → tudo certo → retorna 200
-calcularCarga(1000, 0)  → ArithmeticException → catch captura → imprime alerta → retorna 0
+calcularCarga(1000, 5) → tudo certo → retorna 200
+calcularCarga(1000, 0) → ArithmeticException → catch captura → imprime alerta → retorna 0
 ```
 
 ---
@@ -156,17 +161,17 @@ São erros diferentes com causas diferentes. Você quer respostas diferentes par
 **A solução:**
 ```java
 public class CaldeiraNorte {
-    public static int lerPressao(String leitura) {
-        try {
-            return Integer.parseInt(leitura);
-        } catch (NumberFormatException e) {
-            // o texto veio mas não era número válido
-            return -1;
-        } catch (NullPointerException e) {
-            // não veio nada — referência null
-            return -2;
-        }
-    }
+ public static int lerPressao(String leitura) {
+ try {
+ return Integer.parseInt(leitura);
+ } catch (NumberFormatException e) {
+ // o texto veio mas não era número válido
+ return -1;
+ } catch (NullPointerException e) {
+ // não veio nada — referência null
+ return -2;
+ }
+ }
 }
 ```
 
@@ -177,7 +182,7 @@ public class CaldeiraNorte {
 ```java
 // ERRADO — Exception captura tudo, NumberFormatException nunca executa
 } catch (Exception e) { ... }
-} catch (NumberFormatException e) { ... }  // código morto
+} catch (NumberFormatException e) { ... } // código morto
 
 // CERTO — específico primeiro
 } catch (NumberFormatException e) { ... }
@@ -192,26 +197,26 @@ public class CaldeiraNorte {
 Arquivos, conexões, travas físicas — se você esquecer de liberar, o sistema trava.
 
 O `finally` executa em TODO cenário:
-- ✅ O try funcionou normalmente
-- ✅ O try lançou uma exceção que o catch capturou
-- ✅ O catch lançou outra exceção
-- ✅ Alguém chamou `return` dentro do try
+- O try funcionou normalmente
+- O try lançou uma exceção que o catch capturou
+- O catch lançou outra exceção
+- Alguém chamou `return` dentro do try
 
 A única exceção à regra: `System.exit()` — que encerra a JVM na força bruta.
 
 **A solução:**
 ```java
 public class EsteiraControle {
-    public static void operar(Motor motor, Trava trava, double velocidade) {
-        try {
-            motor.ativar(velocidade); // pode lançar qualquer Exception
-        } catch (Exception e) {
-            // qualquer erro — imprime a mensagem
-            System.out.println(e.getMessage());
-        } finally {
-            trava.liberar(); // SEMPRE executa — não importa o que aconteceu acima
-        }
-    }
+ public static void operar(Motor motor, Trava trava, double velocidade) {
+ try {
+ motor.ativar(velocidade); // pode lançar qualquer Exception
+ } catch (Exception e) {
+ // qualquer erro — imprime a mensagem
+ System.out.println(e.getMessage());
+ } finally {
+ trava.liberar(); // SEMPRE executa — não importa o que aconteceu acima
+ }
+ }
 }
 ```
 
@@ -230,13 +235,13 @@ O `finally` resolve isso: executa nos dois cenários.
 **A solução:**
 ```java
 public class BracoRobotico {
-    public void calibrar(double precisao) throws IllegalArgumentException {
-        if (precisao < 0.0 || precisao > 1.0) {
-            throw new IllegalArgumentException("Precisao invalida!");
-            // a linha abaixo NUNCA executa se chegou aqui
-        }
-        System.out.println("Braço calibrado: " + precisao);
-    }
+ public void calibrar(double precisao) throws IllegalArgumentException {
+ if (precisao < 0.0 || precisao > 1.0) {
+ throw new IllegalArgumentException("Precisao invalida!");
+ // a linha abaixo NUNCA executa se chegou aqui
+ }
+ System.out.println("Braço calibrado: " + precisao);
+ }
 }
 ```
 
@@ -260,10 +265,10 @@ São duas condições separadas de rejeição — logo `||`.
 // Passo 1: declare a classe herdando de Exception (Checked) ou RuntimeException (Unchecked)
 public class SobrecargaException extends Exception {
 
-    // Passo 2: construtor que recebe a mensagem
-    public SobrecargaException(String msg) {
-        super(msg); // ← OBRIGATÓRIO — repassa para Exception guardar a mensagem
-    }
+ // Passo 2: construtor que recebe a mensagem
+ public SobrecargaException(String msg) {
+ super(msg); // ← OBRIGATÓRIO — repassa para Exception guardar a mensagem
+ }
 }
 ```
 
@@ -282,22 +287,22 @@ Se você esquecer o `super(msg)`, `e.getMessage()` retorna `null`.
 
 ```java
 public class SensorPressao {
-    //                    ↓ declaração obrigatória para Checked Exception
-    public void checarPressao(int bar) throws SobrecargaException {
-        if (bar > 300) {
-            throw new SobrecargaException("Pressao excede 300 bar!");
-        }
-        System.out.println("Pressão nominal: " + bar + " bar");
-    }
+ // ↓ declaração obrigatória para Checked Exception
+ public void checarPressao(int bar) throws SobrecargaException {
+ if (bar > 300) {
+ throw new SobrecargaException("Pressao excede 300 bar!");
+ }
+ System.out.println("Pressão nominal: " + bar + " bar");
+ }
 }
 ```
 
 **Quem chama esse método é obrigado a tratar:**
 ```java
 try {
-    sensor.checarPressao(450);
+ sensor.checarPressao(450);
 } catch (SobrecargaException e) {
-    System.out.println("ALERTA: " + e.getMessage());
+ System.out.println("ALERTA: " + e.getMessage());
 }
 // Se não colocar o try-catch aqui, o código NEM COMPILA
 ```
@@ -310,9 +315,9 @@ try {
 | `throws` | Na assinatura do método | Avisa que o método PODE lançar |
 
 ```java
-//                              throws — na assinatura
+// throws — na assinatura
 public void metodo() throws MinhaExcecao {
-    throw new MinhaExcecao("erro"); // throw — dentro do método
+ throw new MinhaExcecao("erro"); // throw — dentro do método
 }
 ```
 
@@ -329,12 +334,12 @@ Se um falha, os outros não podem ser prejudicados.
 // ERRADO — try fora do loop
 // Um item corrompido para TUDO
 try {
-    for (String item : itens) {
-        processar(item);
-    }
+ for (String item : itens) {
+ processar(item);
+ }
 } catch (Exception e) {
-    System.out.println("Falha: " + item);
-    // os itens depois do corrompido NUNCA são processados
+ System.out.println("Falha: " + item);
+ // os itens depois do corrompido NUNCA são processados
 }
 ```
 
@@ -342,12 +347,12 @@ try {
 // CERTO — try dentro do loop
 // Cada item tem sua própria rede de segurança
 for (String item : itens) {
-    try {
-        processar(item);
-    } catch (Exception e) {
-        System.out.println("Falha no item: " + item);
-        // o loop CONTINUA — próxima iteração começa normalmente
-    }
+ try {
+ processar(item);
+ } catch (Exception e) {
+ System.out.println("Falha no item: " + item);
+ // o loop CONTINUA — próxima iteração começa normalmente
+ }
 }
 ```
 
@@ -363,29 +368,29 @@ Use isso para decodificar o enunciado rapidamente:
 Enunciado menciona...
 │
 ├── "capturar" ou "tratar" um erro específico
-│   └── → try { código } catch (TipoExato e) { tratamento }
+│ └── → try { código } catch (TipoExato e) { tratamento }
 │
 ├── "garantir", "sempre", "mesmo se falhar", "recurso físico"
-│   └── → finally { liberação }
+│ └── → finally { liberação }
 │
 ├── "dois tipos de erro diferentes"
-│   └── → multi-catch com dois blocos catch
+│ └── → multi-catch com dois blocos catch
 │
 ├── "valor inválido", "fora do intervalo", "dispare uma exceção"
-│   └── → if (condição inválida) throw new TipoExcecao("mensagem")
-│         → || para limites opostos (< min OU > max)
+│ └── → if (condição inválida) throw new TipoExcecao("mensagem")
+│ → || para limites opostos (< min OU > max)
 │
 ├── "crie uma exceção customizada"
-│   └── → class NomeException extends Exception { ... }
-│         → Checked? extends Exception
-│         → Unchecked? extends RuntimeException
+│ └── → class NomeException extends Exception { ... }
+│ → Checked? extends Exception
+│ → Unchecked? extends RuntimeException
 │
 ├── "método que lança exceção checada"
-│   └── → void metodo() throws NomeException { ... }
+│ └── → void metodo() throws NomeException { ... }
 │
 └── "processar lote", "não abortar", "continuar mesmo com falha"
-    └── → for (item : itens) { try { } catch { } }
-          → try-catch DENTRO do for
+ └── → for (item : itens) { try { } catch { } }
+ → try-catch DENTRO do for
 ```
 
 ---
@@ -396,18 +401,18 @@ Quando o Java imprime um erro na tela sem você ter tratado, parece assim:
 
 ```
 Exception in thread "main" java.lang.ArithmeticException: / by zero
-    at GeradorCentral.calcularCarga(GeradorCentral.java:4)
-    at Main.main(Main.java:10)
+ at GeradorCentral.calcularCarga(GeradorCentral.java:4)
+ at Main.main(Main.java:10)
 ```
 
 **Linha por linha:**
 
 ```
-Exception in thread "main"          → aconteceu na thread principal
-java.lang.ArithmeticException       → tipo da exceção (caminho completo do pacote)
-: / by zero                         → mensagem — o que realmente deu errado
+Exception in thread "main" → aconteceu na thread principal
+java.lang.ArithmeticException → tipo da exceção (caminho completo do pacote)
+: / by zero → mensagem — o que realmente deu errado
 at GeradorCentral.calcularCarga(...)→ onde aconteceu (classe.método, arquivo:linha)
-at Main.main(Main.java:10)          → quem chamou o método que falhou
+at Main.main(Main.java:10) → quem chamou o método que falhou
 ```
 
 **Regra prática:**
@@ -431,24 +436,24 @@ if (valor < 0 || valor > 1)
 ### Armadilha 2 — Catch na ordem errada (pai antes do filho)
 ```java
 // ERRADO
-catch (Exception e) { }           // engole tudo
+catch (Exception e) { } // engole tudo
 catch (NumberFormatException e) { } // nunca executa
 
 // CERTO
 catch (NumberFormatException e) { } // específico primeiro
-catch (Exception e) { }           // genérico por último
+catch (Exception e) { } // genérico por último
 ```
 
 ### Armadilha 3 — Esquecer `throws` para Checked Exception
 ```java
 // ERRADO — não compila se SobrecargaException extends Exception
 public void metodo() {
-    throw new SobrecargaException("erro");
+ throw new SobrecargaException("erro");
 }
 
 // CERTO
 public void metodo() throws SobrecargaException {
-    throw new SobrecargaException("erro");
+ throw new SobrecargaException("erro");
 }
 ```
 
@@ -456,16 +461,16 @@ public void metodo() throws SobrecargaException {
 ```java
 // ERRADO — e.getMessage() vai retornar null
 public class MinhaExcecao extends Exception {
-    public MinhaExcecao(String msg) {
-        // sem super(msg) — mensagem perdida
-    }
+ public MinhaExcecao(String msg) {
+ // sem super(msg) — mensagem perdida
+ }
 }
 
 // CERTO
 public class MinhaExcecao extends Exception {
-    public MinhaExcecao(String msg) {
-        super(msg); // mensagem salva no pai
-    }
+ public MinhaExcecao(String msg) {
+ super(msg); // mensagem salva no pai
+ }
 }
 ```
 
@@ -501,68 +506,68 @@ for (item : lista) { try { processar(item); } catch (Exception e) { } }
 ```java
 // 1 — Pizzaria
 public static int lerNumeroPedido(String s) {
-    try {
-        return Integer.parseInt(s);
-    } catch (NumberFormatException e) {
-        return -1;
-    } catch (NullPointerException e) {
-        return -2;
-    }
+ try {
+ return Integer.parseInt(s);
+ } catch (NumberFormatException e) {
+ return -1;
+ } catch (NullPointerException e) {
+ return -2;
+ }
 }
 
 // 2a — Exceção customizada
 public class AndarInvalidoException extends Exception {
-    public AndarInvalidoException(String msg) {
-        super(msg);
-    }
+ public AndarInvalidoException(String msg) {
+ super(msg);
+ }
 }
 
 // 2b — Método do elevador
 public void irPara(int andar) throws AndarInvalidoException {
-    if (andar < 1 || andar > 50) {
-        throw new AndarInvalidoException("Andar invalido: " + andar);
-    }
-    System.out.println("Indo para o andar " + andar);
+ if (andar < 1 || andar > 50) {
+ throw new AndarInvalidoException("Andar invalido: " + andar);
+ }
+ System.out.println("Indo para o andar " + andar);
 }
 
 // 3 — Impressora
 public void imprimir(Documento doc, Cartucho c) {
-    try {
-        doc.imprimir();
-    } catch (Exception e) {
-        System.out.println(e.getMessage());
-    } finally {
-        c.liberar();
-    }
+ try {
+ doc.imprimir();
+ } catch (Exception e) {
+ System.out.println(e.getMessage());
+ } finally {
+ c.liberar();
+ }
 }
 
 // 4 — Notas resilientes
 public static void processarNotas(String[] notas) {
-    for (String nota : notas) {
-        try {
-            double valor = Double.parseDouble(nota);
-            System.out.println("Nota: " + valor);
-        } catch (Exception e) {
-            System.out.println("Nota ignorada: " + nota);
-        }
-    }
+ for (String nota : notas) {
+ try {
+ double valor = Double.parseDouble(nota);
+ System.out.println("Nota: " + valor);
+ } catch (Exception e) {
+ System.out.println("Nota ignorada: " + nota);
+ }
+ }
 }
 
 // 5a — Exceção customizada
 public class SaldoInsuficienteException extends Exception {
-    public SaldoInsuficienteException(String msg) {
-        super(msg);
-    }
+ public SaldoInsuficienteException(String msg) {
+ super(msg);
+ }
 }
 
 // 5b — Método saque
 public void sacar(double valor, double saldo) throws SaldoInsuficienteException {
-    if (saldo < valor) {
-        throw new SaldoInsuficienteException(
-            "Saldo insuficiente para saque de R$ " + valor
-        );
-    }
-    System.out.println("Saque de R$ " + valor + " realizado.");
+ if (saldo < valor) {
+ throw new SaldoInsuficienteException(
+ "Saldo insuficiente para saque de R$ " + valor
+ );
+ }
+ System.out.println("Saque de R$ " + valor + " realizado.");
 }
 ```
 
@@ -571,30 +576,30 @@ public void sacar(double valor, double saldo) throws SaldoInsuficienteException 
 ## COLA RÁPIDA — Para Revisar na Véspera da Prova
 
 ```
-EXCEÇÃO           → O QUE CAUSA
-ArithmeticEx      → int / 0
-NullPointerEx     → objeto.método() quando objeto é null
-NumberFormatEx    → Integer.parseInt("ABC")
+EXCEÇÃO → O QUE CAUSA
+ArithmeticEx → int / 0
+NullPointerEx → objeto.método() quando objeto é null
+NumberFormatEx → Integer.parseInt("ABC")
 IllegalArgumentEx → você lança quando o valor não faz sentido
-ArrayIndexEx      → array[10] quando o array tem 5 posições
+ArrayIndexEx → array[10] quando o array tem 5 posições
 
-PALAVRA-CHAVE     → ONDE FICA     → O QUE FAZ
-try               → bloco         → tenta executar o código de risco
-catch             → bloco         → captura e trata a exceção
-finally           → bloco         → SEMPRE executa (liberar recursos)
-throw             → dentro método → lança a exceção agora
-throws            → na assinatura → avisa que o método pode lançar
+PALAVRA-CHAVE → ONDE FICA → O QUE FAZ
+try → bloco → tenta executar o código de risco
+catch → bloco → captura e trata a exceção
+finally → bloco → SEMPRE executa (liberar recursos)
+throw → dentro método → lança a exceção agora
+throws → na assinatura → avisa que o método pode lançar
 
-HERANÇA           → TIPO          → COMPILADOR OBRIGA?
-extends Exception → Checked       → SIM — trate ou declare throws
-extends RuntimeEx → Unchecked     → NÃO — mas se não tratar, mata o programa
+HERANÇA → TIPO → COMPILADOR OBRIGA?
+extends Exception → Checked → SIM — trate ou declare throws
+extends RuntimeEx → Unchecked → NÃO — mas se não tratar, mata o programa
 
-LOOP              → COMPORTAMENTO
-try fora do for   → 1 falha = loop para
+LOOP → COMPORTAMENTO
+try fora do for → 1 falha = loop para
 try dentro do for → 1 falha = item ignorado, loop continua
 ```
 
 ---
 
-*Registrado por ThSyr — Lobo Parietal: [[Java_Excecoes_e_Resiliencia]]*
+*Registrado por ThSyr — Lobo Parietal: Java Excecoes e Resiliencia*
 *Versão 2.0 — Calibrada para Matheus: explica o porquê de cada mecanismo, não só o como.*

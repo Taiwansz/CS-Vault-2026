@@ -6,6 +6,10 @@ tema: "Analise Sintatica, Gramaticas Livres de Contexto, LL(1) e LR(1)"
 status: concluido
 ---
 
+> [!NOTE] Navegacao no Cofre
+> **Painel Geral:** [[00 - Dashboard]] | **Indice de Aulas:** [[Índice Geral de Aulas]]
+> **Disciplina:** [[Compiladores]] | **Nucleo ENADE:** [[03 - Teoria da Computacao, Automatos e Compiladores (Do Basico ao Avancado)]]
+
 # Guia de Analise Sintatica LL(1) e LR(1) com Tabelas de Parsing
 
 > [!INFO] **Visao Geral do Modulo**
@@ -18,13 +22,13 @@ status: concluido
 ```text
 Analisadores Sintaticos
 ├── Top-Down (Descendentes)
-│   ├── Preditivo Recursivo sem Backtracking (LL(1))
-│   └── Com Backtracking (Lento)
+│ ├── Preditivo Recursivo sem Backtracking (LL(1))
+│ └── Com Backtracking (Lento)
 └── Bottom-Up (Ascendentes)
-    ├── Shift-Reduce Classico
-    ├── SLR(1) (Simple LR)
-    ├── LR(1) Canonico
-    └── LALR(1) (Look-Ahead LR — Usado pelo Yacc/Bison)
+ ├── Shift-Reduce Classico
+ ├── SLR(1) (Simple LR)
+ ├── LR(1) Canonico
+ └── LALR(1) (Look-Ahead LR — Usado pelo Yacc/Bison)
 ```
 
 ---

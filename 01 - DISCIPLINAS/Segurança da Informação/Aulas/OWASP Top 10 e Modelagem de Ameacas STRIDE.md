@@ -5,6 +5,10 @@ tema: "OWASP Top 10, Modelagem de Ameacas STRIDE e Seguranca em APIs"
 status: concluido
 ---
 
+> [!NOTE] Navegacao no Cofre
+> **Painel Geral:** [[00 - Dashboard]] | **Indice de Aulas:** [[Índice Geral de Aulas]]
+> **Disciplina:** [[Segurança da Informação]] | **Nucleo ENADE:** [[08 - Formacao Geral, Etica, LGPD e Sociedade Digital (Do Basico ao Avancado)]]
+
 # OWASP Top 10 e Modelagem de Ameacas STRIDE
 
 > [!INFO] **Visao Geral do Modulo**
@@ -30,9 +34,9 @@ O modelo STRIDE categoriza os vetores de ameaca contra os quais o software deve 
 ## 2. Vulnerabilidades Criticas do OWASP Top 10
 
 1. **A01: Broken Access Control (Controle de Acesso Quebrado):**
-   - Inclui **IDOR (Insecure Direct Object Reference)**, onde o usuario altera um identificador na URL (`/api/usuario/105` para `/api/usuario/106`) e o backend entrega os dados sem verificar a posse.
+ - Inclui **IDOR (Insecure Direct Object Reference)**, onde o usuario altera um identificador na URL (`/api/usuario/105` para `/api/usuario/106`) e o backend entrega os dados sem verificar a posse.
 2. **A02: Cryptographic Failures (Falhas Criptograficas):**
-   - Transmissao de dados em texto plano (HTTP em vez de HTTPS), uso de algoritmos obsoletos (MD5, SHA-1, DES) ou chaves criptograficas hardcoded no codigo-fonte.
+ - Transmissao de dados em texto plano (HTTP em vez de HTTPS), uso de algoritmos obsoletos (MD5, SHA-1, DES) ou chaves criptograficas hardcoded no codigo-fonte.
 3. **A03: Injection (Injecao de Codigo / SQL Injection):**
-   - Dados nao confiaveis fornecidos pelo usuario sao concatenados diretamente em comandos SQL ou comandos do sistema operacional.
-   - **Mitigacao Absoluta:** *Prepared Statements* (consultas parametrizadas) e ORMs seguros.
+ - Dados nao confiaveis fornecidos pelo usuario sao concatenados diretamente em comandos SQL ou comandos do sistema operacional.
+ - **Mitigacao Absoluta:** *Prepared Statements* (consultas parametrizadas) e ORMs seguros.

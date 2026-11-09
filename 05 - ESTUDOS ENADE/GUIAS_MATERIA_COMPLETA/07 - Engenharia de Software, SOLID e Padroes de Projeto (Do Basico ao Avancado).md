@@ -6,6 +6,11 @@ data: 2026-11-09
 autor: "ThSyr Cognitive Sentinel"
 ---
 
+> [!NOTE] Navegacao de Estudos ENADE
+> **Central:** [[00 - Dashboard]] | **Hub Mestre ENADE:** [[INDEX_ESTUDOS_ENADE]]
+> **Modulo Anterior:** [[06 - Redes de Computadores e Sistemas Distribuidos (Do Basico ao Avancado)]]
+> **Proximo Modulo:** [[08 - Formacao Geral, Etica, LGPD e Sociedade Digital (Do Basico ao Avancado)]]
+
 # 07 — Engenharia de Software, SOLID e Padroes de Projeto (Do Basico ao Nivel ENADE)
 
 > [!INFO] **Objetivo deste Guia**
@@ -18,8 +23,8 @@ autor: "ThSyr Cognitive Sentinel"
 - **Modelo em Cascata (Waterfall):** Fases sequenciais e rigidas (Requisitos -> Projeto -> Implementacao -> Testes -> Implantacao). Nao aceita mudancas retroativas facilmente. Ideal apenas para sistemas com requisitos 100% estaveis e regulatorios criticos.
 - **Modelo Espiral (Barry Boehm):** Processo iterativo centrado na **analise e mitigacao explicita de riscos** a cada volta da espiral.
 - **Metodologias Ageis (Scrum / Kanban):** Foco em entregas incrementais frequentes e adaptacao a mudancas.
-  - *Scrum:* Timebox fixo (**Sprints** de 1 a 4 semanas). Papeis definidos: *Product Owner* (define prioridades do backlog), *Scrum Master* (remove impedimentos e zela pelo processo) e *Time de Desenvolvimento* (multidisciplinar e auto-organizavel). Cerimonias: Sprint Planning, Daily Scrum (15 min), Sprint Review e Retrospectiva.
-  - *Kanban:* Fluxo continuo, visualizacao do fluxo em quadro e **imposicao de limites de trabalho em progresso (WIP — Work in Progress)** para evitar gargalos operacionais.
+ - *Scrum:* Timebox fixo (**Sprints** de 1 a 4 semanas). Papeis definidos: *Product Owner* (define prioridades do backlog), *Scrum Master* (remove impedimentos e zela pelo processo) e *Time de Desenvolvimento* (multidisciplinar e auto-organizavel). Cerimonias: Sprint Planning, Daily Scrum (15 min), Sprint Review e Retrospectiva.
+ - *Kanban:* Fluxo continuo, visualizacao do fluxo em quadro e **imposicao de limites de trabalho em progresso (WIP — Work in Progress)** para evitar gargalos operacionais.
 
 ---
 
@@ -50,27 +55,27 @@ O SOLID e a cartilha definitiva de boas praticas de Orientacao a Objetos para ev
 ```java
 // CODIGO ACOPLADO E ERRADO (Viola DIP):
 public class ProcessadorPagamento {
-    // Depende diretamente da classe concreta de banco
-    private MySQLPedidoRepository repository = new MySQLPedidoRepository();
-    
-    public void processar(Pedido p) {
-        repository.salvar(p);
-    }
+ // Depende diretamente da classe concreta de banco
+ private MySQLPedidoRepository repository = new MySQLPedidoRepository();
+
+ public void processar(Pedido p) {
+ repository.salvar(p);
+ }
 }
 
 // CODIGO REFATORADO CORRETO (Respeita DIP via Injecao de Dependencia):
 public class ProcessadorPagamento {
-    // Depende de uma interface abstrata
-    private final PedidoRepository repository;
-    
-    // Injetado de fora pelo construtor publico
-    public ProcessadorPagamento(PedidoRepository repository) {
-        this.repository = repository;
-    }
-    
-    public void processar(Pedido p) {
-        this.repository.salvar(p);
-    }
+ // Depende de uma interface abstrata
+ private final PedidoRepository repository;
+
+ // Injetado de fora pelo construtor publico
+ public ProcessadorPagamento(PedidoRepository repository) {
+ this.repository = repository;
+ }
+
+ public void processar(Pedido p) {
+ this.repository.salvar(p);
+ }
 }
 ```
 
@@ -120,9 +125,9 @@ public sealed interface Pagamento permits Pix, Cartao, Boleto {}
 - **Padrao Moderno:** Encadeamento funcional:
 ```java
 return repo.buscarPorId(id)
-           .filter(Usuario::isAtivo)
-           .map(Usuario::getEmail)
-           .orElse("contato@empresa.com");
+ .filter(Usuario::isAtivo)
+ .map(Usuario::getEmail)
+ .orElse("contato@empresa.com");
 ```
 
 ---
@@ -132,3 +137,12 @@ return repo.buscarPorId(id)
 1. **Injecao de Dependencias vs. Inversao de Dependencias:** Inversao de Dependencia (DIP) e o **principio arquitetural** (depender de interfaces). Injecao de Dependencia (DI) e o **padrao de implementacao** (passar o objeto pelo construtor ou anotação `@Autowired`).
 2. **Exaustividade em Interfaces Seladas:** Se uma questao perguntar se o `switch` sobre uma classe selada exige `default:`, a resposta e **NAO**, desde que todos os subtipos da clausula `permits` estejam cobertos.
 3. **Pirataria de Codigo em Records:** O construtor compacto de um record (`public Ponto { ... }`) nao permite fazer atribuicoes explicitas do tipo `this.x = x`. A atribuicao e automatica do compilador apos o termino das validacoes.
+
+---
+
+## Conexoes no Cofre e Disciplinas Praticas
+
+- **Hub Geral:** [[INDEX_ESTUDOS_ENADE]] | [[00 - Dashboard]]
+- **Simulado de Referencia:** [[Simulado 04 - Ciencia da Computacao Completo 20 Questoes 2026-11-09]]
+- **Disciplinas Praticas:** [[Engenharia de Software]], [[Tópicos Especiais II]], [[Projeto Prático Integrado - Desenvolvimento de Jogos Digitais]]
+- **Simulado Especifico:** [[Simulado 02 - Questões ENADE de Ciência da Computação]]

@@ -6,6 +6,11 @@ data: 2026-11-09
 autor: "ThSyr Cognitive Sentinel"
 ---
 
+> [!NOTE] Navegacao de Estudos ENADE
+> **Central:** [[00 - Dashboard]] | **Hub Mestre ENADE:** [[INDEX_ESTUDOS_ENADE]]
+> **Modulo Anterior:** [[02 - Teoria dos Grafos e Algoritmos de Rede (Do Basico ao Avancado)]]
+> **Proximo Modulo:** [[04 - Sistemas Operacionais, Concorrencia e Memoria (Do Basico ao Avancado)]]
+
 # 03 — Teoria da Computacao, Automatos e Compiladores (Do Basico ao Nivel ENADE)
 
 > [!INFO] **Objetivo deste Guia**
@@ -29,12 +34,12 @@ Noam Chomsky classificou as linguagens formais em 4 niveis estritos de poder exp
 ```text
 +--------------------------------------------------------------+
 | Tipo 0: Linguagens Recursivamente Enumeraveis (Turing Machine)|
-|   +------------------------------------------------------+   |
-|   | Tipo 1: Linguagens Sensiveis ao Contexto (LBA)        |   |
-|   |   +----------------------------------------------+   |   |
-|   |   | Tipo 2: Linguagens Livres de Contexto (PDA)  |   |   |
-|   |   |   +--------------------------------------+   |   |   |
-|   |   |   | Tipo 3: Linguagens Regulares (DFA/NFA)|   |   |   |
+| +------------------------------------------------------+ |
+| | Tipo 1: Linguagens Sensiveis ao Contexto (LBA) | |
+| | +----------------------------------------------+ | |
+| | | Tipo 2: Linguagens Livres de Contexto (PDA) | | |
+| | | +--------------------------------------+ | | |
+| | | | Tipo 3: Linguagens Regulares (DFA/NFA)| | | |
 +---+---+---+---+--------------------------------------+---+---+---+
 ```
 
@@ -62,12 +67,12 @@ A Maquina de Turing formaliza matematicamente o conceito de "algoritmo". Qualque
 ### 3.2 O Problema da Parada (Halting Problem — Alan Turing, 1936)
 - **A Pergunta:** Existe um algoritmo universal $H$ que consiga ler o codigo de qualquer programa $P$ e sua entrada $I$, e dizer com 100% de certeza se $P(I)$ vai terminar (parar) ou entrar em loop infinito?
 - **A Resposta Matematica:** **NAO**. O problema da parada e **INDECIDIVEL** (impossivel de ser resolvido algorithmicament no caso geral).
-- **A Prova por Diagonalizacao (Contradicao):**  
-  Suponha que exista tal programa $H(P, I)$. Construimos uma maquina reversa $D(P)$ que consulta $H(P, P)$. Se $H$ disser que $P(P)$ para, $D$ entra em loop infinito de proposito. Se $H$ disser que $P(P)$ entra em loop, $D$ para imediatamente.  
-  O que acontece quando passamos $D$ para ela mesma: $D(D)$?
-  - Se $D(D)$ para, por definicao ela entra em loop.
-  - Se $D(D)$ entra em loop, por definicao ela para.  
-  A contradicao logica prova que a hipotese inicial e falsa: $H$ nao pode existir.
+- **A Prova por Diagonalizacao (Contradicao):** 
+ Suponha que exista tal programa $H(P, I)$. Construimos uma maquina reversa $D(P)$ que consulta $H(P, P)$. Se $H$ disser que $P(P)$ para, $D$ entra em loop infinito de proposito. Se $H$ disser que $P(P)$ entra em loop, $D$ para imediatamente. 
+ O que acontece quando passamos $D$ para ela mesma: $D(D)$?
+ - Se $D(D)$ para, por definicao ela entra em loop.
+ - Se $D(D)$ entra em loop, por definicao ela para. 
+ A contradicao logica prova que a hipotese inicial e falsa: $H$ nao pode existir.
 
 ### 3.3 Teorema de Rice:
 Qualquer propriedade semântica nao-trivial sobre o comportamento de programas (ex: "este programa imprime o numero 42?", "este codigo contem bugs?", "duas funcoes sao equivalentes?") e **indecidivel**.
@@ -80,23 +85,23 @@ Um compilador opera em pipeline sequencial dividido entre Frontend (independente
 
 ```text
 [ Codigo-Fonte ]
-       │
-       ▼
-1. Analise Lexica (Scanner)  ------> Regex / DFA -> Emite Tokens
-       │
-       ▼
+ │
+ ▼
+1. Analise Lexica (Scanner) ------> Regex / DFA -> Emite Tokens
+ │
+ ▼
 2. Analise Sintatica (Parser) -----> Gramaticas Livres de Contexto -> Gera AST
-       │
-       ▼
+ │
+ ▼
 3. Analise Semantica --------------> Tabela de Simbolos, Tipos e Escopo
-       │
-       ▼
+ │
+ ▼
 4. Codigo Intermediario (IR) ------> Three-Address Code (3AC) ou SSA Form
-       │
-       ▼
+ │
+ ▼
 5. Otimizacao de Codigo -----------> Propagacao de Constantes, Loop Invariant
-       │
-       ▼
+ │
+ ▼
 6. Geracao de Codigo Objeto -------> Alocacao de Registradores e Assembly/Binario
 ```
 
@@ -107,5 +112,15 @@ Um compilador opera em pipeline sequencial dividido entre Frontend (independente
 1. **Linguagem Regular com Aninhamento:** Se a questao pedir para reconhecer "expressoes matematicas com parenteses balanceados aninhados" usando Regex ou Automato Finito, a resposta e **IMPOSSIVEL**. Aninhamento arbitrario exige memoria em pilha (Linguagem Livre de Contexto).
 2. **Gramaticas Ambiguas em Compiladores:** Uma gramatica e ambigua quando gera mais de uma Parse Tree diferente para a mesma cadeia. Gramaticas ambiguas **NAO** podem ser convertidas diretamente para parsers preditivos deterministas LL(1) sem reescrita de regras ou associacao de precedencia de operadores.
 3. **Decidibilidade vs. Complexidade:** Cuidado para nao confundir:
-   - Problemas **NP-Completos** (como Caixeiro Viajante e Satisfatibilidade Booleana/SAT) sao **DECIDIVEIS** (podem ser resolvidos, embora levem tempo exponencial no pior caso se $P \ne NP$).
-   - O **Problema da Parada** e **INDECIDIVEL** (nao existe algoritmo possivel, mesmo com tempo infinito).
+ - Problemas **NP-Completos** (como Caixeiro Viajante e Satisfatibilidade Booleana/SAT) sao **DECIDIVEIS** (podem ser resolvidos, embora levem tempo exponencial no pior caso se $P \ne NP$).
+ - O **Problema da Parada** e **INDECIDIVEL** (nao existe algoritmo possivel, mesmo com tempo infinito).
+
+---
+
+## Conexoes no Cofre e Disciplinas Praticas
+
+- **Hub Geral:** [[INDEX_ESTUDOS_ENADE]] | [[00 - Dashboard]]
+- **Simulado de Referencia:** [[Simulado 04 - Ciencia da Computacao Completo 20 Questoes 2026-11-09]]
+- **Disciplinas Praticas:** [[Compiladores]], [[Autômatos e Linguagens Formais]]
+- **Guia Complementar:** [[Guia de Estudos - Bootstrapping, AST e Ataque de Ken Thompson (ENADE 2026)]]
+- **Simulado Especifico:** [[Simulado 01 - Compiladores e Linguagens de Programação]]

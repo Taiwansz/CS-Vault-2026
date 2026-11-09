@@ -6,6 +6,10 @@ ano: 2025
 disciplina: Trabalho de Conclusão de Curso II
 ---
 
+> [!NOTE] Navegacao no Cofre
+> **Painel Geral:** [[00 - Dashboard]] | **Indice de Aulas:** [[Índice Geral de Aulas]]
+> **Disciplina:** [[Trabalho de Conclusão de Curso II]] | **Nucleo ENADE:** [[08 - Formacao Geral, Etica, LGPD e Sociedade Digital (Do Basico ao Avancado)]]
+
 # Fichamento: Artigo Modelo para Fundamentação
 
 ## Referência Bibliográfica (ABNT)

@@ -5,6 +5,10 @@ data: 2026-09-14
 orientador: Luyz
 ---
 
+> [!NOTE] Navegacao no Cofre
+> **Painel Geral:** [[00 - Dashboard]] | **Indice de Aulas:** [[Índice Geral de Aulas]]
+> **Disciplina:** [[Trabalho de Conclusão de Curso II]] | **Nucleo ENADE:** [[08 - Formacao Geral, Etica, LGPD e Sociedade Digital (Do Basico ao Avancado)]]
+
 # Orientação — Roadmap e Problematização (Prof. Luyz)
 
 Após análise do tema central do TCC ("COMPRESSÃO DE PROMPTS, TOKENS E SUSTENTABILIDADE DA IA") e do cronograma oficial, as diretrizes do professor Luyz foram estruturadas no seguinte plano de ação estratégico, focado no Capítulo 10 (Resultados e Discussão):
@@ -19,8 +23,8 @@ Após análise do tema central do TCC ("COMPRESSÃO DE PROMPTS, TOKENS E SUSTENT
 - **Seleção de Modelos:** Escolher de 5 a 10 modelos de IA (ex: GPT-4o, Claude 3.5 Sonnet, Llama 3, Gemini 1.5, etc).
 - **Técnicas de Prompting:** Selecionar as 3 técnicas diferentes de prompting que o Pinete (Felipe) comentou em aula (ex: Zero-shot, Few-shot, Chain-of-Thought ou técnicas com/sem LLMLingua).
 - **Métricas Obrigatórias:** Em CADA teste, registrar obrigatoriamente:
-  - Tamanho da Janela de Contexto do modelo.
-  - Gasto de Tokens (Entrada/Saída).
+ - Tamanho da Janela de Contexto do modelo.
+ - Gasto de Tokens (Entrada/Saída).
 - **Registro:** Tabular todos os resultados para criação de gráficos no TCC.
 
 ## 3. Aplicação Prática (App do Matheus)
@@ -30,7 +34,7 @@ Após análise do tema central do TCC ("COMPRESSÃO DE PROMPTS, TOKENS E SUSTENT
 
 ---
 
-## ✅ Checklist de Execução e Prazos
+## Checklist de Execução e Prazos
 
 ### Ações Imediatas (Setembro)
 - [ ] Registrar este 1º acompanhamento de orientação no WebTCC (Prazo: 19/09).
@@ -46,6 +50,6 @@ Após análise do tema central do TCC ("COMPRESSÃO DE PROMPTS, TOKENS E SUSTENT
 
 ### Reta Final (Novembro)
 - [ ] Fechar a **Conclusão** (Capítulo 11).
-- [ ] **03/11 a 09/11:** Enviar PDF sem identificação para Banca Virtual (🚨 Crítico).
+- [ ] **03/11 a 09/11:** Enviar PDF sem identificação para Banca Virtual ( Crítico).
 - [ ] **23/11 a 27/11:** Apresentação no SIMTCC.
 - [ ] **24/11 a 27/11:** Entrega Final do PDF com nomes dos autores (Matheus, Felipe, Guilherme).

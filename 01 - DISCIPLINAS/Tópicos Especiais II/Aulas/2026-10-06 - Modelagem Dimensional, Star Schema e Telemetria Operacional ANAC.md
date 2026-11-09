@@ -7,11 +7,15 @@ professor: "Luiz Claudio Chiavini Oliveira Junior"
 status: concluido
 ---
 
+> [!NOTE] Navegacao no Cofre
+> **Painel Geral:** [[00 - Dashboard]] | **Indice de Aulas:** [[Índice Geral de Aulas]]
+> **Disciplina:** [[Tópicos Especiais II]] | **Nucleo ENADE:** [[01 - Algoritmos, Estruturas de Dados e Paradigmas (Do Basico ao Avancado)]]
+
 # Aula 06/10 — Modelagem Dimensional, Star Schema e Telemetria ANAC
 
 > [!info] Informações da Aula
 > - **Data:** 06/10/2026
-> - **Disciplina:** [[01 - Disciplinas/Tópicos Especiais II/Tópicos Especiais II|Tópicos Especiais II]]
+> - **Disciplina:** [[Tópicos Especiais II|Tópicos Especiais II]]
 > - **Professor:** Luiz Claudio Chiavini Oliveira Junior
 > - **Foco:** Modelagem Dimensional (Star Schema), Ralph Kimball vs 3NF de Codd, DDL no MySQL Workbench (schema `aula0610`), Deteccao Forense de BOM e Integridade Referencial no InnoDB.
 > - **Artefato Complementar:** [[2026-10-06_a_gazeta_dos_grandes_sistemas.html]]
@@ -43,13 +47,13 @@ USE aula0610;
 
 -- Criacao da tabela dimensional de aeroportos (Star Schema)
 CREATE TABLE dim_aeroporto (
-    Aeroporto_ICAO VARCHAR(4) NOT NULL PRIMARY KEY,
-    Aeroporto_IATA VARCHAR(4) NOT NULL,
-    Nome_Aeroporto VARCHAR(50) NOT NULL,
-    Cidade VARCHAR(50) NOT NULL,
-    UF VARCHAR(50) NOT NULL,
-    Tipo VARCHAR(50) NOT NULL,
-    Capacidade_slot VARCHAR(50) NOT NULL
+ Aeroporto_ICAO VARCHAR(4) NOT NULL PRIMARY KEY,
+ Aeroporto_IATA VARCHAR(4) NOT NULL,
+ Nome_Aeroporto VARCHAR(50) NOT NULL,
+ Cidade VARCHAR(50) NOT NULL,
+ UF VARCHAR(50) NOT NULL,
+ Tipo VARCHAR(50) NOT NULL,
+ Capacidade_slot VARCHAR(50) NOT NULL
 );
 
 -- Inspecao preliminar dos registros
@@ -63,26 +67,26 @@ A consolidacao da tabela fato exigiu o estabelecimento formal das relacoes com a
 ```sql
 -- 1. Chave Estrangeira para Companhia Aerea
 ALTER TABLE fato_operacoes_voos_anac
-    ADD CONSTRAINT fk_fato_companhia_aerea
-    FOREIGN KEY (Companhia_ICAO)
-    REFERENCES dim_companhia_aerea (Companhia_ICAO);
+ ADD CONSTRAINT fk_fato_companhia_aerea
+ FOREIGN KEY (Companhia_ICAO)
+ REFERENCES dim_companhia_aerea (Companhia_ICAO);
 
 -- 2. Chaves Estrangeiras para Aeroporto (Origem e Destino)
 ALTER TABLE fato_operacoes_voos_anac
-    ADD CONSTRAINT fk_fato_aeroporto_origem
-    FOREIGN KEY (Aeroporto_Origem_ICAO)
-    REFERENCES dim_aeroporto (Aeroporto_ICAO);
+ ADD CONSTRAINT fk_fato_aeroporto_origem
+ FOREIGN KEY (Aeroporto_Origem_ICAO)
+ REFERENCES dim_aeroporto (Aeroporto_ICAO);
 
 ALTER TABLE fato_operacoes_voos_anac
-    ADD CONSTRAINT fk_fato_aeroporto_destino
-    FOREIGN KEY (Aeroporto_Destino_ICAO)
-    REFERENCES dim_aeroporto (Aeroporto_ICAO);
+ ADD CONSTRAINT fk_fato_aeroporto_destino
+ FOREIGN KEY (Aeroporto_Destino_ICAO)
+ REFERENCES dim_aeroporto (Aeroporto_ICAO);
 
 -- 3. Chave Estrangeira para Motivo do Atraso
 ALTER TABLE fato_operacoes_voos_anac
-    ADD CONSTRAINT fk_fato_motivo_atraso
-    FOREIGN KEY (Motivo_Atraso_Codigo)
-    REFERENCES dim_motivo_atraso (Motivo_Codigo);
+ ADD CONSTRAINT fk_fato_motivo_atraso
+ FOREIGN KEY (Motivo_Atraso_Codigo)
+ REFERENCES dim_motivo_atraso (Motivo_Codigo);
 ```
 
 ---
@@ -90,13 +94,13 @@ ALTER TABLE fato_operacoes_voos_anac
 ## 3. Analise Forense: Obstaculos de Persistencia e Solucoes Tecnicas
 
 1. **Vulnerabilidade do Byte Order Mark (BOM UTF-8 `\ufeff`):**
-   - Na ingestao via assistentes de importacao do Workbench, arquivos exportados por planilhas corporativas inserem bytes invisiveis no inicio do cabeçalho.
-   - O caractere invisivel corrompe o nome da primeira coluna (ex: `ï»¿Aeroporto_ICAO`), quebrando juncoes relacionais e consultas catalogadas.
-   - *Solucao:* Higienizacao previa de codificacao em UTF-8 estrito sem BOM e especificacao deterministica manual via scripts DDL.
+ - Na ingestao via assistentes de importacao do Workbench, arquivos exportados por planilhas corporativas inserem bytes invisiveis no inicio do cabeçalho.
+ - O caractere invisivel corrompe o nome da primeira coluna (ex: `ï»¿Aeroporto_ICAO`), quebrando juncoes relacionais e consultas catalogadas.
+ - *Solucao:* Higienizacao previa de codificacao em UTF-8 estrito sem BOM e especificacao deterministica manual via scripts DDL.
 
 2. **Erro 1170 do InnoDB (Colunas `TEXT` sem Comprimento de Chave):**
-   - Tentativas de definir chaves estrangeiras ou primarias em campos tipados generica e promiscuamente como `TEXT` sao barradas pelo motor InnoDB (`BLOB/TEXT column used in key specification without a key length`).
-   - *Solucao:* Padronizacao estrita de codigos internacionais aeronauticos sob `VARCHAR(4)` para ICAO/IATA e chaves curtas inteiras/alfanumericas indexaveis.
+ - Tentativas de definir chaves estrangeiras ou primarias em campos tipados generica e promiscuamente como `TEXT` sao barradas pelo motor InnoDB (`BLOB/TEXT column used in key specification without a key length`).
+ - *Solucao:* Padronizacao estrita de codigos internacionais aeronauticos sob `VARCHAR(4)` para ICAO/IATA e chaves curtas inteiras/alfanumericas indexaveis.
 
 ---
 

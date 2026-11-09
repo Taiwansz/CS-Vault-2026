@@ -7,37 +7,41 @@ aluno: Matheus Sousa dos Santos
 ra: "52319400"
 status: concluido
 tags:
-  - redes
-  - switching
-  - vlan
-  - voice-vlan
-  - trunk
-  - etherchannel
-  - lacp
-  - packet-tracer
-  - techsolutions
+ - redes
+ - switching
+ - vlan
+ - voice-vlan
+ - trunk
+ - etherchannel
+ - lacp
+ - packet-tracer
+ - techsolutions
 ---
 
-# 📝 Resolução do Exercício Prático – Aula 2 (TechSolutions)
+> [!NOTE] Navegacao no Cofre
+> **Painel Geral:** [[00 - Dashboard]] | **Indice de Aulas:** [[Índice Geral de Aulas]]
+> **Disciplina:** [[Estudos Avançados em Ciências da Computação]] | **Nucleo ENADE:** [[06 - Redes de Computadores e Sistemas Distribuidos (Do Basico ao Avancado)]]
 
-> [!info] 📌 Metadados da Atividade
-> - **Disciplina:** [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Estudos Avançados em Ciências da Computação|Estudos Avançados em Ciências da Computação]]
-> - **Aula de Referência:** [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Aulas/2026-08-12 - Aula 2 - Switching Avançado|Aula 2 — Switching Avançado]]
+# Resolução do Exercício Prático – Aula 2 (TechSolutions)
+
+> [!info] Metadados da Atividade
+> - **Disciplina:** [[Estudos Avançados em Ciências da Computação|Estudos Avançados em Ciências da Computação]]
+> - **Aula de Referência:** [[2026-08-12 - Aula 2 - Switching Avançado|Aula 2 — Switching Avançado]]
 > - **Aluno:** Matheus Sousa dos Santos | **RA:** `52319400`
 > - **Tema:** Segmentação por VLANs, Voice VLAN, Trunks 802.1Q e EtherChannel LACP
-> - **Status:** <span class="badge badge-success">🟢 Concluído e Validado</span>
+> - **Status:** <span class="badge badge-success"> Concluído e Validado</span>
 
 ---
 
-## 📁 Anexos e Arquivos do Laboratório
+## Anexos e Arquivos do Laboratório
 
-> [!example] 🔗 Arquivos Disponíveis
-> - 📄 **Enunciado Original do Professor:** [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Materiais/EXERCÍCIO PRÁTICO - aula 2 (Professor).pdf|EXERCÍCIO PRÁTICO - aula 2 (Professor).pdf]]
-> - 📄 **Respostas Finais do Aluno (PDF):** [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Materiais/RESPOSTAS_EXERCICIO_AULA_2 (Matheus Santos).pdf|RESPOSTAS_EXERCICIO_AULA_2 (Matheus Santos).pdf]]
-> - 📝 **Arquivo Editável (DOCX):** [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Materiais/RESPOSTAS_EXERCICIO_AULA_2.docx|RESPOSTAS_EXERCICIO_AULA_2.docx]]
-> - 🔌 **Topologia no Cisco Packet Tracer (.PKT):** [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Materiais/TECHSOLUTIONS_AULA_2_CONCLUIDO.pkt|TECHSOLUTIONS_AULA_2_CONCLUIDO.pkt]]
-> - 🎨 **Diagrama no Excalidraw:** [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Topologia_TechSolutions_Switching.excalidraw|Topologia_TechSolutions_Switching.excalidraw]]
-> - 🤖 **Guia de Automação com IA:** [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Arquivos Auxiliares - Automação IA Packet Tracer/README|Guia e Skill MCP Packet Tracer]]
+> [!example] Arquivos Disponíveis
+> - **Enunciado Original do Professor:** [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Materiais/EXERCÍCIO PRÁTICO - aula 2 (Professor).pdf|EXERCÍCIO PRÁTICO - aula 2 (Professor).pdf]]
+> - **Respostas Finais do Aluno (PDF):** [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Materiais/RESPOSTAS_EXERCICIO_AULA_2 (Matheus Santos).pdf|RESPOSTAS_EXERCICIO_AULA_2 (Matheus Santos).pdf]]
+> - **Arquivo Editável (DOCX):** [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Materiais/RESPOSTAS_EXERCICIO_AULA_2.docx|RESPOSTAS_EXERCICIO_AULA_2.docx]]
+> - **Topologia no Cisco Packet Tracer (.PKT):** [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Materiais/TECHSOLUTIONS_AULA_2_CONCLUIDO.pkt|TECHSOLUTIONS_AULA_2_CONCLUIDO.pkt]]
+> - **Diagrama no Excalidraw:** [[Topologia_TechSolutions_Switching.excalidraw|Topologia_TechSolutions_Switching.excalidraw]]
+> - **Guia de Automação com IA:** [[README|Guia e Skill MCP Packet Tracer]]
 
 ---
 
@@ -57,11 +61,11 @@ A rede da **TechSolutions** foi implementada com 4 switches Cisco Catalyst 3560-
 ### 1.2 Mapeamento de Portas e Endereçamento
 - `PC-ADM-01` (SW-ACCESS-1 / Fa0/2 - VLAN 10): `192.168.10.11/24` | GW: `192.168.10.1`
 - `PC-FIN-01` (SW-ACCESS-1 / Fa0/3 - VLAN 20): `192.168.20.11/24` | GW: `192.168.20.1`
-- `PC-TI-01`  (SW-ACCESS-1 / Fa0/4 - VLAN 30): `192.168.30.11/24` | GW: `192.168.30.1`
+- `PC-TI-01` (SW-ACCESS-1 / Fa0/4 - VLAN 30): `192.168.30.11/24` | GW: `192.168.30.1`
 - `IP-PHONE-01` (SW-ACCESS-1 / Fa0/5 - Access 10 + Voice 40)
 - `PC-ADM-02` (SW-ACCESS-2 / Fa0/2 - VLAN 10): `192.168.10.12/24` | GW: `192.168.10.1`
 - `PC-FIN-02` (SW-ACCESS-2 / Fa0/3 - VLAN 20): `192.168.20.12/24` | GW: `192.168.20.1`
-- `PC-TI-02`  (SW-ACCESS-2 / Fa0/4 - VLAN 30): `192.168.30.12/24` | GW: `192.168.30.1`
+- `PC-TI-02` (SW-ACCESS-2 / Fa0/4 - VLAN 30): `192.168.30.12/24` | GW: `192.168.30.1`
 - `IP-PHONE-02` (SW-ACCESS-2 / Fa0/5 - Access 10 + Voice 40)
 
 ### 1.3 EtherChannel LACP (Core)

@@ -13,6 +13,10 @@ conquistas: "8/8"
 codigo_verificacao: "DC-1BOTMYU"
 ---
 
+> [!NOTE] Navegacao no Cofre
+> **Painel Geral:** [[00 - Dashboard]] | **Indice de Aulas:** [[Índice Geral de Aulas]]
+> **Disciplina:** [[Tópicos Especiais II]] | **Nucleo ENADE:** [[01 - Algoritmos, Estruturas de Dados e Paradigmas (Do Basico ao Avancado)]]
+
 # 2026-10-27 — ArenaPlay Sports Gestão & Scout (CRUD Full, JDBC e SQL)
 
 > [!INFO] Ficha Técnica da Sessão
@@ -62,64 +66,64 @@ A modelagem de domínio exigiu encapsulamento rígido com atributos privados, co
 
 ```java
 public class Atleta {
-    private int id;
-    private String nome;
-    private String posicao;
-    private int idade;
-    private double salario;
-    private String status;
+ private int id;
+ private String nome;
+ private String posicao;
+ private int idade;
+ private double salario;
+ private String status;
 
-    public Atleta(int id, String nome, String posicao, int idade, double salario, String status) {
-        this.id = id;
-        this.nome = nome;
-        this.posicao = posicao;
-        this.idade = idade;
-        this.salario = salario;
-        this.status = status;
-    }
+ public Atleta(int id, String nome, String posicao, int idade, double salario, String status) {
+ this.id = id;
+ this.nome = nome;
+ this.posicao = posicao;
+ this.idade = idade;
+ this.salario = salario;
+ this.status = status;
+ }
 
-    public String getNome() {
-        return nome;
-    }
+ public String getNome() {
+ return nome;
+ }
 
-    public double getSalario() {
-        return salario;
-    }
+ public double getSalario() {
+ return salario;
+ }
 
-    public int getId() {
-        return id;
-    }
+ public int getId() {
+ return id;
+ }
 
-    public String getPosicao() {
-        return posicao;
-    }
+ public String getPosicao() {
+ return posicao;
+ }
 
-    public int getIdade() {
-        return idade;
-    }
+ public int getIdade() {
+ return idade;
+ }
 
-    public String getStatus() {
-        return status;
-    }
+ public String getStatus() {
+ return status;
+ }
 
-    public void setId(int id) { this.id = id; }
-    public void setNome(String nome) { this.nome = nome; }
-    public void setPosicao(String posicao) { this.posicao = posicao; }
-    public void setIdade(int idade) { this.idade = idade; }
-    public void setSalario(double salario) { this.salario = salario; }
-    public void setStatus(String status) { this.status = status; }
+ public void setId(int id) { this.id = id; }
+ public void setNome(String nome) { this.nome = nome; }
+ public void setPosicao(String posicao) { this.posicao = posicao; }
+ public void setIdade(int idade) { this.idade = idade; }
+ public void setSalario(double salario) { this.salario = salario; }
+ public void setStatus(String status) { this.status = status; }
 
-    @Override
-    public String toString() {
-        return "Atleta{" +
-                "id=" + id +
-                ", nome='" + nome + '\'' +
-                ", posicao='" + posicao + '\'' +
-                ", idade=" + idade +
-                ", salario=" + salario +
-                ", status='" + status + '\'' +
-                '}';
-    }
+ @Override
+ public String toString() {
+ return "Atleta{" +
+ "id=" + id +
+ ", nome='" + nome + '\'' +
+ ", posicao='" + posicao + '\'' +
+ ", idade=" + idade +
+ ", salario=" + salario +
+ ", status='" + status + '\'' +
+ '}';
+ }
 }
 ```
 
@@ -130,17 +134,17 @@ public class Atleta {
 A inserção transacional foi estruturada via `PreparedStatement` parametrizado, anulando vetores de injeção SQL e mapeando os atributos do objeto diretamente para a tabela `atletas`.
 
 ```java
-    public void cadastrarAtleta(Atleta atleta) throws SQLException {
-        String sql = "INSERT INTO atletas (nome, posicao, idade, salario, status) VALUES (?, ?, ?, ?, ?)";
-        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, atleta.getNome());
-            pstmt.setString(2, atleta.getPosicao());
-            pstmt.setInt(3, atleta.getIdade());
-            pstmt.setDouble(4, atleta.getSalario());
-            pstmt.setString(5, atleta.getStatus());
-            pstmt.executeUpdate();
-        }
-    }
+ public void cadastrarAtleta(Atleta atleta) throws SQLException {
+ String sql = "INSERT INTO atletas (nome, posicao, idade, salario, status) VALUES (?, ?, ?, ?, ?)";
+ try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+ pstmt.setString(1, atleta.getNome());
+ pstmt.setString(2, atleta.getPosicao());
+ pstmt.setInt(3, atleta.getIdade());
+ pstmt.setDouble(4, atleta.getSalario());
+ pstmt.setString(5, atleta.getStatus());
+ pstmt.executeUpdate();
+ }
+ }
 ```
 
 ---
@@ -163,26 +167,26 @@ ORDER BY salario DESC;
 Recuperação em lote e hidratação do cursor do banco de dados (`ResultSet`) para instâncias ativas do domínio Java, populando a estrutura de dados `List<Atleta>`:
 
 ```java
-    public List<Atleta> listarElenco() throws SQLException {
-        List<Atleta> elenco = new ArrayList<>();
-        String sql = "SELECT * FROM atletas";
-        try (PreparedStatement pstmt = conn.prepareStatement(sql);
-             ResultSet rs = pstmt.executeQuery()) {
-            
-            while (rs.next()) {
-                Atleta a = new Atleta(
-                        rs.getInt("id"),
-                        rs.getString("nome"),
-                        rs.getString("posicao"),
-                        rs.getInt("idade"),
-                        rs.getDouble("salario"),
-                        rs.getString("status")
-                );
-                elenco.add(a);
-            }
-        }
-        return elenco;
-    }
+ public List<Atleta> listarElenco() throws SQLException {
+ List<Atleta> elenco = new ArrayList<>();
+ String sql = "SELECT * FROM atletas";
+ try (PreparedStatement pstmt = conn.prepareStatement(sql);
+ ResultSet rs = pstmt.executeQuery()) {
+
+ while (rs.next()) {
+ Atleta a = new Atleta(
+ rs.getInt("id"),
+ rs.getString("nome"),
+ rs.getString("posicao"),
+ rs.getInt("idade"),
+ rs.getDouble("salario"),
+ rs.getString("status")
+ );
+ elenco.add(a);
+ }
+ }
+ return elenco;
+ }
 ```
 
 ---
@@ -192,15 +196,15 @@ Recuperação em lote e hidratação do cursor do banco de dados (`ResultSet`) p
 Modificação pontual de condições contratuais (reajuste salarial e alteração de situação de elenco) vinculada pela chave primária `id`:
 
 ```java
-    public void atualizarSalarioEStatus(int id, double novoSalario, String novoStatus) throws SQLException {
-        String sql = "UPDATE atletas SET salario = ?, status = ? WHERE id = ?";
-        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setDouble(1, novoSalario);
-            pstmt.setString(2, novoStatus);
-            pstmt.setInt(3, id);
-            pstmt.executeUpdate();
-        }
-    }
+ public void atualizarSalarioEStatus(int id, double novoSalario, String novoStatus) throws SQLException {
+ String sql = "UPDATE atletas SET salario = ?, status = ? WHERE id = ?";
+ try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+ pstmt.setDouble(1, novoSalario);
+ pstmt.setString(2, novoStatus);
+ pstmt.setInt(3, id);
+ pstmt.executeUpdate();
+ }
+ }
 ```
 
 ---
@@ -210,14 +214,14 @@ Modificação pontual de condições contratuais (reajuste salarial e alteraçã
 Operação de desligamento contratual via exclusão referencial, retornando o booleano de confirmação baseado na telemetria de linhas efetivamente afetadas (`linhas > 0`):
 
 ```java
-    public boolean dispensarAtleta(int id) throws SQLException {
-        String sql = "DELETE FROM atletas WHERE id = ?";
-        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setInt(1, id);
-            int linhas = pstmt.executeUpdate();
-            return linhas > 0;
-        }
-    }
+ public boolean dispensarAtleta(int id) throws SQLException {
+ String sql = "DELETE FROM atletas WHERE id = ?";
+ try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+ pstmt.setInt(1, id);
+ int linhas = pstmt.executeUpdate();
+ return linhas > 0;
+ }
+ }
 ```
 
 ---
@@ -227,12 +231,12 @@ Operação de desligamento contratual via exclusão referencial, retornando o bo
 Os arquivos gerados durante a aula foram compilados e sincronizados nos seguintes diretórios de bancada:
 
 1. **Cofre Acadêmico:**
-   - Pasta: `01 - Disciplinas/Tópicos Especiais II/Materiais/Aula_20261027_Gestao_Atletas_JDBC/`
-   - Códigos: `src/Atleta.java`, `src/AtletaDAO.java`, `missao4_radar_scout.sql`
-   - Certificado: `badge-arenaplay-matheus.png`
+ - Pasta: `01 - Disciplinas/Tópicos Especiais II/Materiais/Aula_20261027_Gestao_Atletas_JDBC/`
+ - Códigos: `src/Atleta.java`, `src/AtletaDAO.java`, `missao4_radar_scout.sql`
+ - Certificado: `badge-arenaplay-matheus.png`
 2. **Workspace IntelliJ IDEA:**
-   - Pasta: `C:\Users\52319400\IdeaProjects\AULA2710\`
-   - Códigos: `src/Atleta.java`, `src/AtletaDAO.java`, `missao4_radar_scout.sql`
+ - Pasta: `C:\Users\52319400\IdeaProjects\AULA2710\`
+ - Códigos: `src/Atleta.java`, `src/AtletaDAO.java`, `missao4_radar_scout.sql`
 
 ---
 

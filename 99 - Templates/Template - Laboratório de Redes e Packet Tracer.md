@@ -7,40 +7,40 @@ aluno: Matheus Sousa dos Santos
 ra: "52319400"
 status: em-andamento
 tags:
-  - redes
-  - cisco
-  - packet-tracer
-  - laboratorio
+ - redes
+ - cisco
+ - packet-tracer
+ - laboratorio
 ---
 
-# 🔌 {{title}}
+# {{title}}
 
-> [!info] 📌 Informações da Atividade
-> - **Disciplina:** [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Estudos Avançados em Ciências da Computação|Estudos Avançados em Ciências da Computação]]
+> [!info] Informações da Atividade
+> - **Disciplina:** [[Estudos Avançados em Ciências da Computação|Estudos Avançados em Ciências da Computação]]
 > - **Aluno:** Matheus Sousa dos Santos | **RA:** `52319400`
-> - **Status:** ⏳ Em Andamento
+> - **Status:** Em Andamento
 
 ---
 
-## 📁 Arquivos e Anexos do Laboratório
-- 📄 **Enunciado do Professor (PDF):** (anexar PDF do professor)
-- 📄 **Respostas Finais (PDF):** (anexar PDF de respostas)
-- 🔌 **Arquivo do Cisco Packet Tracer (.PKT):** (anexar arquivo .pkt do laboratório)
+## Arquivos e Anexos do Laboratório
+- **Enunciado do Professor (PDF):** (anexar PDF do professor)
+- **Respostas Finais (PDF):** (anexar PDF de respostas)
+- **Arquivo do Cisco Packet Tracer (.PKT):** (anexar arquivo .pkt do laboratório)
 
 
 
 ---
 
-## 1. 🗺️ Topologia e Planejamento
+## 1. ️ Topologia e Planejamento
 
 ### 1.1 Tabela de Endereçamento IP e VLANs
 | Dispositivo | Interface | Endereço IP | Máscara | Gateway | VLAN / Finalidade |
 |---|---|---|---|---|---|
-|  |  |  |  |  |  |
+| | | | | | |
 
 ---
 
-## 2. 💻 Configurações Aplicadas (Cisco IOS)
+## 2. Configurações Aplicadas (Cisco IOS)
 
 ```ios
 enable
@@ -50,17 +50,20 @@ configure terminal
 
 ---
 
-## 3. 🧪 Testes de Conectividade e Validação
+## 3. Testes de Conectividade e Validação
 - **Teste 1:** 
 - **Teste 2:** 
 
 ---
 
-## 4. 📝 Respostas às Questões Teóricas
+## 4. Respostas às Questões Teóricas
 1. **Questão 1:**
-   *Resposta:* 
+ *Resposta:* 
 
 ---
 
-## 5. 💡 Conclusão e Parecer Técnico
-> 
+## 5. Conclusão e Parecer Técnico
+>
+
+---
+**Guia de Convencoes:** [[00 - Guia do Cofre (Vault Guide)]] | **Central:** [[00 - Dashboard]]

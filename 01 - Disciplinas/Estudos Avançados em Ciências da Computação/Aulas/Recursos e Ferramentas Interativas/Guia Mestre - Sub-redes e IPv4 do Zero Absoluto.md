@@ -8,6 +8,10 @@ data: 2026-09-16
 status: canonico
 ---
 
+> [!NOTE] Navegacao no Cofre
+> **Painel Geral:** [[00 - Dashboard]] | **Indice de Aulas:** [[Índice Geral de Aulas]]
+> **Disciplina:** [[Estudos Avançados em Ciências da Computação]] | **Nucleo ENADE:** [[06 - Redes de Computadores e Sistemas Distribuidos (Do Basico ao Avancado)]]
+
 # Guia Mestre: Sub-redes IPv4 e VLSM do Zero Absoluto (Método Prático sem Binário)
 
 > [!important] Objetivo Pedagógico
@@ -46,7 +50,7 @@ Quando adicionamos bits à máscara (a partir da barra `/24`), somamos esses val
 | Notação CIDR | Bits no 4º Octeto | Cálculo Decimal | Máscara Decimal Completa |
 |:---:|:---:|:---|:---|
 | **/24** | 0 bits | `0` | `255.255.255.0` |
-| **/25** | 1 bit  | `128` | `255.255.255.128` |
+| **/25** | 1 bit | `128` | `255.255.255.128` |
 | **/26** | 2 bits | `128 + 64` | `255.255.255.192` |
 | **/27** | 3 bits | `128 + 64 + 32` | `255.255.255.224` |
 | **/28** | 4 bits | `128 + 64 + 32 + 16` | `255.255.255.240` |
@@ -65,7 +69,7 @@ Pegue o número `256` e subtraia o octeto relevante da máscara decimal:
 $$\text{Salto (Número Mágico)} = 256 - \text{Máscara}$$
 
 - Se a máscara for `/26` (`255.255.255.192`):
-  $$\text{Salto} = 256 - 192 = 64$$
+ $$\text{Salto} = 256 - 192 = 64$$
 - O número $64$ é o tamanho de cada quarteirão (bloco). As sub-redes nascem de 64 em 64.
 
 ### Passo 2: Listar as Fronteiras das Redes
@@ -110,20 +114,20 @@ Cada quarteirão possui exatamente 4 elementos estruturais:
 3. **Listar as redes:** `0`, `64`, `128`, `192`.
 4. **Localizar o IP:** O número `70` está entre `64` e `128`.
 5. **Resultado Imediato:**
-   - **Endereço de Rede:** `192.168.10.64`
-   - **Primeiro Host Útil:** `192.168.10.65`
-   - **Último Host Útil:** `192.168.10.126`
-   - **Endereço de Broadcast:** `192.168.10.127`
-   - **Total de Hosts Úteis:** $64 - 2 = 62$
+ - **Endereço de Rede:** `192.168.10.64`
+ - **Primeiro Host Útil:** `192.168.10.65`
+ - **Último Host Útil:** `192.168.10.126`
+ - **Endereço de Broadcast:** `192.168.10.127`
+ - **Total de Hosts Úteis:** $64 - 2 = 62$
 
 ### Caso 2: Configuração de Enlace Ponto a Ponto entre Roteadores (`/30`)
 - **Cenário:** Interconectar `Roteador-A` e `Roteador-B` usando a sub-rede `10.0.0.0/30`.
 - **Salto:** $256 - 252 = 4$.
 - **Bloco 0 a 3:**
-  - `10.0.0.0`: Endereço de Rede.
-  - `10.0.0.1`: IP da interface do Roteador-A.
-  - `10.0.0.2`: IP da interface do Roteador-B.
-  - `10.0.0.3`: Endereço de Broadcast.
+ - `10.0.0.0`: Endereço de Rede.
+ - `10.0.0.1`: IP da interface do Roteador-A.
+ - `10.0.0.2`: IP da interface do Roteador-B.
+ - `10.0.0.3`: Endereço de Broadcast.
 - **Resultado:** Desperdício zero de endereçamento IPv4.
 
 ---
@@ -133,7 +137,7 @@ Cada quarteirão possui exatamente 4 elementos estruturais:
 1. **Nunca atribua o primeiro IP ou o último IP de um bloco a um dispositivo.** Se a questão perguntar se `192.168.1.127/26` pode ser configurado em uma placa de rede, a resposta é **não** (é o broadcast da sub-rede `64`).
 2. **O Gateway Padrão deve estar na mesma sub-rede do host.** Se um PC possui IP `192.168.1.70/26` (rede `64`) e o gateway configurado for `192.168.1.1` (rede `0`), o PC estará isolado sem acesso externo.
 3. **Para calcular hosts necessários (VLSM):** Encontre a potência de 2 imediatamente superior à demanda somada de 2 ($N + 2$).
-   - Demanda: 25 hosts.
-   - Soma: $25 + 2 = 27$.
-   - Menor potência de 2 $\ge 27$: $32$ ($2^5$).
-   - Máscara necessária: $32 - 5 = /27$.
+ - Demanda: 25 hosts.
+ - Soma: $25 + 2 = 27$.
+ - Menor potência de 2 $\ge 27$: $32$ ($2^5$).
+ - Máscara necessária: $32 - 5 = /27$.

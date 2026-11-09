@@ -6,6 +6,11 @@ data: 2026-11-09
 autor: "ThSyr Cognitive Sentinel"
 ---
 
+> [!NOTE] Navegacao de Estudos ENADE
+> **Central:** [[00 - Dashboard]] | **Hub Mestre ENADE:** [[INDEX_ESTUDOS_ENADE]]
+> **Modulo Anterior:** [[01 - Algoritmos, Estruturas de Dados e Paradigmas (Do Basico ao Avancado)]]
+> **Proximo Modulo:** [[03 - Teoria da Computacao, Automatos e Compiladores (Do Basico ao Avancado)]]
+
 # 02 — Teoria dos Grafos e Algoritmos de Rede (Do Basico ao Nivel ENADE)
 
 > [!INFO] **Objetivo deste Guia**
@@ -65,7 +70,7 @@ Em um digrafo, um subgrafo maximal $C$ e um **Componente Fortemente Conexo (SCC)
 - **Complexidade:** Linear $O(|V| + |E|)$.
 
 > [!IMPORTANT]
-> **Propriedade do Grafo Condensado $G^{SCC}$:**  
+> **Propriedade do Grafo Condensado $G^{SCC}$:** 
 > Se substituirmos cada SCC por um unico super-vertice e mantivermos as arestas entre eles, o grafo resultante $G^{SCC}$ e **obrigatoriamente um Grafo Aciclico Direcionado (DAG)**. Ele **NUNCA** contera ciclos direcionados!
 
 ---
@@ -76,9 +81,9 @@ Em um digrafo, um subgrafo maximal $C$ e um **Componente Fortemente Conexo (SCC)
 - **Principio:** Algoritmo guloso baseado em relaxamento de arestas a partir do vertice mais proximo ainda nao visitado.
 - **Condicao Obrigatoria:** **Todos os pesos de arestas devem ser nao-negativos ($w(u, v) \ge 0$)**. Se houver aresta negativa, Dijkstra pode produzir respostas erradas.
 - **Complexidade dependendo da Fila de Prioridades:**
-  - *Com Array simples:* $O(|V|^2)$.
-  - *Com Heap Binario (PriorityQueue padrao):* $O((|V| + |E|) \log |V|)$.
-  - *Com Heap de Fibonacci:* Como a operacao `decrease-key` roda em $O(1)$ amortizado, o tempo total cai para $O(|E| + |V| \log |V|)$. E teoricamente superior para grafos densos onde $|E| \approx |V|^2$.
+ - *Com Array simples:* $O(|V|^2)$.
+ - *Com Heap Binario (PriorityQueue padrao):* $O((|V| + |E|) \log |V|)$.
+ - *Com Heap de Fibonacci:* Como a operacao `decrease-key` roda em $O(1)$ amortizado, o tempo total cai para $O(|E| + |V| \log |V|)$. E teoricamente superior para grafos densos onde $|E| \approx |V|^2$.
 
 ### 4.2 Algoritmo de Bellman-Ford (Aceita Arestas Negativas)
 - **Mecanica:** Relaxa todas as $|E|$ arestas do grafo por exatamente $|V|-1$ vezes.
@@ -99,9 +104,9 @@ Uma MST e um subgrafo aciclico que conecta todos os vertices de um grafo nao-dir
 ### 5.1 Algoritmo de Kruskal
 - **Abordagem:** Orientado a arestas (Guloso).
 - **Mecanica:**
-  1. Ordena todas as $|E|$ arestas pelo peso em ordem crescente.
-  2. Percorre as arestas e inclui na arvore se ela nao formar ciclo.
-  3. Para testar ciclos em tempo quase constante, utiliza a estrutura de dados **Union-Find (Disjoint Set Union — DSU)** com *Path Compression* e *Union by Rank*.
+ 1. Ordena todas as $|E|$ arestas pelo peso em ordem crescente.
+ 2. Percorre as arestas e inclui na arvore se ela nao formar ciclo.
+ 3. Para testar ciclos em tempo quase constante, utiliza a estrutura de dados **Union-Find (Disjoint Set Union — DSU)** com *Path Compression* e *Union by Rank*.
 - **Complexidade:** $O(|E| \log |E|)$ (dominado pela ordenacao das arestas).
 
 ### 5.2 Algoritmo de Prim
@@ -116,3 +121,11 @@ Uma MST e um subgrafo aciclico que conecta todos os vertices de um grafo nao-dir
 1. **Dijkstra com Pesos Negativos:** Se a questao perguntar se Dijkstra resolve grafos com arestas de peso negativo, a resposta e **NAO**. O algoritmo correto para isso e Bellman-Ford.
 2. **Ciclos no Grafo Condensado de SCCs:** A questao vai tentar afirmar que o grafo condensado por SCCs precisa de algoritmo para desfazer ciclos. **FALSO**: ele e um DAG por definicao matematica invariante.
 3. **Numero de Arestas em Grafo Conexo:** Um grafo conexo com $|V|$ vertices possui no minimo $|V|-1$ arestas (quando e uma arvore). Se possuir exatamente $|V|-1$ arestas e for conexo, ele nao tem ciclos.
+
+---
+
+## Conexoes no Cofre e Disciplinas Praticas
+
+- **Hub Geral:** [[INDEX_ESTUDOS_ENADE]] | [[00 - Dashboard]]
+- **Simulado de Referencia:** [[Simulado 04 - Ciencia da Computacao Completo 20 Questoes 2026-11-09]]
+- **Disciplinas Praticas:** [[Estudos Avançados em Ciências da Computação]], [[Estrutura de Dados]]

@@ -1,3 +1,8 @@
+> [!NOTE] Navegacao no Cofre
+> **Painel Geral:** [[00 - Dashboard]] | **Indice de Aulas:** [[Índice Geral de Aulas]]
+> **Disciplina:** [[Banco de Dados e Aplicações]] | **Nucleo ENADE:** [[05 - Banco de Dados, SQL Avancado e Modelagem (Do Basico ao Avancado)]]
+
+
 # **Documentação do Sistema de E-commerce**
 
 ## **1. Introdução**
@@ -142,4 +147,3 @@ Lista de problemas comuns e suas soluções (ex: problemas de login, erros de pa
 - **Diagrama ER**
 - **Exemplos de Chamadas de API**
 - **Políticas de Backup e Recuperação**
-

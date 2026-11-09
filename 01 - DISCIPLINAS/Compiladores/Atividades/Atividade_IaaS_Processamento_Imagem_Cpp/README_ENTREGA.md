@@ -1,3 +1,6 @@
+> [!NOTE] Navegacao no Cofre
+> **Disciplina:** [[Compiladores]] | **Painel Geral:** [[00 - Dashboard]]
+
 # RELATORIO DE ENTREGA: PROCESSAMENTO DE IMAGENS EM C++ & PROVISIONAMENTO IaaS
 
 - **Disciplina:** Compiladores / Infraestrutura em Nuvem

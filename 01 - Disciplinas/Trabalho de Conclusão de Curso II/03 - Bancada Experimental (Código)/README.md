@@ -1,14 +1,14 @@
-# 🔬 03 - Bancada Experimental & Automação (Battle IA Benchmark)
+# 03 - Bancada Experimental & Automação (Battle IA Benchmark)
 
-> **Ambiente Computacional e Pipeline de Testes Empíricos 100% Reais do TCC II**  
-> **Tema:** Compressão de Prompts, Redução do Consumo de Tokens e Sustentabilidade da IA  
-> **Autor:** Matheus Sousa dos Santos (RA: 52319400)  
-> **Orientador:** Prof. Luiz Claudio Chiavini Oliveira Junior  
+> **Ambiente Computacional e Pipeline de Testes Empíricos 100% Reais do TCC II** 
+> **Tema:** Compressão de Prompts, Redução do Consumo de Tokens e Sustentabilidade da IA 
+> **Autor:** Matheus Sousa dos Santos (RA: 52319400) 
+> **Orientador:** Prof. Luiz Claudio Chiavini Oliveira Junior 
 > **Instituição:** Centro Universitário Max Planck (UniMAX) — Bacharelado em Ciência da Computação (2026)
 
 ---
 
-## 📌 Visão Geral da Bancada Real
+## Visão Geral da Bancada Real
 
 Esta bancada experimental executa inferência **100% real e auditável**, eliminando qualquer dado pré-calculado ou mock:
 1. **Nuvem de GPUs NVIDIA NIM:** Conecta-se diretamente ao endpoint oficial da NVIDIA (`https://integrate.api.nvidia.com/v1/chat/completions`) utilizando chaves de API autenticadas e modelos fundacionais de ponta (`meta/llama-3.2-11b-vision-instruct`).
@@ -20,7 +20,7 @@ Esta bancada experimental executa inferência **100% real e auditável**, elimin
 
 ---
 
-## 📂 Arquivos da Bancada
+## Arquivos da Bancada
 
 | Arquivo | Descrição |
 |---|---|
@@ -34,7 +34,7 @@ Esta bancada experimental executa inferência **100% real e auditável**, elimin
 
 ---
 
-## 🚀 Como Executar
+## Como Executar
 
 ### 1. Executar a Bancada Real de Inferência (NVIDIA NIM)
 ```bash

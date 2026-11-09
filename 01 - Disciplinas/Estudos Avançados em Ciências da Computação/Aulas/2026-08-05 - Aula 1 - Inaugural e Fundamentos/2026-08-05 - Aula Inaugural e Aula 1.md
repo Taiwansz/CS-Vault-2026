@@ -6,9 +6,13 @@ professor: Paulo Granato
 status: assistida
 ---
 
-# 📖 Aula Inaugural e Aula 1 — Eletiva 8: Redes Corporativas
+> [!NOTE] Navegacao no Cofre
+> **Painel Geral:** [[00 - Dashboard]] | **Indice de Aulas:** [[Índice Geral de Aulas]]
+> **Disciplina:** [[Estudos Avançados em Ciências da Computação]] | **Nucleo ENADE:** [[06 - Redes de Computadores e Sistemas Distribuidos (Do Basico ao Avancado)]]
 
-> [!info] 📌 Informações da Aula
+# Aula Inaugural e Aula 1 — Eletiva 8: Redes Corporativas
+
+> [!info] Informações da Aula
 > - **Disciplina:** Estudos Avançados em Ciências da Computação (Eletiva 8)
 > - **Professor:** Paulo Sergio Granato (Especialista em Redes de Computadores)
 > - **Data:** 05/08/2026
@@ -16,18 +20,18 @@ status: assistida
 
 ---
 
-## 📁 Materiais da Aula
-- 📄 [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Materiais/Aula Inaugural e Aula 1 - Eletiva 8.pdf|Apresentação em PDF (Aula Inaugural)]]
-- 🎥 [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Materiais/Aula_Inaugural__Eletiva_8.mp4|Vídeo da Aula Inaugural (MP4)]]
+## Materiais da Aula
+- [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Materiais/Aula Inaugural e Aula 1 - Eletiva 8.pdf|Apresentação em PDF (Aula Inaugural)]]
+- [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Materiais/Aula_Inaugural__Eletiva_8.mp4|Vídeo da Aula Inaugural (MP4)]]
 
 ---
 
-## 🎯 Objetivo Geral da Disciplina
+## Objetivo Geral da Disciplina
 Capacitar o estudante a projetar, implementar, administrar e solucionar problemas em redes corporativas utilizando o **Cisco Packet Tracer**, integrando conceitos avançados de switching, roteamento, redundância, segurança, alta disponibilidade, desempenho e troubleshooting.
 
 ---
 
-## ⏱️ Metodologia e Estrutura das Aulas (75% Prática / 25% Teoria)
+## ️ Metodologia e Estrutura das Aulas (75% Prática / 25% Teoria)
 Cada aula de 3 horas segue o fluxo:
 1. **Revisão / Nivelamento (10 min):** Ajuste de conceitos iniciais.
 2. **Teoria Dialogada (40 min):** Fundamentos e cenários Cisco.
@@ -37,7 +41,7 @@ Cada aula de 3 horas segue o fluxo:
 
 ---
 
-## 🗺️ Visão Geral dos Blocos Temáticos (17 Aulas)
+## ️ Visão Geral dos Blocos Temáticos (17 Aulas)
 
 | Bloco | Aulas | Conteúdo Principal |
 |---|---|---|
@@ -50,6 +54,6 @@ Cada aula de 3 horas segue o fluxo:
 
 ---
 
-## 💡 Próximos Passos
+## Próximos Passos
 - [ ] Baixar e instalar o **Cisco Packet Tracer** no computador.
 - [ ] Revisar as configurações básicas de VLANs e DHCP para a próxima aula.

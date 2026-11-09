@@ -7,15 +7,19 @@ professor: "Luiz Claudio Chiavini Oliveira Junior"
 status: concluido
 ---
 
+> [!NOTE] Navegacao no Cofre
+> **Painel Geral:** [[00 - Dashboard]] | **Indice de Aulas:** [[Índice Geral de Aulas]]
+> **Disciplina:** [[Tópicos Especiais II]] | **Nucleo ENADE:** [[01 - Algoritmos, Estruturas de Dados e Paradigmas (Do Basico ao Avancado)]]
+
 # Aula 20/10 — Integração Java e Banco de Dados com JDBC
 
 > [!info] Informações da Aula
 > - **Data:** 20/10/2026
-> - **Disciplina:** [[01 - Disciplinas/Tópicos Especiais II/Tópicos Especiais II|Tópicos Especiais II]]
+> - **Disciplina:** [[Tópicos Especiais II|Tópicos Especiais II]]
 > - **Professor:** Luiz Claudio Chiavini Oliveira Junior (Luyz)
 > - **Foco:** Ponte aplicacional entre Java SE e SGBD Relacional (MySQL), configuração do driver MySQL Connector/J 8.4.0, gerenciamento de conexões TCP via `DriverManager`, parametrização segura com `PreparedStatement` e leitura de cursores via `ResultSet`.
 > - **Repositório de Código Local:** `C:\Users\52319400\IdeaProjects\AULA2010`
-> - **Materiais no Cofre:** [[Aula_20261020_Java_JDBC]]
+> - **Materiais no Cofre:** Aula_20261020_Java_JDBC
 
 ---
 
@@ -25,28 +29,28 @@ A arquitetura JDBC constitui a camada canônica de abstração da plataforma Jav
 
 ```
 +-------------------------------------------------------------+
-|                 Aplicacao Java (POO / Negocio)              |
+| Aplicacao Java (POO / Negocio) |
 +-------------------------------------------------------------+
-                              |
-                              v
+ |
+ v
 +-------------------------------------------------------------+
-|                     JDBC API (java.sql)                     |
-|        (Connection, PreparedStatement, Statement, ResultSet)|
+| JDBC API (java.sql) |
+| (Connection, PreparedStatement, Statement, ResultSet)|
 +-------------------------------------------------------------+
-                              |
-                              v
+ |
+ v
 +-------------------------------------------------------------+
-|                     DriverManager SPI                       |
+| DriverManager SPI |
 +-------------------------------------------------------------+
-                              |
-                              v
+ |
+ v
 +-------------------------------------------------------------+
-|            Driver MySQL Connector/J (com.mysql.cj.jdbc)     |
+| Driver MySQL Connector/J (com.mysql.cj.jdbc) |
 +-------------------------------------------------------------+
-                              |
-                              v  (Socket TCP / Porta 3306)
+ |
+ v (Socket TCP / Porta 3306)
 +-------------------------------------------------------------+
-|                Servidor MySQL 8.x (Daemon SGBD)             |
+| Servidor MySQL 8.x (Daemon SGBD) |
 +-------------------------------------------------------------+
 ```
 
@@ -54,10 +58,10 @@ A arquitetura JDBC constitui a camada canônica de abstração da plataforma Jav
 O Java puro desconhece o protocolo binário de rede do MySQL (ou de qualquer outro fabricante). O pacote `mysql-connector-j-8.4.0.jar` fornece a implementação concreta das interfaces de `java.sql`. 
 - **Driver Class:** `com.mysql.cj.jdbc.Driver`
 - **String de Conexão (JDBC URL):** `jdbc:mysql://localhost:3306/aula_java`
-  - `jdbc`: Protocolo mestre.
-  - `mysql`: Subprotocolo correspondente ao conector.
-  - `localhost:3306`: Host de rede e porta TCP do daemon MySQL.
-  - `/aula_java`: Database/Schema alvo da sessão.
+ - `jdbc`: Protocolo mestre.
+ - `mysql`: Subprotocolo correspondente ao conector.
+ - `localhost:3306`: Host de rede e porta TCP do daemon MySQL.
+ - `/aula_java`: Database/Schema alvo da sessão.
 
 ---
 
@@ -74,26 +78,26 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 
 public class Main {
-    public static void main(String[] args){
-        String url = "jdbc:mysql://localhost:3306/aula_java";
-        String user = "root";
-        String password = "root753";
+ public static void main(String[] args){
+ String url = "jdbc:mysql://localhost:3306/aula_java";
+ String user = "root";
+ String password = "root753";
 
-        String sql = "insert into alunos(nome, idade) values(?,?)";
+ String sql = "insert into alunos(nome, idade) values(?,?)";
 
-        try(Connection conn = DriverManager.getConnection(url, user, password);
-            PreparedStatement psmt = conn.prepareStatement(sql)) {
+ try(Connection conn = DriverManager.getConnection(url, user, password);
+ PreparedStatement psmt = conn.prepareStatement(sql)) {
 
-            psmt.setString(1,"Matheus");
-            psmt.setInt(2,21);
+ psmt.setString(1,"Matheus");
+ psmt.setInt(2,21);
 
-            int linhasAfetadas = psmt.executeUpdate();
-            System.out.println("Cadastrado");
+ int linhasAfetadas = psmt.executeUpdate();
+ System.out.println("Cadastrado");
 
-        } catch (SQLException e){
-            System.out.println("Erro ao cadastrar aluno" + e.getMessage() );
-        }
-    }
+ } catch (SQLException e){
+ System.out.println("Erro ao cadastrar aluno" + e.getMessage() );
+ }
+ }
 }
 ```
 
@@ -111,29 +115,29 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 public class VerDados {
-    public static void main(String[] args) {
-        String url = "jdbc:mysql://localhost:3306/aula_java";
-        String user = "root";
-        String password = "root753";
+ public static void main(String[] args) {
+ String url = "jdbc:mysql://localhost:3306/aula_java";
+ String user = "root";
+ String password = "root753";
 
-        String sql = "select * from alunos";
+ String sql = "select * from alunos";
 
-        try(Connection conn = DriverManager.getConnection(url, user, password);
-            PreparedStatement psmt = conn.prepareStatement(sql);
-            ResultSet rs = psmt.executeQuery()){
+ try(Connection conn = DriverManager.getConnection(url, user, password);
+ PreparedStatement psmt = conn.prepareStatement(sql);
+ ResultSet rs = psmt.executeQuery()){
 
-                System.out.println("Dados da tabela: ");
-                while(rs.next()){
-                    int id = rs.getInt("id");
-                    String nome = rs.getString("nome");
-                    int idade = rs.getInt("idade");
-                    System.out.println(id + " " + nome + " "+ idade);
-                }
+ System.out.println("Dados da tabela: ");
+ while(rs.next()){
+ int id = rs.getInt("id");
+ String nome = rs.getString("nome");
+ int idade = rs.getInt("idade");
+ System.out.println(id + " " + nome + " "+ idade);
+ }
 
-        } catch (SQLException e){
-                System.out.println("ERRO: "+e.getMessage());
-        }
-    }
+ } catch (SQLException e){
+ System.out.println("ERRO: "+e.getMessage());
+ }
+ }
 }
 ```
 
@@ -151,25 +155,25 @@ Auditoria direta realizada na instância MySQL 8.0 local (`localhost:3306`):
 ### 3.1. DDL Real Extraído do SGBD
 ```sql
 CREATE DATABASE IF NOT EXISTS `aula_java` 
-    DEFAULT CHARACTER SET utf8mb4 
-    COLLATE utf8mb4_0900_ai_ci;
+ DEFAULT CHARACTER SET utf8mb4 
+ COLLATE utf8mb4_0900_ai_ci;
 
 USE `aula_java`;
 
 CREATE TABLE `alunos` (
-    `id` int NOT NULL AUTO_INCREMENT,
-    `nome` varchar(255) NOT NULL,
-    `idade` int DEFAULT NULL,
-    PRIMARY KEY (`id`)
+ `id` int NOT NULL AUTO_INCREMENT,
+ `nome` varchar(255) NOT NULL,
+ `idade` int DEFAULT NULL,
+ PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 ```
 
 ### 3.2. Registros Persistidos no Disco
 ```text
 +----+---------+-------+
-| id | nome    | idade |
+| id | nome | idade |
 +----+---------+-------+
-|  1 | Matheus |    21 |
+| 1 | Matheus | 21 |
 +----+---------+-------+
 1 row in set (0.00 sec)
 ```
@@ -213,16 +217,16 @@ Para elevar o código ao padrão de engenharia sagital, o projeto foi refatorado
 Aula_20261020_Java_JDBC/
 ├── schema_aula_java.sql
 └── src/
-    ├── Main.java               (Original de aula)
-    ├── VerDados.java           (Original de aula)
-    ├── AppRefatorado.java      (Executavel refatorado)
-    ├── model/
-    │   └── Aluno.java          (Entidade de Dominio)
-    ├── factory/
-    │   └── ConnectionFactory.java (Provedor central de conexao)
-    └── dao/
-        ├── AlunoDAO.java       (Contrato de interface)
-        └── AlunoDAOImpl.java   (Implementacao defensiva)
+ ├── Main.java (Original de aula)
+ ├── VerDados.java (Original de aula)
+ ├── AppRefatorado.java (Executavel refatorado)
+ ├── model/
+ │ └── Aluno.java (Entidade de Dominio)
+ ├── factory/
+ │ └── ConnectionFactory.java (Provedor central de conexao)
+ └── dao/
+ ├── AlunoDAO.java (Contrato de interface)
+ └── AlunoDAOImpl.java (Implementacao defensiva)
 ```
 
 ### 5.1. Entidade de Domínio (`model/Aluno.java`)

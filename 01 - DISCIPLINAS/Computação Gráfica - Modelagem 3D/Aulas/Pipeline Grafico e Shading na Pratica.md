@@ -5,6 +5,10 @@ tema: "Pipeline Grafico Programavel, Espacos de Coordenadas e Shaders"
 status: concluido
 ---
 
+> [!NOTE] Navegacao no Cofre
+> **Painel Geral:** [[00 - Dashboard]] | **Indice de Aulas:** [[Índice Geral de Aulas]]
+> **Disciplina:** [[Computação Gráfica - Modelagem 3D]] | **Nucleo ENADE:** [[01 - Algoritmos, Estruturas de Dados e Paradigmas (Do Basico ao Avancado)]]
+
 # Pipeline Grafico Programavel e Shading na Pratica
 
 > [!INFO] **Visao Geral do Modulo**
@@ -16,20 +20,20 @@ status: concluido
 
 ```text
 Vertices (3D)
-  │
-  ▼
+ │
+ ▼
 [Vertex Shader] --------> Transforma coordenadas (Model -> World -> View -> Clip)
-  │
-  ▼
+ │
+ ▼
 [Tessellation / Geometry] -> (Opcional) Subdivisao e geracao geometrica na GPU
-  │
-  ▼
+ │
+ ▼
 [Clipping & Rasterization] -> Descarta o que esta fora da camera e converte primitivas em fragmentos (pixels potenciais)
-  │
-  ▼
+ │
+ ▼
 [Fragment / Pixel Shader] -> Calcula a cor final de cada pixel (PBR, texturas, sombras)
-  │
-  ▼
+ │
+ ▼
 [Blending & Output Merging] -> Teste de profundidade (Z-Buffer), transparencia e exibicao no Framebuffer
 ```
 

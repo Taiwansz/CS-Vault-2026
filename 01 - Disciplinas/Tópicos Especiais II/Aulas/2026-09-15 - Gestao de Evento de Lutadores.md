@@ -7,6 +7,10 @@ tema: Gestao de Evento de Lutadores com Persistencia em Arquivo
 dataview_type: aula
 ---
 
+> [!NOTE] Navegacao no Cofre
+> **Painel Geral:** [[00 - Dashboard]] | **Indice de Aulas:** [[Índice Geral de Aulas]]
+> **Disciplina:** [[Tópicos Especiais II]] | **Nucleo ENADE:** [[01 - Algoritmos, Estruturas de Dados e Paradigmas (Do Basico ao Avancado)]]
+
 # 2026-09-15 - Gestao de Evento de Lutadores (Persistencia em Arquivo)
 
 ## Conteudo da Aula
@@ -46,5 +50,5 @@ Classe principal com `main()` e dois metodos estaticos de I/O:
 
 ## Conexoes
 
-- [[2026-09-15 - Persistência em Arquivos]] — aula anterior sobre o mesmo tema
+- [[2026-09-15 - Persistência em Arquivos e Gestão de Eventos]] — aula anterior sobre o mesmo tema
 - [[Tópicos Especiais II]]

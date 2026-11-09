@@ -3,12 +3,16 @@ disciplina: Interação Humano Computador e Sistemas Multimídia
 professor: Guilherme P. Bueno
 data: 2026-08-07
 tags:
-  - faculdade
-  - ihc
-  - introducao
-  - multimidia
-  - revisao-p1
+ - faculdade
+ - ihc
+ - introducao
+ - multimidia
+ - revisao-p1
 ---
+
+> [!NOTE] Navegacao no Cofre
+> **Painel Geral:** [[00 - Dashboard]] | **Indice de Aulas:** [[Índice Geral de Aulas]]
+> **Disciplina:** [[Interação Humano Computador e Sistemas Multimídia]] | **Nucleo ENADE:** [[08 - Formacao Geral, Etica, LGPD e Sociedade Digital (Do Basico ao Avancado)]]
 
 # Aula 01 — Introdução a IHC e Sistemas Multimídia
 
@@ -79,9 +83,9 @@ Um produto digital maduro é construído em 4 camadas hierárquicas (da base par
 
 ## 8. IHC para Hardware e Sistemas Multimídia
 - **IHC Físico**:
-  - *Caixas Eletrônicos*: Botões físicos com contraste tátil, tela com ângulo de privacidade, feedback sonoro e cancelamento imediato.
-  - *Controles de Console*: Formato anatômico, distribuição simétrica/assimétrica de analógicos, gatilhos com resistência háptica adaptativa.
-  - *Mouses Ergonômicos Verticais*: Alinhamento do rádio e da ulna em postura neutra para prevenir LER/DORT.
+ - *Caixas Eletrônicos*: Botões físicos com contraste tátil, tela com ângulo de privacidade, feedback sonoro e cancelamento imediato.
+ - *Controles de Console*: Formato anatômico, distribuição simétrica/assimétrica de analógicos, gatilhos com resistência háptica adaptativa.
+ - *Mouses Ergonômicos Verticais*: Alinhamento do rádio e da ulna em postura neutra para prevenir LER/DORT.
 - **Multimídia é Interação**:
-  - Multimídia não é apenas exibir mídias, mas permitir controle ativo: no YouTube, interagir significa *assistir, buscar, pausar, acelerar (2x), comentar e escolher resoluções*.
-  - *Anti-Padrões Multimídia*: Vídeos excessivamente longos sem capítulos, áudio invasivo sem autoplay mutado, animações sem propósito que distraem do foco da tarefa e falta de legendas/acessibilidade WCAG.
+ - Multimídia não é apenas exibir mídias, mas permitir controle ativo: no YouTube, interagir significa *assistir, buscar, pausar, acelerar (2x), comentar e escolher resoluções*.
+ - *Anti-Padrões Multimídia*: Vídeos excessivamente longos sem capítulos, áudio invasivo sem autoplay mutado, animações sem propósito que distraem do foco da tarefa e falta de legendas/acessibilidade WCAG.

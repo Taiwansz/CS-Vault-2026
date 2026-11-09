@@ -6,6 +6,10 @@ data: 2026-11-09
 autor: "ThSyr Cognitive Sentinel"
 ---
 
+> [!NOTE] Navegacao de Estudos ENADE
+> **Central:** [[00 - Dashboard]] | **Hub Mestre ENADE:** [[INDEX_ESTUDOS_ENADE]]
+> **Proximo Modulo:** [[02 - Teoria dos Grafos e Algoritmos de Rede (Do Basico ao Avancado)]]
+
 # 01 — Algoritmos, Estruturas de Dados e Paradigmas (Do Basico ao Nivel ENADE)
 
 > [!INFO] **Objetivo deste Guia**
@@ -39,21 +43,21 @@ Muitos algoritmos recursivos dividem o problema de tamanho $n$ em $a$ subproblem
 $$T(n) = a T(n/b) + f(n)$$
 Onde $a \ge 1$ e $b > 1$. Comparamos $f(n)$ com $n^{\log_b a}$:
 
-1. **Caso 1 (Trabalho das Folhas Domina):**  
-   Se $f(n) = O(n^{\log_b a - \epsilon})$ para algum $\epsilon > 0$, entao:
-   $$T(n) = \Theta(n^{\log_b a})$$
-2. **Caso 2 (Trabalho Balanceado em Todos os Niveis):**  
-   Se $f(n) = \Theta(n^{\log_b a} \log^k n)$ com $k \ge 0$, entao:
-   $$T(n) = \Theta(n^{\log_b a} \log^{k+1} n)$$
-   *Exemplo Classico (Merge Sort):* $T(n) = 2T(n/2) + O(n)$. Aqui $a=2, b=2 \implies n^{\log_2 2} = n^1 = n$. Como $f(n) = \Theta(n)$, temos $k=0 \implies T(n) = \Theta(n \log n)$.
-3. **Caso 3 (Trabalho da Raiz Domina):**  
-   Se $f(n) = \Omega(n^{\log_b a + \epsilon})$ e a condicao de regularidade for satisfeita ($a f(n/b) \le c f(n)$ com $c < 1$), entao:
-   $$T(n) = \Theta(f(n))$$
+1. **Caso 1 (Trabalho das Folhas Domina):** 
+ Se $f(n) = O(n^{\log_b a - \epsilon})$ para algum $\epsilon > 0$, entao:
+ $$T(n) = \Theta(n^{\log_b a})$$
+2. **Caso 2 (Trabalho Balanceado em Todos os Niveis):** 
+ Se $f(n) = \Theta(n^{\log_b a} \log^k n)$ com $k \ge 0$, entao:
+ $$T(n) = \Theta(n^{\log_b a} \log^{k+1} n)$$
+ *Exemplo Classico (Merge Sort):* $T(n) = 2T(n/2) + O(n)$. Aqui $a=2, b=2 \implies n^{\log_2 2} = n^1 = n$. Como $f(n) = \Theta(n)$, temos $k=0 \implies T(n) = \Theta(n \log n)$.
+3. **Caso 3 (Trabalho da Raiz Domina):** 
+ Se $f(n) = \Omega(n^{\log_b a + \epsilon})$ e a condicao de regularidade for satisfeita ($a f(n/b) \le c f(n)$ com $c < 1$), entao:
+ $$T(n) = \Theta(f(n))$$
 
 ### 2.2 O Limite Inferior $\Omega(n \log n)$ e a Ordenacao Linear $O(n)$
 - **O Teorema da Arvore de Decisao:** Qualquer algoritmo de ordenacao baseado em **comparacao direta de chaves** exige no pior caso $\Omega(n \log n)$ comparacoes. Para ordenar $n$ elementos, ha $n!$ permutacoes possiveis (folhas da arvore de decisao binaria). A altura minima da arvore e $\lceil \log_2(n!) \rceil \approx n \log_2 n - n \log_2 e = \Omega(n \log n)$.
 - **Como Counting Sort e Radix Sort quebram esse limite?**
-  Eles **NAO comparam chaves diretamente**. O Counting Sort usa o valor inteiro como indice de um vetor de frequencias. O Radix Sort processa os digitos/bits individualmente. Sob a restricao de que o universo de valores $k$ ou numero de digitos $d$ e pequeno, a ordenacao ocorre em tempo linear estrito $O(n + k)$ ou $O(d(n + k))$.
+ Eles **NAO comparam chaves diretamente**. O Counting Sort usa o valor inteiro como indice de um vetor de frequencias. O Radix Sort processa os digitos/bits individualmente. Sob a restricao de que o universo de valores $k$ ou numero de digitos $d$ e pequeno, a ordenacao ocorre em tempo linear estrito $O(n + k)$ ou $O(d(n + k))$.
 
 ---
 
@@ -62,16 +66,16 @@ Onde $a \ge 1$ e $b > 1$. Comparamos $f(n)$ com $n^{\log_b a}$:
 ### 3.1 Algoritmos Gulosos (Greedy Algorithms)
 Um algoritmo guloso faz sempre a escolha localmente otima a cada etapa, esperando encontrar o otimo global.
 - **Quando funciona?** Apenas quando o problema satisfaz duas propriedades rigorosas:
-  1. *Propriedade da Escolha Gulosa:* Uma solucao global otima pode ser alcancada fazendo escolhas gulosas locais.
-  2. *Subestrutura Otima:* A solucao otima para o problema contem dentro de si as solucoes otimas para os subproblemas.
+ 1. *Propriedade da Escolha Gulosa:* Uma solucao global otima pode ser alcancada fazendo escolhas gulosas locais.
+ 2. *Subestrutura Otima:* A solucao otima para o problema contem dentro de si as solucoes otimas para os subproblemas.
 - **Caso Sucesso:** **Mochila Fracionaria (Fractional Knapsack)**. Como podemos fracionar itens, ordenar pela densidade de valor ($v_i / w_i$) garante a mochila mais valiosa em $O(n \log n)$.
 - **Caso Falha:** **Mochila 0/1 (0/1 Knapsack)**. O algoritmo guloso falha porque deixar espacos vazios na mochila pode custar mais caro do que pegar itens com densidade ligeiramente menor.
 
 ### 3.2 Programacao Dinamica (Dynamic Programming — DP)
 Usada quando os subproblemas **se sobrepoem** (Overlapping Subproblems) e possuem **subestrutura otima**.
 - Em vez de recalcular solucoes repetidas (como na forca bruta recursiva exponencial $O(2^n)$), guardamos os resultados intermediarios em uma tabela:
-  - *Top-down com Memoization:* Recursao comum com cache em tabela ou mapa.
-  - *Bottom-up com Tabulation:* Preenchimento iterativo de uma matriz a partir dos casos base.
+ - *Top-down com Memoization:* Recursao comum com cache em tabela ou mapa.
+ - *Bottom-up com Tabulation:* Preenchimento iterativo de uma matriz a partir dos casos base.
 
 ### 3.3 A Equacao da Mochila 0/1:
 Seja $dp[i][w]$ o valor maximo usando um subconjunto dos primeiros $i$ itens com limite de capacidade $w$:
@@ -83,7 +87,7 @@ dp[i-1][w], & \text{se } w_i > w \text{ (item nao cabe)} \\
 - **Complexidade de Tempo:** $O(n \cdot W)$.
 - **Complexidade de Espaco:** $O(n \cdot W)$ (otimizavel para $O(W)$ com vetor unidimensional).
 - **Por que e classificada como PSEUDO-POLINOMIAL?**
-  Na teoria da complexidade, o tamanho da entrada e o numero de bits necessarios para representar os dados. O valor $W$ e representado por $b = \lceil \log_2 W \rceil$ bits. Portanto, $W = 2^b$. O tempo do algoritmo e proporcional a $n \cdot 2^b$, que e **exponencial no tamanho da entrada em bits**. Ele parece polinomial porque depende do valor numerico de $W$, mas se $W$ for da ordem de $2^{64}$, o algoritmo torna-se absolutamente inviavel.
+ Na teoria da complexidade, o tamanho da entrada e o numero de bits necessarios para representar os dados. O valor $W$ e representado por $b = \lceil \log_2 W \rceil$ bits. Portanto, $W = 2^b$. O tempo do algoritmo e proporcional a $n \cdot 2^b$, que e **exponencial no tamanho da entrada em bits**. Ele parece polinomial porque depende do valor numerico de $W$, mas se $W$ for da ordem de $2^{64}$, o algoritmo torna-se absolutamente inviavel.
 
 ---
 
@@ -111,3 +115,11 @@ Projetadas para vetores onde consultas de intervalo e atualizacoes pontuais ocor
 1. **Pegadinha da Mochila Gulosa:** Se a questao disser "itens indivisiveis" ou "0/1", o algoritmo guloso **NAO** garante solucao otima. A resposta correta sera Programacao Dinâmica. Se disser "itens continuos, liquidos ou fracionaveis", o Guloso por valor/peso e a solucao otima.
 2. **Pegadinha do Quicksort:** O Quicksort **NAO** e $O(n \log n)$ no pior caso. No pior caso (pivo sempre o menor ou maior elemento em vetor ordenado), ele degenera para $O(n^2)$. Quem garante $O(n \log n)$ no pior caso entre os baseados em comparacao e o **Merge Sort** ou o **Heap Sort**.
 3. **Pegadinha da Arvore AVL vs BST Comum:** Em uma BST comum desbalanceada, uma busca pode custar $O(n)$ (quando os elementos sao inseridos ordenados e a arvore vira uma lista encadeada). A AVL e a Rubro-Negra garantem que a altura seja sempre $h = O(\log n)$ atraves de rotacoes.
+
+---
+
+## Conexoes no Cofre e Disciplinas Praticas
+
+- **Hub Geral:** [[INDEX_ESTUDOS_ENADE]] | [[00 - Dashboard]]
+- **Simulado de Referencia:** [[Simulado 04 - Ciencia da Computacao Completo 20 Questoes 2026-11-09]]
+- **Disciplinas Praticas:** [[Estrutura de Dados]], [[Tópicos Especiais II]], [[Técnicas Avançadas de Jogos Digitais]]

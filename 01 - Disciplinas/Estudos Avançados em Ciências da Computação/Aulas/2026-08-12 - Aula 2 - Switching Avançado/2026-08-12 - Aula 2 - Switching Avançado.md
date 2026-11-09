@@ -6,9 +6,13 @@ professor: Paulo Sergio Granato
 status: assistida
 ---
 
-# 📖 Aula 2 — Switching Avançado: Voice VLAN, Trunking 802.1Q e EtherChannel (LACP/PAgP)
+> [!NOTE] Navegacao no Cofre
+> **Painel Geral:** [[00 - Dashboard]] | **Indice de Aulas:** [[Índice Geral de Aulas]]
+> **Disciplina:** [[Estudos Avançados em Ciências da Computação]] | **Nucleo ENADE:** [[06 - Redes de Computadores e Sistemas Distribuidos (Do Basico ao Avancado)]]
 
-> [!info] 📌 Informações da Aula
+# Aula 2 — Switching Avançado: Voice VLAN, Trunking 802.1Q e EtherChannel (LACP/PAgP)
+
+> [!info] Informações da Aula
 > - **Disciplina:** Estudos Avançados em Ciências da Computação (Eletiva 8: Redes Corporativas)
 > - **Professor:** Paulo Sergio Granato (Especialista em Redes de Computadores)
 > - **Data:** 12/08/2026
@@ -16,17 +20,17 @@ status: assistida
 
 ---
 
-## 📁 Materiais da Aula
-- 📄 [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Materiais/Aula 2 - Switching Avançado.pdf|Apresentação em PDF (Aula 2 - Switching Avançado)]]
-- 🎥 [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Materiais/Aula_2__Switching_Avançado.mp4|Vídeo da Aula Teórica & Prática (MP4)]]
-- 📝 [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Aulas/2026-08-12 - Resolução - Exercício Prático Aula 2 - TechSolutions|Resolução Completa do Exercício Prático (TechSolutions)]]
-- 🔌 [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Materiais/TECHSOLUTIONS_AULA_2_CONCLUIDO.pkt|Laboratório Concluído Cisco Packet Tracer (PKT)]]
-- 🤖 [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Arquivos Auxiliares - Automação IA Packet Tracer/README|Guia e Skill: Automação do Packet Tracer com IA]]
+## Materiais da Aula
+- [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Materiais/Aula 2 - Switching Avançado.pdf|Apresentação em PDF (Aula 2 - Switching Avançado)]]
+- [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Materiais/Aula_2__Switching_Avançado.mp4|Vídeo da Aula Teórica & Prática (MP4)]]
+- [[2026-08-12 - Resolução - Exercício Prático Aula 2 - TechSolutions|Resolução Completa do Exercício Prático (TechSolutions)]]
+- [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Materiais/TECHSOLUTIONS_AULA_2_CONCLUIDO.pkt|Laboratório Concluído Cisco Packet Tracer (PKT)]]
+- [[README|Guia e Skill: Automação do Packet Tracer com IA]]
 
 
 ---
 
-## 🎯 Objetivos da Aula
+## Objetivos da Aula
 1. Entender a evolução do switching corporativo da segmentação por porta à agregação de alta disponibilidade.
 2. Dominar a anatomia de links de tronco **IEEE 802.1Q** e mitigar ataques de **VLAN Hopping** reconfigurando a **VLAN Nativa**.
 3. Implementar **Voice VLAN** para garantias de QoS (latência < 150ms e jitter controlado) em ramais VoIP.
@@ -36,15 +40,15 @@ status: assistida
 
 ---
 
-## 🧠 1. Revisão e Aprofundamento: Segmentação Lógica com VLANs
+## 1. Revisão e Aprofundamento: Segmentação Lógica com VLANs
 
 A segmentação lógica por **VLANs (Virtual Local Area Networks)** divide uma infraestrutura física de comutação em múltiplos domínios de broadcast independentes.
 
 ```
-       [ Switch Físico ]
-        /      |      \
-   (VLAN 10) (VLAN 20) (VLAN 30)
-   Vendas     RH       Financeiro
+ [ Switch Físico ]
+ / | \
+ (VLAN 10) (VLAN 20) (VLAN 30)
+ Vendas RH Financeiro
 ```
 
 ### Principais Fundamentos:
@@ -54,11 +58,11 @@ A segmentação lógica por **VLANs (Virtual Local Area Networks)** divide uma i
 
 ---
 
-## 🔌 2. Trunking e o Padrão IEEE 802.1Q
+## 2. Trunking e o Padrão IEEE 802.1Q
 
 Para transportar dados de múltiplas VLANs entre switches através de uma única conexão física, utilizamos um **Link de Tronco (Trunk Link)** multiplexado via **IEEE 802.1Q**.
 
-### 🏷️ Anatomia do Quadro IEEE 802.1Q (Tagging)
+### ️ Anatomia do Quadro IEEE 802.1Q (Tagging)
 O padrão insere um campo cabeçalho de **4 bytes** no quadro Ethernet padrão:
 - **TPID (Tag Protocol Identifier):** Valor fixo `0x8100` indicando quadro com tag.
 - **Priority / PCP (3 bits):** Marcação de CoS para QoS (Class of Service).
@@ -67,16 +71,16 @@ O padrão insere um campo cabeçalho de **4 bytes** no quadro Ethernet padrão:
 
 ```
 +-------------------+--------------------+-------------------+----------------+
-| Dst/Src MAC (12B) | Tag 802.1Q (4B)    | EtherType (2B)    | Payload + FCS  |
+| Dst/Src MAC (12B) | Tag 802.1Q (4B) | EtherType (2B) | Payload + FCS |
 +-------------------+--------------------+-------------------+----------------+
-                    | TPID | CoS | VID   |
-                    |0x8100| 0-7 | 1-4094|
+ | TPID | CoS | VID |
+ |0x8100| 0-7 | 1-4094|
 ```
 
-### 🛡️ O Conceito de VLAN Nativa e Segurança
+### ️ O Conceito de VLAN Nativa e Segurança
 A **VLAN Nativa** é a VLAN cujo tráfego trafega **sem tag (untagged)** pelo trunk. Por padrão no Cisco IOS, a **VLAN 1** é a VLAN nativa e de gerenciamento.
 
-> [!CAUTION] 🚨 Risco de Segurança: VLAN Hopping
+> [!CAUTION] Risco de Segurança: VLAN Hopping
 > Atacantes podem explorar trunks com VLAN Nativa 1 e portas em modo *Dynamic Auto/Desirable* para realizar injeção de tags duplas (*Double Tagging*), acessando redes privadas sem passar pelo roteador.
 > 
 > **Boas Práticas de Hardening Cisco:**
@@ -86,14 +90,14 @@ A **VLAN Nativa** é a VLAN cujo tráfego trafega **sem tag (untagged)** pelo tr
 
 ---
 
-## 🎙️ 3. Voice VLAN (VLAN de Voz) & QoS em Telefonia IP
+## ️ 3. Voice VLAN (VLAN de Voz) & QoS em Telefonia IP
 
 Telefones IP possuem um switch interno de 3 portas: uma porta de uplink conectada ao switch de acesso, uma porta interna para o hardware de voz e uma porta PC para o computador do usuário.
 
 ```
 [ Switch de Acesso ] ──( Trunk / Access + Voice )──> [ Telefone IP ] ──( Untagged )──> [ PC do Usuário ]
-                                                          │
-                                                    ( Voice VLAN )
+ │
+ ( Voice VLAN )
 ```
 
 ### Configuração de Porta Dupla
@@ -117,19 +121,19 @@ SW-Acesso(config-if)# spanning-tree portfast
 
 ---
 
-## ⚡ 4. O Problema da Redundância e a Solução EtherChannel
+## 4. O Problema da Redundância e a Solução EtherChannel
 
 ### O Dilema do Spanning Tree Protocol (STP)
 A redundância física de cabos entre switches é essencial para alta disponibilidade. Contudo, em redes de Camada 2, links redundantes formam loops físicos que causam *Broadcast Storms* e instabilidade na tabela MAC.
 O **STP (IEEE 802.1D / 802.1w)** resolve os loops **bloqueando** logicamente os links redundantes, o que resulta em desperdício de banda cara.
 
 ```
-      [ STP Padrão ]                       [ EtherChannel ]
-   ( Link Bloqueado )                    ( Links Agregados )
-SW-1 ────────────── SW-2             SW-1 ══════════════════ SW-2
-  │      (X)         │                 ║   Port-Channel 1   ║
-  └──────────────────┘                 ╚════════════════════╝
-  Banda Reduzida / 1 Link              Banda Total Somada (8x)
+ [ STP Padrão ] [ EtherChannel ]
+ ( Link Bloqueado ) ( Links Agregados )
+SW-1 ────────────── SW-2 SW-1 ══════════════════ SW-2
+ │ (X) │ ║ Port-Channel 1 ║
+ └──────────────────┘ ╚════════════════════╝
+ Banda Reduzida / 1 Link Banda Total Somada (8x)
 ```
 
 ### O que é o EtherChannel?
@@ -142,7 +146,7 @@ O **EtherChannel** (ou *Link Aggregation*) agrupa de **2 a 8 interfaces físicas
 
 ---
 
-## ⚙️ 5. Protocolos de Agregação: LACP vs. PAgP vs. Estático
+## ️ 5. Protocolos de Agregação: LACP vs. PAgP vs. Estático
 
 Existem três maneiras de formar bundles EtherChannel em switches Cisco:
 
@@ -159,19 +163,19 @@ Existem três maneiras de formar bundles EtherChannel em switches Cisco:
 - **`Passive` (Passivo):** Apenas responde a negociações LACP iniciadas pelo switch remoto.
 
 ```
-Switch A (Active)   <─── LACP PDU ───>   Switch B (Active)   ===> 🟢 Port-Channel UP
-Switch A (Active)   <─── LACP PDU ───>   Switch B (Passive)  ===> 🟢 Port-Channel UP
-Switch A (Passive)  <─── Sem PDU  ───>   Switch B (Passive)  ===> 🔴 Port-Channel DOWN
+Switch A (Active) <─── LACP PDU ───> Switch B (Active) ===> Port-Channel UP
+Switch A (Active) <─── LACP PDU ───> Switch B (Passive) ===> Port-Channel UP
+Switch A (Passive) <─── Sem PDU ───> Switch B (Passive) ===> Port-Channel DOWN
 ```
 
-> [!RECOMMENDATION] 💡 Recomendação em Produção
+> [!RECOMMENDATION] Recomendação em Produção
 > Em ambientes corporativos de alta criticidade, utilize sempre **LACP em modo `Active`** em ambas as pontas. Evite o modo estático `On`, pois erros de conexão física podem causar loops devastadores sem que o switch identifique a falha.
 
 ---
 
-## 💻 6. Guia Prático de Configuração e Comandos Cisco CLI
+## 6. Guia Prático de Configuração e Comandos Cisco CLI
 
-### ⚠️ Requisitos Obrigatórios de Homogeneidade
+### ️ Requisitos Obrigatórios de Homogeneidade
 Para que as interfaces físicas entrem com sucesso no bundle `Port-Channel`, todas as portas membros devem possuir obrigatoriamente:
 - Mesma velocidade e modo duplex (ex.: 1 Gbps Full-Duplex).
 - Mesmo modo switchport (Trunk ou Access).
@@ -179,7 +183,7 @@ Para que as interfaces físicas entrem com sucesso no bundle `Port-Channel`, tod
 
 ---
 
-### 📝 Script de Configuração Completo (Switch Core & Switch Acesso)
+### Script de Configuração Completo (Switch Core & Switch Acesso)
 
 #### Passos no **SW-Core-1** (LACP Active):
 ```cisco
@@ -214,7 +218,7 @@ SW-Acesso-1(config-if)# exit
 
 ---
 
-### ⚖️ Algoritmos de Balanceamento de Carga (Load-Balancing Hash)
+### ️ Algoritmos de Balanceamento de Carga (Load-Balancing Hash)
 O EtherChannel não realiza balanceamento por pacotes (o que causaria desordenamento de pacotes TCP), mas sim **por fluxo de dados** via cálculo de Hash.
 
 ```cisco
@@ -228,27 +232,27 @@ SW-Core-1(config)# port-channel load-balance src-dst-ip
 
 ---
 
-## 🔍 7. Monitoramento, Diagnóstico e Comandos de Verificação
+## 7. Monitoramento, Diagnóstico e Comandos de Verificação
 
 ### 1️⃣ `show etherchannel summary`
 É o comando principal de diagnóstico no Cisco IOS.
 
 ```
 SW-Core-1# show etherchannel summary
-Group  Port-channel  Protocol    Ports
+Group Port-channel Protocol Ports
 ------+-------------+-----------+-----------------------------------------------
-1      Po1(SU)         LACP      Gi0/1(P)   Gi0/2(P)
+1 Po1(SU) LACP Gi0/1(P) Gi0/2(P)
 ```
 
-> [!IMPORTANT] 📌 Significado das Flags Importantes:
+> [!IMPORTANT] Significado das Flags Importantes:
 > - **Flags de Port-Channel:**
->   - `S`: Layer 2 (Switchport).
->   - `U`: In use (Operacional / UP).
->   - `D`: Down (Desativado / Com erro).
+> - `S`: Layer 2 (Switchport).
+> - `U`: In use (Operacional / UP).
+> - `D`: Down (Desativado / Com erro).
 > - **Flags de Portas Físicas:**
->   - `P`: **Bundled in port-channel** (Membro ativo operando com sucesso).
->   - `I`: **Standalone** (Porta inativa ou inconsistente, operando como link individual).
->   - `w`: Waiting to be aggregated.
+> - `P`: **Bundled in port-channel** (Membro ativo operando com sucesso).
+> - `I`: **Standalone** (Porta inativa ou inconsistente, operando como link individual).
+> - `w`: Waiting to be aggregated.
 
 ---
 
@@ -257,14 +261,14 @@ Exibe os detalhes do switch vizinho negociado via LACP.
 
 ```cisco
 SW-Core-1# show lacp neighbor
-Flags:  S - Device is requesting Slow PACDs 
-        F - Device is requesting Fast PACDs
-        A - Device is in Active mode       P - Device is in Passive mode
+Flags: S - Device is requesting Slow PACDs 
+ F - Device is requesting Fast PACDs
+ A - Device is in Active mode P - Device is in Passive mode
 
 Channel group 1 neighbors determine:
-Port      Flags   State    Partner ID         Partner Port
-Gi0/1     SA      bndl     32768.aabb.cc00.0100  0x2
-Gi0/2     SA      bndl     32768.aabb.cc00.0100  0x3
+Port Flags State Partner ID Partner Port
+Gi0/1 SA bndl 32768.aabb.cc00.0100 0x2
+Gi0/2 SA bndl 32768.aabb.cc00.0100 0x3
 ```
 
 ---
@@ -275,31 +279,31 @@ Permite visualizar a velocidade agregada e os contadores de quadros/erros do bun
 ```cisco
 SW-Core-1# show interfaces port-channel 1
 Port-channel1 is up, line protocol is up (connected)
-  Hardware is EtherChannel, address is aabb.cc00.0100
-  BW 2000000 Kbit/sec, DLY 10 usec, 
-  Encapsulation ARPA, loopback not set
+ Hardware is EtherChannel, address is aabb.cc00.0100
+ BW 2000000 Kbit/sec, DLY 10 usec, 
+ Encapsulation ARPA, loopback not set
 ```
 *(Demonstra banda lógica agregada de 2 Gbps referente a 2 links GigabitEthernet).*
 
 ---
 
-## 🛡️ 8. Boas Práticas, Segurança e Resiliência em Camada 2
+## ️ 8. Boas Práticas, Segurança e Resiliência em Camada 2
 
 1. **PortFast + BPDU Guard em Portas de Borda:**
-   Aplique em portas que conectam hosts finais. O `PortFast` coloca a porta imediatamente em *Forwarding* e o `BPDU Guard` desativa a porta (`err-disabled`) se um switch não autorizado for conectado.
-   ```cisco
-   SW-Acesso(config)# interface range FastEthernet 0/1 - 24
-   SW-Acesso(config-if-range)# spanning-tree portfast
-   SW-Acesso(config-if-range)# spanning-tree bpduguard enable
-   ```
+ Aplique em portas que conectam hosts finais. O `PortFast` coloca a porta imediatamente em *Forwarding* e o `BPDU Guard` desativa a porta (`err-disabled`) se um switch não autorizado for conectado.
+ ```cisco
+ SW-Acesso(config)# interface range FastEthernet 0/1 - 24
+ SW-Acesso(config-if-range)# spanning-tree portfast
+ SW-Acesso(config-if-range)# spanning-tree bpduguard enable
+ ```
 2. **Min-Links (Proteção Contra Degradação Silenciosa):**
-   Exige um número mínimo de membros ativos no bundle. Se o número de links cair abaixo do limite especificado, o Port-Channel é desativado para forçar a rota de backup do STP ou HSRP.
+ Exige um número mínimo de membros ativos no bundle. Se o número de links cair abaixo do limite especificado, o Port-Channel é desativado para forçar a rota de backup do STP ou HSRP.
 3. **LACP 1:1 Redundancy (Hot-Standby):**
-   Designa um membro ativo e um link reserva (*standby*). Caso o link ativo caia, o reserva entra em ação sem necessidade de recálculo de topologia.
+ Designa um membro ativo e um link reserva (*standby*). Caso o link ativo caia, o reserva entra em ação sem necessidade de recálculo de topologia.
 
 ---
 
-## 🚀 9. Tendências Tecnológicas em Switching
+## 9. Tendências Tecnológicas em Switching
 
 - **Cisco SD-Access (Software-Defined Access):** Abstrai VLANs e EtherChannels tradicionais através de tecidos de superposição (*Overlay Fabrics* com LISP/VXLAN) gerenciados pelo controlador centralizado Cisco DNA Center.
 - **NFV (Network Functions Virtualization):** Execução de funções de firewall, IPS e roteamento virtualizados diretamente no hardware de switches de distribuição.
@@ -307,21 +311,21 @@ Port-channel1 is up, line protocol is up (connected)
 
 ---
 
-## 🧪 10. Roteiro do Laboratório Prático (Cisco Packet Tracer)
+## 10. Roteiro do Laboratório Prático (Cisco Packet Tracer)
 
 ```
-       +-----------------------+                    +-----------------------+
-       |      SW-Core-1        |====================|      SW-Core-2        |
-       |  (LACP Mode Active)   |  Po1 (Gi0/1-2)     |  (LACP Mode Active)   |
-       +-----------------------+                    +-----------------------+
-            ║                                            ║
-            ║ Po2 (Gi0/3-4)                              ║ Po3 (Gi0/3-4)
-            ║ LACP Active                                ║ LACP Active
-            ▼                                            ▼
-       +-----------------------+                    +-----------------------+
-       |     SW-Acesso-1       |                    |     SW-Acesso-2       |
-       | (LACP Mode Passive)   |                    | (LACP Mode Passive)   |
-       +-----------------------+                    +-----------------------+
+ +-----------------------+ +-----------------------+
+ | SW-Core-1 |====================| SW-Core-2 |
+ | (LACP Mode Active) | Po1 (Gi0/1-2) | (LACP Mode Active) |
+ +-----------------------+ +-----------------------+
+ ║ ║
+ ║ Po2 (Gi0/3-4) ║ Po3 (Gi0/3-4)
+ ║ LACP Active ║ LACP Active
+ ▼ ▼
+ +-----------------------+ +-----------------------+
+ | SW-Acesso-1 | | SW-Acesso-2 |
+ | (LACP Mode Passive) | | (LACP Mode Passive) |
+ +-----------------------+ +-----------------------+
 ```
 
 ### Checklist do Aluno no Laboratório:

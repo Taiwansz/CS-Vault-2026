@@ -21,3 +21,6 @@ orientador:
 
 ## Data do Próximo Encontro
 - **Próxima reunião:**
+
+---
+**Guia de Convencoes:** [[00 - Guia do Cofre (Vault Guide)]] | **Central:** [[00 - Dashboard]]

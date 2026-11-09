@@ -6,6 +6,10 @@ tema: "OSPF Multiarea, VLSM, Calculo de Mascaras e Troubleshooting Cisco"
 status: concluido
 ---
 
+> [!NOTE] Navegacao no Cofre
+> **Painel Geral:** [[00 - Dashboard]] | **Indice de Aulas:** [[Índice Geral de Aulas]]
+> **Disciplina:** [[Estudos Avançados em Ciências da Computação]] | **Nucleo ENADE:** [[06 - Redes de Computadores e Sistemas Distribuidos (Do Basico ao Avancado)]]
+
 # Guia Pratico de OSPF Multiarea e VLSM no Packet Tracer
 
 > [!INFO] **Visao Geral do Modulo**
@@ -16,13 +20,13 @@ status: concluido
 ## 1. Topologia OSPF Multiarea e Tipos de Roteadores
 
 ```text
-       [ Area 1 ]                 [ Area 0 (Backbone) ]                [ Area 2 ]
-    (Escritorio Remoto)             (Nucleo Corporativo)           (Data Center Interno)
-  ┌───────────────────┐             ┌───────────────────┐          ┌───────────────────┐
-  │  Internal Router  │             │  Backbone Router  │          │  Internal Router  │
-  └─────────┬─────────┘             └─────────┬─────────┘          └─────────┬─────────┘
-            │                                 │                              │
-            └───────────────[ ABR 1 ]─────────┴─────────[ ABR 2 ]────────────┘
+ [ Area 1 ] [ Area 0 (Backbone) ] [ Area 2 ]
+ (Escritorio Remoto) (Nucleo Corporativo) (Data Center Interno)
+ ┌───────────────────┐ ┌───────────────────┐ ┌───────────────────┐
+ │ Internal Router │ │ Backbone Router │ │ Internal Router │
+ └─────────┬─────────┘ └─────────┬─────────┘ └─────────┬─────────┘
+ │ │ │
+ └───────────────[ ABR 1 ]─────────┴─────────[ ABR 2 ]────────────┘
 ```
 
 ### Classificacao dos Roteadores:

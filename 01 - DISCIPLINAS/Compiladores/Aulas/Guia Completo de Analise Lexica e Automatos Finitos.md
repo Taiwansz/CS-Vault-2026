@@ -6,6 +6,10 @@ tema: "Analise Lexica, Expressoes Regulares e Automatos Finitos"
 status: concluido
 ---
 
+> [!NOTE] Navegacao no Cofre
+> **Painel Geral:** [[00 - Dashboard]] | **Indice de Aulas:** [[Índice Geral de Aulas]]
+> **Disciplina:** [[Compiladores]] | **Nucleo ENADE:** [[03 - Teoria da Computacao, Automatos e Compiladores (Do Basico ao Avancado)]]
+
 # Guia Completo de Analise Lexica e Automatos Finitos
 
 > [!INFO] **Visao Geral do Modulo**

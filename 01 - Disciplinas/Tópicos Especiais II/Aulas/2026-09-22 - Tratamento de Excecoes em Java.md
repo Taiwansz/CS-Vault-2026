@@ -1,3 +1,8 @@
+> [!NOTE] Navegacao no Cofre
+> **Painel Geral:** [[00 - Dashboard]] | **Indice de Aulas:** [[Índice Geral de Aulas]]
+> **Disciplina:** [[Tópicos Especiais II]] | **Nucleo ENADE:** [[01 - Algoritmos, Estruturas de Dados e Paradigmas (Do Basico ao Avancado)]]
+
+
 # 2026-09-22 - Tratamento de Exceções em Java
 
 **Disciplina:** Tópicos Especiais II
@@ -14,13 +19,13 @@
 Throwable
 ├── Error (erros irrecuperáveis da JVM — não tratar)
 └── Exception
-    ├── Checked Exceptions (compilador exige tratamento)
-    │   └── IOException, SobrecargaException, etc.
-    └── RuntimeException (Unchecked — opcional tratar)
-        ├── ArithmeticException
-        ├── NullPointerException
-        ├── NumberFormatException
-        └── IllegalArgumentException
+ ├── Checked Exceptions (compilador exige tratamento)
+ │ └── IOException, SobrecargaException, etc.
+ └── RuntimeException (Unchecked — opcional tratar)
+ ├── ArithmeticException
+ ├── NullPointerException
+ ├── NumberFormatException
+ └── IllegalArgumentException
 ```
 
 ---
@@ -33,14 +38,14 @@ Throwable
 
 ```java
 public class GeradorCentral {
-    public static int calcularCarga(int cargaTotal, int geradoresAtivos) {
-        try {
-            return cargaTotal / geradoresAtivos;
-        } catch (ArithmeticException e) {
-            System.out.println("Alerta: divisao por zero!");
-            return 0;
-        }
-    }
+ public static int calcularCarga(int cargaTotal, int geradoresAtivos) {
+ try {
+ return cargaTotal / geradoresAtivos;
+ } catch (ArithmeticException e) {
+ System.out.println("Alerta: divisao por zero!");
+ return 0;
+ }
+ }
 }
 ```
 
@@ -54,15 +59,15 @@ public class GeradorCentral {
 
 ```java
 public class CaldeiraNorte {
-    public static int lerPressao(String leitura) {
-        try {
-            return Integer.parseInt(leitura);
-        } catch (NumberFormatException e) {
-            return -1; // string não numérica ("ABC")
-        } catch (NullPointerException e) {
-            return -2; // string nula (null)
-        }
-    }
+ public static int lerPressao(String leitura) {
+ try {
+ return Integer.parseInt(leitura);
+ } catch (NumberFormatException e) {
+ return -1; // string não numérica ("ABC")
+ } catch (NullPointerException e) {
+ return -2; // string nula (null)
+ }
+ }
 }
 ```
 
@@ -76,15 +81,15 @@ public class CaldeiraNorte {
 
 ```java
 public class EsteiraControle {
-    public static void operar(Motor motor, Trava trava, double velocidade) {
-        try {
-            motor.ativar(velocidade);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        } finally {
-            trava.liberar(); // SEMPRE executa
-        }
-    }
+ public static void operar(Motor motor, Trava trava, double velocidade) {
+ try {
+ motor.ativar(velocidade);
+ } catch (Exception e) {
+ System.out.println(e.getMessage());
+ } finally {
+ trava.liberar(); // SEMPRE executa
+ }
+ }
 }
 ```
 
@@ -98,12 +103,12 @@ public class EsteiraControle {
 
 ```java
 public class BracoRobotico {
-    public void calibrar(double precisao) throws IllegalArgumentException {
-        if (precisao < 0.0 || precisao > 1.0) {
-            throw new IllegalArgumentException("Precisao invalida!");
-        }
-        System.out.println("Braço calibrado: " + precisao);
-    }
+ public void calibrar(double precisao) throws IllegalArgumentException {
+ if (precisao < 0.0 || precisao > 1.0) {
+ throw new IllegalArgumentException("Precisao invalida!");
+ }
+ System.out.println("Braço calibrado: " + precisao);
+ }
 }
 ```
 
@@ -119,9 +124,9 @@ public class BracoRobotico {
 
 ```java
 public class SobrecargaException extends Exception {
-    public SobrecargaException(String msg) {
-        super(msg); // repassa para Exception — disponibiliza via e.getMessage()
-    }
+ public SobrecargaException(String msg) {
+ super(msg); // repassa para Exception — disponibiliza via e.getMessage()
+ }
 }
 ```
 
@@ -137,12 +142,12 @@ public class SobrecargaException extends Exception {
 
 ```java
 public class SensorPressao {
-    public void checarPressao(int bar) throws SobrecargaException {
-        if (bar > 300) {
-            throw new SobrecargaException("Pressao excede 300 bar!");
-        }
-        System.out.println("Pressão nominal: " + bar + " bar");
-    }
+ public void checarPressao(int bar) throws SobrecargaException {
+ if (bar > 300) {
+ throw new SobrecargaException("Pressao excede 300 bar!");
+ }
+ System.out.println("Pressão nominal: " + bar + " bar");
+ }
 }
 ```
 
@@ -156,20 +161,20 @@ public class SensorPressao {
 
 ```java
 public class PainelExpedicao {
-    public static void despacharLote(String[] itens) {
-        for (String item : itens) {
-            try {
-                processar(item);
-            } catch (Exception e) {
-                System.out.println("Falha no item: " + item);
-            }
-        }
-    }
+ public static void despacharLote(String[] itens) {
+ for (String item : itens) {
+ try {
+ processar(item);
+ } catch (Exception e) {
+ System.out.println("Falha no item: " + item);
+ }
+ }
+ }
 
-    public static void processar(String item) throws Exception {
-        if ("CORROMPIDO".equals(item)) throw new Exception("Dado invalido");
-        System.out.println("Despachado: " + item);
-    }
+ public static void processar(String item) throws Exception {
+ if ("CORROMPIDO".equals(item)) throw new Exception("Dado invalido");
+ System.out.println("Despachado: " + item);
+ }
 }
 ```
 
@@ -195,4 +200,4 @@ public class PainelExpedicao {
 
 ## Referências Internas
 
-- [[Lobo_Parietal]] — Stacks e padrões de engenharia
+- Lobo Parietal — Stacks e padrões de engenharia

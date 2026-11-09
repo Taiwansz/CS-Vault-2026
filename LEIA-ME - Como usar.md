@@ -1,3 +1,6 @@
+> [!NOTE] Navegacao no Cofre
+> **Central:** [[00 - Dashboard]] | **Guia do Cofre:** [[00 - Guia do Cofre (Vault Guide)]] | **Hub ENADE:** [[INDEX_ESTUDOS_ENADE]]
+
 # Como usar este Vault
 
 1. No Obsidian, escolha **Open folder as vault / Abrir pasta como cofre** e selecione `Faculdade - 2026.2`.

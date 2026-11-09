@@ -23,3 +23,6 @@ status: pendente
 - **Nota:**
 - **Erros principais:**
 - **O que revisar:**
+
+---
+**Guia de Convencoes:** [[00 - Guia do Cofre (Vault Guide)]] | **Central:** [[00 - Dashboard]]

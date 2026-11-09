@@ -23,3 +23,6 @@ status: aberto # aberto | em_analise | resolvido
 ## Responsável pela Correção
 - **Atribuído a:** 
 - **Prazo:**
+
+---
+**Guia de Convencoes:** [[00 - Guia do Cofre (Vault Guide)]] | **Central:** [[00 - Dashboard]]

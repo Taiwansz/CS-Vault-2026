@@ -5,6 +5,10 @@ data: 2026-08-07
 orientador: Luiz Claudio Chiavini Oliveira Junior
 ---
 
+> [!NOTE] Navegacao no Cofre
+> **Painel Geral:** [[00 - Dashboard]] | **Indice de Aulas:** [[Índice Geral de Aulas]]
+> **Disciplina:** [[Trabalho de Conclusão de Curso II]] | **Nucleo ENADE:** [[08 - Formacao Geral, Etica, LGPD e Sociedade Digital (Do Basico ao Avancado)]]
+
 # Ata de Reunião — Alignments Iniciais do TCC II
 
 ## Pauta da Reunião

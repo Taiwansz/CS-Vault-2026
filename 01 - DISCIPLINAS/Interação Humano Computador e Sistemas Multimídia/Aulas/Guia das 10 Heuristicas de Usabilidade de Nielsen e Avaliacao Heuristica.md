@@ -6,6 +6,10 @@ tema: "As 10 Heuristicas de Usabilidade de Jakob Nielsen e Inspecao Sem Usuarios
 status: concluido
 ---
 
+> [!NOTE] Navegacao no Cofre
+> **Painel Geral:** [[00 - Dashboard]] | **Indice de Aulas:** [[Índice Geral de Aulas]]
+> **Disciplina:** [[Interação Humano Computador e Sistemas Multimídia]] | **Nucleo ENADE:** [[08 - Formacao Geral, Etica, LGPD e Sociedade Digital (Do Basico ao Avancado)]]
+
 # Guia das 10 Heuristicas de Usabilidade de Nielsen
 
 > [!INFO] **Visao Geral do Modulo**

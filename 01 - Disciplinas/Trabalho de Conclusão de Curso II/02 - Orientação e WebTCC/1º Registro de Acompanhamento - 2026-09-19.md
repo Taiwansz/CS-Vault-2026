@@ -10,23 +10,27 @@ titulo_tcc: "COMPRESSÃO DE PROMPTS, TOKENS E SUSTENTABILIDADE DA IA: Engenharia
 status: pronto-para-submissao-webtcc
 ---
 
+> [!NOTE] Navegacao no Cofre
+> **Painel Geral:** [[00 - Dashboard]] | **Indice de Aulas:** [[Índice Geral de Aulas]]
+> **Disciplina:** [[Trabalho de Conclusão de Curso II]] | **Nucleo ENADE:** [[08 - Formacao Geral, Etica, LGPD e Sociedade Digital (Do Basico ao Avancado)]]
+
 # 1º Registro de Acompanhamento de Orientação — TCC II (2026.2)
 
-> **Documento Oficial de Prestação de Contas Acadêmicas para a Plataforma WebTCC**  
-> Período de Referência: 01/09/2026 a 19/09/2026  
-> Aluno: Matheus Sousa dos Santos (RA: 52319400) e Equipe  
+> **Documento Oficial de Prestação de Contas Acadêmicas para a Plataforma WebTCC** 
+> Período de Referência: 01/09/2026 a 19/09/2026 
+> Aluno: Matheus Sousa dos Santos (RA: 52319400) e Equipe 
 > Orientador: Prof. Luiz Claudio Chiavini Oliveira Junior (Luyz)
 
 ---
 
 ## 1. Arquivos Oficiais Gerados no Padrão ABNT (Entregáveis Anexos)
 
-- 📄 **Documento Completo Editável (Word ABNT):**  
-  [TCC_II_Versao_1_Acompanhamento_Matheus_Santos.docx](file:///C:/Users/stdma/Documents/faculdade-2026-2/01%20-%20Disciplinas/Trabalho%20de%20Conclus%C3%A3o%20de%20Curso%20II/01%20-%20Manuscrito/TCC_II_Versao_1_Acompanhamento_Matheus_Santos.docx)
-- 📑 **Documento Oficial Compilado (PDF ABNT - 27 páginas com 4 Gráficos e 4 Tabelas):**  
-  [TCC_II_Versao_1_Acompanhamento_Matheus_Santos.pdf](file:///C:/Users/stdma/Documents/faculdade-2026-2/01%20-%20Disciplinas/Trabalho%20de%20Conclus%C3%A3o%20de%20Curso%20II/01%20-%20Manuscrito/TCC_II_Versao_1_Acompanhamento_Matheus_Santos.pdf)
-- 📊 **Baseline do Semestre Anterior (TCC I):**  
-  [[01 - Disciplinas/Trabalho de Conclusão de Curso II/05 - Materiais e Legado/TCC_Parte_1_Entregue.pdf|TCC Parte 1 Entregue (PDF)]]
+- **Documento Completo Editável (Word ABNT):** 
+ [TCC_II_Versao_1_Acompanhamento_Matheus_Santos.docx](file:///C:/Users/stdma/Documents/faculdade-2026-2/01%20-%20Disciplinas/Trabalho%20de%20Conclus%C3%A3o%20de%20Curso%20II/01%20-%20Manuscrito/TCC_II_Versao_1_Acompanhamento_Matheus_Santos.docx)
+- **Documento Oficial Compilado (PDF ABNT - 27 páginas com 4 Gráficos e 4 Tabelas):** 
+ [TCC_II_Versao_1_Acompanhamento_Matheus_Santos.pdf](file:///C:/Users/stdma/Documents/faculdade-2026-2/01%20-%20Disciplinas/Trabalho%20de%20Conclus%C3%A3o%20de%20Curso%20II/01%20-%20Manuscrito/TCC_II_Versao_1_Acompanhamento_Matheus_Santos.pdf)
+- **Baseline do Semestre Anterior (TCC I):** 
+ [[01 - Disciplinas/Trabalho de Conclusão de Curso II/05 - Materiais e Legado/TCC_Parte_1_Entregue.pdf|TCC Parte 1 Entregue (PDF)]]
 
 ---
 

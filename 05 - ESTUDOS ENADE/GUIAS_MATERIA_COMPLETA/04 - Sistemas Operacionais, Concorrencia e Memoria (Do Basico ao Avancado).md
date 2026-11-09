@@ -6,6 +6,11 @@ data: 2026-11-09
 autor: "ThSyr Cognitive Sentinel"
 ---
 
+> [!NOTE] Navegacao de Estudos ENADE
+> **Central:** [[00 - Dashboard]] | **Hub Mestre ENADE:** [[INDEX_ESTUDOS_ENADE]]
+> **Modulo Anterior:** [[03 - Teoria da Computacao, Automatos e Compiladores (Do Basico ao Avancado)]]
+> **Proximo Modulo:** [[05 - Banco de Dados, SQL Avancado e Modelagem (Do Basico ao Avancado)]]
+
 # 04 — Sistemas Operacionais, Concorrencia e Memoria (Do Basico ao Nivel ENADE)
 
 > [!INFO] **Objetivo deste Guia**
@@ -18,15 +23,15 @@ autor: "ThSyr Cognitive Sentinel"
 O Sistema Operacional e o arbitro de hardware. Ele impede que aplicacoes de usuario interfiram umas nas outras ou travem a maquina fisica.
 
 - **Dual-Mode Operation (Modo Kernel vs. Modo Usuario):**
-  - *Modo Usuario (Ring 3):* Codigo de aplicacao comum. Nao pode acessar a memoria fisica diretamente nem emitir instrucoes privilegiadas de CPU.
-  - *Modo Kernel (Ring 0):* Privilegio maximo. Acesso irrestrito a hardware, portas de I/O e registradores de controle.
-  - *System Call (Chamada de Sistema):* A ponte segura para transitar de Modo Usuario para Modo Kernel (ex: `read()`, `write()`, `fork()`, `socket()`).
+ - *Modo Usuario (Ring 3):* Codigo de aplicacao comum. Nao pode acessar a memoria fisica diretamente nem emitir instrucoes privilegiadas de CPU.
+ - *Modo Kernel (Ring 0):* Privilegio maximo. Acesso irrestrito a hardware, portas de I/O e registradores de controle.
+ - *System Call (Chamada de Sistema):* A ponte segura para transitar de Modo Usuario para Modo Kernel (ex: `read()`, `write()`, `fork()`, `socket()`).
 
 ### Processo vs. Thread:
 - **Processo:** Uma instancia de programa em execucao com seu **espaco de memoria virtual proprio e isolado**, tabela de descritores de arquivos, PCB (Process Control Block) e variaveis de ambiente. Dois processos nao compartilham memoria a menos que usem mecanismos explicitos de IPC (Shared Memory, Sockets, Pipes).
 - **Thread (Linha de Execucao / Processo Leve):** Uma unidade de escalonamento dentro de um processo.
-  - *Compartilha:* A memoria Heap, o codigo do programa (`.text`), variaveis globais e arquivos abertos.
-  - *Possui Privativo:* Sua propria **Pilha (Stack)**, ponteiro de instrucao (PC) e registradores de CPU.
+ - *Compartilha:* A memoria Heap, o codigo do programa (`.text`), variaveis globais e arquivos abertos.
+ - *Possui Privativo:* Sua propria **Pilha (Stack)**, ponteiro de instrucao (PC) e registradores de CPU.
 
 ---
 
@@ -59,7 +64,7 @@ Um impasse mortal (Deadlock) so pode ocorrer se **TODAS as quatro condicoes a se
 4. **Espera Circular (Circular Wait):** Existe um conjunto fechado de threads $\{T_0, T_1, \dots, T_n\}$ tal que $T_0$ espera por recurso mantido por $T_1$, $T_1$ espera por $T_2$, e $T_n$ espera por $T_0$.
 
 > [!TIP]
-> **Como quebrar o Deadlock no ENADE?**  
+> **Como quebrar o Deadlock no ENADE?** 
 > Para prevenir deadlocks, basta quebrar **qualquer uma** das 4 condicoes. A estrategia mais comum na pratica e **quebrar a Espera Circular**, impondo uma ordenacao global estrita de aquisicao de recursos (todas as threads devem requisitar o Lock A antes do Lock B).
 
 ---
@@ -76,8 +81,8 @@ A memoria virtual permite que programas executem utilizando mais memoria do que 
 ### Algoritmos de Substituicao de Paginas:
 Quando a RAM esta cheia e ocorre uma Falha de Pagina (*Page Fault*), o SO precisa escolher uma pagina para gravar no disco de swap e liberar espaco:
 
-1. **FIFO (First-In, First-Out):** Substitui a pagina mais antiga.  
-   *A Grande Armadilha do ENADE:* O FIFO sofre da **Anomalia de Belády** — em certas sequencias de acesso, **aumentar o numero de molduras de memoria RAM disponiveis AUMENTA o numero de falhas de pagina**, em vez de diminuir!
+1. **FIFO (First-In, First-Out):** Substitui a pagina mais antiga. 
+ *A Grande Armadilha do ENADE:* O FIFO sofre da **Anomalia de Belády** — em certas sequencias de acesso, **aumentar o numero de molduras de memoria RAM disponiveis AUMENTA o numero de falhas de pagina**, em vez de diminuir!
 2. **LRU (Least Recently Used):** Substitui a pagina que nao e acessada ha mais tempo. Excelente desempenho pratico, baseado no principio da localidade temporal. Nao sofre da anomalia de Belády.
 3. **Algoritmo Otimo de Belády (OPT):** Substitui a pagina que nao sera usada pelo maior periodo de tempo no futuro. E impossivel de implementar na pratica (exige videncia do futuro), servindo como padrao-ouro teorico de benchmark.
 4. **Thrashing (Hiperpaginacao):** Quando o sistema passa quase 100% do tempo de CPU fazendo trocas de paginas entre a RAM e o disco (swap) porque a soma dos conjuntos de trabalho (*working sets*) dos processos e maior do que a RAM fisica disponivel.
@@ -90,10 +95,10 @@ A partir do Java 8, a JVM HotSpot aboliu o antigo PermGen e reestruturou a memor
 
 - **Stack (Pilha de Execucao):** Armazena chamadas de metodos, variaveis locais primitivas e referencias para o Heap. E alocada individualmente para cada thread.
 - **Heap (Monte):** Armazena todos os objetos instanciados com `new` e arrays. Compartilhado entre todas as threads e gerenciado pelo Garbage Collector.
-- **Metaspace:** Armazena metadados de classes (tabelas de metodos, constantes, bytecode).  
-  *Diferenca Critica:* O Metaspace **nao reside no Heap**; ele aloca memoria nativa diretamente do Sistema Operacional.
-  - Se o parametro `-XX:MaxMetaspaceSize` nao for definido, o Metaspace pode crescer ate devorar toda a RAM fisica da maquina servidora.
-  - Aplicacoes que geram classes dinamicamente em runtime (proxies Spring, CGLIB, ByteBuddy, ClassLoaders com vazamento) podem disparar `java.lang.OutOfMemoryError: Metaspace`.
+- **Metaspace:** Armazena metadados de classes (tabelas de metodos, constantes, bytecode). 
+ *Diferenca Critica:* O Metaspace **nao reside no Heap**; ele aloca memoria nativa diretamente do Sistema Operacional.
+ - Se o parametro `-XX:MaxMetaspaceSize` nao for definido, o Metaspace pode crescer ate devorar toda a RAM fisica da maquina servidora.
+ - Aplicacoes que geram classes dinamicamente em runtime (proxies Spring, CGLIB, ByteBuddy, ClassLoaders com vazamento) podem disparar `java.lang.OutOfMemoryError: Metaspace`.
 
 ---
 
@@ -101,6 +106,14 @@ A partir do Java 8, a JVM HotSpot aboliu o antigo PermGen e reestruturou a memor
 
 1. **Anomalia de Belády:** Perguntas afirmando que "adicionar memoria RAM sempre reduz page faults" sao **FALSAS** se o algoritmo de substituicao for o FIFO.
 2. **Fragmentacao Interna vs. Externa:**
-   - *Paginacao:* Elimina fragmentacao externa (pois qualquer pagina cabe em qualquer moldura), mas gera **Fragmentacao Interna** (o ultimo bloco de 4 KB de um processo pode usar apenas 100 bytes, desperdicando o restante).
-   - *Segmentacao:* Trabalha com blocos de tamanho variavel; elimina fragmentacao interna, mas gera **Fragmentacao Externa** (buracos dispersos na memoria).
+ - *Paginacao:* Elimina fragmentacao externa (pois qualquer pagina cabe em qualquer moldura), mas gera **Fragmentacao Interna** (o ultimo bloco de 4 KB de um processo pode usar apenas 100 bytes, desperdicando o restante).
+ - *Segmentacao:* Trabalha com blocos de tamanho variavel; elimina fragmentacao interna, mas gera **Fragmentacao Externa** (buracos dispersos na memoria).
 3. **Colecoes Concorrentes:** `Collections.synchronizedMap` usa um unico lock global no mapa todo (gargalo total). O `ConcurrentHashMap` usa locks granulares em buckets combinados com operacoes atomicas CAS (*Compare-And-Swap*), permitindo leituras sem lock e gravacoes simultaneas em baldes diferentes.
+
+---
+
+## Conexoes no Cofre e Disciplinas Praticas
+
+- **Hub Geral:** [[INDEX_ESTUDOS_ENADE]] | [[00 - Dashboard]]
+- **Simulado de Referencia:** [[Simulado 04 - Ciencia da Computacao Completo 20 Questoes 2026-11-09]]
+- **Disciplinas Praticas:** [[Tópicos Especiais II]], [[Estudos Avançados em Ciências da Computação]]

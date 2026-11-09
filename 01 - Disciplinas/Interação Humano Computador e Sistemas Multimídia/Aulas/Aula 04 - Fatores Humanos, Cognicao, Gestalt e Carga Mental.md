@@ -3,13 +3,17 @@ disciplina: Interação Humano Computador e Sistemas Multimídia
 professor: Guilherme P. Bueno
 data: 2026-09-04
 tags:
-  - faculdade
-  - ihc
-  - cognicao
-  - gestalt
-  - carga-mental
-  - revisao-p1
+ - faculdade
+ - ihc
+ - cognicao
+ - gestalt
+ - carga-mental
+ - revisao-p1
 ---
+
+> [!NOTE] Navegacao no Cofre
+> **Painel Geral:** [[00 - Dashboard]] | **Indice de Aulas:** [[Índice Geral de Aulas]]
+> **Disciplina:** [[Interação Humano Computador e Sistemas Multimídia]] | **Nucleo ENADE:** [[08 - Formacao Geral, Etica, LGPD e Sociedade Digital (Do Basico ao Avancado)]]
 
 # Aula 04 — Fatores Humanos em Computação: Cognição, Gestalt e Carga Mental
 
@@ -31,14 +35,14 @@ tags:
 
 O cérebro opera em 3 subsistemas sequenciais com latências mensuráveis:
 1. **Subsistema Perceptivo:**
-   - Sensores visuais (olhos) e auditivos (ouvidos).
-   - Latência de processamento: **100 ms a 200 ms**.
+ - Sensores visuais (olhos) e auditivos (ouvidos).
+ - Latência de processamento: **100 ms a 200 ms**.
 2. **Subsistema Cognitivo:**
-   - Memória de trabalho + memória de longo prazo.
-   - Tempo de ciclo para tomada de decisão: **~70 ms por ciclo**.
+ - Memória de trabalho + memória de longo prazo.
+ - Tempo de ciclo para tomada de decisão: **~70 ms por ciclo**.
 3. **Subsistema Motor:**
-   - Execução do movimento físico (dedos, mãos, clique, digitação).
-   - Tempo de movimento físico: **~70 ms por ciclo**.
+ - Execução do movimento físico (dedos, mãos, clique, digitação).
+ - Tempo de movimento físico: **~70 ms por ciclo**.
 
 ---
 
@@ -56,9 +60,9 @@ O cérebro opera em 3 subsistemas sequenciais com latências mensuráveis:
 - **George Miller (1956):** A capacidade de processamento imediato do cérebro humano é restrita a **$7 \pm 2$ unidades discretas** de informação.
 - Ultrapassar esse limiar força o descarte forçado de dados vitais da memória de trabalho, elevando exponencialmente a taxa de erro.
 - **Chunking (Agrupamento Cognitivo):** Técnica de agrupar itens isolados em blocos conceituais dotados de significado:
-  - *Sem Chunking:* `11987654321` (11 itens contínuos, estresse cognitivo, alta chance de erro).
-  - *Com Chunking:* `(11) 98765-4321` (3 blocos compreensíveis: DDD, prefixo, sufixo).
-  - *Aplicação:* Máscaras de CPF, blocos de 4 dígitos em cartões de crédito e agrupamento de campos em formulários.
+ - *Sem Chunking:* `11987654321` (11 itens contínuos, estresse cognitivo, alta chance de erro).
+ - *Com Chunking:* `(11) 98765-4321` (3 blocos compreensíveis: DDD, prefixo, sufixo).
+ - *Aplicação:* Máscaras de CPF, blocos de 4 dígitos em cartões de crédito e agrupamento de campos em formulários.
 
 ---
 
@@ -78,23 +82,23 @@ $$\text{Carga Total} = \text{Carga Intrínseca} + \text{Carga Pertinente} + \tex
 Fundamentadas por Max Wertheimer, Kurt Koffka e Wolfgang Köhler. *"O todo é diferente da soma de suas partes."*
 
 1. **Lei da Proximidade:**
-   - Elementos espacialmente próximos são agrupados automaticamente pelo cérebro como pertencentes à mesma unidade lógica.
-   - *No Figma/CSS:* O espaçamento entre um label e seu input deve ser estritamente menor do que o espaçamento para o próximo bloco (`gap: 4px` entre label e input vs. `margin-bottom: 24px` entre campos).
+ - Elementos espacialmente próximos são agrupados automaticamente pelo cérebro como pertencentes à mesma unidade lógica.
+ - *No Figma/CSS:* O espaçamento entre um label e seu input deve ser estritamente menor do que o espaçamento para o próximo bloco (`gap: 4px` entre label e input vs. `margin-bottom: 24px` entre campos).
 2. **Lei da Região Comum (Stephen Palmer, 1992):**
-   - Elementos contidos dentro de um limite visual fechado (borda, container, background diferente) são interpretados como uma categoria única, superando até a proximidade espacial.
-   - *No Figma/CSS:* Cards com `padding`, `border` e `background` segmentando métricas em dashboards.
+ - Elementos contidos dentro de um limite visual fechado (borda, container, background diferente) são interpretados como uma categoria única, superando até a proximidade espacial.
+ - *No Figma/CSS:* Cards com `padding`, `border` e `background` segmentando métricas em dashboards.
 3. **Lei da Semelhança (Similarity):**
-   - Elementos com atributos visuais compartilhados (cor, formato, tamanho) sinalizam a mesma função no sistema.
-   - *Alerta de Usabilidade:* Evitar a **Falsa Afordância** (ex: estilizar um texto estático com azul sublinhado que induz o usuário a acreditar que se trata de um link clicável).
+ - Elementos com atributos visuais compartilhados (cor, formato, tamanho) sinalizam a mesma função no sistema.
+ - *Alerta de Usabilidade:* Evitar a **Falsa Afordância** (ex: estilizar um texto estático com azul sublinhado que induz o usuário a acreditar que se trata de um link clicável).
 4. **Figura-Fundo:**
-   - O cérebro distingue o plano focal do contexto circundante.
-   - *Aplicação:* Modais e caixas de diálogo sobrepondo um overlay escuro semi-transparente (*backdrop* de 50% de opacidade) para focar a decisão.
+ - O cérebro distingue o plano focal do contexto circundante.
+ - *Aplicação:* Modais e caixas de diálogo sobrepondo um overlay escuro semi-transparente (*backdrop* de 50% de opacidade) para focar a decisão.
 5. **Continuidade:**
-   - O olhar segue trajetórias contínuas e fluxos visuais previsíveis.
-   - *Aplicação:* Carrosséis horizontais onde o último card fica parcialmente cortado na borda da tela, induzindo o gesto de rolagem (*swipe*).
+ - O olhar segue trajetórias contínuas e fluxos visuais previsíveis.
+ - *Aplicação:* Carrosséis horizontais onde o último card fica parcialmente cortado na borda da tela, induzindo o gesto de rolagem (*swipe*).
 6. **Fechamento:**
-   - O cérebro preenche lacunas e completa mentalmente formas inacabadas.
-   - *Aplicação:* Ícones minimalistas de contorno aberto e telas de *Skeleton Screens* durante o carregamento assíncrono de feeds.
+ - O cérebro preenche lacunas e completa mentalmente formas inacabadas.
+ - *Aplicação:* Ícones minimalistas de contorno aberto e telas de *Skeleton Screens* durante o carregamento assíncrono de feeds.
 
 ---
 

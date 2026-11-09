@@ -1,3 +1,6 @@
+> [!NOTE] Navegacao no Cofre
+> **Painel Geral:** [[00 - Dashboard]] | **Calendario:** [[Calendário do Semestre]] | **Faltometro:** [[Controle de Frequência]]
+
 # Quadro de Horários — 2026.2
 
 | Dia | Horário | Disciplina | Professor |

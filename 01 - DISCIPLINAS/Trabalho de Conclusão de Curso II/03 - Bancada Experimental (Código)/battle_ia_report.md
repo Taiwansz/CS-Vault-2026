@@ -1,3 +1,8 @@
+> [!NOTE] Navegacao no Cofre
+> **Painel Geral:** [[00 - Dashboard]] | **Indice de Aulas:** [[Índice Geral de Aulas]]
+> **Disciplina:** [[Trabalho de Conclusão de Curso II]] | **Nucleo ENADE:** [[08 - Formacao Geral, Etica, LGPD e Sociedade Digital (Do Basico ao Avancado)]]
+
+
 # Battle IA - Relatorio Experimental de Benchmark (TCC II)
 
 > Eixo: Compressao de Prompts, Consumo de Tokens, Latencia e Custo Operacional.
@@ -24,23 +29,23 @@ Comparativo das tecnicas comprimidas em relacao a linha de base (Zero-shot):
 
 ### Modelo: `deepseek-ai/deepseek-v4-flash-0731`
 - **Tecnica `compressed_llmlingua` vs `zero_shot`:**
-  - Reducao de Tokens de Entrada: **68.2%**
-  - Variacao de Latencia: **-8.1%** (Baseline: 35167.97ms -> Comprimido: 38014.17ms)
-  - Taxa de Compressao Efetiva: **2.72x**
+ - Reducao de Tokens de Entrada: **68.2%**
+ - Variacao de Latencia: **-8.1%** (Baseline: 35167.97ms -> Comprimido: 38014.17ms)
+ - Taxa de Compressao Efetiva: **2.72x**
 - **Tecnica `few_shot` vs `zero_shot`:**
-  - Reducao de Tokens de Entrada: **46.8%**
-  - Variacao de Latencia: **-60.9%** (Baseline: 35167.97ms -> Comprimido: 56576.52ms)
-  - Taxa de Compressao Efetiva: **1.62x**
+ - Reducao de Tokens de Entrada: **46.8%**
+ - Variacao de Latencia: **-60.9%** (Baseline: 35167.97ms -> Comprimido: 56576.52ms)
+ - Taxa de Compressao Efetiva: **1.62x**
 
 ### Modelo: `z-ai/glm-5.3`
 - **Tecnica `compressed_llmlingua` vs `zero_shot`:**
-  - Reducao de Tokens de Entrada: **61.9%**
-  - Variacao de Latencia: **-6.5%** (Baseline: 21862.31ms -> Comprimido: 23277.35ms)
-  - Taxa de Compressao Efetiva: **2.34x**
+ - Reducao de Tokens de Entrada: **61.9%**
+ - Variacao de Latencia: **-6.5%** (Baseline: 21862.31ms -> Comprimido: 23277.35ms)
+ - Taxa de Compressao Efetiva: **2.34x**
 - **Tecnica `few_shot` vs `zero_shot`:**
-  - Reducao de Tokens de Entrada: **30.3%**
-  - Variacao de Latencia: **+37.2%** (Baseline: 21862.31ms -> Comprimido: 13740.33ms)
-  - Taxa de Compressao Efetiva: **1.46x**
+ - Reducao de Tokens de Entrada: **30.3%**
+ - Variacao de Latencia: **+37.2%** (Baseline: 21862.31ms -> Comprimido: 13740.33ms)
+ - Taxa de Compressao Efetiva: **1.46x**
 
 ---
 

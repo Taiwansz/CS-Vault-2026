@@ -7,17 +7,21 @@ professor: "Luiz Claudio Chiavini Oliveira Junior"
 status: concluido
 ---
 
-# 📜 Atividade 03 — Simulador de Batalha em Javaland
+> [!NOTE] Navegacao no Cofre
+> **Painel Geral:** [[00 - Dashboard]] | **Indice de Aulas:** [[Índice Geral de Aulas]]
+> **Disciplina:** [[Tópicos Especiais II]] | **Nucleo ENADE:** [[01 - Algoritmos, Estruturas de Dados e Paradigmas (Do Basico ao Avancado)]]
 
-> [!info] 📌 Informações da Aula
+# Atividade 03 — Simulador de Batalha em Javaland
+
+> [!info] Informações da Aula
 > - **Data:** 18/08/2026
-> - **Disciplina:** [[01 - Disciplinas/Tópicos Especiais II/Tópicos Especiais II|Tópicos Especiais II]]
+> - **Disciplina:** [[Tópicos Especiais II|Tópicos Especiais II]]
 > - **Professor:** Luiz Claudio Chiavini Oliveira Junior
 > - **Tópicos:** Interfaces, Classes Abstratas, Polimorfismo, Interação entre Objetos
 
 ---
 
-## ⚔️ O Desafio
+## ️ O Desafio
 
 O Reino de **"Javaland"** está em guerra. A sua missão é criar um simulador de batalha em turnos utilizando os conceitos de **Programação Orientada a Objetos (POO)** que aprendemos até agora.
 
@@ -25,7 +29,7 @@ Neste projeto, o foco é criar objetos poderosos e fazê-los interagir uns com o
 
 ---
 
-## 🛠️ Requisitos do Sistema
+## ️ Requisitos do Sistema
 
 Deverá criar as seguintes estruturas no seu projeto:
 
@@ -46,12 +50,12 @@ Crie uma classe abstrata `Personagem` que servirá de base para todos os lutador
 
 ### 3. As Classes Filhas (Concretas)
 
-#### ⚔️ `Guerreiro`
+#### ️ `Guerreiro`
 - Herda (`extends`) de `Personagem`.
 - Ao atacar, o Guerreiro causa o dano exato dos seus `pontosAtaque` ao alvo chamando o método `alvo.receberDano(...)`.
 - Deve imprimir: `"O Guerreiro [Nome] atacou [Nome do Alvo] com a sua espada!"`.
 
-#### 🪄 `Mago`
+#### `Mago`
 - Herda (`extends`) de `Personagem`.
 - Implementa (`implements`) a interface `Magia`.
 - O Mago ataca com feitiços. Ele causa dano igual aos seus `pontosAtaque`, mas imprime: `"O Mago [Nome] lançou uma bola de fogo em [Nome do Alvo]!"`.
@@ -59,7 +63,7 @@ Crie uma classe abstrata `Personagem` que servirá de base para todos os lutador
 
 ---
 
-## ⚔️ A Classe `Main` (A Arena de Batalha)
+## ️ A Classe `Main` (A Arena de Batalha)
 
 Na sua classe principal, você será o Mestre do Jogo:
 
@@ -67,26 +71,26 @@ Na sua classe principal, você será o Mestre do Jogo:
 2. Instancie um Mago (ex: `"Gandalf"`, 80 de vida, 30 de ataque).
 3. Crie uma estrutura de repetição (`while`) que continue a rodar enquanto o Guerreiro estiver vivo E o Mago estiver vivo.
 4. **Lógica de Turnos:**
-   - O Guerreiro ataca o Mago: `guerreiro.atacar(mago);`
-   - Verifique se o Mago sobreviveu. Se sim, ele contra-ataca ou cura-se.
-   - Se a vida do Mago for menor que 30, chame o método `mago.curar()`. Caso contrário, `mago.atacar(guerreiro);`.
-   - *(Opcional)* Use `Thread.sleep(1500);` para dar uma pausa de 1,5 segundos entre os ataques e criar suspense no terminal!
+ - O Guerreiro ataca o Mago: `guerreiro.atacar(mago);`
+ - Verifique se o Mago sobreviveu. Se sim, ele contra-ataca ou cura-se.
+ - Se a vida do Mago for menor que 30, chame o método `mago.curar()`. Caso contrário, `mago.atacar(guerreiro);`.
+ - *(Opcional)* Use `Thread.sleep(1500);` para dar uma pausa de 1,5 segundos entre os ataques e criar suspense no terminal!
 5. Quando o loop terminar, verifique quem ficou vivo através do método `estaVivo()` e imprima o vencedor em destaque!
 
 ---
 
-## 🌟 Desafio Extra (Para os mais rápidos)
+## Desafio Extra (Para os mais rápidos)
 
 Quer tornar o jogo mais imprevisível? Utilize a classe `java.util.Random` ou `Math.random()` dentro do método `atacar()` do Guerreiro para criar uma **"Chance de Acerto Crítico"**. Exemplo: 20% de probabilidade de o dano do ataque ser multiplicado por 2 naquele turno!
 
 ---
 
-## 💻 Código Fonte e Arquivos do Projeto
+## Código Fonte e Arquivos do Projeto
 
 Todos os arquivos foram organizados e validados na pasta de materiais:
-- 📄 [[01 - Disciplinas/Tópicos Especiais II/Materiais/Atividade_Aula_3_SimuladorBatalha/Personagem.java|Personagem.java]] — Classe abstrata base com controle de vida e dano
-- 📄 [[01 - Disciplinas/Tópicos Especiais II/Materiais/Atividade_Aula_3_SimuladorBatalha/Magia.java|Magia.java]] — Interface com contrato de cura e bola de fogo
-- 📄 [[01 - Disciplinas/Tópicos Especiais II/Materiais/Atividade_Aula_3_SimuladorBatalha/Guerreiro.java|Guerreiro.java]] — Subclasse de ataque físico com chance de crítico
-- 📄 [[01 - Disciplinas/Tópicos Especiais II/Materiais/Atividade_Aula_3_SimuladorBatalha/Mago.java|Mago.java]] — Subclasse mágica com cura limitada à vida máxima
-- 📄 [[01 - Disciplinas/Tópicos Especiais II/Materiais/Atividade_Aula_3_SimuladorBatalha/Main.java|Main.java]] — Loop de batalha por turnos com intervalo de suspense
-- 📄 [[01 - Disciplinas/Tópicos Especiais II/Materiais/Atividade_Aula_3_SimuladorBatalha/README.md|README.md]] — Instruções de execução e documentação
+- [[01 - Disciplinas/Tópicos Especiais II/Materiais/Atividade_Aula_3_SimuladorBatalha/Personagem.java|Personagem.java]] — Classe abstrata base com controle de vida e dano
+- [[01 - Disciplinas/Tópicos Especiais II/Materiais/Atividade_Aula_3_SimuladorBatalha/Magia.java|Magia.java]] — Interface com contrato de cura e bola de fogo
+- [[01 - Disciplinas/Tópicos Especiais II/Materiais/Atividade_Aula_3_SimuladorBatalha/Guerreiro.java|Guerreiro.java]] — Subclasse de ataque físico com chance de crítico
+- [[01 - Disciplinas/Tópicos Especiais II/Materiais/Atividade_Aula_3_SimuladorBatalha/Mago.java|Mago.java]] — Subclasse mágica com cura limitada à vida máxima
+- [[01 - Disciplinas/Tópicos Especiais II/Materiais/Atividade_Aula_3_SimuladorBatalha/Main.java|Main.java]] — Loop de batalha por turnos com intervalo de suspense
+- [[README|README.md]] — Instruções de execução e documentação

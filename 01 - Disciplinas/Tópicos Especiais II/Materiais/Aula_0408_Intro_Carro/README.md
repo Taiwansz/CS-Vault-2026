@@ -1,3 +1,6 @@
+> [!NOTE] Navegacao no Cofre
+> **Disciplina:** [[Tópicos Especiais II]] | **Aula:** [[2026-08-04 - Aula Inaugural - POO e Diagramas]]
+
 # Exercício de Fixação: Classe Carro (04/08/2026)
 
 Exercício prático introdutório de Programação Orientada a Objetos em Java ministrado pelo Prof. Luiz Claudio Chiavini Oliveira Junior.

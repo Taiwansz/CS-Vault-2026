@@ -1,7 +1,12 @@
+> [!NOTE] Navegacao no Cofre
+> **Painel Geral:** [[00 - Dashboard]] | **Indice de Aulas:** [[Índice Geral de Aulas]]
+> **Disciplina:** [[Estudos Avançados em Ciências da Computação]] | **Nucleo ENADE:** [[06 - Redes de Computadores e Sistemas Distribuidos (Do Basico ao Avancado)]]
+
+
 # RELATÓRIO DE ENTREGA: EXERCÍCIO PRÁTICO – AULA 2
-**Disciplina**: Estudos Avançados em Ciências da Computação  
-**Tema**: Switching Avançado no Cisco Packet Tracer (VLANs, Voice VLAN, Trunk 802.1Q, EtherChannel e LACP)  
-**Cenário**: Modernização da Rede da TechSolutions  
+**Disciplina**: Estudos Avançados em Ciências da Computação 
+**Tema**: Switching Avançado no Cisco Packet Tracer (VLANs, Voice VLAN, Trunk 802.1Q, EtherChannel e LACP) 
+**Cenário**: Modernização da Rede da TechSolutions 
 
 ---
 
@@ -94,14 +99,14 @@ exit
 ```text
 SW-ACCESS-1# show vlan brief
 
-VLAN Name                             Status    Ports
+VLAN Name Status Ports
 ---- -------------------------------- --------- -------------------------------
-1    default                          active    Fa0/5, Fa0/6, Fa0/7, Fa0/8...
-10   ADMINISTRATIVO                   active    Fa0/1, Fa0/4
-20   FINANCEIRO                       active    Fa0/2
-30   TI                               active    Fa0/3
-40   VOZ                              active    Fa0/4
-99   NATIVA                           active    
+1 default active Fa0/5, Fa0/6, Fa0/7, Fa0/8...
+10 ADMINISTRATIVO active Fa0/1, Fa0/4
+20 FINANCEIRO active Fa0/2
+30 TI active Fa0/3
+40 VOZ active Fa0/4
+99 NATIVA active 
 ```
 
 ---
@@ -122,20 +127,20 @@ exit
 ```text
 SW-CORE-1# show interfaces trunk
 
-Port        Mode         Encapsulation  Status        Native vlan
-Fa0/23      on           802.1q         trunking      99
-Fa0/24      on           802.1q         trunking      99
-Po1         on           802.1q         trunking      99
+Port Mode Encapsulation Status Native vlan
+Fa0/23 on 802.1q trunking 99
+Fa0/24 on 802.1q trunking 99
+Po1 on 802.1q trunking 99
 
-Port        Vlans allowed on trunk
-Fa0/23      10,20,30,40,99
-Fa0/24      10,20,30,40,99
-Po1         10,20,30,40,99
+Port Vlans allowed on trunk
+Fa0/23 10,20,30,40,99
+Fa0/24 10,20,30,40,99
+Po1 10,20,30,40,99
 
-Port        Vlans allowed and active in management domain
-Fa0/23      10,20,30,40,99
-Fa0/24      10,20,30,40,99
-Po1         10,20,30,40,99
+Port Vlans allowed and active in management domain
+Fa0/23 10,20,30,40,99
+Fa0/24 10,20,30,40,99
+Po1 10,20,30,40,99
 ```
 
 ---
@@ -182,45 +187,45 @@ exit
 ```text
 SW-CORE-1# show etherchannel summary
 
-Flags:  D - down        P - bundled in port-channel
-        I - stand-alone s - suspended
-        H - Hot-standby (LACP only)
-        R - Layer3      S - Layer2
-        U - in use      f - failed to allocate aggregator
+Flags: D - down P - bundled in port-channel
+ I - stand-alone s - suspended
+ H - Hot-standby (LACP only)
+ R - Layer3 S - Layer2
+ U - in use f - failed to allocate aggregator
 
-Group  Port-channel  Protocol    Ports
+Group Port-channel Protocol Ports
 ------+-------------+-----------+-----------------------------------------------
-1      Po1(SU)       LACP        Gi0/1(P)    Gi0/2(P)    
+1 Po1(SU) LACP Gi0/1(P) Gi0/2(P) 
 ```
 
 #### **Evidência Obrigatória: `show lacp neighbor`**
 ```text
 SW-CORE-1# show lacp neighbor
 
-Flags:  S - Device is requesting Slow LACPDU 
-        F - Device is requesting Fast LACPDU
-        A - Device is in Active mode       
-        P - Device is in Passive mode
+Flags: S - Device is requesting Slow LACPDU 
+ F - Device is requesting Fast LACPDU
+ A - Device is in Active mode 
+ P - Device is in Passive mode
 
 Channel group 1 neighbors features:
 
-Port      Flags   Oper-key  Port-Number  Port-State
-Gi0/1     SP      0x1       0x1          0x3C
-Gi0/2     SP      0x1       0x2          0x3C
+Port Flags Oper-key Port-Number Port-State
+Gi0/1 SP 0x1 0x1 0x3C
+Gi0/2 SP 0x1 0x2 0x3C
 ```
 
 ---
 
 ## 4. Resultados dos Testes de Comunicação (PING)
 
-- **Teste A (`PC-ADM-01` -> `PC-ADM-02`)**: **SUCESSO (PING OK - 0% loss)**.  
-  *Explicação*: Ambos os computadores pertencem à mesma VLAN 10 (`192.168.10.0/24`). Os quadros são encapsulados com a tag 802.1Q e trafegam normalmente através dos trunks e do EtherChannel.
-- **Teste B (`PC-FIN-01` -> `PC-FIN-02`)**: **SUCESSO (PING OK - 0% loss)**.  
-  *Explicação*: Ambos estão na VLAN 20 (`192.168.20.0/24`).
-- **Teste C (`PC-TI-01` -> `PC-TI-02`)**: **SUCESSO (PING OK - 0% loss)**.  
-  *Explicação*: Ambos estão na VLAN 30 (`192.168.30.0/24`).
-- **Teste D (`PC-ADM-01` -> `PC-FIN-01`)**: **FALHA (Destination Host Unreachable / Request Timed Out)**.  
-  *Explicação Técnica*: Os computadores pertencem a sub-redes e VLANs distintas (VLAN 10 vs VLAN 20). Como o exercício estabelece que não há roteador ou switch L3 configurado para realizar o roteamento inter-VLAN, o tráfego é bloqueado no limite da Camada 2 (isolamento de broadcast domain).
+- **Teste A (`PC-ADM-01` -> `PC-ADM-02`)**: **SUCESSO (PING OK - 0% loss)**. 
+ *Explicação*: Ambos os computadores pertencem à mesma VLAN 10 (`192.168.10.0/24`). Os quadros são encapsulados com a tag 802.1Q e trafegam normalmente através dos trunks e do EtherChannel.
+- **Teste B (`PC-FIN-01` -> `PC-FIN-02`)**: **SUCESSO (PING OK - 0% loss)**. 
+ *Explicação*: Ambos estão na VLAN 20 (`192.168.20.0/24`).
+- **Teste C (`PC-TI-01` -> `PC-TI-02`)**: **SUCESSO (PING OK - 0% loss)**. 
+ *Explicação*: Ambos estão na VLAN 30 (`192.168.30.0/24`).
+- **Teste D (`PC-ADM-01` -> `PC-FIN-01`)**: **FALHA (Destination Host Unreachable / Request Timed Out)**. 
+ *Explicação Técnica*: Os computadores pertencem a sub-redes e VLANs distintas (VLAN 10 vs VLAN 20). Como o exercício estabelece que não há roteador ou switch L3 configurado para realizar o roteamento inter-VLAN, o tráfego é bloqueado no limite da Camada 2 (isolamento de broadcast domain).
 
 ---
 
@@ -252,41 +257,41 @@ Ao alterar intencionalmente a VLAN nativa na interface `Gi0/1` no `SW-CORE-1` pa
 
 ## 7. Respostas das Questões de Análise (12 Questões)
 
-1. **Por que utilizar VLANs melhora a organização de uma rede corporativa?**  
-   Segmenta o domínio de broadcast, melhora a segurança (isolando setores), otimiza a performance e facilita a gestão lógica sem alterar cabeamentos físicos.
+1. **Por que utilizar VLANs melhora a organização de uma rede corporativa?** 
+ Segmenta o domínio de broadcast, melhora a segurança (isolando setores), otimiza a performance e facilita a gestão lógica sem alterar cabeamentos físicos.
 
-2. **Qual é a função de um trunk?**  
-   Transportar quadros de múltiplas VLANs através de uma única conexão física ou lógica utilizando etiquetagem IEEE 802.1Q.
+2. **Qual é a função de um trunk?** 
+ Transportar quadros de múltiplas VLANs através de uma única conexão física ou lógica utilizando etiquetagem IEEE 802.1Q.
 
-3. **Por que não é recomendável manter a VLAN 1 como VLAN nativa?**  
-   Para prevenir ataques de segurança como *VLAN Hopping* e *Double Tagging*, e isolar o tráfego não etiquetado dos usuários.
+3. **Por que não é recomendável manter a VLAN 1 como VLAN nativa?** 
+ Para prevenir ataques de segurança como *VLAN Hopping* e *Double Tagging*, e isolar o tráfego não etiquetado dos usuários.
 
-4. **Qual é a finalidade de uma Voice VLAN?**  
-   Priorizar pacotes de voz (QoS), garantindo baixos níveis de latência e jitter e separando a telefonia IP do tráfego de dados.
+4. **Qual é a finalidade de uma Voice VLAN?** 
+ Priorizar pacotes de voz (QoS), garantindo baixos níveis de latência e jitter e separando a telefonia IP do tráfego de dados.
 
-5. **Qual problema ocorre quando existem múltiplos enlaces de Camada 2 entre switches sem mecanismos adequados de controle?**  
-   Tempestades de broadcast (*broadcast storms*), duplicação de quadros e instabilidade na tabela MAC devido a loops de Camada 2.
+5. **Qual problema ocorre quando existem múltiplos enlaces de Camada 2 entre switches sem mecanismos adequados de controle?** 
+ Tempestades de broadcast (*broadcast storms*), duplicação de quadros e instabilidade na tabela MAC devido a loops de Camada 2.
 
-6. **Qual é a diferença entre possuir dois links físicos independentes e utilizar dois links dentro de um EtherChannel?**  
-   Links independentes têm um dos enlaces bloqueado pelo STP. No EtherChannel, ambos os links trabalham juntos de forma ativa, somando suas larguras de banda.
+6. **Qual é a diferença entre possuir dois links físicos independentes e utilizar dois links dentro de um EtherChannel?** 
+ Links independentes têm um dos enlaces bloqueado pelo STP. No EtherChannel, ambos os links trabalham juntos de forma ativa, somando suas larguras de banda.
 
-7. **Qual é a função do LACP?**  
-   Negociar dinamicamente a formação de agregação de links (EtherChannel) entre switches de forma segura.
+7. **Qual é a função do LACP?** 
+ Negociar dinamicamente a formação de agregação de links (EtherChannel) entre switches de forma segura.
 
-8. **Qual a diferença entre LACP Active e Passive?**  
-   `Active` envia ativamente pacotes LACPDU para iniciar negociação; `Passive` apenas responde quando recebe pacotes LACPDU.
+8. **Qual a diferença entre LACP Active e Passive?** 
+ `Active` envia ativamente pacotes LACPDU para iniciar negociação; `Passive` apenas responde quando recebe pacotes LACPDU.
 
-9. **O que aconteceria se os dois lados fossem configurados como Passive?**  
-   Nenhum dos lados iniciaria a negociação LACPDU, portanto o EtherChannel **não seria formado**.
+9. **O que aconteceria se os dois lados fossem configurados como Passive?** 
+ Nenhum dos lados iniciaria a negociação LACPDU, portanto o EtherChannel **não seria formado**.
 
-10. **Qual vantagem o EtherChannel oferece quando um dos links físicos apresenta falha?**  
-    Tolerância a falhas (redundância) imediata e transparente sem passar pelos estados de convergência do STP.
+10. **Qual vantagem o EtherChannel oferece quando um dos links físicos apresenta falha?** 
+ Tolerância a falhas (redundância) imediata e transparente sem passar pelos estados de convergência do STP.
 
-11. **Por que as configurações das interfaces participantes de um EtherChannel precisam ser consistentes?**  
-    Para evitar discrepâncias de tráfego, loops de Camada 2 e suspensão de portas pelo protocolo de controle.
+11. **Por que as configurações das interfaces participantes de um EtherChannel precisam ser consistentes?** 
+ Para evitar discrepâncias de tráfego, loops de Camada 2 e suspensão de portas pelo protocolo de controle.
 
-12. **Por que computadores pertencentes a VLANs diferentes não conseguiram se comunicar neste laboratório?**  
-    Porque pertencem a redes IP e domínios de broadcast distintos e não há dispositivo de Camada 3 (roteador/switch L3) realizando o roteamento inter-VLAN.
+12. **Por que computadores pertencentes a VLANs diferentes não conseguiram se comunicar neste laboratório?** 
+ Porque pertencem a redes IP e domínios de broadcast distintos e não há dispositivo de Camada 3 (roteador/switch L3) realizando o roteamento inter-VLAN.
 
 ---
 

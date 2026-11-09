@@ -3,48 +3,52 @@ tipo: trabalho
 disciplina: Estudos Avançados em Ciências da Computação
 data: 2026-08-19
 alunos:
-  - nome: Matheus Sousa dos Santos
-    ra: "52319400"
-  - nome: Felipe Guarnieri Pinete
-    ra: "52319337"
-  - nome: Guilherme Gustavo Weber
-    ra: "52420339"
+ - nome: Matheus Sousa dos Santos
+ ra: "52319400"
+ - nome: Felipe Guarnieri Pinete
+ ra: "52319337"
+ - nome: Guilherme Gustavo Weber
+ ra: "52420339"
 status: concluido
 tags:
-  - redes
-  - spanning-tree
-  - stp
-  - rstp
-  - rapid-pvst
-  - ospf
-  - roteamento-dinamico
-  - packet-tracer
-  - automacao-mcp
+ - redes
+ - spanning-tree
+ - stp
+ - rstp
+ - rapid-pvst
+ - ospf
+ - roteamento-dinamico
+ - packet-tracer
+ - automacao-mcp
 ---
 
-# 📝 Resolução do Exercício Prático – Aula 3 (STP/RSTP + OSPF)
+> [!NOTE] Navegacao no Cofre
+> **Painel Geral:** [[00 - Dashboard]] | **Indice de Aulas:** [[Índice Geral de Aulas]]
+> **Disciplina:** [[Estudos Avançados em Ciências da Computação]] | **Nucleo ENADE:** [[06 - Redes de Computadores e Sistemas Distribuidos (Do Basico ao Avancado)]]
 
-> [!info] 📌 Metadados da Atividade
-> - **Disciplina:** [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Estudos Avançados em Ciências da Computação|Estudos Avançados em Ciências da Computação]]
-> - **Aula de Referência:** [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Aulas/2026-08-19 - Aula 3 - Spanning Tree Protocol (STP, RSTP) e OSPF|Aula 3 — Spanning Tree (STP/RSTP) e Roteamento Dinâmico OSPF]]
+# Resolução do Exercício Prático – Aula 3 (STP/RSTP + OSPF)
+
+> [!info] Metadados da Atividade
+> - **Disciplina:** [[Estudos Avançados em Ciências da Computação|Estudos Avançados em Ciências da Computação]]
+> - **Aula de Referência:** [[2026-08-19 - Aula 3 - Spanning Tree Protocol (STP, RSTP) e OSPF|Aula 3 — Spanning Tree (STP/RSTP) e Roteamento Dinâmico OSPF]]
 > - **Integrantes do Grupo:**
->   - 👤 **Matheus Sousa dos Santos** | **RA:** `52319400`
->   - 👤 **Felipe Guarnieri Pinete** | **RA:** `52319337`
->   - 👤 **Guilherme Gustavo Weber** | **RA:** `52420339`
+> - **Matheus Sousa dos Santos** | **RA:** `52319400`
+> - **Felipe Guarnieri Pinete** | **RA:** `52319337`
+> - **Guilherme Gustavo Weber** | **RA:** `52420339`
 > - **Tema:** Eliminação de Loops L2 com RSTP (Rapid-PVST+), Eleição de Root Bridge, PortFast, BPDU Guard, e Interligação WAN via OSPF Área 0.
-> - **Status:** <span class="badge badge-success">🟢 Concluído, Auditado e Validado</span>
+> - **Status:** <span class="badge badge-success"> Concluído, Auditado e Validado</span>
 
 ---
 
-## 📁 Anexos e Arquivos do Laboratório
+## Anexos e Arquivos do Laboratório
 
-> [!example] 🔗 Arquivos Disponíveis no Cofre
-> - 📄 **Apresentação em PDF:** [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Materiais/Aula 3 - STP-Avancado-Eliminando-Loops.pdf|Aula 3 - STP-Avancado-Eliminando-Loops.pdf]]
-> - 🎥 **Vídeo da Aula Teórica & Prática:** [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Materiais/Aula 3 - STP-Avancado-Eliminando-Loops.mp4|Aula 3 - STP-Avancado-Eliminando-Loops.mp4]]
-> - 📄 **Enunciado Original do Professor:** [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Materiais/EXERCÍCIO PRÁTICO - aula 3 (Professor).pdf|EXERCÍCIO PRÁTICO - aula 3 (Professor).pdf]]
-> - 📖 **Nota Teórica Completa da Aula 3:** [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Aulas/2026-08-19 - Aula 3 - Spanning Tree Protocol (STP, RSTP) e OSPF|Aula 3 — Teoria e Prática (STP/RSTP + OSPF)]]
-> - 🤖 **Script de Automação JS (Script Engine / MCP):** [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Arquivos Auxiliares - Automação IA Packet Tracer/script_aula_3_stp_ospf.js|script_aula_3_stp_ospf.js]]
-> - 🧠 **Guia e Protocolo MCP Packet Tracer:** [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Arquivos Auxiliares - Automação IA Packet Tracer/README|Guia MCP Packet Tracer]]
+> [!example] Arquivos Disponíveis no Cofre
+> - **Apresentação em PDF:** [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Materiais/Aula 3 - STP-Avancado-Eliminando-Loops.pdf|Aula 3 - STP-Avancado-Eliminando-Loops.pdf]]
+> - **Vídeo da Aula Teórica & Prática:** [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Materiais/Aula 3 - STP-Avancado-Eliminando-Loops.mp4|Aula 3 - STP-Avancado-Eliminando-Loops.mp4]]
+> - **Enunciado Original do Professor:** [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Materiais/EXERCÍCIO PRÁTICO - aula 3 (Professor).pdf|EXERCÍCIO PRÁTICO - aula 3 (Professor).pdf]]
+> - **Nota Teórica Completa da Aula 3:** [[2026-08-19 - Aula 3 - Spanning Tree Protocol (STP, RSTP) e OSPF|Aula 3 — Teoria e Prática (STP/RSTP + OSPF)]]
+> - **Script de Automação JS (Script Engine / MCP):** [[01 - Disciplinas/Estudos Avançados em Ciências da Computação/Arquivos Auxiliares - Automação IA Packet Tracer/script_aula_3_stp_ospf.js|script_aula_3_stp_ospf.js]]
+> - **Guia e Protocolo MCP Packet Tracer:** [[README|Guia MCP Packet Tracer]]
 
 ---
 
@@ -60,34 +64,34 @@ O objetivo deste laboratório foi projetar, implantar e validar uma infraestrutu
 ## 2. Diagrama Arquitetural da Rede
 
 ```
-                         REDE A - ADMINISTRATIVO (192.168.10.0/24)
-   [PC1]  [PC2]  [PC3]                                        [PC4]  [PC5]
-   .11    .12    .13                                          .14    .15
-     │      │      │                                            │      │
-     └──────┼──────┘                                            └──────┘
-            │ (Fa0/1..3)                                               │ (Fa0/1..2)
-         [SW1] ================================================ [SW2]
-     (Root Primary)          Links Redundantes Gi0/1 e Gi0/2       (Root Secundário)
-     Prioridade: 4096                                              Prioridade: 28672
-            │ (Fa0/24)                                             [Gi0/2 Bloqueada]
-            │
-          [R1] (LAN: 192.168.10.1 / Gi0/0)
-            │
-            │  LINK WAN PONTO A PONTO (10.0.0.0/30) - OSPF ÁREA 0
-            │  R1 (Gi0/1: 10.0.0.1/30) <---> R2 (Gi0/1: 10.0.0.2/30)
-            │
-          [R2] (LAN: 192.168.20.1 / Gi0/0)
-            │
-            │ (Fa0/24)
-         [SW3] ================================================ [SW4]
-     (Root Primary)          Links Redundantes Gi0/1 e Gi0/2       (Root Secundário)
-     Prioridade: 4096                                              Prioridade: 28672
-            │ (Fa0/1..3)                                           [Gi0/2 Bloqueada]
-     ┌──────┼──────┐                                            ┌──────┘
-     │      │      │                                            │      │
-   [PC6]  [PC7]  [PC8]                                        [PC9]  [PC10]
-   .11    .12    .13                                          .14    .15
-                         REDE B - OPERACIONAL (192.168.20.0/24)
+ REDE A - ADMINISTRATIVO (192.168.10.0/24)
+ [PC1] [PC2] [PC3] [PC4] [PC5]
+ .11 .12 .13 .14 .15
+ │ │ │ │ │
+ └──────┼──────┘ └──────┘
+ │ (Fa0/1..3) │ (Fa0/1..2)
+ [SW1] ================================================ [SW2]
+ (Root Primary) Links Redundantes Gi0/1 e Gi0/2 (Root Secundário)
+ Prioridade: 4096 Prioridade: 28672
+ │ (Fa0/24) [Gi0/2 Bloqueada]
+ │
+ [R1] (LAN: 192.168.10.1 / Gi0/0)
+ │
+ │ LINK WAN PONTO A PONTO (10.0.0.0/30) - OSPF ÁREA 0
+ │ R1 (Gi0/1: 10.0.0.1/30) <---> R2 (Gi0/1: 10.0.0.2/30)
+ │
+ [R2] (LAN: 192.168.20.1 / Gi0/0)
+ │
+ │ (Fa0/24)
+ [SW3] ================================================ [SW4]
+ (Root Primary) Links Redundantes Gi0/1 e Gi0/2 (Root Secundário)
+ Prioridade: 4096 Prioridade: 28672
+ │ (Fa0/1..3) [Gi0/2 Bloqueada]
+ ┌──────┼──────┐ ┌──────┘
+ │ │ │ │ │
+ [PC6] [PC7] [PC8] [PC9] [PC10]
+ .11 .12 .13 .14 .15
+ REDE B - OPERACIONAL (192.168.20.0/24)
 ```
 
 ---
@@ -122,20 +126,20 @@ O objetivo deste laboratório foi projetar, implantar e validar uma infraestrutu
 ### 4.1 O Problema do Loop em Camada 2
 Em redes locais Ethernet, quando existem enlaces redundantes entre switches (como os dois cabos interligando `SW1-SW2` e `SW3-SW4`), cria-se um **loop físico**. Diferente do cabeçalho IP na Camada 3 (que possui o campo **TTL - Time to Live** para descartar pacotes infinitos), o cabeçalho do quadro Ethernet (Camada 2) **não possui TTL**.
 * **Consequência sem STP:** Um único pacote de broadcast (ex: ARP Request ou DHCP Discover) seria replicado indefinidamente em círculos entre os switches, gerando:
-  1. **Broadcast Storm (Tempestade de Broadcast):** Consumo de 100% da banda e da CPU dos switches em frações de segundo.
-  2. **Instabilidade na Tabela de MAC (MAC Table Flapping):** O switch recebe o mesmo endereço MAC de origem por portas diferentes a cada milissegundo, corrompendo a tabela CAM.
-  3. **Múltiplas Cópias de Quadros:** Hosts recebem cópias duplicadas do mesmo pacote.
+ 1. **Broadcast Storm (Tempestade de Broadcast):** Consumo de 100% da banda e da CPU dos switches em frações de segundo.
+ 2. **Instabilidade na Tabela de MAC (MAC Table Flapping):** O switch recebe o mesmo endereço MAC de origem por portas diferentes a cada milissegundo, corrompendo a tabela CAM.
+ 3. **Múltiplas Cópias de Quadros:** Hosts recebem cópias duplicadas do mesmo pacote.
 
 ### 4.2 Spanning Tree Protocol (STP / RSTP Rapid-PVST+)
 Para permitir a redundância física sem sofrer loops lógicos, o algoritmo **STA (Spanning Tree Algorithm)** cria uma topologia em árvore livre de loops:
 1. **Eleição do Root Bridge:** O switch com o menor **Bridge ID** (formado por `Prioridade + MAC Address`) é eleito líder da rede. Forçamos `SW1` e `SW3` com **Prioridade 4096** (`root primary`) e `SW2` e `SW4` com **Prioridade 28672** (`root secondary`).
 2. **Definição dos Papéis das Portas:**
-   - **Root Port (RP):** A porta com menor custo de caminho até o Root Bridge no switch não-root (no SW2/SW4 é a `Gi0/1`). Estado: **Forwarding (Verde)**.
-   - **Designated Port (DP):** A melhor porta de cada segmento para encaminhar tráfego. No Root Bridge (`SW1` e `SW3`), **todas as portas são Designated**. Estado: **Forwarding (Verde)**.
-   - **Alternate / Backup Port (AP/BP):** A porta redundante que perdeu o desempate de menor Port ID. No `SW2` e no `SW4`, a porta `Gi0/2` é colocada em estado **Discarding/Blocking (Bolinha Laranja)**.
+ - **Root Port (RP):** A porta com menor custo de caminho até o Root Bridge no switch não-root (no SW2/SW4 é a `Gi0/1`). Estado: **Forwarding (Verde)**.
+ - **Designated Port (DP):** A melhor porta de cada segmento para encaminhar tráfego. No Root Bridge (`SW1` e `SW3`), **todas as portas são Designated**. Estado: **Forwarding (Verde)**.
+ - **Alternate / Backup Port (AP/BP):** A porta redundante que perdeu o desempate de menor Port ID. No `SW2` e no `SW4`, a porta `Gi0/2` é colocada em estado **Discarding/Blocking (Bolinha Laranja)**.
 3. **Por que Rapid-PVST+ (IEEE 802.1w)?**
-   - O STP tradicional (802.1D) leva de **30 a 50 segundos** para convergir após uma falha (passando por Listening e Learning).
-   - O **RSTP (Rapid-PVST+)** introduz o mecanismo de negociação ativa *Proposal/Agreement*, reduzindo a convergência para **menos de 1 a 2 segundos**, sem interrupção perceptível aos usuários.
+ - O STP tradicional (802.1D) leva de **30 a 50 segundos** para convergir após uma falha (passando por Listening e Learning).
+ - O **RSTP (Rapid-PVST+)** introduz o mecanismo de negociação ativa *Proposal/Agreement*, reduzindo a convergência para **menos de 1 a 2 segundos**, sem interrupção perceptível aos usuários.
 
 ### 4.3 PortFast e BPDU Guard (Segurança e Agilidade na Borda)
 * **`spanning-tree portfast`:** Configurado exclusivamente nas portas conectadas aos computadores (`PC1` a `PC10`). Faz a porta pular os estados de transição e entrar imediatamente em **Forwarding** (evitando timeouts de DHCP e inicialização rápida do host).
@@ -334,18 +338,18 @@ write memory
 
 | Origem | Destino | Tipo de Rota | Status do Ping | Análise do Caminho |
 |---|---|---|---|---|
-| `PC1` (`192.168.10.11`) | `PC5` (`192.168.10.15`) | Intra-Rede A (L2) | **🟢 Sucesso (100%)** | `PC1` $\rightarrow$ `SW1` $\rightarrow$ `Gi0/1` $\rightarrow$ `SW2` $\rightarrow$ `PC5` |
-| `PC1` (`192.168.10.11`) | `PC6` (`192.168.20.11`) | Inter-Redes (L3 OSPF) | **🟢 Sucesso (100%)** | `PC1` $\rightarrow$ `SW1` $\rightarrow$ `R1` $\rightarrow$ `WAN` $\rightarrow$ `R2` $\rightarrow$ `SW3` $\rightarrow$ `PC6` |
-| `PC1` (`192.168.10.11`) | `PC10` (`192.168.20.15`) | Inter-Redes Extremo | **🟢 Sucesso (100%)** | `PC1` $\rightarrow$ `SW1` $\rightarrow$ `R1` $\rightarrow$ `R2` $\rightarrow$ `SW3` $\rightarrow$ `SW4` $\rightarrow$ `PC10` |
-| `PC3` (`192.168.10.13`) | `PC8` (`192.168.20.13`) | Inter-Redes (L3 OSPF) | **🟢 Sucesso (100%)** | `PC3` $\rightarrow$ `SW1` $\rightarrow$ `R1` $\rightarrow$ `R2` $\rightarrow$ `SW3` $\rightarrow$ `PC8` |
-| `PC5` (`192.168.10.15`) | `PC10` (`192.168.20.15`) | Inter-Redes Cruzado | **🟢 Sucesso (100%)** | `PC5` $\rightarrow$ `SW2` $\rightarrow$ `SW1` $\rightarrow$ `R1` $\rightarrow$ `R2` $\rightarrow$ `SW3` $\rightarrow$ `SW4` $\rightarrow$ `PC10` |
+| `PC1` (`192.168.10.11`) | `PC5` (`192.168.10.15`) | Intra-Rede A (L2) | ** Sucesso (100%)** | `PC1` $\rightarrow$ `SW1` $\rightarrow$ `Gi0/1` $\rightarrow$ `SW2` $\rightarrow$ `PC5` |
+| `PC1` (`192.168.10.11`) | `PC6` (`192.168.20.11`) | Inter-Redes (L3 OSPF) | ** Sucesso (100%)** | `PC1` $\rightarrow$ `SW1` $\rightarrow$ `R1` $\rightarrow$ `WAN` $\rightarrow$ `R2` $\rightarrow$ `SW3` $\rightarrow$ `PC6` |
+| `PC1` (`192.168.10.11`) | `PC10` (`192.168.20.15`) | Inter-Redes Extremo | ** Sucesso (100%)** | `PC1` $\rightarrow$ `SW1` $\rightarrow$ `R1` $\rightarrow$ `R2` $\rightarrow$ `SW3` $\rightarrow$ `SW4` $\rightarrow$ `PC10` |
+| `PC3` (`192.168.10.13`) | `PC8` (`192.168.20.13`) | Inter-Redes (L3 OSPF) | ** Sucesso (100%)** | `PC3` $\rightarrow$ `SW1` $\rightarrow$ `R1` $\rightarrow$ `R2` $\rightarrow$ `SW3` $\rightarrow$ `PC8` |
+| `PC5` (`192.168.10.15`) | `PC10` (`192.168.20.15`) | Inter-Redes Cruzado | ** Sucesso (100%)** | `PC5` $\rightarrow$ `SW2` $\rightarrow$ `SW1` $\rightarrow$ `R1` $\rightarrow$ `R2` $\rightarrow$ `SW3` $\rightarrow$ `SW4` $\rightarrow$ `PC10` |
 
 ### 6.2 Teste de Falha e Failover do Spanning Tree (RSTP)
 1. **Cenário Inicial:** O link principal `Gi0/1` entre `SW1` e `SW2` estava ativo (*Forwarding*) e o link `Gi0/2` estava bloqueado (*Discarding - bolinha laranja no SW2*).
 2. **Execução da Falha:** Desconectou-se propositalmente o cabo `Gi0/1` entre `SW1` e `SW2` durante um ping contínuo (`ping -t 192.168.10.15`).
 3. **Resultado e Observações:**
-   * A porta `Gi0/2` do `SW2` detectou a perda de BPDUs no link ativo e transitou imediatamente de *Discarding* para *Forwarding* (**ficou verde**).
-   * **Tempo de Convergência:** O restabelecimento ocorreu em **menos de 1,5 segundos**, com perda de apenas 1 pacote ICMP, comprovando a eficácia e agilidade do **Rapid-PVST+** frente ao STP legado de 50 segundos.
+ * A porta `Gi0/2` do `SW2` detectou a perda de BPDUs no link ativo e transitou imediatamente de *Discarding* para *Forwarding* (**ficou verde**).
+ * **Tempo de Convergência:** O restabelecimento ocorreu em **menos de 1,5 segundos**, com perda de apenas 1 pacote ICMP, comprovando a eficácia e agilidade do **Rapid-PVST+** frente ao STP legado de 50 segundos.
 
 ---
 

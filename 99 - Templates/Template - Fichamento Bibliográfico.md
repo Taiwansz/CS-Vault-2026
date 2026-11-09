@@ -27,3 +27,6 @@ disciplina: Trabalho de Conclusão de Curso II
 
 ## Palavras-chave
 #tcc #referencia #fichamento
+
+---
+**Guia de Convencoes:** [[00 - Guia do Cofre (Vault Guide)]] | **Central:** [[00 - Dashboard]]

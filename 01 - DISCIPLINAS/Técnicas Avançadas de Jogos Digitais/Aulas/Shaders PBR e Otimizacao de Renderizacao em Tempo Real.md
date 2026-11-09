@@ -6,6 +6,10 @@ tema: "Shaders, Physically Based Rendering (PBR) e Otimizacao de Draw Calls"
 status: concluido
 ---
 
+> [!NOTE] Navegacao no Cofre
+> **Painel Geral:** [[00 - Dashboard]] | **Indice de Aulas:** [[Índice Geral de Aulas]]
+> **Disciplina:** [[Técnicas Avançadas de Jogos Digitais]] | **Nucleo ENADE:** [[01 - Algoritmos, Estruturas de Dados e Paradigmas (Do Basico ao Avancado)]]
+
 # Shaders PBR e Otimizacao de Renderizacao em Tempo Real
 
 > [!INFO] **Visao Geral do Modulo**
