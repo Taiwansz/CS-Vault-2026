@@ -362,6 +362,7 @@ standby 10 ip 192.168.10.1
 standby 10 priority 120
 standby 10 preempt
 standby 10 track 1 decrement 40
+standby 10 track GigabitEthernet0/1
 no shutdown
 exit
 interface GigabitEthernet0/2

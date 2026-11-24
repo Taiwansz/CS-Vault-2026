@@ -71,14 +71,14 @@ Verificacao: show ip ospf (ABR em RC2, ASBR em RC3), show ip ospf neighbor, show
 ```text
 [N04] ALTA DISPONIBILIDADE HSRP (GRUPO 10)
 - VIP (Gateway PC1-PC3): 192.168.10.1
-- RA G0/0 (192.168.10.2): Prioridade 120 | Preempt Habilitado | Estado Inicial: Active
-- RB G0/0 (192.168.10.3): Prioridade 100 | Preempt Habilitado | Estado Inicial: Standby
+- RA G0/0 (192.168.10.2): Prioridade 120 | Preempt Habilitado | Estado: Active
+- RB G0/0 (192.168.10.3): Prioridade 100 | Preempt Habilitado | Estado: Standby
 
-Tracking e Failover:
-- RA monitora WAN A (G0/1 line-protocol) via track 1 com decremento de 40 pontos.
-- Se RA G0/1 cair: prioridade cai de 120 para 80 (< 100 de RB). RB assume como Active via preempt sem alterar o IP de gateway dos clientes.
-- Quando RA G0/1 retorna: prioridade volta a 120 e RA retoma o papel Active automaticamente.
-- Verificacao: show standby brief | show track (RA).
+Tracking e Limitacao Observada no PT 8.2.1:
+- Projeto logico especifica "track 1" com decremento de 40 pontos (120->80, abaixo de 100).
+- No Cisco 2911 do Packet Tracer 8.2.1, o IOS nao implementa "track 1" nem argumento numerico, aplicando "standby 10 track GigabitEthernet0/1" com decremento fixo de 10 (120->110).
+- Teste ao vivo (Cenario 1): verificado decremento automatico 120->110 na queda de RA G0/1 e failover completo para RB Active (com ajuste temporario de RB=115 durante o teste) + retorno preemptivo de RA Active ao religar WAN A.
+- Verificacao: show standby brief | show standby (RA e RB).
 ```
 
 ---
@@ -88,14 +88,14 @@ Tracking e Failover:
 ```text
 [N05] SEGURANCA L2 (SW-MATRIZ E SW-FILIAL)
 SW-MATRIZ (VLAN 10 MATRIZ | VLAN 999 BLACKHOLE):
-- Port Security (Fa0/1-Fa0/3): max 1 MAC, sticky, violation shutdown, portfast + bpduguard.
-- DHCP Snooping: global e VLAN 10; no ip dhcp snooping information option; limit rate 15 em Fa0/1-3 e Fa0/10.
-  Trusted: Fa0/24 (DHCP-LEGITIMO). Untrusted: demais portas, incluindo Fa0/10 (DHCP-NAO-AUTORIZADO).
-- Storm Control: broadcast level 20.00 em Fa0/1-3. (Obs: validar suporte via show storm-control no PT 8.2.1; se nao suportado na versao simulada, registrar aqui).
+- Port Security (Fa0/1-Fa0/3): max 1 MAC, sticky, violation shutdown, portfast + bpduguard. Testado ao vivo: MAC nao autorizado derrubou Fa0/1 (Secure-shutdown), restaurada com PC1.
+- DHCP Snooping: global e VLAN 10; no ip dhcp snooping information option; limit rate 15.
+  Trusted: Fa0/24 (DHCP-LEGITIMO). Untrusted: Fa0/1-3 e Fa0/10 (DHCP-NAO-AUTORIZADO).
+  Confirmado via show ip dhcp snooping binding (3 leases legitimos .101-.103).
+- Storm Control: broadcast level 20.00 ativo em Fa0/1-3 (confirmado via "show storm-control broadcast": Upper/Lower 20.00% Link Up).
 - Portas ociosas: VLAN 999 BLACKHOLE + shutdown.
 
 SW-FILIAL: Port Security (max 1, sticky, violation shutdown), bpduguard e storm-control 20.00 em Fa0/1-2.
-Verificacao: show port-security | show ip dhcp snooping | show ip dhcp snooping binding | show storm-control.
 ```
 
 ---
@@ -103,17 +103,15 @@ Verificacao: show port-security | show ip dhcp snooping | show ip dhcp snooping 
 ## N06 — Log de Troubleshooting (8 Cenarios) (Proximo a base inferior)
 
 ```text
-[N06] REGISTRO DE TROUBLESHOOTING (8 CENARIOS)
-Status inicial: inferido pela configuracao (marcar "Testado no PT 8.2.1: SIM" somente apos execucao real).
-
-1. Falha WAN A (RA G0/1 shut) | Camada 1/2/3 | Sintoma: track 1 down, prio RA=80 | Cmd: show standby brief, show track | Correcao: RB assume Active; no shut em RA G0/1 recupera Active.
-2. Falha Backbone RC1 G0/0 | Camada 3 | Sintoma: queda adjacencia DR | Cmd: show ip ospf neighbor, tracert | Correcao: RC2 vira DR, RA rota via RB; no shut + reeleicao restaura RC1 DR.
-3. IP errado PC4 (192.168.21.10) | Camada 3 | Sintoma: falha ping gateway .20.1 | Cmd: ipconfig, ping | Correcao: restaurar 192.168.20.10/24.
-4. Sem gateway em PC5 | Camada 3 | Sintoma: ping local ok, remoto falha | Cmd: ipconfig, tracert | Correcao: reconfigurar gateway 192.168.20.1.
-5. Intruso em Fa0/1 SW-MATRIZ | Camada 2 | Sintoma: porta err-disabled | Cmd: show port-security int fa0/1 | Correcao: remover intruso, religar PC1, shut/no shut Fa0/1.
-6. Rogue DHCP em Fa0/10 | Camada 2/7 | Sintoma: oferta ileg. descartada | Cmd: show ip dhcp snooping binding | Correcao: politica untrusted bloqueia automaticamente.
-7. Custo RC2 G0/1 alterado (50->5) | Camada 3 | Sintoma: desvio para RB (10.0.0.2) | Cmd: show ip route 192.168.10.0 | Correcao: restaurar ip ospf cost 50.
-8. Area errada em RF G0/1 (area 0) | Camada 3 | Sintoma: adjacencia cai (mismatch) | Cmd: show ip ospf int g0/1 | Correcao: retornar network 10.0.1.8 0.0.0.3 area 10.
+[N06] REGISTRO DE TROUBLESHOOTING (8 CENARIOS) - TESTADO NO PT 8.2.1: SIM
+1. Queda WAN A (RA G0/1 shut) | L1/L2/L3 | RA prio 120->110 (track G0/1 -10 no PT 8.2.1); RB=115 assumiu Active e PC1 pingou DC | Cmd: show standby, show standby brief | Correcao: no shut recupera RA Active; RB restaurado para 100.
+2. Queda RC1 G0/0 | L3 | RC2 virou DR; RA roteou via 192.168.10.3 (metrica 62) | Cmd: show ip ospf neighbor, show ip route | Correcao: no shut + reeleicao restaurou RC1=DR, RC2=BDR.
+3. IP errado PC4 (.21.10) | L3 | Ping 192.168.20.1 falhou | Cmd: ipconfig, ping | Correcao: restaurado 192.168.20.10/24.
+4. Sem gw PC5 (0.0.0.0) | L3 | Ping local ok (4/4), remoto 192.168.30.10 falhou (100% perda) | Cmd: ipconfig, ping | Correcao: gw 192.168.20.1 -> 4/4 ok.
+5. MAC intruso em Fa0/1 | L2 | Porta entrou em Secure-shutdown (Violation=1) | Cmd: show port-security int fa0/1 | Correcao: MAC PC1 restaurado + shut/no shut -> Secure-up.
+6. Rogue DHCP em Fa0/10 | L2/L7 | PC3 renovou .103 apenas do legitimo | Cmd: show ip dhcp snooping binding | Correcao: Fa0/10 untrusted bloqueou oferta.
+7. Custo RC2 G0/1 (50->5) | L3 | RC3 mudou next-hop para 10.0.0.2 (metrica 16) | Cmd: show ip route 192.168.10.0 | Correcao: custo 50 -> retornou 10.0.0.1 (21).
+8. Area errada RF G0/1 (area 0) | L3 | Adjacencia caiu | Cmd: show ip ospf neighbor | Correcao: area 10 restaurada -> FULL/BDR.
 ```
 
 ---
@@ -125,8 +123,8 @@ Status inicial: inferido pela configuracao (marcar "Testado no PT 8.2.1: SIM" so
 O algoritmo SPF escolhe a rota de menor custo acumulado das interfaces de saida ate o destino. Portanto, alterar o custo de uma interface modifica o caminho preferencial mesmo sem falha fisica (engenharia de trafego). Nesta rede, RC2 G0/1 recebeu ip ospf cost 50 para que o fluxo Core->Matriz prefira RC1->RA (custo 21) em vez de RC2->RB (custo 61), mantendo simetria com o HSRP Active em RA. No cenario 7, reduzir o custo de RC2 G0/1 para 5 inverte essa escolha sem queda de link.
 
 Diferenca tecnica:
-- bandwidth <kbps>: altera apenas o parametro logico usado na formula automatica (custo = reference-bandwidth / bandwidth) e influencia outros subsistemas (QoS, EIGRP, SNMP), sem alterar a velocidade fisica real. Com o padrao antigo de 100 Mbps, FastEthernet e GigabitEthernet empatavam em custo 1, exigindo auto-cost reference-bandwidth 1000.
-- ip ospf cost <valor>: define a metrica diretamente na interface, afeta exclusivamente o OSPF e sobrescreve o calculo automatico.
+- bandwidth [kbps]: altera apenas o parametro logico usado na formula automatica (custo = reference-bandwidth / bandwidth) e influencia outros subsistemas (QoS, EIGRP, SNMP), sem alterar a velocidade fisica real. Com o padrao antigo de 100 Mbps, FastEthernet e GigabitEthernet empatavam em custo 1, exigindo auto-cost reference-bandwidth 1000.
+- ip ospf cost [valor]: define a metrica diretamente na interface, afeta exclusivamente o OSPF e sobrescreve o calculo automatico.
 ```
 
 ---
@@ -212,5 +210,5 @@ Limitacoes no Packet Tracer: subconjunto reduzido do IOS; BFD ausente; suporte p
   show ip dhcp snooping | show ip dhcp snooping binding
   show storm-control | show vlan brief
 - Hosts (PC1-PC5):
-  ipconfig /all | ping <destino> | tracert <destino>
+  ipconfig /all | ping [destino] | tracert [destino]
 ```
