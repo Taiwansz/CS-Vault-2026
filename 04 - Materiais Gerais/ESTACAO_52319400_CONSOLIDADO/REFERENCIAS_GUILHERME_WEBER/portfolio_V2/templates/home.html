@@ -1,0 +1,323 @@
+{% extends 'base.html' %}
+{% block conteudo %}
+<main>
+
+    <!-- HERO SECTION -->
+    <section class="hero-wrapper" id="sobre">
+        <div class="container">
+            <div class="row align-items-center g-5">
+                <div class="col-lg-6">
+                    <div class="hero-tag">
+                        <i class="fa-solid fa-shield-halved text-success"></i>
+                        <span>Desenvolvedor de Software & Tradição Gaúcha</span>
+                    </div>
+
+                    <h1 class="hero-heading">
+                        Guilherme Weber & O Fiat Idea Prata
+                    </h1>
+
+                    <p class="hero-description">
+                        Desenvolvedor de software focado em Java, C e Python. Com a firmeza do pampa gaúcho e a engenharia precisa do asfalto, unindo rigor acadêmico e a admiração pela mecânica robusta do Fiat Idea Prata.
+                    </p>
+
+                    <div class="d-flex flex-wrap gap-3 mt-4">
+                        <a href="#idea-prata" class="btn-primary-sobrio">
+                            <i class="fa-solid fa-car"></i> Conhecer o Fiat Idea Prata
+                        </a>
+                        <a href="#projetos" class="btn-secondary-sobrio">
+                            <i class="fa-solid fa-code"></i> Ver Projetos de Software
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="featured-card">
+                        <img src="{{ url_for('static', filename='images/idea_hero.jpg') }}" alt="Fiat Idea Prata" class="featured-img">
+                        <div class="p-3 bg-dark bg-opacity-75 d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="mb-0 text-white font-weight-bold">Fiat Idea Prata Metálico</h6>
+                                <small class="text-secondary">Veículo de Destaque | Querência do Asfalto</small>
+                            </div>
+                            <span class="badge bg-secondary">Edição Sul</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SEÇÃO FIAT IDEA PRATA (FOCO PRINCIPAL) -->
+    <section class="py-5 bg-surface border-top border-bottom border-dark" id="idea-prata">
+        <div class="container">
+            <div class="text-center mb-5">
+                <span class="text-secondary font-weight-bold text-uppercase small tracking-wide">Mecânica & Tradição</span>
+                <h2 class="h1 text-white font-weight-bold mt-1">O Fiat Idea Prata: Excelência no Pampa</h2>
+                <p class="text-secondary mx-auto" style="max-width: 650px;">
+                    Projetado para oferecer visibilidade ampla, conforto elevado e resistência comprovada tanto nas coxilhas quanto no trânsito urbano.
+                </p>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="pro-card">
+                        <div class="pro-icon">
+                            <i class="fa-solid fa-arrows-up-to-line"></i>
+                        </div>
+                        <h4 class="pro-title">Teto Elevado & Conforto</h4>
+                        <p class="pro-text">
+                            Espaço interno projetado para viagens longas pela serra gaúcha com postura ereta, ergonomia impecável e visibilidade total.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="pro-card">
+                        <div class="pro-icon">
+                            <i class="fa-solid fa-shield-halved"></i>
+                        </div>
+                        <h4 class="pro-title">Lataria Prata Barataria</h4>
+                        <p class="pro-text">
+                            Acabamento metálico sóbrio de alta durabilidade, projetado para suportar as variações do clima gaúcho mantendo o brilho discreto.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="pro-card">
+                        <div class="pro-icon">
+                            <i class="fa-solid fa-mug-hot"></i>
+                        </div>
+                        <h4 class="pro-title">Habitáculo para o Mate</h4>
+                        <p class="pro-text">
+                            Console central funcional com porta-objetos amplos, ideal para acomodar a cuia e a garrafa térmica do chimarrão com segurança.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FICHA TÉCNICA SÓBRIA -->
+            <div class="row mt-5">
+                <div class="col-lg-8 mx-auto">
+                    <div class="pro-card">
+                        <h4 class="pro-title mb-3">
+                            <i class="fa-solid fa-list me-2 text-secondary"></i> Ficha Técnica e Atributos Principais
+                        </h4>
+                        <table class="table-sobria">
+                            <thead>
+                                <tr>
+                                    <th>Característica</th>
+                                    <th>Especificação</th>
+                                    <th>Benefício no Pampa</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Modelo</td>
+                                    <td>Fiat Idea 1.8 / 1.4 Flex</td>
+                                    <td>Torque firme para subidas de serra</td>
+                                </tr>
+                                <tr>
+                                    <td>Cor Predominante</td>
+                                    <td>Prata Metálico Sóbrio</td>
+                                    <td>Resistência ao sol e poeira de estrada</td>
+                                </tr>
+                                <tr>
+                                    <td>Posição de Dirigir</td>
+                                    <td>Elevada (Monovolume)</td>
+                                    <td>Visibilidade em ultrapassagens na rodovia</td>
+                                </tr>
+                                <tr>
+                                    <td>Espaço Interno</td>
+                                    <td>Teto Alto Ampliado</td>
+                                    <td>Conforto para todos os ocupantes</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- GALERIA SÓBRIA DE FOTOS DO IDEA PRATA -->
+    <section class="py-5" id="galeria">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="h2 text-white font-weight-bold">Registros do Fiat Idea Prata</h2>
+                <p class="text-secondary">Imagens da lataria metálica e do design funcional do veículo</p>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="featured-card">
+                        <img src="{{ url_for('static', filename='images/idea_hero.jpg') }}" alt="Idea Prata no Pôr do Sol" class="featured-img" style="height: 240px;">
+                        <div class="p-3">
+                            <h6 class="text-white mb-1">Horizonte do Sul</h6>
+                            <small class="text-secondary">Visão panorâmica em estrada aberta</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="featured-card">
+                        <img src="{{ url_for('static', filename='images/idea_garage.jpg') }}" alt="Idea Prata em Estúdio" class="featured-img" style="height: 240px;">
+                        <div class="p-3">
+                            <h6 class="text-white mb-1">Acabamento Metálico</h6>
+                            <small class="text-secondary">Detalhes da lataria em tom prata sobrio</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="featured-card">
+                        <img src="{{ url_for('static', filename='images/idea_speed.jpg') }}" alt="Idea Prata na Rodovia" class="featured-img" style="height: 240px;">
+                        <div class="p-3">
+                            <h6 class="text-white mb-1">Rodovia Noturna</h6>
+                            <small class="text-secondary">Estabilidade e desempenho em viagem</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SEÇÃO PROJETOS DE SOFTWARE DO GUI -->
+    <section class="py-5 bg-surface border-top border-dark" id="projetos">
+        <div class="container">
+            <div class="text-center mb-5">
+                <span class="text-secondary font-weight-bold text-uppercase small tracking-wide">Desenvolvimento</span>
+                <h2 class="h1 text-white font-weight-bold mt-1">Projetos de Software de Guilherme Weber</h2>
+                <p class="text-secondary">Aplicações acadêmicas e sistemas desenvolvidos durante a jornada em Ciência da Computação</p>
+            </div>
+
+            <div class="row g-4">
+                <!-- Projeto 1: Plataforma E-Learning -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="pro-card">
+                        <div class="pro-icon">
+                            <i class="fa-solid fa-graduation-cap"></i>
+                        </div>
+                        <h4 class="pro-title">Plataforma E-Learning</h4>
+                        <p class="pro-text">Sistema web completo de ensino online com backend em Python (Flask) e interface responsiva em Bootstrap.</p>
+                        <span class="badge bg-dark border border-secondary text-secondary">Flask / Python</span>
+                    </div>
+                </div>
+
+                <!-- Projeto 2: Pong Game Java -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="pro-card">
+                        <div class="pro-icon">
+                            <i class="fa-solid fa-gamepad"></i>
+                        </div>
+                        <h4 class="pro-title">Pong Game em Java</h4>
+                        <p class="pro-text">Desenvolvimento do jogo clássico Pong em Java puro, utilizando orientação a objetos e loop de renderização 2D.</p>
+                        <span class="badge bg-dark border border-secondary text-secondary">Java 2D</span>
+                    </div>
+                </div>
+
+                <!-- Projeto 3: Grafos & Algoritmos -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="pro-card">
+                        <div class="pro-icon">
+                            <i class="fa-solid fa-diagram-project"></i>
+                        </div>
+                        <h4 class="pro-title">Teoria dos Grafos</h4>
+                        <p class="pro-text">Implementação de algoritmos de busca e estruturas de dados de grafos para resolução de caminhos mínimos em Java.</p>
+                        <span class="badge bg-dark border border-secondary text-secondary">Estrutura de Dados</span>
+                    </div>
+                </div>
+
+                <!-- Projeto 4: API em C -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="pro-card">
+                        <div class="pro-icon">
+                            <i class="fa-solid fa-code"></i>
+                        </div>
+                        <h4 class="pro-title">API de Pedidos (C)</h4>
+                        <p class="pro-text">Sistema de processamento de pedidos e registros de dados em baixo nível utilizando linguagem C.</p>
+                        <span class="badge bg-dark border border-secondary text-secondary">Linguagem C</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- DEPOIMENTOS DA QUERÊNCIA -->
+    <section class="py-5" id="depoimentos">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="h2 text-white font-weight-bold">Depoimentos & Tradição</h2>
+                <p class="text-secondary">Opiniões de colegas de curso e entusiastas sobre Guilherme Weber e seu Fiat Idea Prata</p>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="pro-card">
+                        <div class="d-flex align-items-center gap-3 mb-3">
+                            <div class="rounded-circle bg-secondary text-dark font-weight-bold d-flex align-items-center justify-content-center" style="width: 42px; height: 42px;">LC</div>
+                            <div>
+                                <h6 class="mb-0 text-white">Luyz Chavoso</h6>
+                                <small class="text-muted">Colega de Curso</small>
+                            </div>
+                        </div>
+                        <p class="pro-text font-italic">
+                            "O Idea Prata do Gui encara qualquer estrada da serra gaúcha com o motor trabalhando liso. Veículo de respeito e compostura."
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="pro-card">
+                        <div class="d-flex align-items-center gap-3 mb-3">
+                            <div class="rounded-circle bg-secondary text-dark font-weight-bold d-flex align-items-center justify-content-center" style="width: 42px; height: 42px;">MS</div>
+                            <div>
+                                <h6 class="mb-0 text-white">Matheus Sousa</h6>
+                                <small class="text-muted">Entusiasta de Mecânica</small>
+                            </div>
+                        </div>
+                        <p class="pro-text font-italic">
+                            "O teto elevado do Idea Prata é perfeito para viajar no conforto tomando aquele chimarrão reforçado nas tardes do Sul."
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="pro-card">
+                        <div class="d-flex align-items-center gap-3 mb-3">
+                            <div class="rounded-circle bg-secondary text-dark font-weight-bold d-flex align-items-center justify-content-center" style="width: 42px; height: 42px;">FP</div>
+                            <div>
+                                <h6 class="mb-0 text-white">Felipe Pinete</h6>
+                                <small class="text-muted">Desenvolvedor</small>
+                            </div>
+                        </div>
+                        <p class="pro-text font-italic">
+                            "Linhas sóbrias, lataria prata bem conservada e o rigor técnico que o Gui aplica tanto nos seus códigos quanto no carro."
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTATO SÓBRIO -->
+    <section class="py-5 bg-surface border-top border-dark" id="contato">
+        <div class="container text-center">
+            <h2 class="h2 text-white font-weight-bold mb-3">Contato & Redes Profissionais</h2>
+            <p class="text-secondary mx-auto mb-4" style="max-width: 500px;">Entre em contato com Guilherme Gustavo Weber para colaborações em software e projetos.</p>
+
+            <div class="d-flex justify-content-center gap-3">
+                <a href="https://www.linkedin.com/in/guilherme-gustavo-weber/" target="_blank" class="btn-secondary-sobrio">
+                    <i class="fa-brands fa-linkedin text-primary"></i> LinkedIn
+                </a>
+                <a href="https://github.com/GuilhermeGustavoWeber" target="_blank" class="btn-secondary-sobrio">
+                    <i class="fa-brands fa-github text-light"></i> GitHub
+                </a>
+                <a href="https://www.instagram.com/guilherme.gweber/" target="_blank" class="btn-secondary-sobrio">
+                    <i class="fa-brands fa-instagram text-danger"></i> Instagram
+                </a>
+            </div>
+        </div>
+    </section>
+
+</main>
+{% endblock conteudo %}

@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Guilherme Gustavo Weber | Portfólio & Fiat Idea Prata</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons Profissionais -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Style Customizado -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<div class="gaucho-ribbon"></div>
+
+<nav class="custom-navbar sticky-top">
+    <div class="container d-flex align-items-center justify-content-between">
+        <a href="#" class="brand-title d-flex align-items-center gap-2 text-white">
+            <i class="fa-solid fa-car-side text-light"></i>
+            <span>Guilherme G. Weber</span>
+            <span class="brand-badge ms-1">RS / Gaúcho</span>
+        </a>
+
+        <div class="d-none d-md-flex align-items-center gap-4">
+            <a href="#sobre" class="nav-link-custom">Sobre</a>
+            <a href="#idea-prata" class="nav-link-custom">Fiat Idea Prata</a>
+            <a href="#projetos" class="nav-link-custom">Projetos</a>
+            <a href="#depoimentos" class="nav-link-custom">Depoimentos</a>
+            <a href="#contato" class="nav-link-custom">Contato</a>
+        </div>
+    </div>
+</nav>
+
+{% block conteudo %}
+{% endblock conteudo %}
+
+<footer class="footer-sobrio text-center">
+    <div class="container">
+        <div class="d-flex justify-content-center align-items-center gap-3 mb-3 text-secondary">
+            <span><i class="fa-solid fa-location-dot me-1"></i> Rio Grande do Sul, Brasil</span>
+            <span>|</span>
+            <span><i class="fa-solid fa-car me-1"></i> Entusiasta Fiat Idea Prata</span>
+        </div>
+        <p class="mb-1">&copy; 2026 Guilherme Gustavo Weber. Desenvolvido com sobriedade e respeito à tradição gaúcha.</p>
+        <p class="small text-muted mb-0">Projeto ajustado para o Luyz Chavoso.</p>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

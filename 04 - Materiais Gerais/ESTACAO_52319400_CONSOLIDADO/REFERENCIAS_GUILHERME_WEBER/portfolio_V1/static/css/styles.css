@@ -1,0 +1,178 @@
+/* styles.css */
+
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f9;
+    color: #333;
+    line-height: 1.6;
+}
+
+header {
+    background: linear-gradient(135deg, #3498db, #2c3e50);
+    color: #ecf0f1;
+    text-align: center;
+    padding: 2rem 0;
+    position: relative;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 3rem;
+    font-weight: 700;
+}
+
+header p {
+    margin: 0.5rem 0;
+    font-size: 1.2rem;
+    font-weight: 300;
+}
+
+nav {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin-left: 1.5rem;
+}
+
+nav ul li a {
+    color: #ecf0f1;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s, transform 0.3s;
+}
+
+nav ul li a:hover {
+    color: #3498db;
+    transform: translateY(-2px);
+}
+
+section {
+    padding: 4rem 2rem;
+    max-width: 900px;
+    margin: auto;
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+}
+
+section h2 {
+    border-bottom: 3px solid #3498db;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1.5rem;
+    color: #2c3e50;
+    font-size: 2rem;
+    font-weight: 600;
+}
+
+/* Estilos para a seção de projetos */
+.projeto {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.projeto img {
+    width: 100%;
+    border-radius: 8px;
+    display: block;
+    margin-bottom: 1rem;
+}
+
+.projeto h3 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #2c3e50;
+    font-weight: 600;
+}
+
+.projeto p {
+    font-size: 1rem;
+    color: #7f8c8d;
+}
+
+.projeto:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
+}
+.link-container {
+    display: flex;
+    justify-content: flex-end; /* Alinha o link à direita */
+    margin-top: 1rem;
+}
+
+.project-link {
+    display: inline-block;
+    text-decoration: none;
+    color: #ffffff;
+    font-size: 1rem;
+    background: linear-gradient(135deg, #3498db, #2c3e50);
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 1rem 1.5rem;
+    transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
+    cursor: pointer;
+}
+
+.project-link:hover,
+.project-link:focus {
+    background: linear-gradient(135deg, #2c3e50, #3498db);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    color: #ecf0f1;
+}
+
+.project-link:focus {
+    outline: 2px solid #ffffff;
+    outline-offset: 2px;
+}
+
+/* Estilos para a seção de redes sociais */
+.redes-sociais {
+    text-align: center;
+}
+
+.social-icon {
+    display: inline-block;
+    margin: 0.5rem;
+    text-decoration: none;
+    color: #2c3e50;
+    font-size: 1.2rem;
+    font-weight: 500;
+    transition: color 0.3s, transform 0.3s;
+}
+
+.social-icon img {
+    width: 40px;
+    height: 40px;
+    vertical-align: middle;
+    margin-right: 0.5rem;
+}
+
+.social-icon:hover {
+    color: #3498db;
+    transform: translateY(-2px);
+}
+
+footer {
+    background: linear-gradient(135deg, #2c3e50, #3498db);
+    color: #ecf0f1;
+    text-align: center;
+    padding: 1.5rem 0;
+    position: relative;
+}

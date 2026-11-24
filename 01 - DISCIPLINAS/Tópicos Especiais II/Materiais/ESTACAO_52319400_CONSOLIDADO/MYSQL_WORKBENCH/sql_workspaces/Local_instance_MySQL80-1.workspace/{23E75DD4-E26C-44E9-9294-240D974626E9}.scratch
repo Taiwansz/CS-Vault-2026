@@ -1,0 +1,37 @@
+create database aula0610;
+use aula0610;
+
+CREATE TABLE dim_aeroporto (
+        Aeroporto_ICAO VARCHAR(4) NOT NULL PRIMARY KEY,
+        Aeroporto_IATA VARCHAR(4) NOT NULL,
+        Nome_Aeroporto VARCHAR(50) NOT NULL,
+        Cidade VARCHAR(50) NOT NULL,
+        UF VARCHAR(50) NOT NULL,
+        Tipo VARCHAR(50) NOT NULL,
+        Capacidade_slot VARCHAR(50) NOT NULL
+    );
+
+select * from dim_aeroporto;
+
+ -- 1. Chave Estrangeira para Companhia Aerea
+    ALTER TABLE fato_operacoes_voos_anac
+        ADD CONSTRAINT fk_fato_companhia_aerea
+        FOREIGN KEY (Companhia_ICAO)
+        REFERENCES dim_companhia_aerea (Companhia_ICAO);
+
+    -- 2. Chaves Estrangeiras para Aeroporto (Origem e Destino)
+    ALTER TABLE fato_operacoes_voos_anac
+        ADD CONSTRAINT fk_fato_aeroporto_origem
+        FOREIGN KEY (Aeroporto_Origem_ICAO)
+        REFERENCES dim_aeroporto (Aeroporto_ICAO);
+
+    ALTER TABLE fato_operacoes_voos_anac
+        ADD CONSTRAINT fk_fato_aeroporto_destino
+        FOREIGN KEY (Aeroporto_Destino_ICAO)
+        REFERENCES dim_aeroporto (Aeroporto_ICAO);
+
+    -- 3. Chave Estrangeira para Motivo do Atraso
+    ALTER TABLE fato_operacoes_voos_anac
+        ADD CONSTRAINT fk_fato_motivo_atraso
+        FOREIGN KEY (Motivo_Atraso_Codigo)
+        REFERENCES dim_motivo_atraso (Motivo_Codigo);

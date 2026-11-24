@@ -1,0 +1,2477 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cisco Enterprise Runbook — OSPFv2 Multi-Area Architecture</title>
+  <style>
+    /* ==========================================================================
+       DESIGN TOKENS & SYSTEM FOUNDATION (Apple Design & Linear Docs Spec)
+       ========================================================================== */
+    :root {
+      --bg-base: #080c14;
+      --bg-subtle: #0d121f;
+      --bg-surface: #121826;
+      --bg-surface-hover: #172033;
+      --bg-surface-elevated: #1b253b;
+      
+      --border-subtle: rgba(255, 255, 255, 0.07);
+      --border-medium: rgba(255, 255, 255, 0.13);
+      --border-strong: rgba(255, 255, 255, 0.22);
+      
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --text-tertiary: #64748b;
+      --text-faint: #475569;
+      
+      --accent-cisco: #0ea5e9;
+      --accent-cisco-glow: rgba(14, 165, 233, 0.15);
+      --accent-emerald: #10b981;
+      --accent-emerald-glow: rgba(16, 185, 129, 0.15);
+      --accent-amber: #f59e0b;
+      --accent-amber-glow: rgba(245, 158, 11, 0.15);
+      
+      --terminal-bg: #060910;
+      --terminal-header: #0f1422;
+      
+      --font-display: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
+      --font-body: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+      --font-mono: "JetBrains Mono", "SF Mono", Monaco, Menlo, Consolas, monospace;
+      
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 14px;
+      --radius-xl: 18px;
+      
+      --sidebar-width: 290px;
+      --topbar-height: 60px;
+    }
+
+    /* Base Reset */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      color-scheme: dark;
+    }
+
+    body {
+      background-color: var(--bg-base);
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      font-size: 14px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
+    }
+
+    /* Selection & Scrollbar */
+    ::selection {
+      background: var(--accent-cisco);
+      color: #000000;
+    }
+
+    ::-webkit-scrollbar {
+      width: 7px;
+      height: 7px;
+    }
+    ::-webkit-scrollbar-track {
+      background: var(--bg-base);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--border-medium);
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--border-strong);
+    }
+
+    /* ==========================================================================
+       TOPBAR NAVIGATION (Apple Translucency & Zero Latency)
+       ========================================================================== */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      height: var(--topbar-height);
+      background: rgba(8, 12, 20, 0.85);
+      backdrop-filter: blur(16px) saturate(180%);
+      -webkit-backdrop-filter: blur(16px) saturate(180%);
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      padding: 0 32px;
+    }
+
+    .topbar-container {
+      width: 100%;
+      max-width: 1480px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      text-decoration: none;
+    }
+
+    .brand-mark {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, #0284c7, #0369a1);
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 800;
+      color: #ffffff;
+      box-shadow: 0 2px 8px rgba(14, 165, 233, 0.35);
+    }
+
+    .brand-meta {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand-title {
+      font-family: var(--font-display);
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+    }
+
+    .brand-subtitle {
+      font-size: 11px;
+      color: var(--text-tertiary);
+      letter-spacing: 0.02em;
+    }
+
+    .topbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      font-size: 11px;
+      font-family: var(--font-mono);
+      font-weight: 500;
+      background: rgba(14, 165, 233, 0.1);
+      border: 1px solid rgba(14, 165, 233, 0.25);
+      color: #38bdf8;
+    }
+
+    .status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #10b981;
+      box-shadow: 0 0 8px #10b981;
+    }
+
+    .topbar-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      height: 32px;
+      padding: 0 14px;
+      border-radius: var(--radius-sm);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-primary);
+      background: var(--bg-surface);
+      border: 1px solid var(--border-medium);
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.15s ease, border-color 0.15s ease, transform 0.1s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .topbar-btn:active {
+      transform: scale(0.97);
+    }
+
+    .topbar-btn:hover {
+      background: var(--bg-surface-hover);
+      border-color: var(--border-strong);
+    }
+
+    /* ==========================================================================
+       APP SHELL: DUAL-COLUMN DOCUMENTATION PORTAL
+       ========================================================================== */
+    .portal-layout {
+      width: 100%;
+      max-width: 1480px;
+      margin: 0 auto;
+      display: flex;
+      min-height: calc(100vh - var(--topbar-height));
+    }
+
+    /* Sticky Sidebar Navigation */
+    .sidebar {
+      width: var(--sidebar-width);
+      flex-shrink: 0;
+      position: sticky;
+      top: var(--topbar-height);
+      height: calc(100vh - var(--topbar-height));
+      overflow-y: auto;
+      padding: 28px 20px 36px 28px;
+      border-right: 1px solid var(--border-subtle);
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+
+    .sidebar-section-title {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-tertiary);
+      font-weight: 700;
+      margin-bottom: 10px;
+      padding-left: 10px;
+    }
+
+    .nav-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .nav-link {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 12px;
+      border-radius: var(--radius-sm);
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      transition: color 0.15s ease, background 0.15s ease, transform 0.1s ease;
+    }
+
+    .nav-link:hover {
+      color: var(--text-primary);
+      background: var(--bg-surface);
+    }
+
+    .nav-link.active {
+      color: #38bdf8;
+      background: rgba(14, 165, 233, 0.08);
+      font-weight: 600;
+    }
+
+    .nav-link:active {
+      transform: scale(0.98);
+    }
+
+    .nav-index {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-faint);
+      width: 16px;
+    }
+
+    .nav-link.active .nav-index {
+      color: #38bdf8;
+    }
+
+    /* Progress Widget inside Sidebar */
+    .sidebar-progress-card {
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 14px;
+      margin-top: auto;
+    }
+
+    .progress-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .progress-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .progress-percent {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 700;
+      color: #38bdf8;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 5px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 9999px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #0284c7, #38bdf8);
+      border-radius: 9999px;
+      transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .sidebar-quick-note {
+      font-size: 11px;
+      color: var(--text-tertiary);
+      margin-top: 8px;
+      line-height: 1.4;
+    }
+
+    /* Main Content Area */
+    .main-stream {
+      flex: 1;
+      min-width: 0;
+      padding: 36px 48px 80px 48px;
+      display: flex;
+      flex-direction: column;
+      gap: 48px;
+    }
+
+    /* ==========================================================================
+       SECTION CONTAINERS & HEADINGS
+       ========================================================================== */
+    .portal-section {
+      scroll-margin-top: calc(var(--topbar-height) + 24px);
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .section-header-block {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border-subtle);
+      padding-bottom: 12px;
+    }
+
+    .section-title-wrap {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+    }
+
+    .section-number {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 700;
+      color: #38bdf8;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+    }
+
+    .section-tag {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-tertiary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* ==========================================================================
+       1. HERO & ARCHITECTURE OVERVIEW (KPI Strip & Direct Spec)
+       ========================================================================== */
+    .hero-panel {
+      background: linear-gradient(180deg, var(--bg-surface) 0%, var(--bg-subtle) 100%);
+      border: 1px solid var(--border-medium);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-panel::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(56, 189, 248, 0.4), transparent);
+    }
+
+    .hero-eyebrow-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .hero-h1 {
+      font-family: var(--font-display);
+      font-size: 32px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+      color: #ffffff;
+      margin-bottom: 14px;
+    }
+
+    .hero-lead {
+      font-size: 15px;
+      color: var(--text-secondary);
+      max-width: 820px;
+      line-height: 1.6;
+      margin-bottom: 28px;
+    }
+
+    .hardware-kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      border-top: 1px solid var(--border-subtle);
+      padding-top: 24px;
+    }
+
+    .kpi-cell {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .kpi-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-tertiary);
+      font-weight: 600;
+    }
+
+    .kpi-value {
+      font-family: var(--font-display);
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .kpi-sub {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+
+    /* Important Alert: Port Discrepancy Resolution */
+    .alert-callout {
+      background: rgba(245, 158, 11, 0.06);
+      border: 1px solid rgba(245, 158, 11, 0.25);
+      border-left: 4px solid var(--accent-amber);
+      border-radius: var(--radius-md);
+      padding: 16px 20px;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+
+    .callout-badge {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      background: rgba(245, 158, 11, 0.15);
+      color: #fbbf24;
+      padding: 2px 6px;
+      border-radius: 4px;
+      white-space: nowrap;
+      margin-top: 2px;
+    }
+
+    .callout-content {
+      font-size: 13px;
+      color: #e2e8f0;
+      line-height: 1.55;
+    }
+
+    .callout-content strong {
+      color: #fbbf24;
+    }
+
+    /* ==========================================================================
+       2. INTERACTIVE VECTOR TOPOLOGY WORKBENCH (Architectural Map)
+       ========================================================================== */
+    .topology-workbench {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-medium);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .workbench-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .workbench-hint {
+      font-size: 12px;
+      color: var(--text-tertiary);
+    }
+
+    .topology-canvas {
+      background: var(--terminal-bg);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 22px 14px;
+      position: relative;
+      overflow-x: auto;
+    }
+
+    .topology-flow {
+      width: 100%;
+      min-width: 740px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      gap: 2px;
+    }
+
+    /* Area Boundary Zones */
+    .area-box {
+      border-radius: var(--radius-md);
+      padding: 8px 6px;
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      position: relative;
+    }
+
+    .area-box.area-1 {
+      background: rgba(16, 185, 129, 0.04);
+      border: 1px dashed rgba(16, 185, 129, 0.35);
+      flex: 0 0 auto;
+    }
+
+    .area-box.area-0 {
+      background: rgba(14, 165, 233, 0.04);
+      border: 1px dashed rgba(14, 165, 233, 0.35);
+      flex: 1 1 auto;
+      justify-content: space-between;
+    }
+
+    .area-header-tag {
+      position: absolute;
+      top: -9px;
+      left: 10px;
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-family: var(--font-mono);
+      font-size: 8.5px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .area-1 .area-header-tag {
+      background: #064e3b;
+      color: #34d399;
+      border: 1px solid rgba(52, 211, 153, 0.3);
+    }
+
+    .area-0 .area-header-tag {
+      background: #0c4a6e;
+      color: #38bdf8;
+      border: 1px solid rgba(56, 189, 248, 0.3);
+    }
+
+    /* Device Nodes */
+    .node-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-medium);
+      border-radius: var(--radius-sm);
+      padding: 5px 6px;
+      min-width: 74px;
+      max-width: 84px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      cursor: pointer;
+      position: relative;
+      transition: border-color 0.15s ease, background 0.15s ease, transform 0.1s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .node-card:hover {
+      border-color: #38bdf8;
+      background: var(--bg-surface-hover);
+    }
+
+    .node-card:active {
+      transform: scale(0.96);
+    }
+
+    .node-card.active-node {
+      border-color: #38bdf8;
+      box-shadow: 0 0 12px rgba(14, 165, 233, 0.25);
+    }
+
+    .node-type-label {
+      font-family: var(--font-mono);
+      font-size: 7.5px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-tertiary);
+      margin-bottom: 1px;
+      white-space: nowrap;
+    }
+
+    .node-name {
+      font-family: var(--font-display);
+      font-size: 12px;
+      font-weight: 700;
+      color: #ffffff;
+    }
+
+    .node-ip-pill {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      color: #38bdf8;
+      background: rgba(14, 165, 233, 0.1);
+      padding: 1px 3px;
+      border-radius: 4px;
+      margin-top: 2px;
+      white-space: nowrap;
+    }
+
+    .node-subtext {
+      font-size: 8px;
+      color: var(--text-tertiary);
+      margin-top: 1px;
+      white-space: nowrap;
+    }
+
+    /* Connection Lines and Cable Wire Callouts */
+    .cable-segment {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1px;
+      padding: 0 2px;
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .cable-wire {
+      height: 2px;
+      width: 14px;
+      background: var(--border-strong);
+      position: relative;
+    }
+
+    .cable-wire.lan {
+      background: #10b981;
+    }
+
+    .cable-wire.wan {
+      width: 22px;
+      background: #0284c7;
+      background-image: repeating-linear-gradient(90deg, #0284c7, #0284c7 4px, transparent 4px, transparent 8px);
+    }
+
+    .cable-tag {
+      font-family: var(--font-mono);
+      font-size: 8px;
+      color: var(--text-secondary);
+      background: var(--bg-base);
+      border: 1px solid var(--border-subtle);
+      padding: 1px 2px;
+      border-radius: 3px;
+      white-space: nowrap;
+    }
+
+    .cable-port {
+      font-family: var(--font-mono);
+      font-size: 7.5px;
+      color: var(--text-tertiary);
+      white-space: nowrap;
+    }
+
+    /* Device Quick Inspector Tray */
+    .topology-inspector-panel {
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .inspector-target-info {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .target-badge {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      color: #ffffff;
+      background: #0369a1;
+      padding: 3px 8px;
+      border-radius: 4px;
+    }
+
+    .target-desc {
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    .target-desc strong {
+      color: var(--text-primary);
+    }
+
+    /* ==========================================================================
+       3. IP ADDRESSING & SUBNETTING ENGINEERING TABLE
+       ========================================================================== */
+    .data-table-container {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-medium);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+
+    .clean-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 13px;
+    }
+
+    .clean-table th {
+      background: var(--bg-subtle);
+      padding: 12px 16px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-tertiary);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .clean-table td {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border-subtle);
+      color: var(--text-secondary);
+    }
+
+    .clean-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .clean-table tr:hover td {
+      background: var(--bg-surface-hover);
+    }
+
+    .table-code {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--text-primary);
+    }
+
+    .wildcard-highlight {
+      font-family: var(--font-mono);
+      font-weight: 700;
+      color: #fbbf24;
+    }
+
+    .tag-area0 {
+      display: inline-block;
+      padding: 2px 7px;
+      border-radius: 4px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      background: rgba(14, 165, 233, 0.12);
+      color: #38bdf8;
+      border: 1px solid rgba(14, 165, 233, 0.25);
+    }
+
+    .tag-area1 {
+      display: inline-block;
+      padding: 2px 7px;
+      border-radius: 4px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      background: rgba(16, 185, 129, 0.12);
+      color: #34d399;
+      border: 1px solid rgba(16, 185, 129, 0.25);
+    }
+
+    /* ==========================================================================
+       4. INTERACTIVE ROUTER CLI WORKBENCH (The Master Terminal)
+       ========================================================================== */
+    .cli-workbench {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .cli-selector-bar {
+      display: flex;
+      gap: 8px;
+      background: var(--bg-subtle);
+      padding: 6px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-subtle);
+    }
+
+    .cli-tab-btn {
+      flex: 1;
+      padding: 10px 14px;
+      border-radius: var(--radius-sm);
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--text-secondary);
+      font-family: var(--font-display);
+      font-size: 13px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease, transform 0.1s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .cli-tab-btn:hover {
+      color: var(--text-primary);
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .cli-tab-btn:active {
+      transform: scale(0.98);
+    }
+
+    .cli-tab-btn.active {
+      background: var(--bg-surface);
+      color: #ffffff;
+      border-color: var(--border-medium);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .tab-role-tag {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      padding: 1px 6px;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.07);
+      color: var(--text-tertiary);
+    }
+
+    .cli-tab-btn.active .tab-role-tag {
+      background: rgba(14, 165, 233, 0.15);
+      color: #38bdf8;
+    }
+
+    /* Terminal Window Console */
+    .terminal-window {
+      background: var(--terminal-bg);
+      border: 1px solid var(--border-medium);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: 0 12px 36px -4px rgba(0, 0, 0, 0.6);
+    }
+
+    .terminal-titlebar {
+      height: 42px;
+      background: var(--terminal-header);
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+    }
+
+    .terminal-controls {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .traffic-light {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+    }
+    .traffic-close { background: #ff5f56; }
+    .traffic-min { background: #ffbd2e; }
+    .traffic-max { background: #27c93f; }
+
+    .terminal-filename {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .copy-action-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      height: 28px;
+      padding: 0 12px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border-medium);
+      border-radius: var(--radius-sm);
+      color: var(--text-primary);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s ease, border-color 0.15s ease, transform 0.1s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .copy-action-btn:hover {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: var(--border-strong);
+    }
+
+    .copy-action-btn:active {
+      transform: scale(0.96);
+    }
+
+    .terminal-code-body {
+      padding: 20px 24px;
+      overflow-x: auto;
+      max-height: 520px;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      line-height: 1.65;
+    }
+
+    .code-line {
+      display: flex;
+      gap: 20px;
+      min-height: 22px;
+    }
+
+    .code-line:hover {
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .line-num {
+      width: 28px;
+      text-align: right;
+      color: var(--text-faint);
+      user-select: none;
+      flex-shrink: 0;
+    }
+
+    .line-text {
+      white-space: pre;
+      color: #e2e8f0;
+    }
+
+    /* CLI Syntax Highlight Token Colors */
+    .c-comment { color: #64748b; font-style: italic; }
+    .c-cmd { color: #38bdf8; font-weight: 600; }
+    .c-kw { color: #a78bfa; font-weight: 600; }
+    .c-iface { color: #34d399; font-weight: 600; }
+    .c-ip { color: #fbbf24; }
+    .c-wc { color: #f43f5e; font-weight: 700; }
+
+    /* CLI Device Notes Card */
+    .cli-meta-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .cli-meta-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 12px 14px;
+    }
+
+    .meta-card-title {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-tertiary);
+      margin-bottom: 4px;
+    }
+
+    .meta-card-value {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .meta-card-sub {
+      font-size: 11px;
+      color: var(--text-secondary);
+      margin-top: 2px;
+    }
+
+    /* ==========================================================================
+       5. END-HOST (PC1 & PC2) CONFIGURATION RUNBOOK
+       ========================================================================== */
+    .hosts-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .host-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-medium);
+      border-radius: var(--radius-lg);
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .host-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border-subtle);
+      padding-bottom: 12px;
+    }
+
+    .host-name {
+      font-family: var(--font-display);
+      font-size: 16px;
+      font-weight: 700;
+      color: #ffffff;
+    }
+
+    .host-spec-rows {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .host-spec-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 10px;
+      background: var(--bg-subtle);
+      border-radius: var(--radius-sm);
+      font-size: 12px;
+    }
+
+    .host-spec-key {
+      color: var(--text-tertiary);
+      font-weight: 500;
+    }
+
+    .host-spec-val {
+      font-family: var(--font-mono);
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .host-gui-steps {
+      font-size: 12px;
+      color: var(--text-secondary);
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 10px 12px;
+      line-height: 1.5;
+    }
+
+    /* ==========================================================================
+       6. FORENSIC VALIDATION & PING TESTS
+       ========================================================================== */
+    .validation-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .terminal-audit-box {
+      background: var(--terminal-bg);
+      border: 1px solid var(--border-medium);
+      border-radius: var(--radius-md);
+      padding: 18px 20px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    .audit-cmd {
+      color: #38bdf8;
+      font-weight: 700;
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    .audit-output {
+      color: #94a3b8;
+    }
+
+    .audit-highlight {
+      color: #34d399;
+      font-weight: 600;
+    }
+
+    /* ==========================================================================
+       7. TROUBLESHOOTING MATRIX (Packet Tracer Gotchas)
+       ========================================================================== */
+    .trouble-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .trouble-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-medium);
+      border-radius: var(--radius-md);
+      padding: 18px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .trouble-title {
+      font-family: var(--font-display);
+      font-size: 14px;
+      font-weight: 700;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .trouble-desc {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    .trouble-solution {
+      background: var(--bg-subtle);
+      border-left: 3px solid #38bdf8;
+      padding: 8px 12px;
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      font-size: 12px;
+      color: #e2e8f0;
+      line-height: 1.45;
+    }
+
+    /* ==========================================================================
+       8. INTERACTIVE EXECUTION CHECKLIST
+       ========================================================================== */
+    .checklist-wrap {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-medium);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .checklist-items {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .check-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 14px;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: background 0.15s ease, border-color 0.15s ease, transform 0.1s cubic-bezier(0.16, 1, 0.3, 1);
+      user-select: none;
+    }
+
+    .check-item:hover {
+      background: var(--bg-surface-hover);
+      border-color: var(--border-medium);
+    }
+
+    .check-item:active {
+      transform: scale(0.98);
+    }
+
+    .check-item.completed {
+      background: rgba(16, 185, 129, 0.05);
+      border-color: rgba(16, 185, 129, 0.3);
+    }
+
+    .custom-checkbox {
+      width: 18px;
+      height: 18px;
+      border-radius: 4px;
+      border: 1.5px solid var(--border-strong);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+      transition: background 0.15s ease, border-color 0.15s ease;
+    }
+
+    .check-item.completed .custom-checkbox {
+      background: #10b981;
+      border-color: #10b981;
+    }
+
+    .custom-checkbox::after {
+      content: "";
+      width: 5px;
+      height: 9px;
+      border: solid #000000;
+      border-width: 0 2px 2px 0;
+      transform: rotate(45deg);
+      display: none;
+      margin-top: -2px;
+    }
+
+    .check-item.completed .custom-checkbox::after {
+      display: block;
+    }
+
+    .check-content {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .check-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .check-item.completed .check-title {
+      color: #34d399;
+      text-decoration: line-through;
+      text-decoration-color: rgba(52, 211, 153, 0.5);
+    }
+
+    .check-desc {
+      font-size: 11px;
+      color: var(--text-tertiary);
+    }
+
+    /* Footer */
+    .portal-footer {
+      border-top: 1px solid var(--border-subtle);
+      padding: 32px 0 0 0;
+      margin-top: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: var(--text-tertiary);
+      font-size: 12px;
+    }
+
+    /* A11Y & Fluid Accessibility */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+
+    @media (prefers-reduced-transparency: reduce) {
+      .topbar {
+        background: var(--bg-base);
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+      }
+    }
+
+    @media (max-width: 1080px) {
+      .sidebar {
+        display: none;
+      }
+      .main-stream {
+        padding: 24px 20px 60px 20px;
+      }
+      .hardware-kpi-grid,
+      .hosts-grid,
+      .trouble-grid,
+      .checklist-items {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ========================================================================
+       TOPBAR NAVIGATION BAR
+       ======================================================================== -->
+  <header class="topbar">
+    <div class="topbar-container">
+      <div class="brand-group">
+        <div class="brand-mark">CPT</div>
+        <div class="brand-meta">
+          <span class="brand-title">Cisco Architecture Lab // OSPFv2</span>
+          <span class="brand-subtitle">Roteamento Dinamico Multi-Area (Packet Tracer 8.x)</span>
+        </div>
+      </div>
+      <div class="topbar-actions">
+        <span class="badge-pill">
+          <span class="status-dot"></span>
+          Topologia Homologada
+        </span>
+        <button class="topbar-btn" onclick="copyCurrentScript()">
+          Copiar Script Ativo
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ========================================================================
+       APP SHELL: DUAL-COLUMN DOCUMENTATION PORTAL
+       ======================================================================== -->
+  <div class="portal-layout">
+    
+    <!-- STICKY SIDEBAR -->
+    <aside class="sidebar">
+      <div>
+        <div class="sidebar-section-title">Indice do Laboratorio</div>
+        <nav>
+          <ul class="nav-list">
+            <li>
+              <a href="#visao-geral" class="nav-link active">
+                <span class="nav-index">01</span>
+                <span>Visao Geral & Hardware</span>
+              </a>
+            </li>
+            <li>
+              <a href="#topologia" class="nav-link">
+                <span class="nav-index">02</span>
+                <span>Topologia Interativa</span>
+              </a>
+            </li>
+            <li>
+              <a href="#enderecamento" class="nav-link">
+                <span class="nav-index">03</span>
+                <span>Plano de Sub-redes</span>
+              </a>
+            </li>
+            <li>
+              <a href="#scripts-cli" class="nav-link">
+                <span class="nav-index">04</span>
+                <span>Console CLI dos Roteadores</span>
+              </a>
+            </li>
+            <li>
+              <a href="#hosts" class="nav-link">
+                <span class="nav-index">05</span>
+                <span>Configuracao dos PCs</span>
+              </a>
+            </li>
+            <li>
+              <a href="#validacao" class="nav-link">
+                <span class="nav-index">06</span>
+                <span>Validacao & Auditoria</span>
+              </a>
+            </li>
+            <li>
+              <a href="#troubleshooting" class="nav-link">
+                <span class="nav-index">07</span>
+                <span>Matriz de Falhas</span>
+              </a>
+            </li>
+            <li>
+              <a href="#checklist" class="nav-link">
+                <span class="nav-index">08</span>
+                <span>Checklist de Execucao</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+
+      <!-- PROGRESS TRACKER WIDGET -->
+      <div class="sidebar-progress-card">
+        <div class="progress-meta">
+          <span class="progress-label">Progresso do Lab</span>
+          <span class="progress-percent" id="sidebar-percent">0%</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill" id="sidebar-progress-fill"></div>
+        </div>
+        <div class="sidebar-quick-note" id="sidebar-progress-text">
+          0 de 6 etapas concluidas
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN STREAM CONTENT -->
+    <main class="main-stream">
+
+      <!-- ====================================================================
+           1. HERO & ARCHITECTURE OVERVIEW
+           ==================================================================== -->
+      <section id="visao-geral" class="portal-section">
+        <div class="hero-panel">
+          <div class="hero-eyebrow-row">
+            <span class="badge-pill">Area 0 (Backbone) + Area 1 (Filial)</span>
+            <span class="badge-pill">Process ID: 1</span>
+            <span class="badge-pill">Sub-redes /30 e /24</span>
+          </div>
+          <h1 class="hero-h1">Implementacao de Roteamento Dinamico OSPF Multi-Area</h1>
+          <p class="hero-lead">
+            Roteiro tecnico e padronizado para montagem, configuracao e homologacao de interligacao WAN corporativa entre Filial e Matriz no Cisco Packet Tracer. Configure Router-IDs manuais, enlaces ponto a ponto /30 com wildcards exatos e garantia de convergencia OSPFv2.
+          </p>
+
+          <div class="hardware-kpi-grid">
+            <div class="kpi-cell">
+              <span class="kpi-label">Roteadores Ativos</span>
+              <span class="kpi-value">3x Cisco 2911</span>
+              <span class="kpi-sub">IOS Software 15.x</span>
+            </div>
+            <div class="kpi-cell">
+              <span class="kpi-label">Switches de Borda</span>
+              <span class="kpi-value">2x Catalyst 2960</span>
+              <span class="kpi-sub">Distribucao de Camada 2</span>
+            </div>
+            <div class="kpi-cell">
+              <span class="kpi-label">Estacoes Finais</span>
+              <span class="kpi-value">2x PC-PT</span>
+              <span class="kpi-sub">PC1 (Filial) & PC2 (Matriz)</span>
+            </div>
+            <div class="kpi-cell">
+              <span class="kpi-label">Entrega Exigida</span>
+              <span class="kpi-value">Arquivo .pkt</span>
+              <span class="kpi-sub">Topologia Funcional & Salva</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Port Correction Callout -->
+        <div class="alert-callout">
+          <span class="callout-badge">Retificacao Tecnica</span>
+          <div class="callout-content">
+            <strong>Correcao de Duplicidade de Porta no Roteador R3:</strong> A folha impressa da atividade atribui incorretamente a porta <code>G0/0</code> tanto para o enlace WAN com R2 (<code>10.0.2.2/30</code>) quanto para a LAN Matriz (<code>192.168.20.1/24</code>). Roteadores reais e simuladores Cisco 2911 impedem sub-redes distintas na mesma porta fisica sem subinterfaces 802.1Q. A solucao oficial de engenharia: <strong>GigabitEthernet0/0</strong> para o link WAN R2-R3 e <strong>GigabitEthernet0/1</strong> para o link LAN com o switch SW2.
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           2. INTERACTIVE VECTOR TOPOLOGY WORKBENCH
+           ==================================================================== -->
+      <section id="topologia" class="portal-section">
+        <div class="section-header-block">
+          <div class="section-title-wrap">
+            <span class="section-number">02</span>
+            <h2 class="section-title">Topologia Interativa da Infraestrutura</h2>
+          </div>
+          <span class="section-tag">Esquematico L2 / L3</span>
+        </div>
+
+        <div class="topology-workbench">
+          <div class="workbench-header">
+            <span class="badge-pill">Hierarquia de Areas OSPFv2</span>
+            <span class="workbench-hint">Clique em um dispositivo para focar suas configuracoes</span>
+          </div>
+
+          <div class="topology-canvas">
+            <div class="topology-flow">
+              
+              <!-- AREA 1: FILIAL -->
+              <div class="area-box area-1">
+                <span class="area-header-tag">Area 1 (Filial)</span>
+                
+                <!-- PC1 -->
+                <div class="node-card" onclick="selectHost('pc1')">
+                  <span class="node-type-label">Host Final</span>
+                  <span class="node-name">PC1</span>
+                  <span class="node-ip-pill">192.168.10.10</span>
+                  <span class="node-subtext">GW: 192.168.10.1</span>
+                </div>
+
+                <!-- Cable PC1 - SW1 -->
+                <div class="cable-segment">
+                  <span class="cable-port">Fa0/1</span>
+                  <div class="cable-wire lan"></div>
+                  <span class="cable-tag">Direto</span>
+                </div>
+
+                <!-- SW1 -->
+                <div class="node-card">
+                  <span class="node-type-label">Switch L2</span>
+                  <span class="node-name">SW1</span>
+                  <span class="node-ip-pill">Catalyst 2960</span>
+                  <span class="node-subtext">LAN Filial</span>
+                </div>
+
+                <!-- Cable SW1 - R1 -->
+                <div class="cable-segment">
+                  <span class="cable-port">G0/0 (.1)</span>
+                  <div class="cable-wire lan"></div>
+                  <span class="cable-tag">192.168.10.0/24</span>
+                </div>
+
+                <!-- R1 (ABR) -->
+                <div class="node-card active-node" id="node-r1" onclick="switchCliTab('r1')">
+                  <span class="node-type-label">ABR (Fronteira)</span>
+                  <span class="node-name">R1</span>
+                  <span class="node-ip-pill">ID: 1.1.1.1</span>
+                  <span class="node-subtext">Area 1 & Area 0</span>
+                </div>
+              </div>
+
+              <!-- WAN LINK 1: R1 to R2 -->
+              <div class="cable-segment">
+                <span class="cable-port">G0/1: 10.0.1.1</span>
+                <div class="cable-wire wan"></div>
+                <span class="cable-tag">WAN 10.0.1.0/30</span>
+                <span class="cable-port">G0/0: 10.0.1.2</span>
+              </div>
+
+              <!-- AREA 0: BACKBONE & MATRIZ -->
+              <div class="area-box area-0">
+                <span class="area-header-tag">Area 0 (Backbone & Matriz)</span>
+
+                <!-- R2 (Backbone Transit) -->
+                <div class="node-card" id="node-r2" onclick="switchCliTab('r2')">
+                  <span class="node-type-label">Backbone Transit</span>
+                  <span class="node-name">R2</span>
+                  <span class="node-ip-pill">ID: 2.2.2.2</span>
+                  <span class="node-subtext">100% Area 0</span>
+                </div>
+
+                <!-- WAN LINK 2: R2 to R3 -->
+                <div class="cable-segment">
+                  <span class="cable-port">G0/1: 10.0.2.1</span>
+                  <div class="cable-wire wan"></div>
+                  <span class="cable-tag">WAN 10.0.2.0/30</span>
+                  <span class="cable-port">G0/0: 10.0.2.2</span>
+                </div>
+
+                <!-- R3 (Matriz Gateway) -->
+                <div class="node-card" id="node-r3" onclick="switchCliTab('r3')">
+                  <span class="node-type-label">Gateway Matriz</span>
+                  <span class="node-name">R3</span>
+                  <span class="node-ip-pill">ID: 3.3.3.3</span>
+                  <span class="node-subtext">LAN G0/1: .20.1</span>
+                </div>
+
+                <!-- Cable R3 - SW2 -->
+                <div class="cable-segment">
+                  <span class="cable-port">G0/1 (.1)</span>
+                  <div class="cable-wire lan"></div>
+                  <span class="cable-tag">192.168.20.0/24</span>
+                </div>
+
+                <!-- SW2 -->
+                <div class="node-card">
+                  <span class="node-type-label">Switch L2</span>
+                  <span class="node-name">SW2</span>
+                  <span class="node-ip-pill">Catalyst 2960</span>
+                  <span class="node-subtext">LAN Matriz</span>
+                </div>
+
+                <!-- Cable SW2 - PC2 -->
+                <div class="cable-segment">
+                  <span class="cable-port">Fa0/1</span>
+                  <div class="cable-wire lan"></div>
+                  <span class="cable-tag">Direto</span>
+                </div>
+
+                <!-- PC2 -->
+                <div class="node-card" onclick="selectHost('pc2')">
+                  <span class="node-type-label">Host Final</span>
+                  <span class="node-name">PC2</span>
+                  <span class="node-ip-pill">192.168.20.10</span>
+                  <span class="node-subtext">GW: 192.168.20.1</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Dynamic Inspector Bar -->
+          <div class="topology-inspector-panel" id="inspector-bar">
+            <div class="inspector-target-info">
+              <span class="target-badge" id="inspector-badge">R1 (ABR)</span>
+              <span class="target-desc" id="inspector-desc">
+                Roteador de Borda de Area interligando a <strong>Area 1 (Filial)</strong> via GigabitEthernet0/0 a <strong>Area 0 (Backbone)</strong> via GigabitEthernet0/1.
+              </span>
+            </div>
+            <button class="topbar-btn" onclick="scrollToTerminal()">Ver Comandos CLI</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           3. SUBNETTING & WILDCARD ENGINEERING TABLE
+           ==================================================================== -->
+      <section id="enderecamento" class="portal-section">
+        <div class="section-header-block">
+          <div class="section-title-wrap">
+            <span class="section-number">03</span>
+            <h2 class="section-title">Plano de Enderecamento & Wildcard Masks</h2>
+          </div>
+          <span class="section-tag">Calculo Subnetting</span>
+        </div>
+
+        <div class="data-table-container">
+          <table class="clean-table">
+            <thead>
+              <tr>
+                <th>Segmento de Rede</th>
+                <th>Prefixo / CIDR</th>
+                <th>Mascara Decimal</th>
+                <th>Wildcard OSPF</th>
+                <th>Area OSPF</th>
+                <th>Mapeamento de Interfaces & IPs</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>LAN Filial</strong></td>
+                <td><span class="table-code">192.168.10.0/24</span></td>
+                <td><span class="table-code">255.255.255.0</span></td>
+                <td><span class="wildcard-highlight">0.0.0.255</span></td>
+                <td><span class="tag-area1">Area 1</span></td>
+                <td>R1 (G0/0): 192.168.10.1 &bull; PC1: 192.168.10.10</td>
+              </tr>
+              <tr>
+                <td><strong>WAN R1 - R2</strong></td>
+                <td><span class="table-code">10.0.1.0/30</span></td>
+                <td><span class="table-code">255.255.255.252</span></td>
+                <td><span class="wildcard-highlight">0.0.0.3</span></td>
+                <td><span class="tag-area0">Area 0</span></td>
+                <td>R1 (G0/1): 10.0.1.1 &bull; R2 (G0/0): 10.0.1.2</td>
+              </tr>
+              <tr>
+                <td><strong>WAN R2 - R3</strong></td>
+                <td><span class="table-code">10.0.2.0/30</span></td>
+                <td><span class="table-code">255.255.255.252</span></td>
+                <td><span class="wildcard-highlight">0.0.0.3</span></td>
+                <td><span class="tag-area0">Area 0</span></td>
+                <td>R2 (G0/1): 10.0.2.1 &bull; R3 (G0/0): 10.0.2.2</td>
+              </tr>
+              <tr>
+                <td><strong>LAN Matriz</strong></td>
+                <td><span class="table-code">192.168.20.0/24</span></td>
+                <td><span class="table-code">255.255.255.0</span></td>
+                <td><span class="wildcard-highlight">0.0.0.255</span></td>
+                <td><span class="tag-area0">Area 0</span></td>
+                <td>R3 (G0/1): 192.168.20.1 &bull; PC2: 192.168.20.10</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Wildcard Math Breakdown Box -->
+        <div style="margin-top: 14px; background: var(--bg-surface); border: 1px solid var(--border-medium); border-radius: var(--radius-md); padding: 18px 22px; display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+          <div>
+            <div style="font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-tertiary); margin-bottom: 8px; font-weight: 700;">Deducao Matematica &bull; Enlaces WAN /30</div>
+            <div style="font-family: var(--font-mono); font-size: 12.5px; color: var(--text-secondary); line-height: 1.7; background: var(--terminal-bg); padding: 12px 14px; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle);">
+              Mascara Global : <span style="color: var(--text-primary);">255.255.255.255</span><br>
+              Menos Mascara  : <span style="color: #38bdf8;">- 255.255.255.252</span> (/30)<br>
+              <div style="height: 1px; background: var(--border-strong); margin: 6px 0;"></div>
+              Wildcard OSPF  : <strong style="color: #fbbf24;">= &nbsp;&nbsp;0. &nbsp;0. &nbsp;0. &nbsp;&nbsp;3</strong>
+            </div>
+          </div>
+          <div>
+            <div style="font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-tertiary); margin-bottom: 8px; font-weight: 700;">Deducao Matematica &bull; Redes LAN /24</div>
+            <div style="font-family: var(--font-mono); font-size: 12.5px; color: var(--text-secondary); line-height: 1.7; background: var(--terminal-bg); padding: 12px 14px; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle);">
+              Mascara Global : <span style="color: var(--text-primary);">255.255.255.255</span><br>
+              Menos Mascara  : <span style="color: #38bdf8;">- 255.255.255. &nbsp;0</span> (/24)<br>
+              <div style="height: 1px; background: var(--border-strong); margin: 6px 0;"></div>
+              Wildcard OSPF  : <strong style="color: #fbbf24;">= &nbsp;&nbsp;0. &nbsp;0. &nbsp;0. 255</strong>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           4. ROUTER CLI WORKBENCH
+           ==================================================================== -->
+      <section id="scripts-cli" class="portal-section">
+        <div class="section-header-block">
+          <div class="section-title-wrap">
+            <span class="section-number">04</span>
+            <h2 class="section-title">Console CLI dos Roteadores Cisco 2911</h2>
+          </div>
+          <span class="section-tag">Cisco IOS 15.x Scripts</span>
+        </div>
+
+        <div class="cli-workbench">
+          <!-- Device Selector Tabs -->
+          <div class="cli-selector-bar">
+            <button class="cli-tab-btn active" id="tab-btn-r1" onclick="switchCliTab('r1')">
+              <span>R1 (Filial - ABR)</span>
+              <span class="tab-role-tag">ID: 1.1.1.1</span>
+            </button>
+            <button class="cli-tab-btn" id="tab-btn-r2" onclick="switchCliTab('r2')">
+              <span>R2 (Backbone Transit)</span>
+              <span class="tab-role-tag">ID: 2.2.2.2</span>
+            </button>
+            <button class="cli-tab-btn" id="tab-btn-r3" onclick="switchCliTab('r3')">
+              <span>R3 (Matriz Gateway)</span>
+              <span class="tab-role-tag">ID: 3.3.3.3</span>
+            </button>
+            <button class="cli-tab-btn" id="tab-btn-all" onclick="switchCliTab('all')">
+              <span>Script Geral Consolidado</span>
+              <span class="tab-role-tag">R1 + R2 + R3</span>
+            </button>
+          </div>
+
+          <!-- Terminal Container -->
+          <div class="terminal-window">
+            <div class="terminal-titlebar">
+              <div class="terminal-controls">
+                <span class="traffic-light traffic-close"></span>
+                <span class="traffic-light traffic-min"></span>
+                <span class="traffic-light traffic-max"></span>
+              </div>
+              <div class="terminal-filename" id="terminal-filename">
+                <span>R1_Cisco2911_OSPF.ios</span>
+              </div>
+              <button class="copy-action-btn" id="copy-btn" onclick="copyCurrentScript()">
+                <span id="copy-btn-text">Copiar Script</span>
+              </button>
+            </div>
+
+            <!-- Terminal Lines Output -->
+            <div class="terminal-code-body" id="terminal-body">
+              <!-- Dynamically populated via JavaScript -->
+            </div>
+          </div>
+
+          <!-- CLI Metadata Strip -->
+          <div class="cli-meta-cards" id="cli-meta-strip">
+            <div class="cli-meta-card">
+              <div class="meta-card-title">Papel de Roteamento</div>
+              <div class="meta-card-value" id="meta-role">ABR (Area Border Router)</div>
+              <div class="meta-card-sub" id="meta-role-sub">Fronteira fisica entre Area 1 e Area 0</div>
+            </div>
+            <div class="cli-meta-card">
+              <div class="meta-card-title">Router-ID Definido</div>
+              <div class="meta-card-value" id="meta-rid">1.1.1.1 (Exclusivo)</div>
+              <div class="meta-card-sub">Fixado antes da formacao de adjacencia</div>
+            </div>
+            <div class="cli-meta-card">
+              <div class="meta-card-title">Comando de Persistencia</div>
+              <div class="meta-card-value">copy run start / write memory</div>
+              <div class="meta-card-sub">Gravacao em memoria NVRAM</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           5. END-HOST (PC1 & PC2) CONFIGURATION
+           ==================================================================== -->
+      <section id="hosts" class="portal-section">
+        <div class="section-header-block">
+          <div class="section-title-wrap">
+            <span class="section-number">05</span>
+            <h2 class="section-title">Configuracao dos Hosts Finais (PC1 e PC2)</h2>
+          </div>
+          <span class="section-tag">Parametros de GUI</span>
+        </div>
+
+        <div class="hosts-grid">
+          <!-- PC1 Card -->
+          <div class="host-card">
+            <div class="host-card-header">
+              <span class="host-name">PC1 (Filial)</span>
+              <span class="tag-area1">Rede LAN Filial</span>
+            </div>
+            <div class="host-spec-rows">
+              <div class="host-spec-row">
+                <span class="host-spec-key">Conexao Fisica</span>
+                <span class="host-spec-val">Cabo Direto &rarr; SW1 (FastEthernet0/1)</span>
+              </div>
+              <div class="host-spec-row">
+                <span class="host-spec-key">Endereco IPv4</span>
+                <span class="host-spec-val">192.168.10.10</span>
+              </div>
+              <div class="host-spec-row">
+                <span class="host-spec-key">Mascara de Sub-rede</span>
+                <span class="host-spec-val">255.255.255.0 (/24)</span>
+              </div>
+              <div class="host-spec-row">
+                <span class="host-spec-key">Gateway Padrao</span>
+                <span class="host-spec-val">192.168.10.1 (R1 G0/0)</span>
+              </div>
+            </div>
+            <div class="host-gui-steps">
+              <strong>Como aplicar no Packet Tracer:</strong> Clique no PC1 &rarr; aba <em>Desktop</em> &rarr; icone <em>IP Configuration</em> &rarr; marque <em>Static</em> e digite os valores acima.
+            </div>
+          </div>
+
+          <!-- PC2 Card -->
+          <div class="host-card">
+            <div class="host-card-header">
+              <span class="host-name">PC2 (Matriz)</span>
+              <span class="tag-area0">Rede LAN Matriz</span>
+            </div>
+            <div class="host-spec-rows">
+              <div class="host-spec-row">
+                <span class="host-spec-key">Conexao Fisica</span>
+                <span class="host-spec-val">Cabo Direto &rarr; SW2 (FastEthernet0/1)</span>
+              </div>
+              <div class="host-spec-row">
+                <span class="host-spec-key">Endereco IPv4</span>
+                <span class="host-spec-val">192.168.20.10</span>
+              </div>
+              <div class="host-spec-row">
+                <span class="host-spec-key">Mascara de Sub-rede</span>
+                <span class="host-spec-val">255.255.255.0 (/24)</span>
+              </div>
+              <div class="host-spec-row">
+                <span class="host-spec-key">Gateway Padrao</span>
+                <span class="host-spec-val">192.168.20.1 (R3 G0/1)</span>
+              </div>
+            </div>
+            <div class="host-gui-steps">
+              <strong>Como aplicar no Packet Tracer:</strong> Clique no PC2 &rarr; aba <em>Desktop</em> &rarr; icone <em>IP Configuration</em> &rarr; marque <em>Static</em> e digite os valores acima.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           6. FORENSIC VALIDATION & PING TESTS
+           ==================================================================== -->
+      <section id="validacao" class="portal-section">
+        <div class="section-header-block">
+          <div class="section-title-wrap">
+            <span class="section-number">06</span>
+            <h2 class="section-title">Protocolo de Validacao e Auditoria Forense</h2>
+          </div>
+          <span class="section-tag">Testes de Aceite</span>
+        </div>
+
+        <div class="validation-panel">
+          <div class="data-table-container">
+            <table class="clean-table">
+              <thead>
+                <tr>
+                  <th>Comando Cisco IOS</th>
+                  <th>Objetivo da Auditoria</th>
+                  <th>Criterio Rigoroso de Aceite</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="table-code">show ip ospf neighbor</span></td>
+                  <td>Validar formacao de adjacencia entre roteadores</td>
+                  <td>Estado <span class="audit-highlight">FULL/BDR</span> ou <span class="audit-highlight">FULL/DR</span> nos enlaces WAN /30.</td>
+                </tr>
+                <tr>
+                  <td><span class="table-code">show ip route ospf</span></td>
+                  <td>Auditar injecao de rotas inter-area</td>
+                  <td>R1 deve listar rota inter-area <span class="audit-highlight">O IA 192.168.20.0/24</span>. R3 deve listar <span class="audit-highlight">O IA 192.168.10.0/24</span>.</td>
+                </tr>
+                <tr>
+                  <td><span class="table-code">show ip ospf interface brief</span></td>
+                  <td>Verificar associacao correta de interfaces a areas</td>
+                  <td>R1 G0/0 em Area 1; R1 G0/1 em Area 0; todas as portas de R2 e R3 estritamente em Area 0.</td>
+                </tr>
+                <tr>
+                  <td><span class="table-code">show ip interface brief</span></td>
+                  <td>Verificar camada fisica (L1) e enlace (L2)</td>
+                  <td>Status: <span class="audit-highlight">up</span> e Protocol: <span class="audit-highlight">up</span> em todas as portas ativas.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Terminal Audit Output Simulation -->
+          <div class="terminal-audit-box">
+            <span class="audit-cmd">PC1> ping 192.168.20.10</span>
+            <div class="audit-output">
+Pinging 192.168.20.10 with 32 bytes of data:<br>
+Reply from 192.168.20.10: bytes=32 time=4ms TTL=125<br>
+Reply from 192.168.20.10: bytes=32 time=1ms TTL=125<br>
+Reply from 192.168.20.10: bytes=32 time=1ms TTL=125<br>
+Reply from 192.168.20.10: bytes=32 time=2ms TTL=125<br><br>
+Ping statistics for 192.168.20.10:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Packets: Sent = 4, Received = 4, <span class="audit-highlight">Lost = 0 (0% loss)</span>,<br>
+Approximate round trip times in milli-seconds:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Minimum = 1ms, Maximum = 4ms, Average = 2ms
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           7. TROUBLESHOOTING MATRIX
+           ==================================================================== -->
+      <section id="troubleshooting" class="portal-section">
+        <div class="section-header-block">
+          <div class="section-title-wrap">
+            <span class="section-number">07</span>
+            <h2 class="section-title">Matriz de Resolucao de Falhas (Troubleshooting)</h2>
+          </div>
+          <span class="section-tag">Erros Frequentes</span>
+        </div>
+
+        <div class="trouble-grid">
+          <div class="trouble-card">
+            <div class="trouble-title">
+              <span>1. Vizinhos OSPF travados em 2-WAY ou EXSTART</span>
+            </div>
+            <div class="trouble-desc">
+              Roteadores adjacentes detectam o vizinho mas nao completam a sincronizacao da base de dados LSDB.
+            </div>
+            <div class="trouble-solution">
+              <strong>Solucao:</strong> Certifique-se de que a mascara nos dois lados do link WAN /30 e rigorosamente 255.255.255.252. Mascaras divergentes barram a transicao para o estado FULL.
+            </div>
+          </div>
+
+          <div class="trouble-card">
+            <div class="trouble-title">
+              <span>2. Rotas da Filial nao chegam a Matriz</span>
+            </div>
+            <div class="trouble-desc">
+              Tabelas de roteamento mostram apenas rotas conectadas locais; nenhuma rota <code>O IA</code> e injetada.
+            </div>
+            <div class="trouble-solution">
+              <strong>Solucao:</strong> Verifique se a porta GigabitEthernet0/1 do R1 foi associada a Area 0. Toda Area nao-backbone deve conectar-se obrigatoriamente a Area 0.
+            </div>
+          </div>
+
+          <div class="trouble-card">
+            <div class="trouble-title">
+              <span>3. Erro de sintaxe no comando 'network'</span>
+            </div>
+            <div class="trouble-desc">
+              O IOS recusa o comando ou o OSPF nao anuncia a sub-rede especificada.
+            </div>
+            <div class="trouble-solution">
+              <strong>Solucao:</strong> O OSPF exige wildcard (mascara invertida). Use 0.0.0.3 para redes /30 e 0.0.0.255 para redes /24. Nunca insira a mascara decimal comum.
+            </div>
+          </div>
+
+          <div class="trouble-card">
+            <div class="trouble-title">
+              <span>4. O primeiro ping retorna "Request timed out"</span>
+            </div>
+            <div class="trouble-desc">
+              Ao testar o ping entre PC1 e PC2 pela primeira vez, o primeiro pacote e descartado.
+            </div>
+            <div class="trouble-solution">
+              <strong>Solucao:</strong> Comportamento normal no Cisco Packet Tracer. O primeiro pacote sofre descarte durante a resolucao do protocolo ARP entre PC e Gateway. Repita o ping e o resultado sera 100% de sucesso.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           8. INTERACTIVE EXECUTION CHECKLIST
+           ==================================================================== -->
+      <section id="checklist" class="portal-section">
+        <div class="section-header-block">
+          <div class="section-title-wrap">
+            <span class="section-number">08</span>
+            <h2 class="section-title">Checklist Interativo de Homologacao de Bancada</h2>
+          </div>
+          <span class="section-tag">Rastreamento de Execucao</span>
+        </div>
+
+        <div class="checklist-wrap">
+          <div class="checklist-items">
+            <div class="check-item" onclick="toggleCheck(0)">
+              <div class="custom-checkbox"></div>
+              <div class="check-content">
+                <span class="check-title">Montagem Fisica da Topologia</span>
+                <span class="check-desc">Inserir 3x Cisco 2911, 2x Catalyst 2960 e 2x PC-PT com cabeamento correto.</span>
+              </div>
+            </div>
+
+            <div class="check-item" onclick="toggleCheck(1)">
+              <div class="custom-checkbox"></div>
+              <div class="check-content">
+                <span class="check-title">Parametrizacao dos PCs (Hosts)</span>
+                <span class="check-desc">IPs estaticos e Default Gateways atribuidos em PC1 e PC2 na interface grafica.</span>
+              </div>
+            </div>
+
+            <div class="check-item" onclick="toggleCheck(2)">
+              <div class="custom-checkbox"></div>
+              <div class="check-content">
+                <span class="check-title">Script R1 (ABR Filial)</span>
+                <span class="check-desc">G0/0 na Area 1, G0/1 na Area 0, Router-ID 1.1.1.1 e gravacao em NVRAM.</span>
+              </div>
+            </div>
+
+            <div class="check-item" onclick="toggleCheck(3)">
+              <div class="custom-checkbox"></div>
+              <div class="check-content">
+                <span class="check-title">Script R2 (Backbone Transit)</span>
+                <span class="check-desc">G0/0 e G0/1 100% na Area 0, Router-ID 2.2.2.2 e gravacao em NVRAM.</span>
+              </div>
+            </div>
+
+            <div class="check-item" onclick="toggleCheck(4)">
+              <div class="custom-checkbox"></div>
+              <div class="check-content">
+                <span class="check-title">Script R3 (Matriz Gateway)</span>
+                <span class="check-desc">G0/0 (WAN) e G0/1 (LAN) na Area 0, Router-ID 3.3.3.3 e gravacao em NVRAM.</span>
+              </div>
+            </div>
+
+            <div class="check-item" onclick="toggleCheck(5)">
+              <div class="custom-checkbox"></div>
+              <div class="check-content">
+                <span class="check-title">Validacao Forense & Persistencia</span>
+                <span class="check-desc">Adjacencias FULL, rotas O IA presentes, ping 100% OK e arquivo .pkt salvo.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PORTAL FOOTER -->
+      <footer class="portal-footer">
+        <span>Cisco Architecture Lab // Documentacao Tecnica Oficial</span>
+        <span>Padrao Engenharia de Redes &bull; UniMAX 2026</span>
+      </footer>
+
+    </main>
+  </div>
+
+  <!-- ========================================================================
+       APPLICATION LOGIC & SYNTAX HIGHLIGHT ENGINE
+       ======================================================================== -->
+  <script>
+    /* Cisco IOS CLI Scripts Repository */
+    const SCRIPTS = {
+      r1: {
+        filename: "R1_ABR_Filial.ios",
+        role: "ABR (Area Border Router)",
+        roleSub: "Fronteira fisica entre Area 1 e Area 0",
+        rid: "1.1.1.1 (Exclusivo)",
+        raw: `enable
+configure terminal
+hostname R1
+
+! --- Interface LAN Filial (Conecta ao switch SW1) ---
+interface GigabitEthernet0/0
+ description LAN Filial (Area 1)
+ ip address 192.168.10.1 255.255.255.0
+ no shutdown
+ exit
+
+! --- Interface WAN Ponto a Ponto (Conecta ao R2) ---
+interface GigabitEthernet0/1
+ description Enlace WAN PTP para R2 (Area 0)
+ ip address 10.0.1.1 255.255.255.252
+ no shutdown
+ exit
+
+! --- Roteamento Dinamico OSPF Multi-Area ---
+router ospf 1
+ router-id 1.1.1.1
+ network 192.168.10.0 0.0.0.255 area 1
+ network 10.0.1.0 0.0.0.3 area 0
+ exit
+
+! --- Gravacao em NVRAM ---
+do write memory
+exit`
+      },
+      r2: {
+        filename: "R2_Backbone_Transit.ios",
+        role: "Backbone Transit Router",
+        roleSub: "Roteador interno 100% contido na Area 0",
+        rid: "2.2.2.2 (Exclusivo)",
+        raw: `enable
+configure terminal
+hostname R2
+
+! --- Interface WAN Ponto a Ponto (Conecta ao R1) ---
+interface GigabitEthernet0/0
+ description Enlace WAN PTP para R1 (Area 0)
+ ip address 10.0.1.2 255.255.255.252
+ no shutdown
+ exit
+
+! --- Interface WAN Ponto a Ponto (Conecta ao R3) ---
+interface GigabitEthernet0/1
+ description Enlace WAN PTP para R3 (Area 0)
+ ip address 10.0.2.1 255.255.255.252
+ no shutdown
+ exit
+
+! --- Roteamento Dinamico OSPF Backbone ---
+router ospf 1
+ router-id 2.2.2.2
+ network 10.0.1.0 0.0.0.3 area 0
+ network 10.0.2.0 0.0.0.3 area 0
+ exit
+
+! --- Gravacao em NVRAM ---
+do write memory
+exit`
+      },
+      r3: {
+        filename: "R3_Matriz_Gateway.ios",
+        role: "Gateway Matriz",
+        roleSub: "Gateway de Borda da LAN Corporativa Matriz",
+        rid: "3.3.3.3 (Exclusivo)",
+        raw: `enable
+configure terminal
+hostname R3
+
+! --- Interface WAN Ponto a Ponto (Conecta ao R2) ---
+interface GigabitEthernet0/0
+ description Enlace WAN PTP para R2 (Area 0)
+ ip address 10.0.2.2 255.255.255.252
+ no shutdown
+ exit
+
+! --- Interface LAN Matriz (Correcao: G0/1 para evitar duplicidade) ---
+interface GigabitEthernet0/1
+ description LAN Matriz (Area 0)
+ ip address 192.168.20.1 255.255.255.0
+ no shutdown
+ exit
+
+! --- Roteamento Dinamico OSPF ---
+router ospf 1
+ router-id 3.3.3.3
+ network 10.0.2.0 0.0.0.3 area 0
+ network 192.168.20.0 0.0.0.255 area 0
+ exit
+
+! --- Gravacao em NVRAM ---
+do write memory
+exit`
+      },
+      all: {
+        filename: "Consolidado_R1_R2_R3.ios",
+        role: "Script Mestre Completo",
+        roleSub: "Todos os scripts sequenciais para colagem direta",
+        rid: "1.1.1.1 / 2.2.2.2 / 3.3.3.3",
+        raw: `! =======================================================
+! CISCO PACKET TRACER — SCRIPT MESTRE OSPF MULTI-AREA
+! =======================================================
+
+! >>>>> ROTEADOR R1 (FILIAL - ABR) <<<<<
+enable
+configure terminal
+hostname R1
+interface GigabitEthernet0/0
+ description LAN Filial (Area 1)
+ ip address 192.168.10.1 255.255.255.0
+ no shutdown
+ exit
+interface GigabitEthernet0/1
+ description Enlace WAN PTP para R2 (Area 0)
+ ip address 10.0.1.1 255.255.255.252
+ no shutdown
+ exit
+router ospf 1
+ router-id 1.1.1.1
+ network 192.168.10.0 0.0.0.255 area 1
+ network 10.0.1.0 0.0.0.3 area 0
+ exit
+do write memory
+exit
+
+! >>>>> ROTEADOR R2 (BACKBONE TRANSIT) <<<<<
+enable
+configure terminal
+hostname R2
+interface GigabitEthernet0/0
+ description Enlace WAN PTP para R1 (Area 0)
+ ip address 10.0.1.2 255.255.255.252
+ no shutdown
+ exit
+interface GigabitEthernet0/1
+ description Enlace WAN PTP para R3 (Area 0)
+ ip address 10.0.2.1 255.255.255.252
+ no shutdown
+ exit
+router ospf 1
+ router-id 2.2.2.2
+ network 10.0.1.0 0.0.0.3 area 0
+ network 10.0.2.0 0.0.0.3 area 0
+ exit
+do write memory
+exit
+
+! >>>>> ROTEADOR R3 (MATRIZ GATEWAY) <<<<<
+enable
+configure terminal
+hostname R3
+interface GigabitEthernet0/0
+ description Enlace WAN PTP para R2 (Area 0)
+ ip address 10.0.2.2 255.255.255.252
+ no shutdown
+ exit
+interface GigabitEthernet0/1
+ description LAN Matriz (Area 0 - Porta G0/1 retificada)
+ ip address 192.168.20.1 255.255.255.0
+ no shutdown
+ exit
+router ospf 1
+ router-id 3.3.3.3
+ network 10.0.2.0 0.0.0.3 area 0
+ network 192.168.20.0 0.0.0.255 area 0
+ exit
+do write memory
+exit`
+      }
+    };
+
+    let activeTabKey = "r1";
+
+    /* Render Terminal with Syntax Highlighting & Line Numbers */
+    function renderTerminal(tabKey) {
+      activeTabKey = tabKey;
+      const data = SCRIPTS[tabKey];
+      
+      // Update Title & Meta
+      document.getElementById("terminal-filename").textContent = data.filename;
+      document.getElementById("meta-role").textContent = data.role;
+      document.getElementById("meta-role-sub").textContent = data.roleSub;
+      document.getElementById("meta-rid").textContent = data.rid;
+
+      // Update Active Tab Button State
+      document.querySelectorAll(".cli-tab-btn").forEach(btn => btn.classList.remove("active"));
+      const activeBtn = document.getElementById("tab-btn-" + tabKey);
+      if (activeBtn) activeBtn.classList.add("active");
+
+      // Update Topology Nodes State
+      document.querySelectorAll(".node-card").forEach(node => node.classList.remove("active-node"));
+      const activeNode = document.getElementById("node-" + tabKey);
+      if (activeNode) activeNode.classList.add("active-node");
+
+      // Update Inspector Bar
+      updateInspector(tabKey);
+
+      // Tokenize and Build Lines
+      const lines = data.raw.split("\n");
+      const terminalBody = document.getElementById("terminal-body");
+      terminalBody.innerHTML = "";
+
+      lines.forEach((line, index) => {
+        const lineDiv = document.createElement("div");
+        lineDiv.className = "code-line";
+
+        const numSpan = document.createElement("span");
+        numSpan.className = "line-num";
+        numSpan.textContent = index + 1;
+
+        const textSpan = document.createElement("span");
+        textSpan.className = "line-text";
+        textSpan.innerHTML = highlightCiscoSyntax(line);
+
+        lineDiv.appendChild(numSpan);
+        lineDiv.appendChild(textSpan);
+        terminalBody.appendChild(lineDiv);
+      });
+    }
+
+    /* Cisco IOS Syntax Tokenizer */
+    function highlightCiscoSyntax(text) {
+      if (text.trim().startsWith("!")) {
+        return `<span class="c-comment">${escapeHtml(text)}</span>`;
+      }
+
+      let res = escapeHtml(text);
+
+      // Keywords & Commands
+      const cmds = ["enable", "configure terminal", "hostname", "interface", "description", "ip address", "no shutdown", "exit", "router ospf", "router-id", "network", "area", "do write memory"];
+      
+      // Highlight interface names
+      res = res.replace(/(GigabitEthernet0\/[0-2]|FastEthernet0\/[0-9]+)/g, '<span class="c-iface">$1</span>');
+
+      // Highlight Wildcard masks (0.0.0.255 or 0.0.0.3)
+      res = res.replace(/\b(0\.0\.0\.(?:255|3))\b/g, '<span class="c-wc">$1</span>');
+
+      // Highlight IPv4 and Subnet masks
+      res = res.replace(/\b(192\.168\.\d+\.\d+|10\.0\.\d+\.\d+|255\.255\.255\.\d+|1\.1\.1\.1|2\.2\.2\.2|3\.3\.3\.3)\b/g, '<span class="c-ip">$1</span>');
+
+      // Commands
+      res = res.replace(/\b(enable|configure terminal|hostname|interface|description|ip address|no shutdown|exit|router ospf|router-id|network|area|do write memory)\b/g, '<span class="c-cmd">$1</span>');
+
+      return res;
+    }
+
+    function escapeHtml(str) {
+      return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    }
+
+    /* Switch CLI Tab */
+    function switchCliTab(tabKey) {
+      renderTerminal(tabKey);
+    }
+
+    /* Update Inspector bar on top */
+    function updateInspector(tabKey) {
+      const badge = document.getElementById("inspector-badge");
+      const desc = document.getElementById("inspector-desc");
+      if (tabKey === "r1") {
+        badge.textContent = "R1 (ABR Filial)";
+        desc.innerHTML = "Roteador de Borda de Area interligando a <strong>Area 1 (Filial)</strong> via GigabitEthernet0/0 a <strong>Area 0 (Backbone)</strong> via GigabitEthernet0/1.";
+      } else if (tabKey === "r2") {
+        badge.textContent = "R2 (Backbone Transit)";
+        desc.innerHTML = "Roteador central 100% contido na <strong>Area 0</strong>, fazendo transito exclusivo entre R1 (enlace 10.0.1.0/30) e R3 (enlace 10.0.2.0/30).";
+      } else if (tabKey === "r3") {
+        badge.textContent = "R3 (Matriz Gateway)";
+        desc.innerHTML = "Gateway da Matriz. Enlace WAN com R2 em <strong>GigabitEthernet0/0</strong> e enlace LAN Matriz em <strong>GigabitEthernet0/1</strong> (porta retificada).";
+      } else {
+        badge.textContent = "Script Consolidado";
+        desc.innerHTML = "Visao unificada contendo todos os comandos para R1, R2 e R3 em ordem operacional de deploy.";
+      }
+    }
+
+    /* Select Host in Inspector */
+    function selectHost(hostKey) {
+      const badge = document.getElementById("inspector-badge");
+      const desc = document.getElementById("inspector-desc");
+      if (hostKey === "pc1") {
+        badge.textContent = "PC1 (Filial)";
+        desc.innerHTML = "Host final da Filial: IP <strong>192.168.10.10</strong> &bull; Mascara 255.255.255.0 &bull; Gateway 192.168.10.1 (R1 G0/0).";
+      } else {
+        badge.textContent = "PC2 (Matriz)";
+        desc.innerHTML = "Host final da Matriz: IP <strong>192.168.20.10</strong> &bull; Mascara 255.255.255.0 &bull; Gateway 192.168.20.1 (R3 G0/1).";
+      }
+    }
+
+    function scrollToTerminal() {
+      document.getElementById("scripts-cli").scrollIntoView({ behavior: "smooth" });
+    }
+
+    /* Copy Script to Clipboard with Feedback */
+    function copyCurrentScript() {
+      const script = SCRIPTS[activeTabKey].raw;
+      navigator.clipboard.writeText(script).then(() => {
+        const copyBtnText = document.getElementById("copy-btn-text");
+        const originalText = copyBtnText.textContent;
+        copyBtnText.textContent = "Copiado com Sucesso!";
+        setTimeout(() => {
+          copyBtnText.textContent = originalText;
+        }, 2000);
+      });
+    }
+
+    /* Interactive Checklist Logic */
+    let checklistState = [false, false, false, false, false, false];
+
+    function toggleCheck(index) {
+      checklistState[index] = !checklistState[index];
+      const items = document.querySelectorAll(".check-item");
+      if (checklistState[index]) {
+        items[index].classList.add("completed");
+      } else {
+        items[index].classList.remove("completed");
+      }
+      updateChecklistProgress();
+    }
+
+    function updateChecklistProgress() {
+      const completedCount = checklistState.filter(Boolean).length;
+      const total = checklistState.length;
+      const percent = Math.round((completedCount / total) * 100);
+
+      document.getElementById("sidebar-percent").textContent = percent + "%";
+      document.getElementById("sidebar-progress-fill").style.width = percent + "%";
+      document.getElementById("sidebar-progress-text").textContent = `${completedCount} de ${total} etapas concluidas`;
+    }
+
+    /* Active Navigation Link on Scroll */
+    window.addEventListener("scroll", () => {
+      const sections = document.querySelectorAll(".portal-section");
+      const navLinks = document.querySelectorAll(".nav-link");
+      
+      let currentId = "";
+      sections.forEach(section => {
+        const top = section.offsetTop - 120;
+        if (window.pageYOffset >= top) {
+          currentId = section.getAttribute("id");
+        }
+      });
+
+      if (currentId) {
+        navLinks.forEach(link => {
+          link.classList.remove("active");
+          if (link.getAttribute("href") === "#" + currentId) {
+            link.classList.add("active");
+          }
+        });
+      }
+    }, { passive: true });
+
+    /* Initialize Default View & Apple Design Zero-Latency Pointer Triggers */
+    document.addEventListener("DOMContentLoaded", () => {
+      renderTerminal("r1");
+      updateChecklistProgress();
+
+      // Latencia zero no toque/clique (Apple Design Interaction Spec)
+      document.querySelectorAll("button, .node-card, .check-item, .nav-link").forEach(el => {
+        el.addEventListener("pointerdown", () => {
+          el.style.transform = "scale(0.97)";
+        }, { passive: true });
+        el.addEventListener("pointerup", () => {
+          el.style.transform = "";
+        }, { passive: true });
+        el.addEventListener("pointercancel", () => {
+          el.style.transform = "";
+        }, { passive: true });
+      });
+    });
+  </script>
+</body>
+</html>

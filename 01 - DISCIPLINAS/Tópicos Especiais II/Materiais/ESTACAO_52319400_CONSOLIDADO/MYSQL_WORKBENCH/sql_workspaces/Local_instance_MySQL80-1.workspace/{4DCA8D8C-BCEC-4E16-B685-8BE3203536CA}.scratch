@@ -1,0 +1,12 @@
+-- primeiro, precisamos ter um bd e uma tabela
+
+create database aula_java;
+use aula_java;
+
+create table alunos(
+id int auto_increment primary key,
+nome varchar(255) not null,
+idade int
+);
+
+select * from alunos

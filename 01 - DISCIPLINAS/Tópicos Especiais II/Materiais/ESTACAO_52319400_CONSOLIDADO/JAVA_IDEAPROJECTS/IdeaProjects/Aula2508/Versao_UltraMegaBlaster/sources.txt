@@ -1,0 +1,7 @@
+C:\Users\52319400\IdeaProjects\Aula2508\Versao_UltraMegaBlaster\src\Main.java
+C:\Users\52319400\IdeaProjects\Aula2508\Versao_UltraMegaBlaster\src\model\Categoria.java
+C:\Users\52319400\IdeaProjects\Aula2508\Versao_UltraMegaBlaster\src\model\Prioridade.java
+C:\Users\52319400\IdeaProjects\Aula2508\Versao_UltraMegaBlaster\src\model\Tarefa.java
+C:\Users\52319400\IdeaProjects\Aula2508\Versao_UltraMegaBlaster\src\service\GerenciadorTarefasService.java
+C:\Users\52319400\IdeaProjects\Aula2508\Versao_UltraMegaBlaster\src\view\ConsoleView.java
+C:\Users\52319400\IdeaProjects\Aula2508\Versao_UltraMegaBlaster\src\view\MainFrame.java

@@ -1,0 +1,1797 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Keynote de Engenharia — Implementacao OSPFv2 Multi-Area</title>
+  
+  <style>
+    /* ==========================================================================
+       DESIGN SYSTEM TOKENS: TITANIUM OBSIDIAN & CHAMPAGNE GOLD (Keynote Spec)
+       ========================================================================== */
+    :root {
+      --bg-black: #060608;
+      --bg-surface: #0e0e12;
+      --bg-elevated: #15151c;
+      --bg-card: #121217;
+      
+      --gold-primary: #d4af37;
+      --gold-light: #f3e5ab;
+      --gold-dark: #99731c;
+      --gold-glow: rgba(212, 175, 55, 0.18);
+      --gold-gradient: linear-gradient(135deg, #f5e6b3 0%, #d4af37 50%, #99731c 100%);
+      
+      --emerald-accent: #10b981;
+      --emerald-glow: rgba(16, 185, 129, 0.2);
+      
+      --border-fine: rgba(255, 255, 255, 0.08);
+      --border-gold: rgba(212, 175, 55, 0.3);
+      --border-strong: rgba(255, 255, 255, 0.18);
+      
+      --text-main: #f8fafc;
+      --text-muted: #a1a1aa;
+      --text-dim: #71717a;
+      
+      --font-display: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
+      --font-mono: "JetBrains Mono", "SF Mono", Consolas, Monaco, monospace;
+      
+      --radius-sm: 6px;
+      --radius-md: 12px;
+      --radius-lg: 20px;
+    }
+
+    /* Base Reset */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background-color: var(--bg-black);
+      color: var(--text-main);
+      font-family: var(--font-display);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      user-select: none;
+    }
+
+    /* Selection */
+    ::selection {
+      background: var(--gold-primary);
+      color: #000000;
+    }
+
+    /* Progress Line no Topo (Padrao Andre da Empada / Portfolio-V1) */
+    #top-progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      background: var(--gold-gradient);
+      width: 11.11%;
+      z-index: 1000;
+      transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 0 12px rgba(212, 175, 55, 0.5);
+    }
+
+    /* Header Flutuante Minimalista Keynote */
+    .deck-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 64px;
+      z-index: 500;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 40px;
+      background: rgba(6, 6, 8, 0.65);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border-fine);
+    }
+
+    .deck-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-monogram {
+      width: 28px;
+      height: 28px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-gold);
+      background: rgba(212, 175, 55, 0.08);
+      color: var(--gold-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-label {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      color: var(--text-main);
+    }
+
+    .deck-meta-info {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .slide-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      border-radius: 9999px;
+      font-size: 11px;
+      font-family: var(--font-mono);
+      font-weight: 600;
+      background: rgba(212, 175, 55, 0.08);
+      border: 1px solid var(--border-gold);
+      color: var(--gold-light);
+    }
+
+    .btn-fullscreen {
+      background: transparent;
+      border: 1px solid var(--border-fine);
+      color: var(--text-muted);
+      border-radius: var(--radius-sm);
+      padding: 5px 12px;
+      font-size: 11px;
+      font-family: var(--font-mono);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .btn-fullscreen:hover {
+      color: var(--text-main);
+      border-color: var(--border-gold);
+      background: rgba(212, 175, 55, 0.05);
+    }
+
+    .btn-fullscreen:active {
+      transform: scale(0.96);
+    }
+
+    /* Container de Slides */
+    .deck-stage {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    /* Individual Slide */
+    .slide {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      padding: 84px 60px 84px 60px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      visibility: hidden;
+      transform: scale(0.97) translateY(12px);
+      transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.4s;
+      pointer-events: none;
+    }
+
+    .slide.active-slide {
+      opacity: 1;
+      visibility: visible;
+      transform: scale(1) translateY(0);
+      pointer-events: all;
+    }
+
+    .slide-inner {
+      width: 100%;
+      max-width: 1160px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    /* Tipografia de Keynote */
+    .slide-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--gold-primary);
+      font-weight: 700;
+    }
+
+    .slide-title {
+      font-size: clamp(28px, 4.2vw, 46px);
+      font-weight: 800;
+      letter-spacing: -0.035em;
+      line-height: 1.15;
+      color: #ffffff;
+    }
+
+    .slide-subtitle {
+      font-size: 16px;
+      color: var(--text-muted);
+      max-width: 820px;
+      line-height: 1.6;
+    }
+
+    /* Cards e Superficies de Vidro Nobre */
+    .glass-surface {
+      background: var(--bg-card);
+      border: 1px solid var(--border-fine);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 16px 40px -12px rgba(0, 0, 0, 0.7);
+    }
+
+    .glass-surface::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.35), transparent);
+    }
+
+    /* SLIDE 1: COVER SLIDE */
+    .cover-hero {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 20px;
+      max-width: 940px;
+    }
+
+    .cover-tag-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .cover-title {
+      font-size: clamp(38px, 6vw, 64px);
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      line-height: 1.08;
+      background: linear-gradient(180deg, #ffffff 40%, #a1a1aa 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .cover-kpi-bar {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+      width: 100%;
+      margin-top: 16px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border-fine);
+    }
+
+    .cover-kpi-item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .kpi-h {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--gold-primary);
+      font-weight: 700;
+    }
+
+    .kpi-v {
+      font-size: 16px;
+      font-weight: 700;
+      color: #ffffff;
+    }
+
+    .kpi-s {
+      font-size: 12px;
+      color: var(--text-dim);
+    }
+
+    /* SLIDE 2: RETIFICACAO DE ENGENHARIA */
+    .split-audit-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    .audit-pane {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-fine);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .audit-pane.flaw {
+      border-color: rgba(239, 68, 68, 0.3);
+      background: rgba(239, 68, 68, 0.03);
+    }
+
+    .audit-pane.solution {
+      border-color: rgba(212, 175, 55, 0.4);
+      background: rgba(212, 175, 55, 0.04);
+    }
+
+    .pane-tag {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 3px 8px;
+      border-radius: 4px;
+      display: inline-block;
+      width: fit-content;
+    }
+
+    .audit-pane.flaw .pane-tag {
+      background: rgba(239, 68, 68, 0.15);
+      color: #f87171;
+    }
+
+    .audit-pane.solution .pane-tag {
+      background: rgba(212, 175, 55, 0.15);
+      color: var(--gold-light);
+    }
+
+    .pane-desc {
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--text-muted);
+    }
+
+    .code-snippet {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      background: var(--bg-black);
+      border: 1px solid var(--border-fine);
+      border-radius: var(--radius-sm);
+      padding: 12px;
+      color: #ffffff;
+      line-height: 1.5;
+    }
+
+    /* SLIDE 3: TOPOLOGIA DINAMICA KEYNOTE */
+    .keynote-topo-board {
+      background: var(--bg-black);
+      border: 1px solid var(--border-gold);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      overflow-x: auto;
+    }
+
+    .topo-device-node {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-fine);
+      border-radius: var(--radius-sm);
+      padding: 10px 12px;
+      min-width: 100px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      cursor: pointer;
+    }
+
+    .topo-device-node:hover {
+      border-color: var(--gold-primary);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 16px var(--gold-glow);
+    }
+
+    .topo-device-node:active {
+      transform: scale(0.96);
+    }
+
+    .topo-device-node.active-dev {
+      border-color: var(--gold-primary);
+      box-shadow: 0 0 16px var(--gold-glow);
+      background: var(--bg-elevated);
+    }
+
+    .dev-role {
+      font-family: var(--font-mono);
+      font-size: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--gold-primary);
+    }
+
+    .dev-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #ffffff;
+    }
+
+    .dev-ip {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--gold-light);
+      background: rgba(212, 175, 55, 0.1);
+      padding: 1px 6px;
+      border-radius: 4px;
+    }
+
+    .cable-flow {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      flex-shrink: 0;
+      padding: 0 4px;
+    }
+
+    .cable-bar {
+      height: 2px;
+      width: 26px;
+      background: var(--border-strong);
+    }
+
+    .cable-bar.gold-wan {
+      background: var(--gold-primary);
+      width: 36px;
+      background-image: repeating-linear-gradient(90deg, var(--gold-primary), var(--gold-primary) 4px, transparent 4px, transparent 8px);
+    }
+
+    .cable-text {
+      font-family: var(--font-mono);
+      font-size: 8px;
+      color: var(--text-dim);
+    }
+
+    /* SLIDE 4: SUBNETTING & DEDUCAO WILDCARD */
+    .math-table-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 20px;
+    }
+
+    .deck-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    .deck-table th {
+      padding: 10px 14px;
+      text-align: left;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--gold-primary);
+      border-bottom: 1px solid var(--border-gold);
+    }
+
+    .deck-table td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border-fine);
+      color: var(--text-muted);
+    }
+
+    .deck-table tr:hover td {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .math-callout-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-fine);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .math-row {
+      background: var(--bg-black);
+      border: 1px solid var(--border-fine);
+      border-radius: var(--radius-sm);
+      padding: 12px 14px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      line-height: 1.7;
+    }
+
+    /* SLIDE 5: TERMINAL DE COMANDOS CLI */
+    .cli-keynote-container {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .cli-device-tabs {
+      display: flex;
+      gap: 8px;
+    }
+
+    .cli-nav-tab {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-fine);
+      color: var(--text-muted);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 8px 16px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .cli-nav-tab.active {
+      background: var(--bg-elevated);
+      border-color: var(--border-gold);
+      color: var(--gold-light);
+    }
+
+    .cli-nav-tab:active {
+      transform: scale(0.97);
+    }
+
+    .keynote-terminal {
+      background: #020204;
+      border: 1px solid var(--border-gold);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      box-shadow: 0 20px 48px rgba(0, 0, 0, 0.8);
+    }
+
+    .terminal-bar {
+      height: 38px;
+      background: #09090d;
+      border-bottom: 1px solid var(--border-fine);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+    }
+
+    .terminal-dots {
+      display: flex;
+      gap: 6px;
+    }
+    .tdot { width: 10px; height: 10px; border-radius: 50%; }
+    .tdot.r { background: #ff5f56; }
+    .tdot.y { background: #ffbd2e; }
+    .tdot.g { background: #27c93f; }
+
+    .terminal-file {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-dim);
+    }
+
+    .btn-terminal-copy {
+      background: rgba(212, 175, 55, 0.1);
+      border: 1px solid var(--border-gold);
+      color: var(--gold-light);
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      padding: 3px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .btn-terminal-copy:hover {
+      background: rgba(212, 175, 55, 0.2);
+    }
+
+    .btn-terminal-copy:active {
+      transform: scale(0.96);
+    }
+
+    .terminal-pre {
+      padding: 18px 22px;
+      font-family: var(--font-mono);
+      font-size: 12.5px;
+      line-height: 1.65;
+      max-height: 340px;
+      overflow-y: auto;
+      color: #e2e8f0;
+    }
+
+    /* CLI Tokens */
+    .tk-c { color: #52525b; font-style: italic; }
+    .tk-kw { color: #f5e6b3; font-weight: 700; }
+    .tk-if { color: #34d399; font-weight: 600; }
+    .tk-ip { color: #d4af37; }
+    .tk-wc { color: #fb7185; font-weight: 700; }
+
+    /* SLIDE 6: HOSTS & GUI */
+    .hosts-presentation-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    .host-box {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-fine);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .host-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      padding: 8px 12px;
+      background: var(--bg-black);
+      border-radius: var(--radius-sm);
+    }
+
+    .host-k { color: var(--text-dim); }
+    .host-v { font-family: var(--font-mono); font-weight: 700; color: #ffffff; }
+
+    /* SLIDE 7: AUDITORIA FORENSE */
+    .forensic-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .ping-audit-terminal {
+      background: var(--bg-black);
+      border: 1px solid var(--border-fine);
+      border-radius: var(--radius-md);
+      padding: 18px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      line-height: 1.6;
+      color: var(--text-muted);
+    }
+
+    .ping-ok {
+      color: #34d399;
+      font-weight: 700;
+    }
+
+    /* SLIDE 8: TROUBLESHOOTING */
+    .trouble-cards-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .trouble-item-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-fine);
+      border-radius: var(--radius-sm);
+      padding: 16px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .trouble-header {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: #ffffff;
+    }
+
+    .trouble-body {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .trouble-sol {
+      font-size: 11.5px;
+      color: var(--gold-light);
+      background: rgba(212, 175, 55, 0.08);
+      border-left: 2px solid var(--gold-primary);
+      padding: 6px 10px;
+      border-radius: 0 4px 4px 0;
+    }
+
+    /* SLIDE 9: CHECKLIST */
+    .checklist-deck-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .check-card-deck {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-fine);
+      border-radius: var(--radius-sm);
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .check-card-deck:hover {
+      border-color: var(--border-gold);
+    }
+
+    .check-card-deck:active {
+      transform: scale(0.98);
+    }
+
+    .check-card-deck.done {
+      border-color: rgba(16, 185, 129, 0.4);
+      background: rgba(16, 185, 129, 0.05);
+    }
+
+    .check-circle {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      border: 1.5px solid var(--border-strong);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .check-card-deck.done .check-circle {
+      background: #10b981;
+      border-color: #10b981;
+    }
+
+    .check-card-deck.done .check-circle::after {
+      content: "";
+      width: 4px;
+      height: 8px;
+      border: solid #000000;
+      border-width: 0 2px 2px 0;
+      transform: rotate(45deg);
+      margin-top: -2px;
+    }
+
+    .check-deck-txt {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .check-card-deck.done .check-deck-txt {
+      color: #34d399;
+      text-decoration: line-through;
+      text-decoration-color: rgba(52, 211, 153, 0.4);
+    }
+
+    /* Barra Inferior de Navegacao (Keynote Controller) */
+    .deck-controller {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 64px;
+      z-index: 500;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 40px;
+      background: rgba(6, 6, 8, 0.7);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-top: 1px solid var(--border-fine);
+    }
+
+    .deck-indicator {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--gold-light);
+      letter-spacing: 0.05em;
+    }
+
+    .deck-nav-buttons {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .btn-keynote {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      height: 36px;
+      padding: 0 18px;
+      border-radius: var(--radius-sm);
+      font-size: 12px;
+      font-weight: 600;
+      font-family: var(--font-display);
+      cursor: pointer;
+      transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .btn-keynote-secondary {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-fine);
+      color: var(--text-main);
+    }
+
+    .btn-keynote-secondary:hover {
+      border-color: var(--border-gold);
+      background: var(--bg-elevated);
+    }
+
+    .btn-keynote-secondary:active {
+      transform: scale(0.96);
+    }
+
+    .btn-keynote-primary {
+      background: var(--gold-gradient);
+      border: none;
+      color: #000000;
+      font-weight: 700;
+      box-shadow: 0 2px 10px rgba(212, 175, 55, 0.3);
+    }
+
+    .btn-keynote-primary:hover {
+      opacity: 0.95;
+      box-shadow: 0 4px 16px rgba(212, 175, 55, 0.45);
+    }
+
+    .btn-keynote-primary:active {
+      transform: scale(0.96);
+    }
+
+    .nav-keyboard-hint {
+      font-size: 11px;
+      font-family: var(--font-mono);
+      color: var(--text-dim);
+    }
+
+    /* A11Y */
+    @media (prefers-reduced-motion: reduce) {
+      .slide {
+        transition: opacity 0.01ms !important;
+        transform: none !important;
+      }
+      #top-progress-bar {
+        transition: none !important;
+      }
+    }
+
+    @media (prefers-reduced-transparency: reduce) {
+      .deck-header, .deck-controller {
+        background: var(--bg-black);
+        backdrop-filter: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- BARRA DE PROGRESSO NO TOPO -->
+  <div id="top-progress-bar"></div>
+
+  <!-- HEADER FLUTUANTE KEYNOTE -->
+  <header class="deck-header">
+    <div class="deck-brand">
+      <div class="brand-monogram">OSPF</div>
+      <span class="brand-label">Cisco Systems Architecture &bull; UniMAX 2026</span>
+    </div>
+    <div class="deck-meta-info">
+      <span class="slide-badge" id="slide-topic-badge">Topico 01 / 09</span>
+      <button class="btn-fullscreen" onclick="toggleFullScreen()">Tela Cheia (F)</button>
+    </div>
+  </header>
+
+  <!-- PALCO PRINCIPAL (STAGE) -->
+  <main class="deck-stage">
+
+    <!-- ====================================================================
+         SLIDE 1: COVER KEYNOTE
+         ==================================================================== -->
+    <section class="slide active-slide" id="slide-1">
+      <div class="slide-inner">
+        <div class="cover-hero">
+          <div class="cover-tag-row">
+            <span class="slide-badge">OSPFv2 Multi-Area</span>
+            <span class="slide-badge">Process ID: 1</span>
+            <span class="slide-badge">Packet Tracer 8.x</span>
+          </div>
+
+          <h1 class="cover-title">Roteamento Dinamico Corporativo: Filial e Matriz</h1>
+          
+          <p class="slide-subtitle">
+            Arquitetura de interligacao WAN de alta disponibilidade implementando hierarquia de duas areas no Cisco IOS. Roteamento baseado no algoritmo Dijkstra SPF com Router-IDs exclusivos e mascaras /30.
+          </p>
+
+          <div class="cover-kpi-bar">
+            <div class="cover-kpi-item">
+              <span class="kpi-h">Roteadores</span>
+              <span class="kpi-v">3x Cisco 2911</span>
+              <span class="kpi-s">IOS Software 15.x</span>
+            </div>
+            <div class="cover-kpi-item">
+              <span class="kpi-h">Switches</span>
+              <span class="kpi-v">2x Catalyst 2960</span>
+              <span class="kpi-s">Distribuicao L2</span>
+            </div>
+            <div class="cover-kpi-item">
+              <span class="kpi-h">Topologia WAN</span>
+              <span class="kpi-v">2x Links PTP /30</span>
+              <span class="kpi-s">Wildcard 0.0.0.3</span>
+            </div>
+            <div class="cover-kpi-item">
+              <span class="kpi-h">Artefato Final</span>
+              <span class="kpi-v">Arquivo .pkt</span>
+              <span class="kpi-s">Persistido em NVRAM</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         SLIDE 2: RETIFICACAO DE ENGENHARIA (PORTA G0/0)
+         ==================================================================== -->
+    <section class="slide" id="slide-2">
+      <div class="slide-inner">
+        <div>
+          <span class="slide-eyebrow">Diagnostico de Folha Impressa</span>
+          <h2 class="slide-title">Retificacao Critica: Duplicidade da Porta G0/0 no R3</h2>
+          <p class="slide-subtitle">
+            A atividade impressa contem um conflito de camada fisica. Dois segmentos distintos foram rotulados na mesma interface.
+          </p>
+        </div>
+
+        <div class="split-audit-grid">
+          <div class="audit-pane flaw">
+            <span class="pane-tag">Falha do Enunciado</span>
+            <div class="pane-desc">
+              O diagrama original atribui a interface <strong>GigabitEthernet0/0</strong> simultaneamente para o enlace WAN com R2 (<code>10.0.2.2/30</code>) e para o gateway da LAN Matriz (<code>192.168.20.1/24</code>). Em hardware Cisco 2911, isso gera sobreposicao de rede e bloqueio de interface.
+            </div>
+            <div class="code-snippet">
+% 10.0.2.0 overlaps with GigabitEthernet0/0<br>
+% GigabitEthernet0/0: duplicate subnet conflict
+            </div>
+          </div>
+
+          <div class="audit-pane solution">
+            <span class="pane-tag">Solucao Oficial de Engenharia</span>
+            <div class="pane-desc">
+              A arquitetura realoca as sub-redes nas portas fisicas nativas do Cisco 2911:<br><br>
+              &bull; <strong>GigabitEthernet0/0:</strong> Alocada para a WAN Ponto a Ponto (<code>10.0.2.2/30</code>).<br>
+              &bull; <strong>GigabitEthernet0/1:</strong> Alocada para o Gateway da LAN Matriz (<code>192.168.20.1/24</code>).
+            </div>
+            <div class="code-snippet" style="border-color: var(--border-gold); color: var(--gold-light);">
+interface GigabitEthernet0/0 -> ip address 10.0.2.2 255.255.255.252<br>
+interface GigabitEthernet0/1 -> ip address 192.168.20.1 255.255.255.0
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         SLIDE 3: TOPOLOGIA DINAMICA KEYNOTE
+         ==================================================================== -->
+    <section class="slide" id="slide-3">
+      <div class="slide-inner">
+        <div>
+          <span class="slide-eyebrow">Esquematico da Infraestrutura</span>
+          <h2 class="slide-title">Topologia Interativa de Ponta a Ponta</h2>
+          <p class="slide-subtitle">
+            Fluxo horizontal integrando os 7 equipamentos da rede com delimitacao formal das Areas 0 e 1.
+          </p>
+        </div>
+
+        <div class="glass-surface">
+          <div class="keynote-topo-board">
+            
+            <!-- PC1 -->
+            <div class="topo-device-node" onclick="setKeynoteDev('pc1')">
+              <span class="dev-role">Host Final</span>
+              <span class="dev-title">PC1</span>
+              <span class="dev-ip">192.168.10.10</span>
+            </div>
+
+            <!-- Cabo PC1 - SW1 -->
+            <div class="cable-flow">
+              <span class="cable-text">Fa0/1</span>
+              <div class="cable-bar"></div>
+              <span class="cable-text">Direto</span>
+            </div>
+
+            <!-- SW1 -->
+            <div class="topo-device-node">
+              <span class="dev-role">Switch L2</span>
+              <span class="dev-title">SW1</span>
+              <span class="dev-ip">Catalyst 2960</span>
+            </div>
+
+            <!-- Cabo SW1 - R1 -->
+            <div class="cable-flow">
+              <span class="cable-text">G0/0 (.1)</span>
+              <div class="cable-bar"></div>
+              <span class="cable-text">Area 1</span>
+            </div>
+
+            <!-- R1 (ABR) -->
+            <div class="topo-device-node active-dev" id="k-dev-r1" onclick="setKeynoteDev('r1')">
+              <span class="dev-role">ABR Filial</span>
+              <span class="dev-title">R1</span>
+              <span class="dev-ip">ID: 1.1.1.1</span>
+            </div>
+
+            <!-- Cabo WAN R1 - R2 -->
+            <div class="cable-flow">
+              <span class="cable-text">10.0.1.1</span>
+              <div class="cable-bar gold-wan"></div>
+              <span class="cable-text">WAN /30</span>
+            </div>
+
+            <!-- R2 (Backbone) -->
+            <div class="topo-device-node" id="k-dev-r2" onclick="setKeynoteDev('r2')">
+              <span class="dev-role">Backbone Transit</span>
+              <span class="dev-title">R2</span>
+              <span class="dev-ip">ID: 2.2.2.2</span>
+            </div>
+
+            <!-- Cabo WAN R2 - R3 -->
+            <div class="cable-flow">
+              <span class="cable-text">10.0.2.1</span>
+              <div class="cable-bar gold-wan"></div>
+              <span class="cable-text">WAN /30</span>
+            </div>
+
+            <!-- R3 (Matriz Gateway) -->
+            <div class="topo-device-node" id="k-dev-r3" onclick="setKeynoteDev('r3')">
+              <span class="dev-role">Gateway Matriz</span>
+              <span class="dev-title">R3</span>
+              <span class="dev-ip">ID: 3.3.3.3</span>
+            </div>
+
+            <!-- Cabo R3 - SW2 -->
+            <div class="cable-flow">
+              <span class="cable-text">G0/1 (.1)</span>
+              <div class="cable-bar"></div>
+              <span class="cable-text">Area 0</span>
+            </div>
+
+            <!-- SW2 -->
+            <div class="topo-device-node">
+              <span class="dev-role">Switch L2</span>
+              <span class="dev-title">SW2</span>
+              <span class="dev-ip">Catalyst 2960</span>
+            </div>
+
+            <!-- Cabo SW2 - PC2 -->
+            <div class="cable-flow">
+              <span class="cable-text">Fa0/1</span>
+              <div class="cable-bar"></div>
+              <span class="cable-text">Direto</span>
+            </div>
+
+            <!-- PC2 -->
+            <div class="topo-device-node" onclick="setKeynoteDev('pc2')">
+              <span class="dev-role">Host Final</span>
+              <span class="dev-title">PC2</span>
+              <span class="dev-ip">192.168.20.10</span>
+            </div>
+
+          </div>
+
+          <div style="margin-top: 16px; display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: var(--text-muted);">
+            <span id="keynote-dev-status">Dispositivo Selecionado: <strong>R1 (ABR Filial)</strong> &bull; Conecta Area 1 (G0/0) a Area 0 (G0/1)</span>
+            <button class="btn-fullscreen" onclick="goToSlide(5)">Ver Script no Terminal &rarr;</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         SLIDE 4: SUBNETTING & DEDUCAO MATEMATICA DE WILDCARDS
+         ==================================================================== -->
+    <section class="slide" id="slide-4">
+      <div class="slide-inner">
+        <div>
+          <span class="slide-eyebrow">Engenharia de Enderecamento</span>
+          <h2 class="slide-title">Plano de Sub-redes e Deducoes de Wildcard</h2>
+          <p class="slide-subtitle">
+            O OSPF nao aceita mascaras decimais convencionais no comando 'network'. O calculo de bits invertidos e compulsorio.
+          </p>
+        </div>
+
+        <div class="math-table-grid">
+          <div class="glass-surface" style="padding: 16px 20px;">
+            <table class="deck-table">
+              <thead>
+                <tr>
+                  <th>Segmento</th>
+                  <th>Rede / CIDR</th>
+                  <th>Mascara Decimal</th>
+                  <th>Wildcard OSPF</th>
+                  <th>Area</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>LAN Filial</strong></td>
+                  <td><code>192.168.10.0/24</code></td>
+                  <td>255.255.255.0</td>
+                  <td style="color: var(--gold-light); font-weight: 700;">0.0.0.255</td>
+                  <td>Area 1</td>
+                </tr>
+                <tr>
+                  <td><strong>WAN R1-R2</strong></td>
+                  <td><code>10.0.1.0/30</code></td>
+                  <td>255.255.255.252</td>
+                  <td style="color: var(--gold-light); font-weight: 700;">0.0.0.3</td>
+                  <td>Area 0</td>
+                </tr>
+                <tr>
+                  <td><strong>WAN R2-R3</strong></td>
+                  <td><code>10.0.2.0/30</code></td>
+                  <td>255.255.255.252</td>
+                  <td style="color: var(--gold-light); font-weight: 700;">0.0.0.3</td>
+                  <td>Area 0</td>
+                </tr>
+                <tr>
+                  <td><strong>LAN Matriz</strong></td>
+                  <td><code>192.168.20.0/24</code></td>
+                  <td>255.255.255.0</td>
+                  <td style="color: var(--gold-light); font-weight: 700;">0.0.0.255</td>
+                  <td>Area 0</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="math-callout-card">
+            <span style="font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; color: var(--gold-primary); font-weight: 700;">Regra do Complemento (Subtracao)</span>
+            <div class="math-row">
+              Mascara Global : 255.255.255.255<br>
+              Menos Mascara  : - 255.255.255.252 (/30)<br>
+              <div style="height: 1px; background: var(--border-strong); margin: 4px 0;"></div>
+              Wildcard OSPF  : <span style="color: var(--gold-light); font-weight: 700;">0.  0.  0.   3</span>
+            </div>
+            <div class="math-row">
+              Mascara Global : 255.255.255.255<br>
+              Menos Mascara  : - 255.255.255.  0 (/24)<br>
+              <div style="height: 1px; background: var(--border-strong); margin: 4px 0;"></div>
+              Wildcard OSPF  : <span style="color: var(--gold-light); font-weight: 700;">0.  0.  0. 255</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         SLIDE 5: TERMINAL DE COMANDOS CLI DOS ROTEADORES
+         ==================================================================== -->
+    <section class="slide" id="slide-5">
+      <div class="slide-inner">
+        <div>
+          <span class="slide-eyebrow">Cisco IOS 15.x Scripts</span>
+          <h2 class="slide-title">Terminal CLI Interativo dos Roteadores</h2>
+          <p class="slide-subtitle">
+            Comandos completos prontos para colagem no console do Cisco Packet Tracer com persistencia em NVRAM.
+          </p>
+        </div>
+
+        <div class="cli-keynote-container">
+          <div class="cli-device-tabs">
+            <button class="cli-nav-tab active" id="kt-tab-r1" onclick="switchKeynoteTab('r1')">R1 (ABR Filial &bull; ID 1.1.1.1)</button>
+            <button class="cli-nav-tab" id="kt-tab-r2" onclick="switchKeynoteTab('r2')">R2 (Backbone Transit &bull; ID 2.2.2.2)</button>
+            <button class="cli-nav-tab" id="kt-tab-r3" onclick="switchKeynoteTab('r3')">R3 (Matriz Gateway &bull; ID 3.3.3.3)</button>
+            <button class="cli-nav-tab" id="kt-tab-all" onclick="switchKeynoteTab('all')">Script Consolidado (R1+R2+R3)</button>
+          </div>
+
+          <div class="keynote-terminal">
+            <div class="terminal-bar">
+              <div class="terminal-dots">
+                <span class="tdot r"></span>
+                <span class="tdot y"></span>
+                <span class="tdot g"></span>
+              </div>
+              <span class="terminal-file" id="kt-filename">R1_ABR_Filial.ios</span>
+              <button class="btn-terminal-copy" id="kt-copy-btn" onclick="copyKeynoteScript()">Copiar Script</button>
+            </div>
+            <pre class="terminal-pre" id="kt-pre-content">
+              <!-- Dynamically populated via JS -->
+            </pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         SLIDE 6: CONFIGURACAO DOS HOSTS (PC1 & PC2)
+         ==================================================================== -->
+    <section class="slide" id="slide-6">
+      <div class="slide-inner">
+        <div>
+          <span class="slide-eyebrow">Configuracao de Estacoes</span>
+          <h2 class="slide-title">Parametrizacao dos Hosts Finais (PC1 e PC2)</h2>
+          <p class="slide-subtitle">
+            Configuracao estatica aplicada via interface grafica Desktop do Cisco Packet Tracer.
+          </p>
+        </div>
+
+        <div class="hosts-presentation-grid">
+          <div class="host-box">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <h3 style="font-size: 18px; font-weight: 700;">PC1 (Filial)</h3>
+              <span class="slide-badge">Area 1</span>
+            </div>
+            <div class="host-row">
+              <span class="host-k">Conexao Fisica</span>
+              <span class="host-v">Cabo Direto &rarr; SW1 (Fa0/1)</span>
+            </div>
+            <div class="host-row">
+              <span class="host-k">Endereco IPv4</span>
+              <span class="host-v" style="color: var(--gold-light);">192.168.10.10</span>
+            </div>
+            <div class="host-row">
+              <span class="host-k">Mascara de Sub-rede</span>
+              <span class="host-v">255.255.255.0 (/24)</span>
+            </div>
+            <div class="host-row">
+              <span class="host-k">Gateway Padrao</span>
+              <span class="host-v">192.168.10.1 (R1 G0/0)</span>
+            </div>
+            <div style="font-size: 11.5px; color: var(--text-muted); background: var(--bg-black); padding: 10px; border-radius: var(--radius-sm); border: 1px solid var(--border-fine);">
+              <strong>Caminho CPT:</strong> Clique em PC1 &rarr; Desktop &rarr; IP Configuration &rarr; Static.
+            </div>
+          </div>
+
+          <div class="host-box">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <h3 style="font-size: 18px; font-weight: 700;">PC2 (Matriz)</h3>
+              <span class="slide-badge">Area 0</span>
+            </div>
+            <div class="host-row">
+              <span class="host-k">Conexao Fisica</span>
+              <span class="host-v">Cabo Direto &rarr; SW2 (Fa0/1)</span>
+            </div>
+            <div class="host-row">
+              <span class="host-k">Endereco IPv4</span>
+              <span class="host-v" style="color: var(--gold-light);">192.168.20.10</span>
+            </div>
+            <div class="host-row">
+              <span class="host-k">Mascara de Sub-rede</span>
+              <span class="host-v">255.255.255.0 (/24)</span>
+            </div>
+            <div class="host-row">
+              <span class="host-k">Gateway Padrao</span>
+              <span class="host-v">192.168.20.1 (R3 G0/1)</span>
+            </div>
+            <div style="font-size: 11.5px; color: var(--text-muted); background: var(--bg-black); padding: 10px; border-radius: var(--radius-sm); border: 1px solid var(--border-fine);">
+              <strong>Caminho CPT:</strong> Clique em PC2 &rarr; Desktop &rarr; IP Configuration &rarr; Static.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         SLIDE 7: VALIDACAO FORENSE & PING PERFEITO
+         ==================================================================== -->
+    <section class="slide" id="slide-7">
+      <div class="slide-inner">
+        <div>
+          <span class="slide-eyebrow">Aceite de Engenharia</span>
+          <h2 class="slide-title">Protocolo de Validacao Forense e Conectividade</h2>
+          <p class="slide-subtitle">
+            Criterios inegociaveis para homologar a bancada antes de salvar o arquivo .pkt final.
+          </p>
+        </div>
+
+        <div class="forensic-grid">
+          <div class="glass-surface" style="padding: 16px 20px;">
+            <table class="deck-table">
+              <thead>
+                <tr>
+                  <th>Comando Cisco</th>
+                  <th>Criterio Rigoroso de Aceite</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>show ip ospf neighbor</code></td>
+                  <td>Vizinhos em estado <strong style="color: #34d399;">FULL/BDR</strong> ou <strong style="color: #34d399;">FULL/DR</strong>.</td>
+                </tr>
+                <tr>
+                  <td><code>show ip route ospf</code></td>
+                  <td>R1 recebe <strong style="color: var(--gold-light);">O IA 192.168.20.0/24</strong> e R3 recebe rota da Filial.</td>
+                </tr>
+                <tr>
+                  <td><code>show ip ospf interface brief</code></td>
+                  <td>Associacao correta das portas as Areas 0 e 1.</td>
+                </tr>
+                <tr>
+                  <td><code>show ip interface brief</code></td>
+                  <td>Status <strong>up</strong> e Protocol <strong>up</strong> em todas as portas ativas.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="ping-audit-terminal">
+            <span style="color: var(--gold-primary); font-weight: 700;">PC1> ping 192.168.20.10</span><br><br>
+            Pinging 192.168.20.10 with 32 bytes of data:<br>
+            Reply from 192.168.20.10: bytes=32 time=4ms TTL=125<br>
+            Reply from 192.168.20.10: bytes=32 time=1ms TTL=125<br>
+            Reply from 192.168.20.10: bytes=32 time=1ms TTL=125<br>
+            Reply from 192.168.20.10: bytes=32 time=2ms TTL=125<br><br>
+            Ping statistics for 192.168.20.10:<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;Packets: Sent = 4, Received = 4, <span class="ping-ok">Lost = 0 (0% loss)</span><br>
+            Approximate round trip times in milli-seconds:<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;Minimum = 1ms, Maximum = 4ms, Average = 2ms
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         SLIDE 8: TROUBLESHOOTING (ARMADILHAS DE BANCADA)
+         ==================================================================== -->
+    <section class="slide" id="slide-8">
+      <div class="slide-inner">
+        <div>
+          <span class="slide-eyebrow">Solucao de Problemas</span>
+          <h2 class="slide-title">Troubleshooting: Armadilhas Frequentes no Packet Tracer</h2>
+          <p class="slide-subtitle">
+            Causas-raiz dos erros mais comuns de configuracao e resolucoes imediatas.
+          </p>
+        </div>
+
+        <div class="trouble-cards-grid">
+          <div class="trouble-item-card">
+            <div class="trouble-header">1. Vizinhos OSPF travados em 2-WAY ou EXSTART</div>
+            <div class="trouble-body">Ocorre quando ha divergencia na mascara de sub-rede ou MTU nos extremos do link WAN.</div>
+            <div class="trouble-sol"><strong>Fix:</strong> Certifique-se de que a mascara /30 (255.255.255.252) esta identica em R1-R2 e R2-R3.</div>
+          </div>
+
+          <div class="trouble-item-card">
+            <div class="trouble-header">2. LAN da Filial nao alcanca a LAN Matriz</div>
+            <div class="trouble-body">Tabelas OSPF nao aprendem rotas entre areas diferentes se a ligacao ao backbone falhar.</div>
+            <div class="trouble-sol"><strong>Fix:</strong> Confirme que a porta G0/1 do R1 esta declarada estritamente na Area 0.</div>
+          </div>
+
+          <div class="trouble-item-card">
+            <div class="trouble-header">3. Erro de sintaxe no comando 'network'</div>
+            <div class="trouble-body">O Cisco IOS recusa o anuncio se o operador digitar a mascara decimal comum.</div>
+            <div class="trouble-sol"><strong>Fix:</strong> Use a wildcard mask (0.0.0.3 para /30 e 0.0.0.255 para /24).</div>
+          </div>
+
+          <div class="trouble-item-card">
+            <div class="trouble-header">4. O primeiro ping retorna "Request timed out"</div>
+            <div class="trouble-body">O primeiro pacote ICMP e descartado durante a resolucao do protocolo ARP entre PC e Switch.</div>
+            <div class="trouble-sol"><strong>Fix:</strong> Repita o comando de ping imediatamente; a resposta subsequente sera 100% OK.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         SLIDE 9: CHECKLIST FINAL DE ENTREGA
+         ==================================================================== -->
+    <section class="slide" id="slide-9">
+      <div class="slide-inner">
+        <div>
+          <span class="slide-eyebrow">Homologacao Concluida</span>
+          <h2 class="slide-title">Checklist Executivo de Bancada (.pkt)</h2>
+          <p class="slide-subtitle">
+            Marque cada etapa executada para validar a conclusao integral do projeto.
+          </p>
+        </div>
+
+        <div class="checklist-deck-grid">
+          <div class="check-card-deck" onclick="toggleDeckCheck(this)">
+            <div class="check-circle"></div>
+            <span class="check-deck-txt">Topologia Fisica Montada (3x Roteadores, 2x Switches, 2x PCs)</span>
+          </div>
+
+          <div class="check-card-deck" onclick="toggleDeckCheck(this)">
+            <div class="check-circle"></div>
+            <span class="check-deck-txt">PCs Parametrizados (IPs estaticos e Default Gateways)</span>
+          </div>
+
+          <div class="check-card-deck" onclick="toggleDeckCheck(this)">
+            <div class="check-circle"></div>
+            <span class="check-deck-txt">R1 Configurado (Router-ID 1.1.1.1, G0/0 na Area 1, G0/1 na Area 0)</span>
+          </div>
+
+          <div class="check-card-deck" onclick="toggleDeckCheck(this)">
+            <div class="check-circle"></div>
+            <span class="check-deck-txt">R2 Configurado (Router-ID 2.2.2.2, Enlaces 100% na Area 0)</span>
+          </div>
+
+          <div class="check-card-deck" onclick="toggleDeckCheck(this)">
+            <div class="check-circle"></div>
+            <span class="check-deck-txt">R3 Configurado (Router-ID 3.3.3.3, G0/0 WAN e G0/1 LAN corrigida)</span>
+          </div>
+
+          <div class="check-card-deck" onclick="toggleDeckCheck(this)">
+            <div class="check-circle"></div>
+            <span class="check-deck-txt">Persistencia em NVRAM (write memory / copy run start em todos os roteadores)</span>
+          </div>
+        </div>
+
+        <div style="margin-top: 14px; display: flex; justify-content: space-between; align-items: center; background: var(--bg-surface); padding: 16px 20px; border-radius: var(--radius-sm); border: 1px solid var(--border-fine);">
+          <span style="font-size: 13px; color: var(--text-muted);" id="deck-progress-summary">Progresso do Lab: 0 de 6 tarefas concluidas</span>
+          <button class="btn-keynote btn-keynote-primary" onclick="goToSlide(1)">Reiniciar Apresentacao</button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- CONTROLE INFERIOR FLUTUANTE (KEYNOTE BAR) -->
+  <footer class="deck-controller">
+    <div class="deck-indicator" id="deck-counter">01 / 09</div>
+
+    <div class="nav-keyboard-hint">
+      Use &larr; &rarr; ou [Espaco] para navegar
+    </div>
+
+    <div class="deck-nav-buttons">
+      <button class="btn-keynote btn-keynote-secondary" onclick="prevSlide()">&larr; Anterior</button>
+      <button class="btn-keynote btn-keynote-primary" onclick="nextSlide()">Proximo &rarr;</button>
+    </div>
+  </footer>
+
+  <!-- ========================================================================
+       KEYNOTE LOGIC ENGINE
+       ======================================================================== -->
+  <script>
+    const TOTAL_SLIDES = 9;
+    let currentSlide = 1;
+
+    /* Scripts CLI */
+    const KEYNOTE_SCRIPTS = {
+      r1: {
+        filename: "R1_ABR_Filial.ios",
+        code: `enable
+configure terminal
+hostname R1
+
+! --- LAN Filial (Area 1) ---
+interface GigabitEthernet0/0
+ description LAN Filial (Area 1)
+ ip address 192.168.10.1 255.255.255.0
+ no shutdown
+ exit
+
+! --- WAN Enlace R1-R2 (Area 0) ---
+interface GigabitEthernet0/1
+ description WAN PTP para R2 (Area 0)
+ ip address 10.0.1.1 255.255.255.252
+ no shutdown
+ exit
+
+! --- OSPF Multi-Area ---
+router ospf 1
+ router-id 1.1.1.1
+ network 192.168.10.0 0.0.0.255 area 1
+ network 10.0.1.0 0.0.0.3 area 0
+ exit
+
+do write memory
+exit`
+      },
+      r2: {
+        filename: "R2_Backbone_Transit.ios",
+        code: `enable
+configure terminal
+hostname R2
+
+! --- WAN Enlace com R1 (Area 0) ---
+interface GigabitEthernet0/0
+ description WAN PTP para R1 (Area 0)
+ ip address 10.0.1.2 255.255.255.252
+ no shutdown
+ exit
+
+! --- WAN Enlace com R3 (Area 0) ---
+interface GigabitEthernet0/1
+ description WAN PTP para R3 (Area 0)
+ ip address 10.0.2.1 255.255.255.252
+ no shutdown
+ exit
+
+! --- OSPF Backbone ---
+router ospf 1
+ router-id 2.2.2.2
+ network 10.0.1.0 0.0.0.3 area 0
+ network 10.0.2.0 0.0.0.3 area 0
+ exit
+
+do write memory
+exit`
+      },
+      r3: {
+        filename: "R3_Matriz_Gateway.ios",
+        code: `enable
+configure terminal
+hostname R3
+
+! --- WAN Enlace com R2 (Area 0) ---
+interface GigabitEthernet0/0
+ description WAN PTP para R2 (Area 0)
+ ip address 10.0.2.2 255.255.255.252
+ no shutdown
+ exit
+
+! --- LAN Matriz (Porta G0/1 retificada) ---
+interface GigabitEthernet0/1
+ description LAN Matriz (Area 0)
+ ip address 192.168.20.1 255.255.255.0
+ no shutdown
+ exit
+
+! --- OSPF Area 0 ---
+router ospf 1
+ router-id 3.3.3.3
+ network 10.0.2.0 0.0.0.3 area 0
+ network 192.168.20.0 0.0.0.255 area 0
+ exit
+
+do write memory
+exit`
+      },
+      all: {
+        filename: "Consolidado_R1_R2_R3.ios",
+        code: `! >>>>> ROTEADOR R1 (ABR FILIAL) <<<<<
+enable
+configure terminal
+hostname R1
+interface GigabitEthernet0/0
+ ip address 192.168.10.1 255.255.255.0
+ no shutdown
+ exit
+interface GigabitEthernet0/1
+ ip address 10.0.1.1 255.255.255.252
+ no shutdown
+ exit
+router ospf 1
+ router-id 1.1.1.1
+ network 192.168.10.0 0.0.0.255 area 1
+ network 10.0.1.0 0.0.0.3 area 0
+ exit
+do write memory
+exit
+
+! >>>>> ROTEADOR R2 (BACKBONE TRANSIT) <<<<<
+enable
+configure terminal
+hostname R2
+interface GigabitEthernet0/0
+ ip address 10.0.1.2 255.255.255.252
+ no shutdown
+ exit
+interface GigabitEthernet0/1
+ ip address 10.0.2.1 255.255.255.252
+ no shutdown
+ exit
+router ospf 1
+ router-id 2.2.2.2
+ network 10.0.1.0 0.0.0.3 area 0
+ network 10.0.2.0 0.0.0.3 area 0
+ exit
+do write memory
+exit
+
+! >>>>> ROTEADOR R3 (MATRIZ GATEWAY) <<<<<
+enable
+configure terminal
+hostname R3
+interface GigabitEthernet0/0
+ ip address 10.0.2.2 255.255.255.252
+ no shutdown
+ exit
+interface GigabitEthernet0/1
+ ip address 192.168.20.1 255.255.255.0
+ no shutdown
+ exit
+router ospf 1
+ router-id 3.3.3.3
+ network 10.0.2.0 0.0.0.3 area 0
+ network 192.168.20.0 0.0.0.255 area 0
+ exit
+do write memory
+exit`
+      }
+    };
+
+    let activeKeynoteKey = "r1";
+
+    function updateSlide() {
+      // Toggle active classes
+      for (let i = 1; i <= TOTAL_SLIDES; i++) {
+        const el = document.getElementById("slide-" + i);
+        if (el) {
+          if (i === currentSlide) {
+            el.classList.add("active-slide");
+          } else {
+            el.classList.remove("active-slide");
+          }
+        }
+      }
+
+      // Update counters
+      const formatted = String(currentSlide).padStart(2, "0");
+      document.getElementById("deck-counter").textContent = `${formatted} / 09`;
+      document.getElementById("slide-topic-badge").textContent = `Topico ${formatted} / 09`;
+
+      // Update Progress line
+      const percent = (currentSlide / TOTAL_SLIDES) * 100;
+      document.getElementById("top-progress-bar").style.width = percent + "%";
+    }
+
+    function nextSlide() {
+      if (currentSlide < TOTAL_SLIDES) {
+        currentSlide++;
+        updateSlide();
+      }
+    }
+
+    function prevSlide() {
+      if (currentSlide > 1) {
+        currentSlide--;
+        updateSlide();
+      }
+    }
+
+    function goToSlide(num) {
+      if (num >= 1 && num <= TOTAL_SLIDES) {
+        currentSlide = num;
+        updateSlide();
+      }
+    }
+
+    /* Keyboard navigation */
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowRight" || e.key === " " || e.key === "PageDown") {
+        nextSlide();
+      } else if (e.key === "ArrowLeft" || e.key === "PageUp") {
+        prevSlide();
+      } else if (e.key.toLowerCase() === "f") {
+        toggleFullScreen();
+      }
+    });
+
+    function toggleFullScreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        }
+      }
+    }
+
+    /* Terminal tabs */
+    function switchKeynoteTab(key) {
+      activeKeynoteKey = key;
+      const data = KEYNOTE_SCRIPTS[key];
+
+      document.querySelectorAll(".cli-nav-tab").forEach(tab => tab.classList.remove("active"));
+      const btn = document.getElementById("kt-tab-" + key);
+      if (btn) btn.classList.add("active");
+
+      document.getElementById("kt-filename").textContent = data.filename;
+
+      const pre = document.getElementById("kt-pre-content");
+      pre.innerHTML = highlightCli(data.code);
+    }
+
+    function highlightCli(str) {
+      return str.split("\n").map(line => {
+        if (line.trim().startsWith("!")) {
+          return `<span class="tk-c">${line}</span>`;
+        }
+        let l = line;
+        l = l.replace(/(GigabitEthernet0\/[0-2]|FastEthernet0\/[0-9]+)/g, '<span class="tk-if">$1</span>');
+        l = l.replace(/\b(0\.0\.0\.(?:255|3))\b/g, '<span class="tk-wc">$1</span>');
+        l = l.replace(/\b(192\.168\.\d+\.\d+|10\.0\.\d+\.\d+|255\.255\.255\.\d+|1\.1\.1\.1|2\.2\.2\.2|3\.3\.3\.3)\b/g, '<span class="tk-ip">$1</span>');
+        l = l.replace(/\b(enable|configure terminal|hostname|interface|description|ip address|no shutdown|exit|router ospf|router-id|network|area|do write memory)\b/g, '<span class="tk-kw">$1</span>');
+        return l;
+      }).join("\n");
+    }
+
+    function copyKeynoteScript() {
+      const code = KEYNOTE_SCRIPTS[activeKeynoteKey].code;
+      navigator.clipboard.writeText(code).then(() => {
+        const btn = document.getElementById("kt-copy-btn");
+        const orig = btn.textContent;
+        btn.textContent = "Copiado com Sucesso!";
+        setTimeout(() => { btn.textContent = orig; }, 2000);
+      });
+    }
+
+    /* Topo device selector */
+    function setKeynoteDev(dev) {
+      document.querySelectorAll(".topo-device-node").forEach(n => n.classList.remove("active-dev"));
+      const target = document.getElementById("k-dev-" + dev);
+      if (target) target.classList.add("active-dev");
+
+      const status = document.getElementById("keynote-dev-status");
+      if (dev === "r1") {
+        status.innerHTML = "Dispositivo Selecionado: <strong>R1 (ABR Filial)</strong> &bull; Conecta Area 1 (G0/0) a Area 0 (G0/1)";
+        switchKeynoteTab("r1");
+      } else if (dev === "r2") {
+        status.innerHTML = "Dispositivo Selecionado: <strong>R2 (Backbone Transit)</strong> &bull; Roteamento puro em Area 0";
+        switchKeynoteTab("r2");
+      } else if (dev === "r3") {
+        status.innerHTML = "Dispositivo Selecionado: <strong>R3 (Matriz Gateway)</strong> &bull; WAN G0/0 e LAN G0/1 na Area 0";
+        switchKeynoteTab("r3");
+      } else if (dev === "pc1") {
+        status.innerHTML = "Dispositivo Selecionado: <strong>PC1 (Host Filial)</strong> &bull; IP 192.168.10.10 &bull; Gateway 192.168.10.1";
+      } else if (dev === "pc2") {
+        status.innerHTML = "Dispositivo Selecionado: <strong>PC2 (Host Matriz)</strong> &bull; IP 192.168.20.10 &bull; Gateway 192.168.20.1";
+      }
+    }
+
+    /* Checklist */
+    function toggleDeckCheck(card) {
+      card.classList.toggle("done");
+      const doneCount = document.querySelectorAll(".check-card-deck.done").length;
+      document.getElementById("deck-progress-summary").textContent = `Progresso do Lab: ${doneCount} de 6 tarefas concluidas`;
+    }
+
+    /* Init */
+    document.addEventListener("DOMContentLoaded", () => {
+      switchKeynoteTab("r1");
+      updateSlide();
+
+      // Apple Design Zero-Latency Pointer Triggers
+      document.querySelectorAll("button, .topo-device-node, .check-card-deck").forEach(el => {
+        el.addEventListener("pointerdown", () => {
+          el.style.transform = "scale(0.97)";
+        }, { passive: true });
+        el.addEventListener("pointerup", () => {
+          el.style.transform = "";
+        }, { passive: true });
+        el.addEventListener("pointercancel", () => {
+          el.style.transform = "";
+        }, { passive: true });
+      });
+    });
+  </script>
+</body>
+</html>

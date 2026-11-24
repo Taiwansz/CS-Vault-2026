@@ -1,0 +1,34 @@
+MCP BUILDER V5.2 - ATIVIDADE RSTP
+
+1. No Packet Tracer, abra:
+   Extensions > Scripting > Configure PT Script Modules
+
+2. Clique em Add e selecione:
+   C:\Users\52319400\MCP BUILDER\MCP-BUILDER-V5.2.pts
+
+3. Marque o modulo para iniciar e reinicie o Packet Tracer.
+
+4. Execute INICIAR_PONTE_MCP.bat e mantenha a janela aberta.
+
+5. No Packet Tracer, abra um arquivo novo e vazio.
+
+6. Abra Extensions > MCP BUILDER. O status deve indicar bridge conectado.
+
+7. Na guia Editor, carregue ou cole ATIVIDADE_1_RSTP_MCP_BUILDER.js e execute.
+
+8. O arquivo final sera salvo automaticamente em:
+   C:\Users\52319400\Atividade_1_RSTP.pkt
+
+ATIVIDADE 2 - OSPF
+
+Para criar a atividade OSPF separada, abra OUTRO arquivo novo e vazio e carregue:
+   C:\Users\52319400\MCP BUILDER\ATIVIDADE_2_OSPF_MCP_BUILDER.js
+
+O resultado sera salvo automaticamente em:
+   C:\Users\52319400\Atividade_2_OSPF.pkt
+
+Aguarde pelo menos 30 segundos apos executar o codigo OSPF. Esse intervalo
+permite formar as adjacencias, executar os comandos de evidencia e salvar o .pkt.
+
+O MCP BUILDER executa o editor linha por linha. Nao reformate o codigo em
+multiplas linhas dentro das chamadas configureIosDevice.

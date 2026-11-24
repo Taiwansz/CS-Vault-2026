@@ -1,0 +1,15 @@
+AUTOMACAO DA ATIVIDADE RSTP
+
+1. Feche completamente o Cisco Packet Tracer.
+2. Configure o Windows em 1366 x 768 e escala de tela em 100%.
+3. Execute EXECUTAR_AUTOMACAO.bat.
+4. Nao utilize mouse ou teclado durante a execucao.
+
+O resultado sera salvo em:
+C:\Users\52319400\Atividade_1_RSTP.pkt
+
+Para cancelar imediatamente, mova o cursor para qualquer canto da tela.
+
+Observacao tecnica: os gateways solicitados sao gravados nos PCs, mas nao
+respondem, pois o enunciado nao inclui roteador nem switch camada 3. Assim,
+nao existe roteamento entre VLANs; isso e o comportamento correto da topologia.

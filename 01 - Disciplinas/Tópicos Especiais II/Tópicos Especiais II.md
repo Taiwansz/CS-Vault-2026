@@ -93,6 +93,7 @@ horario: "Terça-feira / 19:00–21:40"
 - [[2026-10-20 - Integracao Java e Banco de Dados com JDBC|Materiais da Aula 20/10 - Projeto Java JDBC e Scripts SQL]]
 - [[2026-10-27 - ArenaPlay Sports Gestao e Scout - CRUD Full JDBC e SQL|Aula 27/10 - ArenaPlay Sports Gestão & Scout (CRUD Full, JDBC e SQL)]]
 - [[2026-10-27 - ArenaPlay Sports Gestao e Scout - CRUD Full JDBC e SQL|Materiais da Aula 27/10 - Projeto Java JDBC Atletas e Queries]]
+- [[2026-11-24 - Aula Final e Despedida - Prof. Luiz Chiavini (Luyz)|Aula Final 24/11 - Despedida Prof. Luiz Chiavini (Luyz)]]
 - [[01 - Disciplinas/Tópicos Especiais II/Materiais/Apostila de POO com Java.pdf|Apostila de POO com Java (PDF)]]
 - [[01 - Disciplinas/Tópicos Especiais II/Materiais/diagrama.html|Diagrama de Classes Interativo (HTML)]]
 
@@ -111,6 +112,7 @@ horario: "Terça-feira / 19:00–21:40"
 - [[2026-10-06 - Modelagem Dimensional, Star Schema e Telemetria Operacional ANAC]]
 - [[2026-10-20 - Integracao Java e Banco de Dados com JDBC]]
 - [[2026-10-27 - ArenaPlay Sports Gestao e Scout - CRUD Full JDBC e SQL]]
+- [[2026-11-24 - Aula Final e Despedida - Prof. Luiz Chiavini (Luyz)]]
 - [[Atividade 01 - Conta Bancaria em Java]]
 - [[Atividade 02 - Controle de Estoque e Classes Abstratas]]
 - [[Atividade 03 - Simulador de Batalha em Javaland]]

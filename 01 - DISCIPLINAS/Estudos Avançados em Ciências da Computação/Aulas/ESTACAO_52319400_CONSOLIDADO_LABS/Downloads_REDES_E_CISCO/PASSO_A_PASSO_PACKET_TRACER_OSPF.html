@@ -1,0 +1,1751 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Passo a Passo Executivo Cisco Packet Tracer | OSPFv2 Multi-Área</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-deep: #050507;
+      --bg-canvas: #09090d;
+      --bg-surface: #0f0f15;
+      --bg-surface-elevated: #15151e;
+      --bg-surface-glass: rgba(15, 15, 21, 0.78);
+      
+      --gold-primary: #d4af37;
+      --gold-light: #f5e8be;
+      --gold-deep: #8c7020;
+      --gold-glow: rgba(212, 175, 55, 0.16);
+      --gold-border: rgba(212, 175, 55, 0.28);
+      
+      --emerald-accent: #10b981;
+      --emerald-glow: rgba(16, 185, 129, 0.18);
+      --emerald-border: rgba(16, 185, 129, 0.32);
+
+      --amber-accent: #f59e0b;
+      --amber-border: rgba(245, 158, 11, 0.3);
+
+      --text-main: #f5f5f7;
+      --text-secondary: #a1a1aa;
+      --text-muted: #52525b;
+      --text-gold: #e6c86e;
+
+      --border-subtle: rgba(255, 255, 255, 0.07);
+      --border-medium: rgba(255, 255, 255, 0.12);
+      
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --radius-xl: 28px;
+      
+      --spring-physics: cubic-bezier(0.16, 1, 0.3, 1);
+      --spring-snappy: cubic-bezier(0.2, 0.9, 0.3, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background-color: var(--bg-deep);
+      color: var(--text-main);
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      user-select: none;
+    }
+
+    /* BARRA DE PROGRESSO SUPERIOR */
+    #top-progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      width: 0%;
+      background: linear-gradient(90deg, var(--gold-deep), var(--gold-primary), var(--gold-light));
+      box-shadow: 0 0 12px var(--gold-glow);
+      z-index: 1000;
+      transition: width 0.35s var(--spring-physics);
+    }
+
+    /* HEADER TRANSLÚCIDO EXECUTIVO */
+    .keynote-header {
+      position: fixed;
+      top: 14px;
+      left: 24px;
+      right: 24px;
+      height: 58px;
+      background: var(--bg-surface-glass);
+      backdrop-filter: blur(24px) saturate(180%);
+      -webkit-backdrop-filter: blur(24px) saturate(180%);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      z-index: 100;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
+    }
+
+    .header-branding {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .brand-crest {
+      width: 30px;
+      height: 30px;
+      border-radius: var(--radius-sm);
+      background: linear-gradient(135deg, #1f1b0f, #2d2614);
+      border: 1px solid var(--gold-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      font-size: 13px;
+      color: var(--gold-primary);
+      letter-spacing: -0.05em;
+    }
+
+    .brand-meta {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand-title {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .brand-badge {
+      font-size: 9px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 2px 7px;
+      border-radius: 4px;
+      background: rgba(212, 175, 55, 0.12);
+      color: var(--gold-primary);
+      border: 1px solid var(--gold-border);
+    }
+
+    .brand-sub {
+      font-size: 11px;
+      color: var(--text-muted);
+      letter-spacing: -0.01em;
+    }
+
+    .header-shortcuts {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .shortcut-pill {
+      font-size: 10px;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--text-secondary);
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-subtle);
+      padding: 4px 8px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .shortcut-pill kbd {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 3px;
+      padding: 1px 5px;
+      font-weight: 600;
+      color: var(--gold-light);
+    }
+
+    /* PALCO DE APRESENTAÇÃO (SLIDE DECK) */
+    .deck-viewport {
+      width: 100vw;
+      height: 100vh;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 86px 28px 84px 28px;
+    }
+
+    .slide {
+      position: absolute;
+      top: 86px;
+      bottom: 84px;
+      left: 28px;
+      right: 28px;
+      opacity: 0;
+      pointer-events: none;
+      transform: scale(0.97) translateY(12px);
+      transition: opacity 0.4s var(--spring-physics), transform 0.4s var(--spring-physics);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding-right: 4px;
+    }
+
+    .slide::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    .slide::-webkit-scrollbar-thumb {
+      background: rgba(212, 175, 55, 0.25);
+      border-radius: 4px;
+    }
+
+    .slide.active {
+      opacity: 1;
+      pointer-events: auto;
+      transform: scale(1) translateY(0);
+      z-index: 10;
+    }
+
+    .slide.prev {
+      opacity: 0;
+      transform: scale(0.96) translateY(-14px);
+    }
+
+    .slide.next {
+      opacity: 0;
+      transform: scale(0.96) translateY(14px);
+    }
+
+    /* PADRÕES DE CONTEÚDO DOS SLIDES */
+    .slide-canvas {
+      width: 100%;
+      max-width: 1320px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      padding-bottom: 20px;
+    }
+
+    .slide-eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .step-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--gold-primary);
+      background: rgba(212, 175, 55, 0.1);
+      border: 1px solid var(--gold-border);
+      padding: 3px 10px;
+      border-radius: 6px;
+    }
+
+    .module-tag {
+      font-size: 11px;
+      color: var(--text-muted);
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+
+    .slide-headline {
+      font-size: 32px;
+      font-weight: 800;
+      letter-spacing: -0.035em;
+      line-height: 1.15;
+      color: var(--text-main);
+    }
+
+    .slide-headline span {
+      background: linear-gradient(135deg, var(--gold-light), var(--gold-primary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .slide-description {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.55;
+      max-width: 900px;
+    }
+
+    /* GRID DE CARDS EXECUTIVOS */
+    .step-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    .step-grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .step-grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+
+    .pro-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      position: relative;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.15s var(--spring-physics);
+    }
+
+    .pro-card:hover {
+      border-color: var(--gold-border);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    }
+
+    .pro-card.featured {
+      background: linear-gradient(160deg, rgba(212, 175, 55, 0.05), var(--bg-surface));
+      border-color: var(--gold-border);
+    }
+
+    .card-header-line {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .card-num-circle {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: rgba(212, 175, 55, 0.12);
+      border: 1px solid var(--gold-border);
+      color: var(--gold-primary);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-main);
+      letter-spacing: -0.01em;
+    }
+
+    .card-body-text {
+      font-size: 12.5px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    .card-metric-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-family: 'JetBrains Mono', monospace;
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid var(--border-subtle);
+      padding: 4px 8px;
+      border-radius: 5px;
+      color: var(--gold-light);
+    }
+
+    /* SIMULADOR GRÁFICO CISCO PACKET TRACER (GUI MOCKUP) */
+    .gui-window {
+      background: #111118;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
+    }
+
+    .gui-titlebar {
+      height: 34px;
+      background: #181822;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 12px;
+    }
+
+    .gui-window-title {
+      font-size: 11px;
+      font-weight: 600;
+      color: #b5b5c0;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .gui-tabs {
+      display: flex;
+      gap: 4px;
+      background: #0e0e14;
+      padding: 6px 10px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .gui-tab {
+      padding: 5px 12px;
+      border-radius: 5px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .gui-tab.active {
+      background: #1e1e2c;
+      color: var(--gold-light);
+      border: 1px solid var(--gold-border);
+    }
+
+    .gui-body {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .gui-field-row {
+      display: grid;
+      grid-template-columns: 140px 1fr;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .gui-label {
+      font-size: 12px;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    .gui-input {
+      background: #08080c;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 6px;
+      padding: 6px 10px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: #38bdf8;
+      outline: none;
+    }
+
+    .gui-input.correct {
+      border-color: var(--emerald-border);
+      color: #34d399;
+      background: rgba(16, 185, 129, 0.05);
+    }
+
+    /* TERMINAL CLI REALISTA CISCO IOS */
+    .cli-terminal {
+      background: #07070a;
+      border: 1px solid rgba(212, 175, 55, 0.2);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.65);
+    }
+
+    .cli-bar {
+      height: 36px;
+      background: #101016;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 14px;
+    }
+
+    .cli-title {
+      font-size: 11.5px;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 600;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .cli-title-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--gold-primary);
+      box-shadow: 0 0 8px var(--gold-glow);
+    }
+
+    .cli-copy-btn {
+      background: rgba(212, 175, 55, 0.1);
+      border: 1px solid var(--gold-border);
+      color: var(--gold-light);
+      font-size: 11px;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 5px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s var(--spring-physics);
+    }
+
+    .cli-copy-btn:active {
+      transform: scale(0.96);
+      background: rgba(212, 175, 55, 0.25);
+    }
+
+    .cli-content {
+      padding: 16px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      line-height: 1.6;
+      color: #e2e8f0;
+      max-height: 260px;
+      overflow-y: auto;
+      white-space: pre;
+    }
+
+    .cli-content::-webkit-scrollbar {
+      width: 5px;
+    }
+
+    .cli-content::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 3px;
+    }
+
+    .c-prompt { color: #f59e0b; font-weight: 600; }
+    .c-cmd { color: #f8fafc; font-weight: 600; }
+    .c-param { color: #38bdf8; }
+    .c-comment { color: #64748b; font-style: italic; }
+    .c-success { color: #34d399; font-weight: 600; }
+    .c-notice { color: #eab308; }
+
+    /* TABELA DE CABEAMENTO FÍSICO */
+    .pro-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+      text-align: left;
+    }
+
+    .pro-table th {
+      background: #111118;
+      color: var(--gold-light);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .pro-table td {
+      padding: 10px 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      color: var(--text-secondary);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .pro-table tr:hover td {
+      background: rgba(255, 255, 255, 0.02);
+      color: var(--text-main);
+    }
+
+    .pro-table .badge-cable {
+      display: inline-block;
+      padding: 2px 7px;
+      border-radius: 4px;
+      font-size: 10px;
+      font-weight: 600;
+    }
+
+    .badge-copper {
+      background: rgba(56, 189, 248, 0.12);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      color: #38bdf8;
+    }
+
+    .badge-cross {
+      background: rgba(245, 158, 11, 0.12);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      color: #f59e0b;
+    }
+
+    .badge-fix {
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid var(--emerald-border);
+      color: #34d399;
+      font-weight: 700;
+    }
+
+    /* CHECKLIST INTERATIVO */
+    .checklist-container {
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+    }
+
+    .check-item {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 11px 16px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      cursor: pointer;
+      transition: all 0.15s var(--spring-physics);
+    }
+
+    .check-item:active {
+      transform: scale(0.99);
+    }
+
+    .check-item.done {
+      background: rgba(16, 185, 129, 0.06);
+      border-color: var(--emerald-border);
+    }
+
+    .check-box {
+      width: 19px;
+      height: 19px;
+      border-radius: 5px;
+      border: 1.5px solid var(--border-medium);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s ease;
+      background: #08080c;
+    }
+
+    .check-item.done .check-box {
+      background: var(--emerald-accent);
+      border-color: var(--emerald-accent);
+    }
+
+    .check-box-inner {
+      width: 7px;
+      height: 7px;
+      border-radius: 2px;
+      background: #060608;
+      opacity: 0;
+      transition: opacity 0.15s ease;
+    }
+
+    .check-item.done .check-box-inner {
+      opacity: 1;
+    }
+
+    .check-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      flex: 1;
+    }
+
+    .check-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .check-item.done .check-title {
+      color: #86efac;
+      text-decoration: line-through;
+    }
+
+    .check-desc {
+      font-size: 11.5px;
+      color: var(--text-muted);
+    }
+
+    /* FOOTER/DOCK FLUTUANTE DE CONTROLE */
+    .keynote-dock {
+      position: fixed;
+      bottom: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      height: 54px;
+      background: var(--bg-surface-glass);
+      backdrop-filter: blur(24px) saturate(180%);
+      -webkit-backdrop-filter: blur(24px) saturate(180%);
+      border: 1px solid var(--border-subtle);
+      border-radius: 30px;
+      padding: 0 16px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      z-index: 100;
+      box-shadow: 0 10px 36px rgba(0, 0, 0, 0.55);
+    }
+
+    .dock-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.15s var(--spring-physics);
+      outline: none;
+    }
+
+    .dock-btn:hover {
+      background: rgba(212, 175, 55, 0.15);
+      border-color: var(--gold-border);
+      color: var(--gold-light);
+    }
+
+    .dock-btn:active {
+      transform: scale(0.92);
+    }
+
+    .dock-btn svg {
+      width: 16px;
+      height: 16px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2.2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .dock-indicator {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--gold-primary);
+      min-width: 65px;
+      text-align: center;
+      letter-spacing: -0.02em;
+    }
+
+    .dock-separator {
+      width: 1px;
+      height: 20px;
+      background: var(--border-subtle);
+    }
+
+    .dock-pill-btn {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 6px 14px;
+      border-radius: 20px;
+      background: rgba(212, 175, 55, 0.1);
+      border: 1px solid var(--gold-border);
+      color: var(--gold-light);
+      font-size: 11.5px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s var(--spring-physics);
+    }
+
+    .dock-pill-btn:hover {
+      background: rgba(212, 175, 55, 0.2);
+    }
+
+    .dock-pill-btn:active {
+      transform: scale(0.95);
+    }
+
+    /* TOAST DE FEEDBACK */
+    #copy-toast {
+      position: fixed;
+      top: 86px;
+      right: 32px;
+      background: #14141e;
+      border: 1px solid var(--gold-border);
+      color: var(--gold-light);
+      padding: 10px 18px;
+      border-radius: var(--radius-sm);
+      font-size: 12px;
+      font-family: 'JetBrains Mono', monospace;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+      opacity: 0;
+      transform: translateY(-8px);
+      pointer-events: none;
+      transition: all 0.2s var(--spring-physics);
+      z-index: 1000;
+    }
+
+    #copy-toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ACESSIBILIDADE */
+    @media (prefers-reduced-motion: reduce) {
+      .slide, #top-progress-bar, .dock-btn, .pro-card {
+        transition: none !important;
+      }
+    }
+
+    @media (prefers-reduced-transparency: reduce) {
+      .keynote-header,
+      .keynote-dock {
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        background: #0f0f15 !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- BARRA DE PROGRESSO SUPERIOR -->
+  <div id="top-progress-bar"></div>
+
+  <!-- HEADER TRANSLÚCIDO -->
+  <header class="keynote-header">
+    <div class="header-branding">
+      <div class="brand-crest">SYR</div>
+      <div class="brand-meta">
+        <div class="brand-title">
+          CISCO PACKET TRACER <span>|</span> PASSO A PASSO
+          <span class="brand-badge">KEYNOTE PRO</span>
+        </div>
+        <div class="brand-sub">Roteamento OSPFv2 Multi-Área &middot; Arquitetura Sagital ThSyr</div>
+      </div>
+    </div>
+    <div class="header-shortcuts">
+      <div class="shortcut-pill"><kbd>&larr;</kbd> <kbd>&rarr;</kbd> Navegar</div>
+      <div class="shortcut-pill"><kbd>Espaco</kbd> Avancar</div>
+      <div class="shortcut-pill"><kbd>F</kbd> Tela Cheia</div>
+    </div>
+  </header>
+
+  <!-- DECK PRINCIPAL DE SLIDES -->
+  <main class="deck-viewport" id="deck-container">
+
+    <!-- SLIDE 1: ABERTURA E VISÃO GLOBAL -->
+    <section class="slide active" data-slide="1">
+      <div class="slide-canvas">
+        <div class="slide-eyebrow">
+          <span class="step-tag">FASE 00</span>
+          <span class="module-tag">INTRODUCAO &middot; ESCOPO DO PROJETO</span>
+        </div>
+        <h1 class="slide-headline">Roteiro Definitivo: <span>Cisco Packet Tracer</span></h1>
+        <p class="slide-description">
+          Guia de execucao prática, passo a passo e porta a porta para implantacao da topologia OSPFv2 Multi-Área (Área 10 Filial e Área 0 Backbone). Inclui correcao estrutural de hardware, comandos Cisco IOS 15.x e aceites forenses.
+        </p>
+
+        <div class="step-grid-4" style="margin-top: 6px;">
+          <div class="pro-card featured">
+            <div class="card-header-line">
+              <span class="card-num-circle">01</span>
+              <span class="card-metric-badge">WORKSPACE</span>
+            </div>
+            <div class="card-title">Disposicao Física</div>
+            <div class="card-body-text">Posicionamento de 3 Roteadores 2911, 2 Switches 2960 e 2 Estacoes de Trabalho no canvas.</div>
+          </div>
+
+          <div class="pro-card featured">
+            <div class="card-header-line">
+              <span class="card-num-circle">02</span>
+              <span class="card-metric-badge">LAYER 1 & 2</span>
+            </div>
+            <div class="card-title">Cabeamento & Patch</div>
+            <div class="card-body-text">Conexao de cada cabo direto e cruzado com resolucao do conflito de porta GigabitEthernet no R3.</div>
+          </div>
+
+          <div class="pro-card featured">
+            <div class="card-header-line">
+              <span class="card-num-circle">03</span>
+              <span class="card-metric-badge">ROUTING</span>
+            </div>
+            <div class="card-title">CLI & OSPFv2 Multi-Área</div>
+            <div class="card-body-text">Configuracao de R1 (ABR), R2 (Transit) e R3 (Matriz) com Router-IDs dedicados e wildcards exatos.</div>
+          </div>
+
+          <div class="pro-card featured">
+            <div class="card-header-line">
+              <span class="card-num-circle">04</span>
+              <span class="card-metric-badge">FORENSIC</span>
+            </div>
+            <div class="card-title">Auditoria de Aceite</div>
+            <div class="card-body-text">Ping de ponta a ponta (PC1 ao PC2), analise de saltos via traceroute e tabela de rotas OSPF.</div>
+          </div>
+        </div>
+
+        <div class="pro-card" style="margin-top: 4px; border-left: 3px solid var(--gold-primary);">
+          <div class="card-body-text" style="color: var(--text-main); font-size: 13px;">
+            <strong style="color: var(--gold-light);">Orientacao Operacional:</strong> Utilize as teclas de navegacao do teclado ou o dock inferior para percorrer cada etapa sequencialmente. Todos os blocos CLI possuem botao de copia instantanea para insercao direta no terminal do Cisco Packet Tracer.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 2: ETAPA 1 - DISPOSIÇÃO NO PALCO -->
+    <section class="slide" data-slide="2">
+      <div class="slide-canvas">
+        <div class="slide-eyebrow">
+          <span class="step-tag">PASSO 01</span>
+          <span class="module-tag">LAYER 0 &middot; DISPOSITIVOS NO PACKET TRACER</span>
+        </div>
+        <h2 class="slide-headline">Adicionar Dispositivos <span>no Canvas</span></h2>
+        <p class="slide-description">
+          Abra o Cisco Packet Tracer e localize os dispositivos na barra inferior esquerda. Arraste e solte os 7 equipamentos necessarios em linha reta para facilitar a visualizacao da topologia.
+        </p>
+
+        <div class="step-grid-3">
+          <div class="pro-card">
+            <div class="card-header-line">
+              <span class="card-num-circle">1</span>
+              <span class="card-metric-badge">3x ROTEADORES</span>
+            </div>
+            <div class="card-title">Cisco 2911 ISR</div>
+            <div class="card-body-text">
+              1. Va em <strong>Network Devices</strong> (icone de roteador).<br>
+              2. Selecione a subcategoria <strong>Routers</strong>.<br>
+              3. Clique e arraste 3 unidades do modelo <strong>2911</strong> para o centro do palco.<br>
+              4. Renomeie no canvas para <strong>R1</strong>, <strong>R2</strong> e <strong>R3</strong>.
+            </div>
+          </div>
+
+          <div class="pro-card">
+            <div class="card-header-line">
+              <span class="card-num-circle">2</span>
+              <span class="card-metric-badge">2x SWITCHES</span>
+            </div>
+            <div class="card-title">Catalyst 2960-24TT</div>
+            <div class="card-body-text">
+              1. Na barra inferior, selecione <strong>Switches</strong>.<br>
+              2. Arraste 2 unidades do modelo <strong>2960-24TT</strong>.<br>
+              3. Posicione um switch a esquerda de R1 (nomeie <strong>SW1</strong>) e outro a direita de R3 (nomeie <strong>SW2</strong>).
+            </div>
+          </div>
+
+          <div class="pro-card">
+            <div class="card-header-line">
+              <span class="card-num-circle">3</span>
+              <span class="card-metric-badge">2x END DEVICES</span>
+            </div>
+            <div class="card-title">PC-PT (Estacoes)</div>
+            <div class="card-body-text">
+              1. Va em <strong>End Devices</strong> (icone de computador).<br>
+              2. Arraste 1 unidade de <strong>PC</strong> para a ponta esquerda (nomeie <strong>PC1</strong>).<br>
+              3. Arraste outra unidade de <strong>PC</strong> para a ponta direita (nomeie <strong>PC2</strong>).
+            </div>
+          </div>
+        </div>
+
+        <div class="pro-card" style="border: 1px dashed var(--gold-border);">
+          <div class="card-header-line">
+            <span class="card-title" style="color: var(--gold-light);">Disposicao Recomendada no Canvas (Esquerda para a Direita):</span>
+            <span class="card-metric-badge">TOPOLOGIA LINEAR</span>
+          </div>
+          <div class="card-body-text" style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #cbd5e1;">
+            [ PC1 ] &mdash;&mdash;&mdash; [ SW1 ] &mdash;&mdash;&mdash; [ R1 ] &mdash;&mdash;&mdash; [ R2 ] &mdash;&mdash;&mdash; [ R3 ] &mdash;&mdash;&mdash; [ SW2 ] &mdash;&mdash;&mdash; [ PC2 ]
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 3: ETAPA 2 - CABEAMENTO E PATCH CRÍTICO -->
+    <section class="slide" data-slide="3">
+      <div class="slide-canvas">
+        <div class="slide-eyebrow">
+          <span class="step-tag">PASSO 02</span>
+          <span class="module-tag">LAYER 1 &middot; CABEAMENTO FISICO E RETIFICACAO R3</span>
+        </div>
+        <h2 class="slide-headline">Conexao de Cabos <span>Porta a Porta</span></h2>
+        <p class="slide-description">
+          Selecione a ferramenta de conexoes (icone de raio). Utilize o cabo correto para cada segmento e aplique a retificacao obrigatoria de engenharia no Roteador R3 para eliminar o conflito de portas.
+        </p>
+
+        <div class="pro-card" style="padding: 0; overflow: hidden;">
+          <table class="pro-table">
+            <thead>
+              <tr>
+                <th>Origem (Dispositivo & Porta)</th>
+                <th>Destino (Dispositivo & Porta)</th>
+                <th>Tipo de Cabo no Packet Tracer</th>
+                <th>Finalidade da Conexao</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>PC1 &middot; FastEthernet0</td>
+                <td>SW1 &middot; FastEthernet0/1</td>
+                <td><span class="badge-cable badge-copper">Copper Straight-Through (Direto)</span></td>
+                <td>Acesso LAN Filial (192.168.10.0/24)</td>
+              </tr>
+              <tr>
+                <td>SW1 &middot; GigabitEthernet0/1</td>
+                <td>R1 &middot; GigabitEthernet0/1</td>
+                <td><span class="badge-cable badge-copper">Copper Straight-Through (Direto)</span></td>
+                <td>Uplink Gateway Filial</td>
+              </tr>
+              <tr>
+                <td>R1 &middot; GigabitEthernet0/0</td>
+                <td>R2 &middot; GigabitEthernet0/0</td>
+                <td><span class="badge-cable badge-cross">Copper Cross-Over ou Direto</span></td>
+                <td>WAN PTP R1-R2 (10.0.0.0/30) &middot; Área 0</td>
+              </tr>
+              <tr>
+                <td>R2 &middot; GigabitEthernet0/1</td>
+                <td>R3 &middot; GigabitEthernet0/0</td>
+                <td><span class="badge-cable badge-cross">Copper Cross-Over ou Direto</span></td>
+                <td>WAN PTP R2-R3 (10.0.0.4/30) &middot; Área 0</td>
+              </tr>
+              <tr style="background: rgba(16, 185, 129, 0.05);">
+                <td>R3 &middot; GigabitEthernet0/1 <span class="badge-cable badge-fix">PORTA CORRIGIDA</span></td>
+                <td>SW2 &middot; GigabitEthernet0/1</td>
+                <td><span class="badge-cable badge-copper">Copper Straight-Through (Direto)</span></td>
+                <td>Uplink LAN Matriz (192.168.20.0/24)</td>
+              </tr>
+              <tr>
+                <td>SW2 &middot; FastEthernet0/1</td>
+                <td>PC2 &middot; FastEthernet0</td>
+                <td><span class="badge-cable badge-copper">Copper Straight-Through (Direto)</span></td>
+                <td>Acesso Host Matriz</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="step-grid-2">
+          <div class="pro-card" style="border-left: 3px solid var(--amber-accent);">
+            <div class="card-title" style="color: var(--amber-accent);">Atencao aos Triangulos Vermelhos:</div>
+            <div class="card-body-text">
+              No Packet Tracer, as portas dos roteadores iniciam em estado <strong>Administratively Down</strong> (triangulos vermelhos). Isso e normal. Elas ficarao verdes somente apos o comando <code>no shutdown</code> nas interfaces de cada roteador.
+            </div>
+          </div>
+
+          <div class="pro-card" style="border-left: 3px solid var(--emerald-accent);">
+            <div class="card-title" style="color: #34d399;">Por que GigabitEthernet 0/1 no R3?</div>
+            <div class="card-body-text">
+              O diagrama original duplicou G0/0 no R3 para o link WAN e para a LAN. Um roteador fisico Cisco 2911 possui interfaces independentes. Destinar G0/0 a WAN e G0/1 a LAN resolve a sobreposicao fisica.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 4: ETAPA 3 - CONFIGURAÇÃO DO PC1 -->
+    <section class="slide" data-slide="4">
+      <div class="slide-canvas">
+        <div class="slide-eyebrow">
+          <span class="step-tag">PASSO 03</span>
+          <span class="module-tag">HOST CONFIG &middot; PC1 (ÁREA 10 FILIAL)</span>
+        </div>
+        <h2 class="slide-headline">Parametrizar Host <span>PC1 no Packet Tracer</span></h2>
+        <p class="slide-description">
+          Acesse a interface grafica do PC1 para definir seu endereco IP estatico, mascara de sub-rede e o Default Gateway que aponta para o roteador R1.
+        </p>
+
+        <div class="step-grid-2">
+          <div class="pro-card">
+            <div class="card-title" style="color: var(--gold-light);">Sequencia de Telas no Cisco Packet Tracer:</div>
+            <div class="card-body-text" style="display: flex; flex-direction: column; gap: 8px;">
+              <div>1. Clique com o botao esquerdo em cima do <strong>PC1</strong> no canvas.</div>
+              <div>2. Na janela que abrir, clique na aba superior <strong>Desktop</strong>.</div>
+              <div>3. Clique no primeiro icone chamado <strong>IP Configuration</strong>.</div>
+              <div>4. Certifique-se de que a opcao <strong>Static</strong> esta marcada.</div>
+              <div>5. Digite os parametros exatamente como demonstrado ao lado.</div>
+              <div>6. Feche a janela clicando no X (o Packet Tracer salva na hora).</div>
+            </div>
+          </div>
+
+          <!-- SIMULADOR GRÁFICO DA TELA DO PC -->
+          <div class="gui-window">
+            <div class="gui-titlebar">
+              <span class="gui-window-title">PC1 &middot; IP Configuration</span>
+              <span style="font-size: 10px; color: var(--gold-primary);">STATIC MODE</span>
+            </div>
+            <div class="gui-tabs">
+              <span class="gui-tab">Physical</span>
+              <span class="gui-tab">Config</span>
+              <span class="gui-tab active">Desktop</span>
+              <span class="gui-tab">Attributes</span>
+            </div>
+            <div class="gui-body">
+              <div class="gui-field-row">
+                <span class="gui-label">IP Address:</span>
+                <input type="text" class="gui-input correct" value="192.168.10.10" readonly>
+              </div>
+              <div class="gui-field-row">
+                <span class="gui-label">Subnet Mask:</span>
+                <input type="text" class="gui-input correct" value="255.255.255.0" readonly>
+              </div>
+              <div class="gui-field-row">
+                <span class="gui-label">Default Gateway:</span>
+                <input type="text" class="gui-input correct" value="192.168.10.1" readonly>
+              </div>
+              <div class="gui-field-row">
+                <span class="gui-label">DNS Server:</span>
+                <input type="text" class="gui-input" value="0.0.0.0" readonly>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="pro-card" style="border-left: 3px solid var(--gold-primary);">
+          <div class="card-body-text">
+            <strong>Regra de Ouro:</strong> O Default Gateway <code>192.168.10.1</code> e o IP da interface <code>GigabitEthernet 0/1</code> do R1. Sem ele, o PC1 nao sabera para onde despachar pacotes destinados a outras redes.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 5: ETAPA 4 - CONFIGURAÇÃO CLI DO R1 (ABR) -->
+    <section class="slide" data-slide="5">
+      <div class="slide-canvas">
+        <div class="slide-eyebrow">
+          <span class="step-tag">PASSO 04</span>
+          <span class="module-tag">ROUTER CLI &middot; R1 (AREA BORDER ROUTER)</span>
+        </div>
+        <h2 class="slide-headline">Configuracao do <span>Roteador R1</span></h2>
+        <p class="slide-description">
+          R1 interliga a Área 10 (Filial) ao Backbone (Área 0). Clique em <strong>R1</strong>, abra a aba <strong>CLI</strong>, digite <code>no</code> se surgir o dialogo inicial e cole o bloco de comandos abaixo.
+        </p>
+
+        <div class="cli-terminal">
+          <div class="cli-bar">
+            <div class="cli-title">
+              <span class="cli-title-dot"></span>
+              Console Cisco IOS &middot; R1 (Filial ABR)
+            </div>
+            <button class="cli-copy-btn" onclick="copySnippet('snippet-r1')">Copiar Script R1</button>
+          </div>
+          <div class="cli-content" id="snippet-r1"><span class="c-comment">! 1. Entrar no modo privilegiado e configuracao global</span>
+<span class="c-cmd">enable</span>
+<span class="c-cmd">configure terminal</span>
+<span class="c-cmd">hostname R1</span>
+
+<span class="c-comment">! 2. Interface LAN (Conexao com Switch SW1 e PC1 na Area 10)</span>
+<span class="c-cmd">interface GigabitEthernet0/1</span>
+<span class="c-param"> ip address 192.168.10.1 255.255.255.0</span>
+<span class="c-cmd"> no shutdown</span>
+<span class="c-cmd"> exit</span>
+
+<span class="c-comment">! 3. Interface WAN PTP (Conexao com R2 no Backbone Area 0)</span>
+<span class="c-cmd">interface GigabitEthernet0/0</span>
+<span class="c-param"> ip address 10.0.0.1 255.255.255.252</span>
+<span class="c-cmd"> no shutdown</span>
+<span class="c-cmd"> exit</span>
+
+<span class="c-comment">! 4. Roteamento OSPFv2 Multi-Area</span>
+<span class="c-cmd">router ospf 1</span>
+<span class="c-param"> router-id 1.1.1.1</span>
+<span class="c-param"> network 192.168.10.0 0.0.0.255 area 10</span>
+<span class="c-param"> network 10.0.0.0 0.0.0.3 area 0</span>
+<span class="c-cmd"> exit</span>
+
+<span class="c-comment">! 5. Gravacao permanente na NVRAM</span>
+<span class="c-cmd">end</span>
+<span class="c-cmd">write memory</span></div>
+        </div>
+
+        <div class="step-grid-2">
+          <div class="pro-card">
+            <div class="card-title">Compreensao dos Wildcards:</div>
+            <div class="card-body-text">
+              Para <code>192.168.10.0/24</code> o wildcard e <code>0.0.0.255</code>.<br>
+              Para o link PTP <code>10.0.0.0/30</code> (mascara 255.255.255.252), o wildcard e <code>0.0.0.3</code>.
+            </div>
+          </div>
+          <div class="pro-card">
+            <div class="card-title">Resultado Esperado no Packet Tracer:</div>
+            <div class="card-body-text">
+              As luzes das interfaces G0/1 (com SW1) e G0/0 (com R2) comecarao a mudar para verde. O status de G0/0 completara quando R2 for ativado.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 6: ETAPA 5 - CONFIGURAÇÃO CLI DO R2 (TRANSIT) -->
+    <section class="slide" data-slide="6">
+      <div class="slide-canvas">
+        <div class="slide-eyebrow">
+          <span class="step-tag">PASSO 05</span>
+          <span class="module-tag">ROUTER CLI &middot; R2 (BACKBONE TRANSIT)</span>
+        </div>
+        <h2 class="slide-headline">Configuracao do <span>Roteador R2</span></h2>
+        <p class="slide-description">
+          R2 e o elemento central de trânsito no Backbone (Área 0). Possui duas interfaces WAN PTP (/30). Clique em <strong>R2</strong>, abra a aba <strong>CLI</strong> e aplique os comandos.
+        </p>
+
+        <div class="cli-terminal">
+          <div class="cli-bar">
+            <div class="cli-title">
+              <span class="cli-title-dot"></span>
+              Console Cisco IOS &middot; R2 (Backbone Transit)
+            </div>
+            <button class="cli-copy-btn" onclick="copySnippet('snippet-r2')">Copiar Script R2</button>
+          </div>
+          <div class="cli-content" id="snippet-r2"><span class="c-comment">! 1. Entrar no modo privilegiado e configuracao global</span>
+<span class="c-cmd">enable</span>
+<span class="c-cmd">configure terminal</span>
+<span class="c-cmd">hostname R2</span>
+
+<span class="c-comment">! 2. Interface WAN PTP R1-R2 (10.0.0.0/30)</span>
+<span class="c-cmd">interface GigabitEthernet0/0</span>
+<span class="c-param"> ip address 10.0.0.2 255.255.255.252</span>
+<span class="c-cmd"> no shutdown</span>
+<span class="c-cmd"> exit</span>
+
+<span class="c-comment">! 3. Interface WAN PTP R2-R3 (10.0.0.4/30)</span>
+<span class="c-cmd">interface GigabitEthernet0/1</span>
+<span class="c-param"> ip address 10.0.0.5 255.255.255.252</span>
+<span class="c-cmd"> no shutdown</span>
+<span class="c-cmd"> exit</span>
+
+<span class="c-comment">! 4. Roteamento OSPFv2 (Ambas as sub-redes na Area 0)</span>
+<span class="c-cmd">router ospf 1</span>
+<span class="c-param"> router-id 2.2.2.2</span>
+<span class="c-param"> network 10.0.0.0 0.0.0.3 area 0</span>
+<span class="c-param"> network 10.0.0.4 0.0.0.3 area 0</span>
+<span class="c-cmd"> exit</span>
+
+<span class="c-comment">! 5. Gravacao na NVRAM</span>
+<span class="c-cmd">end</span>
+<span class="c-cmd">write memory</span></div>
+        </div>
+
+        <div class="pro-card" style="border-left: 3px solid var(--emerald-accent);">
+          <div class="card-header-line">
+            <span class="card-title" style="color: #34d399;">Mensagem de Sucesso Imediato no Terminal:</span>
+            <span class="card-metric-badge">ADJACENCIA R1-R2</span>
+          </div>
+          <div class="card-body-text" style="font-family: 'JetBrains Mono', monospace; color: #a7f3d0;">
+            %OSPF-5-ADJCHG: Process 1, Nbr 1.1.1.1 on GigabitEthernet0/0 from LOADING to FULL, Loading Done
+          </div>
+          <div class="card-body-text">
+            Isso confirma que o roteador R1 e o roteador R2 trocaram pacotes Hello e seus Database Descriptors (DBD) estao 100% sincronizados.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 7: ETAPA 6 - CONFIGURAÇÃO CLI DO R3 (MATRIZ) -->
+    <section class="slide" data-slide="7">
+      <div class="slide-canvas">
+        <div class="slide-eyebrow">
+          <span class="step-tag">PASSO 06</span>
+          <span class="module-tag">ROUTER CLI &middot; R3 (GATEWAY MATRIZ)</span>
+        </div>
+        <h2 class="slide-headline">Configuracao do <span>Roteador R3</span></h2>
+        <p class="slide-description">
+          R3 fecha o Backbone e atende a LAN da Matriz (192.168.20.0/24). Lembre-se da particao de interfaces: <strong>G0/0</strong> para a WAN e <strong>G0/1</strong> para a LAN. Abra a aba <strong>CLI</strong> do R3.
+        </p>
+
+        <div class="cli-terminal">
+          <div class="cli-bar">
+            <div class="cli-title">
+              <span class="cli-title-dot"></span>
+              Console Cisco IOS &middot; R3 (Gateway Matriz)
+            </div>
+            <button class="cli-copy-btn" onclick="copySnippet('snippet-r3')">Copiar Script R3</button>
+          </div>
+          <div class="cli-content" id="snippet-r3"><span class="c-comment">! 1. Entrar no modo privilegiado e configuracao global</span>
+<span class="c-cmd">enable</span>
+<span class="c-cmd">configure terminal</span>
+<span class="c-cmd">hostname R3</span>
+
+<span class="c-comment">! 2. Interface WAN PTP R2-R3 (10.0.0.4/30)</span>
+<span class="c-cmd">interface GigabitEthernet0/0</span>
+<span class="c-param"> ip address 10.0.0.6 255.255.255.252</span>
+<span class="c-cmd"> no shutdown</span>
+<span class="c-cmd"> exit</span>
+
+<span class="c-comment">! 3. Interface LAN Matriz (GigabitEthernet0/1 corrigida)</span>
+<span class="c-cmd">interface GigabitEthernet0/1</span>
+<span class="c-param"> ip address 192.168.20.1 255.255.255.0</span>
+<span class="c-cmd"> no shutdown</span>
+<span class="c-cmd"> exit</span>
+
+<span class="c-comment">! 4. Roteamento OSPFv2 (Ambas no escopo da Area 0)</span>
+<span class="c-cmd">router ospf 1</span>
+<span class="c-param"> router-id 3.3.3.3</span>
+<span class="c-param"> network 10.0.0.4 0.0.0.3 area 0</span>
+<span class="c-param"> network 192.168.20.0 0.0.0.255 area 0</span>
+<span class="c-cmd"> exit</span>
+
+<span class="c-comment">! 5. Gravacao permanente na NVRAM</span>
+<span class="c-cmd">end</span>
+<span class="c-cmd">write memory</span></div>
+        </div>
+
+        <div class="step-grid-2">
+          <div class="pro-card" style="border-left: 3px solid var(--emerald-accent);">
+            <div class="card-title" style="color: #34d399;">Adjacencia R2-R3 Disparada:</div>
+            <div class="card-body-text" style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: #a7f3d0;">
+              %OSPF-5-ADJCHG: Process 1, Nbr 2.2.2.2 on GigabitEthernet0/0 from LOADING to FULL, Loading Done
+            </div>
+          </div>
+          <div class="pro-card">
+            <div class="card-title">Salvamento na Memoria:</div>
+            <div class="card-body-text">
+              O comando <code>write memory</code> copia o <code>running-config</code> da RAM para o <code>startup-config</code> da NVRAM, impedindo perda de dados se o roteador reiniciar.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 8: ETAPA 7 - CONFIGURAÇÃO DO PC2 -->
+    <section class="slide" data-slide="8">
+      <div class="slide-canvas">
+        <div class="slide-eyebrow">
+          <span class="step-tag">PASSO 07</span>
+          <span class="module-tag">HOST CONFIG &middot; PC2 (MATRIZ)</span>
+        </div>
+        <h2 class="slide-headline">Parametrizar Host <span>PC2 no Packet Tracer</span></h2>
+        <p class="slide-description">
+          Agora configure o computador do lado direito da topologia (PC2), atribuindo o endereco IP da rede 192.168.20.0/24 e o Default Gateway apontado para o Roteador R3.
+        </p>
+
+        <div class="step-grid-2">
+          <div class="pro-card">
+            <div class="card-title" style="color: var(--gold-light);">Sequencia de Acoes no PC2:</div>
+            <div class="card-body-text" style="display: flex; flex-direction: column; gap: 8px;">
+              <div>1. Clique com o botao esquerdo em cima do <strong>PC2</strong>.</div>
+              <div>2. Clique na aba superior <strong>Desktop</strong>.</div>
+              <div>3. Clique no icone <strong>IP Configuration</strong>.</div>
+              <div>4. Marque a opcao <strong>Static</strong>.</div>
+              <div>5. Preencha os campos exatamente como exibido na janela ao lado.</div>
+              <div>6. Feche a janela de configuracao.</div>
+            </div>
+          </div>
+
+          <!-- SIMULADOR GRÁFICO DA TELA DO PC2 -->
+          <div class="gui-window">
+            <div class="gui-titlebar">
+              <span class="gui-window-title">PC2 &middot; IP Configuration</span>
+              <span style="font-size: 10px; color: var(--gold-primary);">STATIC MODE</span>
+            </div>
+            <div class="gui-tabs">
+              <span class="gui-tab">Physical</span>
+              <span class="gui-tab">Config</span>
+              <span class="gui-tab active">Desktop</span>
+              <span class="gui-tab">Attributes</span>
+            </div>
+            <div class="gui-body">
+              <div class="gui-field-row">
+                <span class="gui-label">IP Address:</span>
+                <input type="text" class="gui-input correct" value="192.168.20.10" readonly>
+              </div>
+              <div class="gui-field-row">
+                <span class="gui-label">Subnet Mask:</span>
+                <input type="text" class="gui-input correct" value="255.255.255.0" readonly>
+              </div>
+              <div class="gui-field-row">
+                <span class="gui-label">Default Gateway:</span>
+                <input type="text" class="gui-input correct" value="192.168.20.1" readonly>
+              </div>
+              <div class="gui-field-row">
+                <span class="gui-label">DNS Server:</span>
+                <input type="text" class="gui-input" value="0.0.0.0" readonly>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="pro-card" style="border-left: 3px solid var(--amber-accent);">
+          <div class="card-body-text">
+            <strong>Dica de Agilidade:</strong> Se as luzes dos switches ainda estiverem laranjas, clique no botao <strong>Fast Forward Time</strong> na barra inferior do Packet Tracer (ou pressione <code>Alt + D</code>) para acelerar a convergencia da arvore de Spanning-Tree (STP).
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 9: ETAPA 8 - TESTES DE PING E TRACEROUTE -->
+    <section class="slide" data-slide="9">
+      <div class="slide-canvas">
+        <div class="slide-eyebrow">
+          <span class="step-tag">PASSO 08</span>
+          <span class="module-tag">VERIFICACAO &middot; TESTE DE PING E TRACERT</span>
+        </div>
+        <h2 class="slide-headline">Validacao no <span>Command Prompt (PC1)</span></h2>
+        <p class="slide-description">
+          Clique no <strong>PC1</strong>, abra a aba <strong>Desktop</strong> e clique em <strong>Command Prompt</strong>. Execute os comandos de teste sequenciais para validar a conectividade de ponta a ponta.
+        </p>
+
+        <div class="cli-terminal">
+          <div class="cli-bar">
+            <div class="cli-title">
+              <span class="cli-title-dot"></span>
+              PC1 &middot; Command Prompt (Aceite Forense)
+            </div>
+            <button class="cli-copy-btn" onclick="copySnippet('snippet-ping')">Copiar Comandos de Teste</button>
+          </div>
+          <div class="cli-content" id="snippet-ping"><span class="c-prompt">PC></span> <span class="c-cmd">ping 192.168.10.1</span>
+Pinging 192.168.10.1 with 32 bytes of data:
+Reply from 192.168.10.1: bytes=32 time&lt;1ms TTL=255
+<span class="c-success">Ping statistics: Packets: Sent = 4, Received = 4, Lost = 0 (0% loss)</span>
+
+<span class="c-prompt">PC></span> <span class="c-cmd">ping 192.168.20.10</span>
+Pinging 192.168.20.10 with 32 bytes of data:
+<span class="c-notice">Request timed out.</span> <span class="c-comment">! Normal no primeiro pacote devido a resolucao ARP</span>
+Reply from 192.168.20.10: bytes=32 time=1ms TTL=125
+Reply from 192.168.20.10: bytes=32 time=1ms TTL=125
+Reply from 192.168.20.10: bytes=32 time=1ms TTL=125
+<span class="c-success">Ping statistics: Packets: Sent = 4, Received = 3, Lost = 1 (25% loss)</span>
+
+<span class="c-prompt">PC></span> <span class="c-cmd">tracert 192.168.20.10</span>
+Tracing route to 192.168.20.10 over a maximum of 30 hops:
+  1   &lt;1 ms   &lt;1 ms   &lt;1 ms   192.168.10.1   <span class="c-comment">(R1 LAN Gateway)</span>
+  2    1 ms    1 ms    1 ms   10.0.0.2       <span class="c-comment">(R2 WAN Entrada)</span>
+  3    1 ms    1 ms    1 ms   10.0.0.6       <span class="c-comment">(R3 WAN Entrada)</span>
+  4    1 ms    1 ms    1 ms   192.168.20.10  <span class="c-success">(PC2 Destino Matriz)</span>
+<span class="c-success">Trace complete.</span></div>
+        </div>
+
+        <div class="step-grid-2">
+          <div class="pro-card">
+            <div class="card-title">Por que o primeiro 'Request timed out'?</div>
+            <div class="card-body-text">
+              Em redes Ethernet comutadas, o primeiro pacote ICMP e retido na fila enquanto o switch e o roteador transmitem quadros ARP Request para descobrir o endereco MAC do proximo salto. Ao repetir o ping, a taxa sera 100% de sucesso.
+            </div>
+          </div>
+          <div class="pro-card">
+            <div class="card-title">Analise do TTL = 125:</div>
+            <div class="card-body-text">
+              O Windows inicia o TTL em 128. O pacote atravessa 3 roteadores (R1, R2, R3). Cada roteador decrementa 1 unidade do campo TTL: <code>128 - 3 = 125</code>. Prova forense de roteamento de camada 3 ativo.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 10: ETAPA 9 - AUDITORIA FORENSE CISCO IOS -->
+    <section class="slide" data-slide="10">
+      <div class="slide-canvas">
+        <div class="slide-eyebrow">
+          <span class="step-tag">PASSO 09</span>
+          <span class="module-tag">AUDITORIA CLI &middot; COMANDOS FORENSES</span>
+        </div>
+        <h2 class="slide-headline">Comandos de Inspecao <span>nos Roteadores</span></h2>
+        <p class="slide-description">
+          Abra o terminal CLI de qualquer um dos roteadores para checar o estado das adjacencias OSPF e a presenca das rotas inter-area (identificadas pelo codigo <code>O IA</code>).
+        </p>
+
+        <div class="step-grid-3">
+          <div class="pro-card">
+            <div class="card-header-line">
+              <span class="card-title">1. Tabela de Vizinhos</span>
+              <span class="card-metric-badge">NEIGHBOR</span>
+            </div>
+            <div class="card-body-text" style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: #94a3b8;">
+              R1# <strong>show ip ospf neighbor</strong><br><br>
+              Neighbor ID: 2.2.2.2<br>
+              Pri: 1<br>
+              State: <span style="color: #34d399; font-weight: 700;">FULL/BDR</span><br>
+              Interface: Gi0/0
+            </div>
+            <div class="card-body-text" style="font-size: 11.5px;">Confirma que a adjacencia atingiu o estado estavel FULL.</div>
+          </div>
+
+          <div class="pro-card">
+            <div class="card-header-line">
+              <span class="card-title">2. Rotas Inter-Área</span>
+              <span class="card-metric-badge">IP ROUTE</span>
+            </div>
+            <div class="card-body-text" style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: #94a3b8;">
+              R1# <strong>show ip route ospf</strong><br><br>
+              <span style="color: var(--gold-light); font-weight: 700;">O IA 192.168.20.0/24</span><br>
+              [110/3] via 10.0.0.2<br>
+              Interface: Gi0/0
+            </div>
+            <div class="card-body-text" style="font-size: 11.5px;"><code>O IA</code> significa rota inter-area aprendida pelo OSPFv2 com metrica acumulada.</div>
+          </div>
+
+          <div class="pro-card">
+            <div class="card-header-line">
+              <span class="card-title">3. Status de Interfaces</span>
+              <span class="card-metric-badge">IP INT BRIEF</span>
+            </div>
+            <div class="card-body-text" style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: #94a3b8;">
+              R1# <strong>show ip int brief</strong><br><br>
+              Gi0/0: 10.0.0.1 (<span style="color: #34d399;">up/up</span>)<br>
+              Gi0/1: 192.168.10.1 (<span style="color: #34d399;">up/up</span>)
+            </div>
+            <div class="card-body-text" style="font-size: 11.5px;">Ambas as portas devem reportar Status UP e Protocol UP.</div>
+          </div>
+        </div>
+
+        <div class="pro-card" style="border-left: 3px solid var(--gold-primary);">
+          <div class="card-body-text">
+            <strong>Comando Corretivo de Emergencia:</strong> Se você errar a digitacao de um Router-ID ou mascara, apos corrigir a configuracao digite no modo de comando: <code>clear ip ospf process</code> e confirme com <code>yes</code> para reiniciar as adjacencias instantaneamente.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 11: ETAPA 10 - CHECKLIST DINÂMICO DE CONCLUSÃO -->
+    <section class="slide" data-slide="11">
+      <div class="slide-canvas">
+        <div class="slide-eyebrow">
+          <span class="step-tag">PASSO FINAL</span>
+          <span class="module-tag">CHECKLIST &middot; AUDITORIA DE ENTREGA</span>
+        </div>
+        <h2 class="slide-headline">Checklist Interativo de <span>Conclusao</span></h2>
+        <p class="slide-description">
+          Marque cada item abaixo a medida que for completando no seu Cisco Packet Tracer. O medidor executivo no topo do card acompanhara a sua evolucao em tempo real.
+        </p>
+
+        <div class="pro-card featured">
+          <div class="card-header-line">
+            <span class="card-title" style="color: var(--gold-light); font-size: 16px;">Auditoria de Conformidade Pratica</span>
+            <span class="card-metric-badge" id="checklist-counter">0 / 8 TAREFAS (0%)</span>
+          </div>
+
+          <div class="checklist-container">
+            <div class="check-item" onclick="toggleTask(this)">
+              <div class="check-box"><div class="check-box-inner"></div></div>
+              <div class="check-info">
+                <div class="check-title">1. Dispositivos posicionados no canvas</div>
+                <div class="check-desc">3x Routers 2911, 2x Switches 2960 e 2x PCs organizados linearmente.</div>
+              </div>
+            </div>
+
+            <div class="check-item" onclick="toggleTask(this)">
+              <div class="check-box"><div class="check-box-inner"></div></div>
+              <div class="check-info">
+                <div class="check-title">2. Cabeamento fisico conectado com retificacao da porta G0/1 no R3</div>
+                <div class="check-desc">Cabo direto em PCs e switches; conexoes Gigabit WAN entre os roteadores.</div>
+              </div>
+            </div>
+
+            <div class="check-item" onclick="toggleTask(this)">
+              <div class="check-box"><div class="check-box-inner"></div></div>
+              <div class="check-info">
+                <div class="check-title">3. Parametros IP e Gateway estaticos configurados no PC1</div>
+                <div class="check-desc">IP 192.168.10.10, mascara 255.255.255.0 e Default Gateway 192.168.10.1.</div>
+              </div>
+            </div>
+
+            <div class="check-item" onclick="toggleTask(this)">
+              <div class="check-box"><div class="check-box-inner"></div></div>
+              <div class="check-info">
+                <div class="check-title">4. Script CLI do Roteador R1 aplicado e salvo na NVRAM</div>
+                <div class="check-desc">Hostname R1, Router-ID 1.1.1.1, interface LAN na Area 10 e WAN na Area 0.</div>
+              </div>
+            </div>
+
+            <div class="check-item" onclick="toggleTask(this)">
+              <div class="check-box"><div class="check-box-inner"></div></div>
+              <div class="check-info">
+                <div class="check-title">5. Script CLI do Roteador R2 aplicado e adjacencia com R1 estabelecida</div>
+                <div class="check-desc">Hostname R2, Router-ID 2.2.2.2, ambas as interfaces WAN na Area 0.</div>
+              </div>
+            </div>
+
+            <div class="check-item" onclick="toggleTask(this)">
+              <div class="check-box"><div class="check-box-inner"></div></div>
+              <div class="check-info">
+                <div class="check-title">6. Script CLI do Roteador R3 aplicado e salvo na NVRAM</div>
+                <div class="check-desc">Hostname R3, Router-ID 3.3.3.3, WAN G0/0 e LAN G0/1 ambas na Area 0.</div>
+              </div>
+            </div>
+
+            <div class="check-item" onclick="toggleTask(this)">
+              <div class="check-box"><div class="check-box-inner"></div></div>
+              <div class="check-info">
+                <div class="check-title">7. Parametros IP e Gateway estaticos configurados no PC2</div>
+                <div class="check-desc">IP 192.168.20.10, mascara 255.255.255.0 e Default Gateway 192.168.20.1.</div>
+              </div>
+            </div>
+
+            <div class="check-item" onclick="toggleTask(this)">
+              <div class="check-box"><div class="check-box-inner"></div></div>
+              <div class="check-info">
+                <div class="check-title">8. Ping de ponta a ponta bem-sucedido e arquivo .PKT salvo no disco</div>
+                <div class="check-desc">Sucesso verificado de PC1 ate 192.168.20.10 e arquivo salvo via File &gt; Save As.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- DOCK FLUTUANTE DE CONTROLE -->
+  <footer class="keynote-dock">
+    <button class="dock-btn" onclick="prevSlide()" title="Slide Anterior (Seta Esquerda)">
+      <svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg>
+    </button>
+    <div class="dock-indicator" id="dock-counter">01 / 11</div>
+    <button class="dock-btn" onclick="nextSlide()" title="Proximo Slide (Seta Direita / Espaco)">
+      <svg viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg>
+    </button>
+    <div class="dock-separator"></div>
+    <button class="dock-pill-btn" onclick="toggleFullScreen()" title="Modo Tela Cheia (F)">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+      Apresentar
+    </button>
+  </footer>
+
+  <!-- NOTIFICACAO DE COPIA -->
+  <div id="copy-toast">Script Cisco IOS copiado com sucesso.</div>
+
+  <script>
+    let currentSlide = 1;
+    const totalSlides = 11;
+    const slides = document.querySelectorAll('.slide');
+    const progressBar = document.getElementById('top-progress-bar');
+    const dockCounter = document.getElementById('dock-counter');
+    const toast = document.getElementById('copy-toast');
+
+    function updatePresentation() {
+      slides.forEach((slide) => {
+        const slideIndex = parseInt(slide.getAttribute('data-slide'), 10);
+        slide.classList.remove('active', 'prev', 'next');
+        
+        if (slideIndex === currentSlide) {
+          slide.classList.add('active');
+        } else if (slideIndex < currentSlide) {
+          slide.classList.add('prev');
+        } else {
+          slide.classList.add('next');
+        }
+      });
+
+      // Atualizar contador e barra
+      const progressPercent = ((currentSlide - 1) / (totalSlides - 1)) * 100;
+      progressBar.style.width = progressPercent + '%';
+      
+      const formattedCurrent = currentSlide < 10 ? '0' + currentSlide : currentSlide;
+      const formattedTotal = totalSlides < 10 ? '0' + totalSlides : totalSlides;
+      dockCounter.textContent = formattedCurrent + ' / ' + formattedTotal;
+    }
+
+    function nextSlide() {
+      if (currentSlide < totalSlides) {
+        currentSlide++;
+        updatePresentation();
+      }
+    }
+
+    function prevSlide() {
+      if (currentSlide > 1) {
+        currentSlide--;
+        updatePresentation();
+      }
+    }
+
+    function toggleFullScreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(err => {});
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        }
+      }
+    }
+
+    // NAVEGAÇÃO POR TECLADO
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+        e.preventDefault();
+        nextSlide();
+      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        e.preventDefault();
+        prevSlide();
+      } else if (e.key === 'Home') {
+        e.preventDefault();
+        currentSlide = 1;
+        updatePresentation();
+      } else if (e.key === 'End') {
+        e.preventDefault();
+        currentSlide = totalSlides;
+        updatePresentation();
+      } else if (e.key.toLowerCase() === 'f') {
+        e.preventDefault();
+        toggleFullScreen();
+      }
+    });
+
+    // COPIAR SNIPPET COM FEEDBACK
+    function copySnippet(elementId) {
+      const el = document.getElementById(elementId);
+      if (!el) return;
+      const text = el.innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        showToast();
+      }).catch(() => {
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+        showToast();
+      });
+    }
+
+    function showToast() {
+      toast.classList.add('show');
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 2200);
+    }
+
+    // CHECKLIST DINÂMICO
+    function toggleTask(element) {
+      element.classList.toggle('done');
+      updateChecklistProgress();
+    }
+
+    function updateChecklistProgress() {
+      const items = document.querySelectorAll('.check-item');
+      const completed = document.querySelectorAll('.check-item.done').length;
+      const total = items.length;
+      const pct = Math.round((completed / total) * 100);
+      const label = document.getElementById('checklist-counter');
+      if (label) {
+        label.textContent = completed + ' / ' + total + ' TAREFAS (' + pct + '%)';
+      }
+    }
+
+    // INICIALIZAÇÃO
+    updatePresentation();
+  </script>
+</body>
+</html>

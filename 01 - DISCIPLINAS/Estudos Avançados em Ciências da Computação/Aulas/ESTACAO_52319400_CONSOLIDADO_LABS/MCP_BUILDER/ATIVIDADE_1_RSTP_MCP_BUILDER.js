@@ -1,0 +1,36 @@
+// Cada instrucao ocupa uma linha porque o MCP BUILDER enfileira o editor linha por linha.
+if(ipc.network().getDeviceCount()!==0){throw new Error("Abra um arquivo novo e vazio antes de executar.");}
+lwAddDevice("SW1",1,"2960-24TT",300,160);
+lwAddDevice("SW2",1,"2960-24TT",700,160);
+lwAddDevice("SW3",1,"2960-24TT",500,360);
+lwAddDevice("PC1",8,"PC-PT",350,540);
+lwAddDevice("PC2",8,"PC-PT",500,540);
+lwAddDevice("PC3",8,"PC-PT",650,540);
+lwAddLink("SW1","GigabitEthernet0/1","SW2","GigabitEthernet0/1","cross");
+lwAddLink("SW1","GigabitEthernet0/2","SW3","GigabitEthernet0/1","cross");
+lwAddLink("SW2","GigabitEthernet0/2","SW3","GigabitEthernet0/2","cross");
+lwAddLink("SW3","FastEthernet0/1","PC1","FastEthernet0","straight");
+lwAddLink("SW3","FastEthernet0/2","PC2","FastEthernet0","straight");
+lwAddLink("SW3","FastEthernet0/3","PC3","FastEthernet0","straight");
+configureIosDevice("SW1","hostname SW1\nvlan 10\nname Usuarios\nvlan 20\nname Pesquisa\nvlan 30\nname Administrativo\nvlan 99\nname Gerenciamento\nexit\nspanning-tree mode rapid-pvst\nspanning-tree vlan 10,20,30,99 root primary\ninterface GigabitEthernet0/1\nswitchport mode trunk\nswitchport trunk allowed vlan 10,20,30,99\nno shutdown\nexit\ninterface GigabitEthernet0/2\nswitchport mode trunk\nswitchport trunk allowed vlan 10,20,30,99\nno shutdown\nend");
+configureIosDevice("SW2","hostname SW2\nvlan 10\nname Usuarios\nvlan 20\nname Pesquisa\nvlan 30\nname Administrativo\nvlan 99\nname Gerenciamento\nexit\nspanning-tree mode rapid-pvst\ninterface GigabitEthernet0/1\nswitchport mode trunk\nswitchport trunk allowed vlan 10,20,30,99\nno shutdown\nexit\ninterface GigabitEthernet0/2\nswitchport mode trunk\nswitchport trunk allowed vlan 10,20,30,99\nno shutdown\nend");
+configureIosDevice("SW3","hostname SW3\nvlan 10\nname Usuarios\nvlan 20\nname Pesquisa\nvlan 30\nname Administrativo\nvlan 99\nname Gerenciamento\nexit\nspanning-tree mode rapid-pvst\ninterface GigabitEthernet0/1\nswitchport mode trunk\nswitchport trunk allowed vlan 10,20,30,99\nno shutdown\nexit\ninterface GigabitEthernet0/2\nswitchport mode trunk\nswitchport trunk allowed vlan 10,20,30,99\nno shutdown\nexit\ninterface FastEthernet0/1\nswitchport mode access\nswitchport access vlan 10\nspanning-tree portfast\nspanning-tree bpduguard enable\nno shutdown\nexit\ninterface FastEthernet0/2\nswitchport mode access\nswitchport access vlan 20\nspanning-tree portfast\nspanning-tree bpduguard enable\nno shutdown\nexit\ninterface FastEthernet0/3\nswitchport mode access\nswitchport access vlan 30\nspanning-tree portfast\nspanning-tree bpduguard enable\nno shutdown\nend");
+configurePcIp("PC1",false,"192.168.10.10","255.255.255.0","192.168.10.1");
+configurePcIp("PC2",false,"192.168.20.10","255.255.255.0","192.168.20.1");
+configurePcIp("PC3",false,"192.168.30.10","255.255.255.0","192.168.30.1");
+ipc.network().getDevice("SW1").enterCommand("show spanning-tree vlan 10","enable");
+ipc.network().getDevice("SW1").enterCommand("show spanning-tree vlan 20","enable");
+ipc.network().getDevice("SW1").enterCommand("show spanning-tree vlan 30","enable");
+ipc.network().getDevice("SW1").enterCommand("show spanning-tree vlan 99","enable");
+ipc.network().getDevice("SW1").enterCommand("show interfaces trunk","enable");
+ipc.network().getDevice("SW1").enterCommand("show spanning-tree inconsistentports","enable");
+ipc.network().getDevice("SW3").enterCommand("show interfaces trunk","enable");
+ipc.network().getDevice("SW3").enterCommand("show spanning-tree inconsistentports","enable");
+ipc.network().getDevice("SW3").enterCommand("show spanning-tree interface FastEthernet0/1 detail","enable");
+ipc.network().getDevice("SW3").enterCommand("show spanning-tree interface FastEthernet0/2 detail","enable");
+ipc.network().getDevice("SW3").enterCommand("show spanning-tree interface FastEthernet0/3 detail","enable");
+var __lw=ipc.appWindow().getActiveWorkspace().getLogicalWorkspace();
+__lw.addNote(820,150,__lw.getIncNoteZOrder(),"ATIVIDADE 1 - RSTP / RAPID-PVST\nSW1: Root Bridge primario - VLANs 10,20,30,99\nTrunks: somente VLANs 10,20,30,99\nTriangulo redundante; RSTP elimina o loop.");
+__lw.addNote(820,310,__lw.getIncNoteZOrder(),"PC1 - VLAN 10 - 192.168.10.10/24 - GW 192.168.10.1\nPC2 - VLAN 20 - 192.168.20.10/24 - GW 192.168.20.1\nPC3 - VLAN 30 - 192.168.30.10/24 - GW 192.168.30.1\nSW3 Fa0/1-3: PortFast e BPDU Guard.");
+__lw.addNote(820,470,__lw.getIncNoteZOrder(),"Validacao:\nshow spanning-tree vlan 10, 20, 30 e 99\nshow interfaces trunk\nshow spanning-tree inconsistentports\nSem roteador/L3: nao ha comunicacao entre VLANs.");
+ipc.appWindow().fileSaveAsNoPrompt("C:/Users/52319400/Atividade_1_RSTP.pkt",false);
