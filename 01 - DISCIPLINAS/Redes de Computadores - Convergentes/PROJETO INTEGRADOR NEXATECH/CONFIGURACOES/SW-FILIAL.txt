@@ -1,0 +1,32 @@
+hostname SW-FILIAL
+no ip domain-lookup
+banner motd #NexaTech | SW-FILIAL | Acesso restrito#
+line con 0
+ logging synchronous
+exit
+vlan 999
+ name BLACKHOLE
+exit
+interface range FastEthernet0/1 - 2
+ description Estacoes Autorizadas Filial (PC4-PC5)
+ switchport mode access
+ switchport port-security
+ switchport port-security maximum 1
+ switchport port-security mac-address sticky
+ switchport port-security violation shutdown
+ storm-control broadcast level 20.00
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+ no shutdown
+exit
+interface GigabitEthernet0/1
+ description Uplink RF G0/0
+ switchport mode access
+ no shutdown
+exit
+interface range FastEthernet0/3 - 24, GigabitEthernet0/2
+ description NAO-UTILIZADA
+ switchport mode access
+ switchport access vlan 999
+ shutdown
+exit

@@ -1,0 +1,39 @@
+hostname RC2
+no ip domain-lookup
+banner motd #NexaTech | RC2 | Acesso restrito#
+line con 0
+ logging synchronous
+exit
+interface Loopback0
+ description Router-ID OSPF RC2
+ ip address 2.2.2.2 255.255.255.255
+exit
+interface GigabitEthernet0/0
+ description Backbone OSPF - SW-CORE Fa0/2
+ ip address 10.0.0.2 255.255.255.248
+ ip ospf priority 100
+ ip ospf cost 10
+ no shutdown
+exit
+interface GigabitEthernet0/1
+ description WAN B - RB G0/1
+ ip address 10.0.1.5 255.255.255.252
+ ip ospf cost 50
+ no shutdown
+exit
+interface GigabitEthernet0/2
+ description WAN Filial - RF G0/1 (Area 10 Stub)
+ ip address 10.0.1.9 255.255.255.252
+ ip ospf cost 10
+ no shutdown
+exit
+router ospf 1
+ router-id 2.2.2.2
+ auto-cost reference-bandwidth 1000
+ log-adjacency-changes
+ area 10 stub
+ network 2.2.2.2 0.0.0.0 area 0
+ network 10.0.0.0 0.0.0.7 area 0
+ network 10.0.1.4 0.0.0.3 area 0
+ network 10.0.1.8 0.0.0.3 area 10
+exit

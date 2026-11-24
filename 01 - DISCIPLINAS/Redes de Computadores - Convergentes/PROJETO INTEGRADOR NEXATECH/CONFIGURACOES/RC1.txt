@@ -1,0 +1,35 @@
+hostname RC1
+no ip domain-lookup
+banner motd #NexaTech | RC1 | Acesso restrito#
+line con 0
+ logging synchronous
+exit
+interface Loopback0
+ description Router-ID OSPF RC1
+ ip address 1.1.1.1 255.255.255.255
+exit
+interface GigabitEthernet0/0
+ description Backbone OSPF - SW-CORE Fa0/1
+ ip address 10.0.0.1 255.255.255.248
+ ip ospf priority 200
+ ip ospf cost 10
+ no shutdown
+exit
+interface GigabitEthernet0/1
+ description WAN A - RA G0/1
+ ip address 10.0.1.1 255.255.255.252
+ ip ospf cost 10
+ no shutdown
+exit
+interface GigabitEthernet0/2
+ description NAO-UTILIZADA
+ shutdown
+exit
+router ospf 1
+ router-id 1.1.1.1
+ auto-cost reference-bandwidth 1000
+ log-adjacency-changes
+ network 1.1.1.1 0.0.0.0 area 0
+ network 10.0.0.0 0.0.0.7 area 0
+ network 10.0.1.0 0.0.0.3 area 0
+exit

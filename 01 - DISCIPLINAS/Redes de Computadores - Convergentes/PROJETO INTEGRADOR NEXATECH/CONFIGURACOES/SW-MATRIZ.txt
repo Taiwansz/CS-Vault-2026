@@ -1,0 +1,63 @@
+hostname SW-MATRIZ
+no ip domain-lookup
+banner motd #NexaTech | SW-MATRIZ | Acesso restrito#
+line con 0
+ logging synchronous
+exit
+vlan 10
+ name MATRIZ
+exit
+vlan 999
+ name BLACKHOLE
+exit
+ip dhcp snooping
+ip dhcp snooping vlan 10
+no ip dhcp snooping information option
+interface range FastEthernet0/1 - 3
+ description Estacoes Autorizadas Matriz (PC1-PC3)
+ switchport mode access
+ switchport access vlan 10
+ switchport port-security
+ switchport port-security maximum 1
+ switchport port-security mac-address sticky
+ switchport port-security violation shutdown
+ storm-control broadcast level 20.00
+ ip dhcp snooping limit rate 15
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+ no shutdown
+exit
+interface FastEthernet0/10
+ description DHCP-NAO-AUTORIZADO (UNTRUSTED)
+ switchport mode access
+ switchport access vlan 10
+ ip dhcp snooping limit rate 15
+ spanning-tree portfast
+ no shutdown
+exit
+interface FastEthernet0/24
+ description DHCP-LEGITIMO (TRUSTED)
+ switchport mode access
+ switchport access vlan 10
+ ip dhcp snooping trust
+ spanning-tree portfast
+ no shutdown
+exit
+interface GigabitEthernet0/1
+ description Uplink RA G0/0
+ switchport mode access
+ switchport access vlan 10
+ no shutdown
+exit
+interface GigabitEthernet0/2
+ description Uplink RB G0/0
+ switchport mode access
+ switchport access vlan 10
+ no shutdown
+exit
+interface range FastEthernet0/4 - 9, FastEthernet0/11 - 23
+ description NAO-UTILIZADA
+ switchport mode access
+ switchport access vlan 999
+ shutdown
+exit

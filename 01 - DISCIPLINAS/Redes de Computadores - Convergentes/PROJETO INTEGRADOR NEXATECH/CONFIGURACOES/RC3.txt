@@ -1,0 +1,41 @@
+hostname RC3
+no ip domain-lookup
+banner motd #NexaTech | RC3 | Acesso restrito#
+line con 0
+ logging synchronous
+exit
+interface Loopback0
+ description Router-ID OSPF RC3
+ ip address 3.3.3.3 255.255.255.255
+exit
+interface GigabitEthernet0/0
+ description Backbone OSPF - SW-CORE Fa0/3
+ ip address 10.0.0.3 255.255.255.248
+ ip ospf priority 0
+ ip ospf cost 10
+ no shutdown
+exit
+interface GigabitEthernet0/1
+ description LAN Data Center - SW-DC Gi0/1
+ ip address 192.168.30.1 255.255.255.0
+ ip ospf cost 1
+ no shutdown
+exit
+interface GigabitEthernet0/2
+ description Link Externo - ISP G0/0
+ ip address 203.0.113.1 255.255.255.252
+ no shutdown
+exit
+ip route 0.0.0.0 0.0.0.0 203.0.113.2
+ip route 198.51.100.0 255.255.255.0 203.0.113.2
+router ospf 1
+ router-id 3.3.3.3
+ auto-cost reference-bandwidth 1000
+ log-adjacency-changes
+ passive-interface GigabitEthernet0/1
+ network 3.3.3.3 0.0.0.0 area 0
+ network 10.0.0.0 0.0.0.7 area 0
+ network 192.168.30.0 0.0.0.255 area 0
+ default-information originate
+ redistribute static subnets
+exit

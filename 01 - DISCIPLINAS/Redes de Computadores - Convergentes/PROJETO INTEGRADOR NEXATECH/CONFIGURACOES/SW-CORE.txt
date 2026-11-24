@@ -1,0 +1,33 @@
+hostname SW-CORE
+no ip domain-lookup
+banner motd #NexaTech | SW-CORE | Acesso restrito#
+line con 0
+ logging synchronous
+exit
+vlan 999
+ name BLACKHOLE
+exit
+interface FastEthernet0/1
+ description Backbone RC1 G0/0
+ switchport mode access
+ spanning-tree portfast
+ no shutdown
+exit
+interface FastEthernet0/2
+ description Backbone RC2 G0/0
+ switchport mode access
+ spanning-tree portfast
+ no shutdown
+exit
+interface FastEthernet0/3
+ description Backbone RC3 G0/0
+ switchport mode access
+ spanning-tree portfast
+ no shutdown
+exit
+interface range FastEthernet0/4 - 24, GigabitEthernet0/1 - 2
+ description NAO-UTILIZADA
+ switchport mode access
+ switchport access vlan 999
+ shutdown
+exit

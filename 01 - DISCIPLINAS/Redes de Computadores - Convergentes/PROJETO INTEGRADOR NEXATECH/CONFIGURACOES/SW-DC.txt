@@ -1,0 +1,26 @@
+hostname SW-DC
+no ip domain-lookup
+banner motd #NexaTech | SW-DC | Acesso restrito#
+line con 0
+ logging synchronous
+exit
+vlan 999
+ name BLACKHOLE
+exit
+interface FastEthernet0/1
+ description SRV-CORPORATIVO Fa0
+ switchport mode access
+ spanning-tree portfast
+ no shutdown
+exit
+interface GigabitEthernet0/1
+ description Uplink RC3 G0/1
+ switchport mode access
+ no shutdown
+exit
+interface range FastEthernet0/2 - 24, GigabitEthernet0/2
+ description NAO-UTILIZADA
+ switchport mode access
+ switchport access vlan 999
+ shutdown
+exit

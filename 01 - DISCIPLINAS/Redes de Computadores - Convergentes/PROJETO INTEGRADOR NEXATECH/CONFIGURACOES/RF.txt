@@ -1,0 +1,36 @@
+hostname RF
+no ip domain-lookup
+banner motd #NexaTech | RF | Acesso restrito#
+line con 0
+ logging synchronous
+exit
+interface Loopback0
+ description Router-ID OSPF RF
+ ip address 6.6.6.6 255.255.255.255
+exit
+interface GigabitEthernet0/1
+ description WAN Filial - RC2 G0/2 (Area 10 Stub)
+ ip address 10.0.1.10 255.255.255.252
+ ip ospf cost 10
+ no shutdown
+exit
+interface GigabitEthernet0/0
+ description LAN Filial - SW-FILIAL Gi0/1
+ ip address 192.168.20.1 255.255.255.0
+ ip ospf cost 1
+ no shutdown
+exit
+interface GigabitEthernet0/2
+ description NAO-UTILIZADA
+ shutdown
+exit
+router ospf 1
+ router-id 6.6.6.6
+ auto-cost reference-bandwidth 1000
+ log-adjacency-changes
+ area 10 stub
+ passive-interface GigabitEthernet0/0
+ network 6.6.6.6 0.0.0.0 area 10
+ network 10.0.1.8 0.0.0.3 area 10
+ network 192.168.20.0 0.0.0.255 area 10
+exit
